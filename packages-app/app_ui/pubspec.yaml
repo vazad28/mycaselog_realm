@@ -1,0 +1,32 @@
+name: app_ui
+description: App ui package.
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: '>=3.0.0-339.0.dev <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  app_assets:
+    path: ../app_assets
+  app_annotations:
+    path: ../app_annotations
+  app_extensions: 
+    path: ../app_extensions
+  app_l10n:
+    path: ../app_l10n
+  dynamic_color: ^1.7.0
+  google_fonts: ^6.2.1
+  recase: ^4.1.0
+  animations: ^2.0.11
+  freezed_annotation: ^2.4.1
+  fl_chart: ^0.68.0
+  reactive_forms: ^17.0.1
+
+
+dev_dependencies:
+  very_good_analysis: ^5.1.0
+  freezed: ^2.5.2
+  build_runner: 2.4.9

@@ -1,0 +1,15 @@
+name: logger_client
+description: Logger client package.
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: '>=3.4.0-282.3.beta <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  logging: ^1.2.0
+
+dev_dependencies:
+  very_good_analysis: ^5.1.0

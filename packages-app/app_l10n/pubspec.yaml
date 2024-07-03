@@ -1,0 +1,29 @@
+name: app_l10n
+description: App l10n package.
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: '>=3.0.0-339.0.dev <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.19.0
+  intl_utils: ^2.8.7
+
+dependency_overrides:
+  intl: ^0.19.0
+
+dev_dependencies:
+  build_runner: ^2.4.9
+
+flutter_intl: 
+  arb_dir: lib/l10n/arb
+  class_name: S
+  main_locale: en
+  output_dir: lib/l10n/arb_gen
+  enabled: true
+  use_deferred_loading: false

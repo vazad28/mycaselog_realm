@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "575010129050",
+    "project_id": "mycaselog-dev",
+    "storage_bucket": "mycaselog-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:575010129050:android:e3093448048f1960250b23",
+        "android_client_info": {
+          "package_name": "com.example.mycaselog"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "575010129050-591jpb83rmphh1i592rjfq9hc26dmlii.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mycaselog",
+            "certificate_hash": "0ef0568409e20964433054b10cb17e63f4c313fb"
+          }
+        },
+        {
+          "client_id": "575010129050-6pmaqh4lt1719sht3c2u6dla60gm6h2c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQKt3c2t5krXqgERGd51LF_VgWbbjRsME"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "575010129050-6pmaqh4lt1719sht3c2u6dla60gm6h2c.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "575010129050-2jf7945ct5nrm241lnjf5t5q0e8f2roa.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "mycaselog"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

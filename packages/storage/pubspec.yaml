@@ -1,0 +1,17 @@
+name: storage
+description: Storage package.
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: '>=3.4.0-282.3.beta <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_secure_storage: ^9.0.0
+  shared_preferences: ^2.2.2
+  
+
+dev_dependencies:
+  very_good_analysis: ^5.1.0

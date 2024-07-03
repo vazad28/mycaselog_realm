@@ -1,0 +1,12 @@
+name: app_annotations
+description: App annotations package.
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: '>=3.0.0-339.0.dev <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
