@@ -1,0 +1,14 @@
+name: async_result
+description: Async result package.
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: '>=3.4.0-282.3.beta <4.0.0'
+
+dependencies:
+  flutter_riverpod: ^3.0.0-dev.3
+  meta: ^1.12.0
+  stack_trace: ^1.11.1
+dev_dependencies:
+  very_good_analysis: ^5.1.0

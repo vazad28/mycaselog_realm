@@ -1,0 +1,18 @@
+bricks:
+  package:
+    git:
+      url: "https://github.com/vazad28/my_mason_blicks.git"
+      path: package
+  riverpod_feature:
+    git:
+      url: "https://github.com/vazad28/my_mason_blicks.git"
+      path: riverpod_feature
+  riverpod_page:
+    git:
+      url: "https://github.com/vazad28/my_mason_blicks.git"
+      path: riverpod_page
+  riverpod_form:
+    git:
+      url: "https://github.com/vazad28/my_mason_blicks.git"
+      path: riverpod_form
+  model_freezed_json: ^0.1.0+1

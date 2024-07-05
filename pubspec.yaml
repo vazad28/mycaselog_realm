@@ -17,8 +17,12 @@ dependencies:
     sdk: flutter
   
   # Generic Packages
+  async_result:
+    path: packages/async_result
   authentication_client:
     path: packages/authentication_client
+  encryption_client:
+    path: packages/encryption_client
   logger_client:
     path: packages/logger_client
   state_of:
@@ -39,6 +43,12 @@ dependencies:
     path: packages-app/app_models
   app_ui:
     path: packages-app/app_ui
+  app_data:
+    path: packages-app/app_data
+  label_ocr:
+    path: packages-app/label_ocr
+  misc_packages:
+    path: packages-app/misc_packages
 
   # pub packages
   animations: ^2.0.11
@@ -68,10 +78,14 @@ dependencies:
   firebase_core: 2.30.1
   firebase_crashlytics: 3.5.4
   #firebase_messaging: 14.9.1
+  firebase_ui_auth: ^1.14.0
+  cloud_firestore: ^4.17.2
   firebase_storage: 11.7.4
   flutter_adaptive_scaffold: ^0.1.11+1
-  firebase_ui_auth: ^1.14.0
-
+  json_annotation: ^4.9.0
+  share_plus: ^9.0.0
+  local_auth: ^2.2.0
+  
 dev_dependencies: 
   build_runner: ^2.4.11
   freezed: ^2.5.3
@@ -80,6 +94,7 @@ dev_dependencies:
   pubspec_dependency_sorter: ^1.0.4
   riverpod_generator: ^3.0.0-dev.11
   very_good_analysis: ^5.1.0
+  json_serializable: ^6.8.0
 
 flutter:
   uses-material-design: true

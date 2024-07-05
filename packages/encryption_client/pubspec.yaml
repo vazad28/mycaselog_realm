@@ -1,0 +1,23 @@
+name: encryption_client
+description: Encryption client package.
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: '>=3.4.0-282.3.beta <4.0.0'
+
+dependencies:
+  equatable: ^2.0.5
+  crypto: ^3.0.3
+  flutter:
+    sdk: flutter
+  async_result:
+    path: ../async_result
+  authentication_client:
+    path: ../authentication_client
+  encrypt: ^5.0.3
+  flutter_secure_storage: ^9.0.0
+
+
+dev_dependencies:
+  very_good_analysis: ^5.1.0

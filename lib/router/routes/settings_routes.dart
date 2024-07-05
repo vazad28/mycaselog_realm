@@ -6,6 +6,7 @@ import '../../settings/settings.dart';
 // import '../../support_data/support_data.dart';
 // import '../../templates/index.dart';
 // import '../../user_profile/user_profile.dart';
+import '../../support_data/support_data.dart';
 import '../utils/route_animations.dart';
 
 part '../../generated/router/routes/settings_routes.g.dart';
@@ -16,27 +17,27 @@ part '../../generated/router/routes/settings_routes.g.dart';
     /// User Profile route
     //   TypedGoRoute<UserProfileRoute>(path: UserProfileRoute.path),
 
-    //   /// active basic field
-    //   TypedGoRoute<ActivableFieldsRoute>(path: ActivableFieldsRoute.path),
+    /// active basic field
+    TypedGoRoute<ActivableFieldsRoute>(path: ActivableFieldsRoute.path),
 
-    //   /// Support Data Routes
-    //   TypedGoRoute<AnesthesiaBlocksSettingsRoute>(
-    //     path: AnesthesiaBlocksSettingsRoute.path,
-    //   ),
-    //   TypedGoRoute<AssistantsRoute>(
-    //     path: AssistantsRoute.path,
-    //     routes: [
-    //       TypedGoRoute<AddAssistantRoute>(path: AddAssistantRoute.path),
-    //     ],
-    //   ),
-    //   TypedGoRoute<SurgeryLocationsRoute>(
-    //     path: SurgeryLocationsRoute.path,
-    //     routes: [
-    //       TypedGoRoute<AddSurgeryLocationRoute>(
-    //         path: AddSurgeryLocationRoute.path,
-    //       ),
-    //     ],
-    //   ),
+    /// Support Data Routes
+    TypedGoRoute<AnesthesiaBlocksSettingsRoute>(
+      path: AnesthesiaBlocksSettingsRoute.path,
+    ),
+    TypedGoRoute<AssistantsRoute>(
+      path: AssistantsRoute.path,
+      routes: [
+        TypedGoRoute<AddAssistantRoute>(path: AddAssistantRoute.path),
+      ],
+    ),
+    TypedGoRoute<SurgeryLocationsRoute>(
+      path: SurgeryLocationsRoute.path,
+      routes: [
+        TypedGoRoute<AddSurgeryLocationRoute>(
+          path: AddSurgeryLocationRoute.path,
+        ),
+      ],
+    ),
 
     //   /// Templates routes
     //   TypedGoRoute<TemplatesRoute>(
@@ -84,85 +85,85 @@ class SettingsRoute extends GoRouteData {
 //       const UserProfilePage();
 // }
 
-// /// ////////////////////////////////////////////////////////////////////
-// /// Support Data Routes
-// /// ////////////////////////////////////////////////////////////////////
+/// ////////////////////////////////////////////////////////////////////
+/// Support Data Routes
+/// ////////////////////////////////////////////////////////////////////
 
-// /// Active fields route
-// class ActivableFieldsRoute extends GoRouteData {
-//   const ActivableFieldsRoute();
-//   static const name = 'active_fields';
-//   static const path = name;
+/// Active fields route
+class ActivableFieldsRoute extends GoRouteData {
+  const ActivableFieldsRoute();
+  static const name = 'active_fields';
+  static const path = name;
 
-//   @override
-//   Widget build(BuildContext context, GoRouterState state) =>
-//       const ActivableFieldsPage();
-// }
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const ActivableFieldsPage();
+}
 
-// class AnesthesiaBlocksSettingsRoute extends GoRouteData {
-//   const AnesthesiaBlocksSettingsRoute();
+class AnesthesiaBlocksSettingsRoute extends GoRouteData {
+  const AnesthesiaBlocksSettingsRoute();
 
-//   static const name = 'anesthesia_blocks';
-//   static const path = name;
+  static const name = 'anesthesia_blocks';
+  static const path = name;
 
-//   @override
-//   Widget build(BuildContext context, GoRouterState state) =>
-//       const AnesthesiaBlocksPage();
-// }
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const AnesthesiaBlocksPage();
+}
 
-// class AssistantsRoute extends GoRouteData {
-//   const AssistantsRoute();
-//   static const name = 'assistants';
-//   static const path = name;
+class AssistantsRoute extends GoRouteData {
+  const AssistantsRoute();
+  static const name = 'assistants';
+  static const path = name;
 
-//   @override
-//   Widget build(BuildContext context, GoRouterState state) =>
-//       const AssistantsPage();
-// }
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const AssistantsPage();
+}
 
-// class AddAssistantRoute extends GoRouteData {
-//   AddAssistantRoute(this.$extra, {this.newRecord = false})
-//       : assistantID = $extra.assistantID;
-//   static const name = 'add_assistant';
-//   static const path = ':assistantID';
+class AddAssistantRoute extends GoRouteData {
+  AddAssistantRoute(this.$extra, {this.newRecord = false})
+      : assistantID = $extra.assistantID;
+  static const name = 'add_assistant';
+  static const path = ':assistantID';
 
-//   final AssistantModel $extra;
-//   final String assistantID;
-//   final bool newRecord;
+  final AssistantModel $extra;
+  final String assistantID;
+  final bool newRecord;
 
-//   @override
-//   Widget build(BuildContext context, GoRouterState state) =>
-//       AddAssistantPage(assistantModel: $extra, newRecord: newRecord);
-// }
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      AddAssistantPage(assistantModel: $extra, newRecord: newRecord);
+}
 
-// class SurgeryLocationsRoute extends GoRouteData {
-//   const SurgeryLocationsRoute();
-//   static const name = 'surgery_locations';
-//   static const path = name;
+class SurgeryLocationsRoute extends GoRouteData {
+  const SurgeryLocationsRoute();
+  static const name = 'surgery_locations';
+  static const path = name;
 
-//   @override
-//   Widget build(BuildContext context, GoRouterState state) =>
-//       const SurgeryLocationsPage();
-// }
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const SurgeryLocationsPage();
+}
 
-// class AddSurgeryLocationRoute extends GoRouteData {
-//   AddSurgeryLocationRoute(this.$extra, {this.newRecord = false})
-//       : locationID = $extra.locationID;
+class AddSurgeryLocationRoute extends GoRouteData {
+  AddSurgeryLocationRoute(this.$extra, {this.newRecord = false})
+      : locationID = $extra.locationID;
 
-//   static const name = 'add_surgery_location';
-//   static const path = ':locationID';
+  static const name = 'add_surgery_location';
+  static const path = ':locationID';
 
-//   final SurgeryLocationModel $extra;
-//   final String locationID;
-//   final bool newRecord;
+  final SurgeryLocationModel $extra;
+  final String locationID;
+  final bool newRecord;
 
-//   @override
-//   Widget build(BuildContext context, GoRouterState state) =>
-//       AddSurgeryLocationPage(
-//         surgeryLocationModel: $extra,
-//         newRecord: newRecord,
-//       );
-// }
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      AddSurgeryLocationPage(
+        surgeryLocationModel: $extra,
+        newRecord: newRecord,
+      );
+}
 
 // // /// ////////////////////////////////////////////////////////////////////
 // // /// TEMPLATE ROUTES

@@ -9,6 +9,14 @@ targets:
         options:
           build_extensions:
             '^lib/{{}}.dart': 'lib/generated/{{}}.g.dart'
+      realm:realm_generator:
+        enabled: true
+        generate_for: 
+          include:
+            - lib/core/realm/**.dart
+          exclude:
+            - packages/**.dart
+            - packages-app/**.dart
       freezed|freezed:
         enabled: true
         generate_for:
@@ -17,8 +25,10 @@ targets:
             - lib/**_provider.dart
             - lib/**_event.dart
             - lib/**_state.dart
+            - lib/**_failures.dart
           exclude:
             - packages/**.dart
+            - packages-app/**.dart
         options:
           build_extensions:
             '^lib/{{}}.dart': 'lib/generated/{{}}.freezed.dart'
@@ -31,9 +41,3 @@ targets:
       go_router_builder:
         generate_for:
           - lib/**_routes.dart
-      
-# builders:
-#   go_router_builder:
-#     runs_after:
-#       - freezed: freezed_generator
-#       - riverpod: riverpod_generator     

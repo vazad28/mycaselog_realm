@@ -1,8 +1,6 @@
 import 'package:app_l10n/app_l10n.dart';
 import 'package:flutter/material.dart';
 
-import '../../packages/packages.dart';
-
 typedef CanPop = bool Function();
 
 class FormPopScopeWrapper extends StatefulWidget {
@@ -61,12 +59,22 @@ class _FormPopScopeWrapperState extends State<FormPopScopeWrapper>
         /// Ask user if the means to pop and if yes we do it
         WidgetsBinding.instance.addPostFrameCallback(
           (_) {
-            context
-                .showConfirmDialog(
-              widget.warningText ?? S.of(context).unSavedFormWarning,
-            )
-                .then((res) {
-              if (!res) return;
+            showDialog<bool>(
+              context: context,
+              builder: (ctx) {
+                return AlertDialog(
+                  content: Text(
+                      widget.warningText ?? S.of(context).unSavedFormWarning),
+                );
+                // return ConfirmDialogWidget(
+                //   dialogModel: DialogModel.info(
+                //     Text(message, style: Theme.of(this).textTheme.bodyMedium),
+                //     title,
+                //   ),
+                // );
+              },
+            ).then((res) {
+              if (res == null || res == false) return;
 
               _canPop = res;
               if (mounted) Navigator.of(context).pop();

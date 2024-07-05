@@ -6,8 +6,8 @@ TextTheme createTextTheme(
   TextTheme baseTextTheme = Theme.of(context).textTheme;
   TextTheme bodyTextTheme =
       GoogleFonts.getTextTheme(bodyFontString, baseTextTheme);
-  TextTheme displayTextTheme =
-      GoogleFonts.getTextTheme(displayFontString, baseTextTheme);
+  TextTheme displayTextTheme = GoogleFonts.getTextTheme(
+      bodyFontString, baseTextTheme); //displayFontString,
   TextTheme textTheme = displayTextTheme.copyWith(
     bodyLarge: bodyTextTheme.bodyLarge,
     bodyMedium: bodyTextTheme.bodyMedium,
