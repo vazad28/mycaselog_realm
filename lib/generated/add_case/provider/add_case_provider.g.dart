@@ -457,7 +457,7 @@ final basicDataFormGroupProvider = AutoDisposeProvider<FormGroup>.internal(
 
 typedef BasicDataFormGroupRef = AutoDisposeProviderRef<FormGroup>;
 String _$templatedDataFormGroupHash() =>
-    r'a0aaba6536cad2a8681c10093abe31945e8b0c5c';
+    r'dc7c095eab92954812e3ab9d6cd0138acb36fcad';
 
 /// See also [templatedDataFormGroup].
 @ProviderFor(templatedDataFormGroup)
@@ -472,7 +472,7 @@ final templatedDataFormGroupProvider = AutoDisposeProvider<FormGroup>.internal(
 );
 
 typedef TemplatedDataFormGroupRef = AutoDisposeProviderRef<FormGroup>;
-String _$addCaseSeederHash() => r'ac693c32a9d7fcd7e9d807bb50930ae279efb1e7';
+String _$addCaseSeederHash() => r'5fb4244ade41c7aa2c1d4aa88073cd15d680800f';
 
 /// ////////////////////////////////////////////////////////////////////
 /// Seeder provider
@@ -492,7 +492,7 @@ final addCaseSeederProvider =
 );
 
 typedef _$AddCaseSeeder = AutoDisposeNotifier<AddCaseSeedModel?>;
-String _$addCaseNotifierHash() => r'4fb384556e52cff258fa6094b27c2062c6b3eb62';
+String _$addCaseNotifierHash() => r'76e2f8cb9cd96ea3d25600545c98e36b9397b834';
 
 /// ////////////////////////////////////////////////////////////////////
 /// Main provider of the  feature
@@ -534,7 +534,7 @@ final currentCaseTemplateProvider =
 
 typedef _$CurrentCaseTemplate = AutoDisposeNotifier<TemplateModel?>;
 String _$patientDataFormGroupHash() =>
-    r'772abdbd514804a0ae1dad1a290cc289e5323e34';
+    r'e8af4c7d511cb1df659b8e768f9bb7fca45287b0';
 
 /// See also [PatientDataFormGroup].
 @ProviderFor(PatientDataFormGroup)
@@ -551,7 +551,7 @@ final patientDataFormGroupProvider =
 
 typedef _$PatientDataFormGroup = AutoDisposeNotifier<FormGroup>;
 String _$templatedDataFormValueHash() =>
-    r'803a2cf96ca6730beaff2d01c5f42dfb5ea19215';
+    r'0931680bf0029da28893d4e78577e0800d1461c9';
 
 /// See also [TemplatedDataFormValue].
 @ProviderFor(TemplatedDataFormValue)

@@ -21,4 +21,10 @@ class RepositoryFailure with _$RepositoryFailure implements Exception {
 
   const factory RepositoryFailure.noUserTemplates() =
       RepositoryFailureNoUserTemplates;
+
+  const factory RepositoryFailure.createUserModelFailure() =
+      RepositoryFailureCreateUserModel;
+
+  const factory RepositoryFailure.userModelNotExistFailure() =
+      RepositoryFailureUserModelNotExist;
 }

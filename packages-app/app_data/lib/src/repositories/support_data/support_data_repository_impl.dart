@@ -1,5 +1,3 @@
-import 'package:app_models/app_models.dart';
-import 'package:async_result/async_result.dart';
 import 'package:logger_client/logger_client.dart';
 
 import '../../../../app_data.dart';
@@ -8,15 +6,15 @@ part 'support_data_repository.dart';
 
 class SupportDataRepositoryImpl extends SupportDataRepository with LoggerMixin {
   SupportDataRepositoryImpl({
-    required AppData appData,
-  }) : _appData = appData;
+    required DatabaseService databaseService,
+  }) : _databaseService = databaseService;
 
-  final AppData _appData;
+  final DatabaseService _databaseService;
 
   // @override
   // Future<Result<SupportDataModel, RepositoryFailure>> getSupportData() async {
   //   try {
-  //     final data = await _appData.databaseService.supportDataCollection
+  //     final data = await _databaseService.supportDataCollection
   //             .getSupportData() ??
   //         SupportDataModel(_appData.currentUser.id);
   //     return Result<SupportDataModel, RepositoryFailure>.success(data);

@@ -8,20 +8,20 @@ part of 'case_model.dart';
 
 _CaseModel _$CaseModelFromJson(Map<String, dynamic> json) => _CaseModel()
   ..caseID = json['caseID'] as String
-  ..surgeryDate = (json['surgeryDate'] as num?)?.toInt()
+  ..surgeryDate = (json['surgeryDate'] as num).toInt()
   ..patientModel = json['patientModel'] == null
       ? null
       : _PatientModel.fromJson(json['patientModel'] as Map<String, dynamic>)
-  ..createdAt = (json['createdAt'] as num?)?.toInt()
+  ..createdAt = (json['createdAt'] as num).toInt()
   ..anesthesia = json['anesthesia'] as String?
   ..anesthesiaBlock = json['anesthesiaBlock'] as String?
-  ..asa = (json['asa'] as num?)?.toInt()
+  ..asa = (json['asa'] as num).toInt()
   ..assistant =
       (json['assistant'] as List<dynamic>).map((e) => e as String).toList()
   ..comments = json['comments'] as String?
   ..cpt = json['cpt'] as String?
   ..diagnosis = json['diagnosis'] as String?
-  ..ebl = (json['ebl'] as num?)?.toInt()
+  ..ebl = (json['ebl'] as num).toInt()
   ..icd = json['icd'] as String?
   ..location = json['location'] as String?
   ..side = json['side'] as String?
@@ -30,8 +30,8 @@ _CaseModel _$CaseModelFromJson(Map<String, dynamic> json) => _CaseModel()
       .map((e) => $TemplateFieldModel.fromJson(e as Map<String, dynamic>))
       .toList()
   ..templateID = json['templateID'] as String?
-  ..removed = (json['removed'] as num?)?.toInt()
-  ..timestamp = (json['timestamp'] as num?)?.toInt();
+  ..removed = (json['removed'] as num).toInt()
+  ..timestamp = (json['timestamp'] as num).toInt();
 
 Map<String, dynamic> _$CaseModelToJson(_CaseModel instance) =>
     <String, dynamic>{
@@ -59,22 +59,18 @@ Map<String, dynamic> _$CaseModelToJson(_CaseModel instance) =>
 
 _PatientModel _$PatientModelFromJson(Map<String, dynamic> json) =>
     _PatientModel()
-      ..patientID = json['patientID'] as String
       ..crypt = json['crypt'] as String?
       ..initials = json['initials'] as String?
       ..name = json['name'] as String?
       ..yob = json['yob'] as String?
-      ..bmi = (json['bmi'] as num?)?.toDouble()
+      ..bmi = (json['bmi'] as num).toDouble()
       ..gender = json['gender'] as String?
       ..mrn = json['mrn'] as String?
       ..phone = json['phone'] as String?
-      ..address = json['address'] as String?
-      ..createdAt = (json['createdAt'] as num?)?.toInt()
-      ..timestamp = (json['timestamp'] as num?)?.toInt();
+      ..address = json['address'] as String?;
 
 Map<String, dynamic> _$PatientModelToJson(_PatientModel instance) =>
     <String, dynamic>{
-      'patientID': instance.patientID,
       'crypt': instance.crypt,
       'initials': instance.initials,
       'name': instance.name,
@@ -84,8 +80,6 @@ Map<String, dynamic> _$PatientModelToJson(_PatientModel instance) =>
       'mrn': instance.mrn,
       'phone': instance.phone,
       'address': instance.address,
-      'createdAt': instance.createdAt,
-      'timestamp': instance.timestamp,
     };
 
 DecryptedPatientModel _$DecryptedPatientModelFromJson(

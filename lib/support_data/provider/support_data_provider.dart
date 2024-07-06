@@ -90,8 +90,7 @@ class SupportDataNotifier extends _$SupportDataNotifier with LoggerMixin {
     final authenticationUser = ref.watch(authenticationUserProvider);
     final realm = ref.read(realmProvider);
 
-    final collection =
-        ref.watch(appDataProvider).databaseService.supportDataCollection;
+    final collection = ref.watch(databaseServiceProvider).supportDataCollection;
 
     subscription = collection.listenForChanges().listen((documents) {
       // Handle document changes (added, modified)
@@ -112,8 +111,7 @@ class SupportDataNotifier extends _$SupportDataNotifier with LoggerMixin {
   ) {
     try {
       ref
-          .read(appDataProvider)
-          .databaseService
+          .read(databaseServiceProvider)
           .supportDataCollection
           .put(supportDataModel.userID ?? 'annonymous', supportDataModel);
 

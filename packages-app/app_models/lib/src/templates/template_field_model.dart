@@ -68,6 +68,9 @@ class $TemplateFieldModel {
     return FieldType.values.byName(_fieldType ?? FieldType.text.name);
   }
 
+  @Ignored()
+  set fieldType(FieldType value) => _fieldType = value.name;
+
   /// FieldType
   @MapTo('fieldDataType')
   late String? _fieldDataType;
@@ -78,6 +81,25 @@ class $TemplateFieldModel {
         .byName(_fieldDataType ?? FieldDataType.string.name);
   }
 
+  @Ignored()
+  set fieldDataType(FieldDataType value) => _fieldDataType = value.name;
+
+  TemplateFieldModel toRealmObject() {
+    return TemplateFieldModel(
+      fieldID,
+      title: title,
+      idx: idx,
+      isRequired: isRequired,
+      fieldType: _fieldType,
+      fieldDataType: _fieldDataType,
+      options: options,
+      defaultValue: defaultValue,
+      value: value,
+      inputMask: inputMask,
+      suffixText: suffixText,
+    );
+  }
+
   static TemplateFieldModel fromJson(Map<String, dynamic> json) =>
       TemplateFieldModelX.fromJson(json);
 
@@ -85,14 +107,7 @@ class $TemplateFieldModel {
 }
 
 extension TemplateFieldModelX on TemplateFieldModel {
-  static TemplateFieldModel _toRealmObject(
-      $TemplateFieldModel templateFieldModel) {
-    return TemplateFieldModel(
-      templateFieldModel.fieldID,
-    );
-  }
-
-  static TemplateFieldModel zero(int timestamp) {
+  static TemplateFieldModel zero() {
     final templateFieldModel = TemplateFieldModel(
       ModelUtils.uniqueID,
     );
@@ -101,7 +116,7 @@ extension TemplateFieldModelX on TemplateFieldModel {
   }
 
   static TemplateFieldModel fromJson(Map<String, dynamic> json) =>
-      _toRealmObject(_$$TemplateFieldModelFromJson(json));
+      _$$TemplateFieldModelFromJson(json).toRealmObject();
 
   Map<String, dynamic> toJson() => _$$TemplateFieldModelToJson(this);
 }

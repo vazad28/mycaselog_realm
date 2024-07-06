@@ -24,31 +24,41 @@ enum TemplateModelProps {
 @JsonSerializable(explicitToJson: true)
 class _TemplateModel {
   @PrimaryKey()
-  late String? templateID;
-  late String? speciality;
+  late String templateID;
+  late String speciality = 'no_speciality';
   late String? title;
   late String? desc;
   late String? type = 'surgery';
   late List<$TemplateFieldModel> fields = [];
-  late bool? shared = false;
+  late bool shared = false;
   late int? createdAt = 0;
   late int? timestamp = 0;
   late int? removed = 0;
 
-  // @override
-  // Map<String, dynamic> toJson() => _$TemplateModelToJson(this);
+  TemplateModel toRealmObject() {
+    return TemplateModel(templateID,
+        speciality: speciality,
+        title: title,
+        desc: desc,
+        type: type,
+        fields: fields
+            .map((e) => TemplateFieldModelX.fromJson(e.toJson()))
+            .toList(),
+        shared: shared,
+        createdAt: createdAt,
+        timestamp: timestamp,
+        removed: removed);
+  }
+
+  static TemplateModel fromJson(Map<String, dynamic> json) =>
+      _$TemplateModelFromJson(json).toRealmObject();
+
+  Map<String, dynamic> toJson() => _$TemplateModelToJson(this);
 }
 
 extension TemplateModelX on TemplateModel {
-  static TemplateModel _toRealmObject(_TemplateModel templateModel) {
-    return TemplateModel(
-      templateModel.templateID,
-      createdAt: templateModel.timestamp,
-      timestamp: templateModel.timestamp,
-    );
-  }
-
-  static TemplateModel zero(int timestamp) {
+  static TemplateModel zero() {
+    final timestamp = ModelUtils.getTimestamp;
     final templateModel = TemplateModel(
       ModelUtils.uniqueID,
       createdAt: timestamp,
@@ -59,7 +69,7 @@ extension TemplateModelX on TemplateModel {
   }
 
   static TemplateModel fromJson(Map<String, dynamic> json) =>
-      _toRealmObject(_$TemplateModelFromJson(json));
+      _$TemplateModelFromJson(json).toRealmObject();
 
   Map<String, dynamic> toJson() => _$TemplateModelToJson(this);
 }

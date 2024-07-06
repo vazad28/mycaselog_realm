@@ -12,19 +12,20 @@ class TemplateModel extends _TemplateModel
   static var _defaultsSet = false;
 
   TemplateModel(
-    String? templateID, {
-    String? speciality,
+    String templateID, {
+    String speciality = 'no_speciality',
     String? title,
     String? desc,
     String? type = 'surgery',
     Iterable<TemplateFieldModel> fields = const [],
-    bool? shared = false,
+    bool shared = false,
     int? createdAt = 0,
     int? timestamp = 0,
     int? removed = 0,
   }) {
     if (!_defaultsSet) {
       _defaultsSet = RealmObjectBase.setDefaults<TemplateModel>({
+        'speciality': 'no_speciality',
         'type': 'surgery',
         'shared': false,
         'createdAt': 0,
@@ -48,17 +49,17 @@ class TemplateModel extends _TemplateModel
   TemplateModel._();
 
   @override
-  String? get templateID =>
-      RealmObjectBase.get<String>(this, 'templateID') as String?;
+  String get templateID =>
+      RealmObjectBase.get<String>(this, 'templateID') as String;
   @override
-  set templateID(String? value) =>
+  set templateID(String value) =>
       RealmObjectBase.set(this, 'templateID', value);
 
   @override
-  String? get speciality =>
-      RealmObjectBase.get<String>(this, 'speciality') as String?;
+  String get speciality =>
+      RealmObjectBase.get<String>(this, 'speciality') as String;
   @override
-  set speciality(String? value) =>
+  set speciality(String value) =>
       RealmObjectBase.set(this, 'speciality', value);
 
   @override
@@ -85,9 +86,9 @@ class TemplateModel extends _TemplateModel
       throw RealmUnsupportedSetError();
 
   @override
-  bool? get shared => RealmObjectBase.get<bool>(this, 'shared') as bool?;
+  bool get shared => RealmObjectBase.get<bool>(this, 'shared') as bool;
   @override
-  set shared(bool? value) => RealmObjectBase.set(this, 'shared', value);
+  set shared(bool value) => RealmObjectBase.set(this, 'shared', value);
 
   @override
   int? get createdAt => RealmObjectBase.get<int>(this, 'createdAt') as int?;
@@ -167,16 +168,15 @@ class TemplateModel extends _TemplateModel
     register(_toEJson, _fromEJson);
     return SchemaObject(
         ObjectType.realmObject, TemplateModel, 'TemplateModel', [
-      SchemaProperty('templateID', RealmPropertyType.string,
-          optional: true, primaryKey: true),
-      SchemaProperty('speciality', RealmPropertyType.string, optional: true),
+      SchemaProperty('templateID', RealmPropertyType.string, primaryKey: true),
+      SchemaProperty('speciality', RealmPropertyType.string),
       SchemaProperty('title', RealmPropertyType.string, optional: true),
       SchemaProperty('desc', RealmPropertyType.string, optional: true),
       SchemaProperty('type', RealmPropertyType.string, optional: true),
       SchemaProperty('fields', RealmPropertyType.object,
           linkTarget: 'TemplateFieldModel',
           collectionType: RealmCollectionType.list),
-      SchemaProperty('shared', RealmPropertyType.bool, optional: true),
+      SchemaProperty('shared', RealmPropertyType.bool),
       SchemaProperty('createdAt', RealmPropertyType.int, optional: true),
       SchemaProperty('timestamp', RealmPropertyType.int, optional: true),
       SchemaProperty('removed', RealmPropertyType.int, optional: true),

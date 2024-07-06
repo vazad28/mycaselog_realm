@@ -7,7 +7,7 @@ part of '../../../support_data/provider/support_data_provider.dart';
 // **************************************************************************
 
 String _$supportDataNotifierHash() =>
-    r'05729d0002d2645dff3140707cda1d02404f43eb';
+    r'86b8c09abfa72b5e4293b72fc61a7ebdf9f3e2e7';
 
 /// ////////////////////////////////////////////////////////////////////
 /// Main providers

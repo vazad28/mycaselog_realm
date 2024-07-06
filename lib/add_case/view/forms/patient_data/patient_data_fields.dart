@@ -10,7 +10,6 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:recase/recase.dart';
 
 import '../../../../core/services/services.dart';
-import '../../../../settings/settings.dart';
 import '../../../provider/add_case_provider.dart';
 import 'add_patient_modal.dart';
 

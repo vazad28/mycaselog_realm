@@ -15,6 +15,10 @@ RouteBase get $settingsRoute => GoRouteData.$route(
       factory: $SettingsRouteExtension._fromState,
       routes: [
         GoRouteData.$route(
+          path: 'user_profile',
+          factory: $UserProfileRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
           path: 'active_fields',
           factory: $ActivableFieldsRouteExtension._fromState,
         ),
@@ -42,6 +46,27 @@ RouteBase get $settingsRoute => GoRouteData.$route(
             ),
           ],
         ),
+        GoRouteData.$route(
+          path: 'templates',
+          name: 'templates',
+          factory: $TemplatesRouteExtension._fromState,
+          routes: [
+            GoRouteData.$route(
+              path: 'add_template/:templateID',
+              factory: $AddTemplateRouteExtension._fromState,
+            ),
+            GoRouteData.$route(
+              path: 'shared_templates/:speciality',
+              factory: $SharedTemplatesRouteExtension._fromState,
+              routes: [
+                GoRouteData.$route(
+                  path: 'shared_template/:templateID',
+                  factory: $SharedTemplateRouteExtension._fromState,
+                ),
+              ],
+            ),
+          ],
+        ),
       ],
     );
 
@@ -50,6 +75,24 @@ extension $SettingsRouteExtension on SettingsRoute {
 
   String get location => GoRouteData.$location(
         '/settings',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $UserProfileRouteExtension on UserProfileRoute {
+  static UserProfileRoute _fromState(GoRouterState state) =>
+      const UserProfileRoute();
+
+  String get location => GoRouteData.$location(
+        '/settings/user_profile',
       );
 
   void go(BuildContext context) => context.go(location);
@@ -176,6 +219,85 @@ extension $AddSurgeryLocationRouteExtension on AddSurgeryLocationRoute {
         queryParams: {
           if (newRecord != false) 'new-record': newRecord.toString(),
         },
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
+}
+
+extension $TemplatesRouteExtension on TemplatesRoute {
+  static TemplatesRoute _fromState(GoRouterState state) =>
+      const TemplatesRoute();
+
+  String get location => GoRouteData.$location(
+        '/settings/templates',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $AddTemplateRouteExtension on AddTemplateRoute {
+  static AddTemplateRoute _fromState(GoRouterState state) => AddTemplateRoute(
+        state.pathParameters['templateID']!,
+      );
+
+  String get location => GoRouteData.$location(
+        '/settings/templates/add_template/${Uri.encodeComponent(templateID)}',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $SharedTemplatesRouteExtension on SharedTemplatesRoute {
+  static SharedTemplatesRoute _fromState(GoRouterState state) =>
+      SharedTemplatesRoute(
+        state.pathParameters['speciality']!,
+      );
+
+  String get location => GoRouteData.$location(
+        '/settings/templates/shared_templates/${Uri.encodeComponent(speciality)}',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $SharedTemplateRouteExtension on SharedTemplateRoute {
+  static SharedTemplateRoute _fromState(GoRouterState state) =>
+      SharedTemplateRoute(
+        state.extra as SharedTemplateModel,
+      );
+
+  String get location => GoRouteData.$location(
+        '/settings/templates/shared_templates/${Uri.encodeComponent(speciality)}/shared_template/${Uri.encodeComponent(templateID)}',
       );
 
   void go(BuildContext context) => context.go(location, extra: $extra);

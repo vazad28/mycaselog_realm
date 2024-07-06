@@ -10,7 +10,7 @@ class TemplateDataTabView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        //const SelectTemplateBar(),
+        const SelectTemplateBar(),
         Divider(
           height: 0.5,
           color: context.colorScheme.primaryContainer,

@@ -6,7 +6,43 @@ part of '../../../cases/provider/cases_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$casesNotifierHash() => r'a26d429b318804c8988f7d4c382f8d4dee21d4cb';
+String _$totalCasesCountHash() => r'2ce8226b34ec28df3e7388973e92d3d49d11953c';
+
+/// Total case count provider
+///
+/// Copied from [TotalCasesCount].
+@ProviderFor(TotalCasesCount)
+final totalCasesCountProvider =
+    AutoDisposeAsyncNotifierProvider<TotalCasesCount, int>.internal(
+  TotalCasesCount.new,
+  name: r'totalCasesCountProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$totalCasesCountHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$TotalCasesCount = AutoDisposeAsyncNotifier<int>;
+String _$caseTileStyleHash() => r'd137223612d5115f0cf2dce39356eb824b8e614f';
+
+/// case tile style provider
+///
+/// Copied from [CaseTileStyle].
+@ProviderFor(CaseTileStyle)
+final caseTileStyleProvider =
+    AutoDisposeNotifierProvider<CaseTileStyle, int>.internal(
+  CaseTileStyle.new,
+  name: r'caseTileStyleProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$caseTileStyleHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$CaseTileStyle = AutoDisposeNotifier<int>;
+String _$casesNotifierHash() => r'20837dab589e90c1aa4305fedc44fd693add81a3';
 
 /// ////////////////////////////////////////////////////////////////////
 /// Main Provider

@@ -1,4 +1,3 @@
-import 'package:app_data/app_data.dart';
 import 'package:app_l10n/app_l10n.dart';
 import 'package:app_models/app_models.dart';
 import 'package:app_ui/app_ui.dart';
@@ -98,17 +97,17 @@ class _AddCasePageController extends ConsumerState<AddCasePage>
       body: _AddCasePageView(this),
     );
 
-    // return FormPopScopeWrapper(
-    //   canPop: () => canPop(ref),
-    //   visibilitySwitcher: (visibility) {
-    //     debugPrint('addcase visibility $visibility');
-    //     switchNavBarVisibility(ref, visibility: visibility);
-    //   },
-    //   routeObserver: pageRouteObserver(ref),
-    //   child: scaffold,
-    // );
+    return FormPopScopeWrapper(
+      canPop: () => canPop(ref),
+      visibilitySwitcher: (visibility) {
+        debugPrint('addcase visibility $visibility');
+        switchNavBarVisibility(ref, visibility: visibility);
+      },
+      routeObserver: pageRouteObserver(ref),
+      child: scaffold,
+    );
 
-    return scaffold;
+    //return scaffold;
   }
 
   /// controller methods

@@ -1,5 +1,4 @@
 import 'package:app_data/app_data.dart';
-import 'package:authentication_client/authentication_client.dart';
 import 'package:encryption_client/encryption_client.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -10,12 +9,12 @@ import 'providers.dart';
 part '../../generated/core/providers/repository_providers.g.dart';
 
 @Riverpod(keepAlive: true)
-AppData appData(AppDataRef ref) {
+DatabaseService databaseService(DatabaseServiceRef ref) {
   final currentUser = ref.watch(authenticationUserProvider);
 
-  return AppData(
+  return DatabaseService(
     realm: ref.read(realmProvider),
-    user: currentUser,
+    userID: currentUser.id,
     sharedPrefs: ref.watch(sharedPrefsProvider),
   );
 }
@@ -34,27 +33,66 @@ EncryptionRepository encryptionRepository(EncryptionRepositoryRef ref) {
 /// ////////////////////////////////////////////////////////////////////
 /// Repository support providers
 /// ////////////////////////////////////////////////////////////////////
+/// User Repository
+@riverpod
+UserStorage userStorage(UserStorageRef ref) {
+  return UserStorage(storage: ref.watch(persistentStorageProvider));
+}
+
+@riverpod
+UserRepository userRepository(
+  UserRepositoryRef ref,
+) {
+  return UserRepositoryImpl(
+    userStorage: ref.watch(userStorageProvider),
+    databaseService: ref.watch(databaseServiceProvider),
+  );
+}
+
 /// Cases repository provider
 @riverpod
 CasesRepository casesRepository(CasesRepositoryRef ref) {
   return CasesRepositoryImpl(
-    appData: ref.watch(appDataProvider),
-    //ftsSearch: ref.watch(ftsSearchRepositoryProvider),
+    databaseService: ref.watch(databaseServiceProvider),
   );
 }
 
-/// Authentication repository
-// @riverpod
-// AuthenticationRepository authenticationRepository(
-//   AuthenticationRepositoryRef ref,
-// ) {
-//   return AuthenticationRepository(
-//     authenticationClient: ref.watch(authenticationClientProvider),
-//     authenticationUserStorage: AuthenticationUserStorage(
-//       storage: ref.watch(persistentStorageProvider),
-//     ),
-//   );
-// }
+/// Media Repository provider
+@riverpod
+MediaRepository mediaRepository(MediaRepositoryRef ref) {
+  return MediaRepositoryImpl(
+    databaseService: ref.watch(databaseServiceProvider),
+  );
+}
+
+@riverpod
+TemplatesRepository templatesRepository(TemplatesRepositoryRef ref) {
+  return TemplatesRepositoryImpl(
+    databaseService: ref.watch(databaseServiceProvider),
+  );
+}
+
+/// Full text search Repository provider
+@riverpod
+FtsSearchRepository ftsSearchRepository(FtsSearchRepositoryRef ref) {
+  return FtsSearchRepositoryImpl(
+    databaseService: ref.watch(databaseServiceProvider),
+    persistentStorage: ref.watch(persistentStorageProvider),
+    encryptionRepository: ref.watch(encryptionRepositoryProvider),
+  );
+}
+
+/// Stats Repository provider
+@riverpod
+StatsRepository statsRepository(StatsRepositoryRef ref) {
+  /// listen for cases update
+  //ref.watch(isarDatabaseWatcherProvider);
+
+  return StatsRepositoryImpl(
+    databaseService: ref.watch(databaseServiceProvider),
+    ftsSearch: ref.watch(ftsSearchRepositoryProvider),
+  );
+}
 
 /// Passcode provider
 /// the value is set from app startup provider on async

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../core/providers/providers.dart';
+import '../../core/providers/sync_providers.dart';
 
 part '../../generated/start_up/provider/start_up_provider.g.dart';
 
@@ -23,6 +24,8 @@ class StartUp extends _$StartUp {
 
     /// so we have passcode. lets set this up in the provider
     ref.watch(passcodeProvider.notifier).update((_) => passcode);
+
+    final syncActivate = ref.read(firestoreSyncProvider);
 
     //await ref.watch(isarDatabaseProvider.future);
   }

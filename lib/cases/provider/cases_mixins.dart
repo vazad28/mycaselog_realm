@@ -1,17 +1,21 @@
-
 part of 'cases_provider.dart';
-/// ////////////////////////////////////////////////////////////////////
-/// Event and Mixins
-/// ////////////////////////////////////////////////////////////////////
-@Freezed(
-    copyWith: false,
-    equal: false,
-    when: FreezedWhenOptions.none,
-    map: FreezedMapOptions(maybeMap: false, mapOrNull: false),)
-class CasesEvent with _$CasesEvent {
-  const factory CasesEvent.addCases() = _AddCases;
+
+mixin CasesEventMixin {
+  void updateCaseTileStyle(WidgetRef ref, int toggleValue) {
+    ref.watch(caseTileStyleProvider.notifier).update(toggleValue);
+  }
+
+  Future<List<CaseModel>> onSearchCases(WidgetRef ref, String searchTerm) => ref
+      .read(ftsSearchRepositoryProvider)
+      .searchCaseMedia<CaseModel>(searchTerm);
+
+  Future<void> pullDownToRefresh(WidgetRef ref) =>
+      ref.watch(casesNotifierProvider.notifier).pullToRefresh();
 }
 
-mixin CasesEventMixin {}
+mixin CasesStateMixin {
+  AsyncValue<int> watchTotalCasesCount(WidgetRef ref) =>
+      ref.watch(totalCasesCountProvider);
 
-mixin CasesStateMixin {}
+  int watchCaseTileStyle(WidgetRef ref) => ref.watch(caseTileStyleProvider);
+}

@@ -40,7 +40,7 @@ class _FormPopScopeWrapperState extends State<FormPopScopeWrapper>
   Widget build(BuildContext context) {
     return PopScope(
       canPop: _canPop,
-      onPopInvoked: (didPop) {
+      onPopInvokedWithResult: (didPop, _) {
         if (didPop) {
           _showBootomBarNav(true);
           return;
@@ -64,14 +64,19 @@ class _FormPopScopeWrapperState extends State<FormPopScopeWrapper>
               builder: (ctx) {
                 return AlertDialog(
                   content: Text(
-                      widget.warningText ?? S.of(context).unSavedFormWarning),
+                    widget.warningText ?? S.of(context).unSavedFormWarning,
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(ctx, false),
+                      child: const Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.pop(ctx, true),
+                      child: const Text('Ok'),
+                    ),
+                  ],
                 );
-                // return ConfirmDialogWidget(
-                //   dialogModel: DialogModel.info(
-                //     Text(message, style: Theme.of(this).textTheme.bodyMedium),
-                //     title,
-                //   ),
-                // );
               },
             ).then((res) {
               if (res == null || res == false) return;

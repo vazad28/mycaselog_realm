@@ -1,30 +1,21 @@
 part of '../database_service.dart';
 
-/// Implementation of [FirestoreCollection] with [CasesCollection] collection
-class CasesCollection extends FirestoreCollection<CaseModel> {
+/// Implementation of [DatabaseCollection] with [CasesCollection] collection
+class CasesCollection extends DatabaseCollection<CaseModel> {
   CasesCollection(
     super.user,
     Realm realm,
     super.sharedPrefs,
   ) : _realm = realm {
-    //print(getLastSyncTimestamp);
-    stream = collectionRef
-        .where(
-          'timestamp',
-          isGreaterThan: getLastSyncTimestamp - 500000,
-        )
-        .snapshots();
+    createCollectionStream();
   }
 
   final Realm _realm;
 
-  static String name = DbCollection.cases.name;
+  String get getLastSyncTimestampKey => lastSyncTimestampKey;
 
   @override
-  late final Stream<QuerySnapshot<Map<String, dynamic>>> stream;
-
-  @override
-  String get path => '$root/$userID/$name';
+  String get path => '$root/$userID/${DbCollection.cases.name}';
 
   @override
   CollectionReference<CaseModel> get withConverter =>
@@ -37,14 +28,10 @@ class CasesCollection extends FirestoreCollection<CaseModel> {
   @override
   Stream<List<CaseModel>> listenForChanges() {
     return stream.map((querySnapshot) {
-      final changes = querySnapshot.docChanges;
-      final documents = changes
+      final documents = querySnapshot.docChanges
           .map((change) {
-            final doc = change.doc;
-            final model = CaseModelX.fromJson(doc.data()!);
-            print('doc listened from firestore ${model.caseID}');
-            print(
-                'timestampDiff = ${getLastSyncTimestamp - (model.timestamp ?? 0)}');
+            final model = CaseModelX.fromJson(change.doc.data()!);
+            //print('CasesCollection ${model.caseID}');
             switch (change.type) {
               case DocumentChangeType.added:
                 final localModel = _realm.find<CaseModel>(model.caseID);
@@ -54,7 +41,7 @@ class CasesCollection extends FirestoreCollection<CaseModel> {
                 return model;
 
               case DocumentChangeType.modified:
-                _realm.write(() => _realm.add<CaseModel>(model));
+                _realm.write(() => _realm.add<CaseModel>(model, update: true));
                 return model;
 
               case DocumentChangeType.removed:
@@ -87,16 +74,6 @@ class CasesCollection extends FirestoreCollection<CaseModel> {
     final diagnosisList =
         _realm.query<CaseModel>(r'diagnosis TEXT $0', ['$query*']);
     return diagnosisList.map((e) => e.diagnosis).nonNulls.toSet().toList();
-
-    // final future = query == null
-    //     ? _realm.all<CaseModel>().take(30)
-    //     : _realm
-    //         .all<CaseModel>()
-    //         .query(query)
-    //         .where((e) => e.diagnosis?.contains(query) ?? false)
-    //         .take(30);
-
-    // final diagnosisList = await future;
   }
 
   /// surgery autocomplete data
@@ -109,7 +86,55 @@ class CasesCollection extends FirestoreCollection<CaseModel> {
     }
 
     final surgeryList =
-        _realm.query<CaseModel>(r'surgery TEXT $0', ['$query*']);
+        // ignore: use_raw_strings
+        _realm.query<CaseModel>('surgery TEXT \$0', ['$query*']);
     return surgeryList.map((e) => e.surgery).nonNulls.toSet().toList();
+  }
+
+  List<CaseModel> getAllByCaseIDs(List<String> caseIDs) {
+    // ignore: use_raw_strings
+    return _realm.query<CaseModel>('caseID IN \$0', [caseIDs]).toList();
+  }
+
+  int countAll() {
+    return _realm.all<CaseModel>().where((e) => e.removed == 0).length;
+  }
+
+  List<CaseModel> search(String searchTerm) {
+    final casesList = _realm.query<CaseModel>(
+      // ignore: use_raw_strings
+      'diagnosis TEXT \$0 OR surgery TEXT \$0 OR patientModel.initials',
+      ['$searchTerm*'],
+    );
+
+    return casesList.toList();
+  }
+
+  RealmResults<CaseModel> loadCases() {
+    return _realm.all<CaseModel>();
+  }
+
+  /// get cases between two timestamps among caseIDs
+  List<CaseModel> casesBetweenTimestamp({
+    required int fromTimestamp,
+    required int toTimestamp,
+    List<String>? idList,
+  }) {
+    final params = [0, fromTimestamp, toTimestamp];
+    final cases = _realm.query<CaseModel>(
+        'removed == \$0 AND surgeryDate >= \$1 AND surgeryDate <= \$2', params);
+
+    if (idList != null) {
+      return cases.query('caseID IN \$0', idList).toList();
+    }
+
+    return cases.toList();
+  }
+
+  int? firstCaseYear() {
+    final cases =
+        _realm.query<CaseModel>('TRUEPREDICATE SORT(surgeryDate ASC)');
+    if (cases.isEmpty) return null;
+    return cases.first.surgeryDate;
   }
 }

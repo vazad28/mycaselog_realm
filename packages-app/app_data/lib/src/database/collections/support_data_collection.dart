@@ -1,29 +1,19 @@
 part of '../database_service.dart';
 
-/// Implementation of [FirestoreCollection] with [SupportDataCollection] collection
-class SupportDataCollection extends FirestoreCollection<SupportDataModel> {
+/// Implementation of [DatabaseCollection] with [SupportDataCollection] collection
+class SupportDataCollection extends DatabaseCollection<SupportDataModel> {
   SupportDataCollection(
     super.user,
     Realm realm,
     super.sharedPrefs,
   ) : _realm = realm {
-    stream = collectionRef
-        .where(
-          'timestamp',
-          isGreaterThan: getLastSyncTimestamp - 50000,
-        )
-        .snapshots();
+    createCollectionStream();
   }
 
   final Realm _realm;
 
-  static String name = DbCollection.supportData.name;
-
   @override
-  late final Stream<QuerySnapshot<Map<String, dynamic>>> stream;
-
-  @override
-  String get path => '$root/$userID/$name';
+  String get path => '$root/$userID/${DbCollection.supportData.name}';
 
   @override
   CollectionReference<SupportDataModel> get withConverter =>
@@ -36,11 +26,9 @@ class SupportDataCollection extends FirestoreCollection<SupportDataModel> {
   @override
   Stream<List<SupportDataModel>> listenForChanges() {
     return stream.map((querySnapshot) {
-      final changes = querySnapshot.docChanges;
-      final documents = changes
+      final documents = querySnapshot.docChanges
           .map((change) {
-            final doc = change.doc;
-            final model = SupportDataModelX.fromJson(doc.data()!);
+            final model = SupportDataModelX.fromJson(change.doc.data()!);
             switch (change.type) {
               case DocumentChangeType.added:
               case DocumentChangeType.modified:

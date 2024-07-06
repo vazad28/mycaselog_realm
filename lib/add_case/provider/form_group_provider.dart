@@ -48,8 +48,8 @@ class PatientDataFormGroup extends _$PatientDataFormGroup {
   FormGroup _createFormGroup(PatientModel patientModel) {
     final controls = <String, AbstractControl<Object?>>{
       // Patient  model id (required for realm to create model from json)
-      PatientDataModelProps.patientID.name:
-          FormControl<String>(value: patientModel.patientID),
+      // PatientDataModelProps.patientID.name:
+      //     FormControl<String>(value: patientModel.patientID),
       // ----- Crypt -----
       PatientDataModelProps.crypt.name:
           FormControl<String>(value: patientModel.crypt),
@@ -230,10 +230,10 @@ class TemplatedDataFormValue extends _$TemplatedDataFormValue with LoggerMixin {
     logger.info('_seedProvider called');
 
     // /// set the current template for the view
-    final formData = addCaseSeedModel.caseModel.fieldsData?.isEmpty ?? true
+    final formData = addCaseSeedModel.caseModel.fieldsData.isEmpty
         ? <String, String?>{}
         : {
-            for (final field in addCaseSeedModel.caseModel.fieldsData!)
+            for (final field in addCaseSeedModel.caseModel.fieldsData)
               field.slug: field.value,
           };
 

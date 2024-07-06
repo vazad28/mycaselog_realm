@@ -1,4 +1,3 @@
-import 'package:app_data/app_data.dart';
 import 'package:app_models/app_models.dart';
 import 'package:async_result/async_result.dart';
 import 'package:encryption_client/encryption_client.dart';
@@ -8,7 +7,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:intl/intl.dart';
 import 'package:logger_client/logger_client.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:realm/realm.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:state_of/state_of.dart';
 
@@ -18,9 +16,8 @@ import '../../core/services/services.dart';
 import '../../router/router.dart';
 import '../../support_data/support_data.dart';
 
-part '../../generated/add_case/provider/add_case_provider.g.dart';
 part '../../generated/add_case/provider/add_case_provider.freezed.dart';
-
+part '../../generated/add_case/provider/add_case_provider.g.dart';
 part 'add_case_mixin.dart';
 part 'form_group_provider.dart';
 
@@ -72,10 +69,9 @@ class AddCaseSeeder extends _$AddCaseSeeder {
 
   /// called by view with passed param caseID to load case model
   Future<void> seed(CaseModel caseModel, {bool newRecord = false}) async {
-    TemplateModel? templateModel;
-    // await ref
-    //     .read(templatesRepositoryProvider)
-    //     .getTemplate(caseModel.templateID);
+    final templateModel = await ref
+        .read(templatesRepositoryProvider)
+        .getTemplate(caseModel.templateID);
 
     originalModelJson = caseModel.toJson();
 
@@ -209,10 +205,7 @@ class AddCaseNotifier extends _$AddCaseNotifier with LoggerMixin {
     /// update with basic data
     final caseModelJson = {..._originalModelJson, ..._basicDataForm.value};
 
-    /// update patient data form
-    // (caseModelJson['patientModel'] as Map<String, dynamic>)
-    //     .addAll(_patientDataForm.value);
-    // print(_patientDataForm.value);
+    //print(_patientDataForm.value);
 
     final currTemplateModel = ref.read(currentCaseTemplateProvider);
 
@@ -223,13 +216,16 @@ class AddCaseNotifier extends _$AddCaseNotifier with LoggerMixin {
     createdModel.fieldsData.clear();
 
     createdModel.fieldsData.addAll(_createFieldsData(currTemplateModel) ?? []);
+
+    //print(createdModel.toJson());
     return createdModel;
   }
 
   /// ---- DO the form submit  ---
   Future<void> _doSubmit(CaseModel modelToSubmit) async {
-    final result =
-        await ref.read(casesRepositoryProvider).addCase(modelToSubmit);
+    final result = await ref
+        .read(casesRepositoryProvider)
+        .addCase(modelToSubmit..timestamp = ModelUtils.getTimestamp);
 
     /// set last used location  as default location to use next time
     if (modelToSubmit.location != null) {
@@ -240,8 +236,6 @@ class AddCaseNotifier extends _$AddCaseNotifier with LoggerMixin {
 
     result.when(
       success: (res) {
-        /// update the cases provider on success
-        //ref.watch(databaseUpdateProvider.notifier).pipeCaseModel(modelToSubmit);
         state = StateOf<CaseModel>.success(res);
       },
       failure: (failure) {
@@ -260,7 +254,8 @@ class AddCaseNotifier extends _$AddCaseNotifier with LoggerMixin {
       final formToModel = _createModelToSave();
 
       /// check equality using props defined in Model using equatable
-      final caseDataEqual = formToModel == originalModel;
+      final caseDataEqual = const DeepCollectionEquality()
+          .equals(formToModel?.toJson(), _originalModelJson);
 
       /// compare form fields data as bare bone json
       final templateFieldsEqual = const DeepCollectionEquality().equals(

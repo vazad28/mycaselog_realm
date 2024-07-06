@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../settings/settings.dart';
-// import '../../support_data/support_data.dart';
-// import '../../templates/index.dart';
-// import '../../user_profile/user_profile.dart';
 import '../../support_data/support_data.dart';
+import '../../templates/index.dart';
+import '../../user_profile/user_profile.dart';
 import '../utils/route_animations.dart';
 
 part '../../generated/router/routes/settings_routes.g.dart';
@@ -15,7 +14,7 @@ part '../../generated/router/routes/settings_routes.g.dart';
   path: SettingsRoute.path,
   routes: <TypedGoRoute<GoRouteData>>[
     /// User Profile route
-    //   TypedGoRoute<UserProfileRoute>(path: UserProfileRoute.path),
+    TypedGoRoute<UserProfileRoute>(path: UserProfileRoute.path),
 
     /// active basic field
     TypedGoRoute<ActivableFieldsRoute>(path: ActivableFieldsRoute.path),
@@ -39,24 +38,24 @@ part '../../generated/router/routes/settings_routes.g.dart';
       ],
     ),
 
-    //   /// Templates routes
-    //   TypedGoRoute<TemplatesRoute>(
-    //     path: TemplatesRoute.path,
-    //     name: TemplatesRoute.name,
-    //     routes: [
-    //       TypedGoRoute<AddTemplateRoute>(
-    //         path: AddTemplateRoute.path,
-    //       ),
-    //       TypedGoRoute<SharedTemplatesRoute>(
-    //         path: SharedTemplatesRoute.path,
-    //         routes: [
-    //           TypedGoRoute<SharedTemplateRoute>(
-    //             path: SharedTemplateRoute.path,
-    //           ),
-    //         ],
-    //       ),
-    //     ],
-    //   ),
+    /// Templates routes
+    TypedGoRoute<TemplatesRoute>(
+      path: TemplatesRoute.path,
+      name: TemplatesRoute.name,
+      routes: [
+        TypedGoRoute<AddTemplateRoute>(
+          path: AddTemplateRoute.path,
+        ),
+        TypedGoRoute<SharedTemplatesRoute>(
+          path: SharedTemplatesRoute.path,
+          routes: [
+            TypedGoRoute<SharedTemplateRoute>(
+              path: SharedTemplateRoute.path,
+            ),
+          ],
+        ),
+      ],
+    ),
   ],
 )
 
@@ -75,15 +74,15 @@ class SettingsRoute extends GoRouteData {
 }
 
 /// User profile
-// class UserProfileRoute extends GoRouteData {
-//   const UserProfileRoute();
-//   static const name = 'user_profile';
-//   static const path = name;
+class UserProfileRoute extends GoRouteData {
+  const UserProfileRoute();
+  static const name = 'user_profile';
+  static const path = name;
 
-//   @override
-//   Widget build(BuildContext context, GoRouterState state) =>
-//       const UserProfilePage();
-// }
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const UserProfilePage();
+}
 
 /// ////////////////////////////////////////////////////////////////////
 /// Support Data Routes
@@ -165,61 +164,61 @@ class AddSurgeryLocationRoute extends GoRouteData {
       );
 }
 
-// // /// ////////////////////////////////////////////////////////////////////
-// // /// TEMPLATE ROUTES
-// // /// ////////////////////////////////////////////////////////////////////
-// /// all templates route
-// class TemplatesRoute extends GoRouteData {
-//   const TemplatesRoute();
-//   static const name = 'templates';
-//   static const path = name;
+// /// ////////////////////////////////////////////////////////////////////
+// /// TEMPLATE ROUTES
+// /// ////////////////////////////////////////////////////////////////////
+/// all templates route
+class TemplatesRoute extends GoRouteData {
+  const TemplatesRoute();
+  static const name = 'templates';
+  static const path = name;
 
-//   @override
-//   TemplatesPage build(BuildContext context, GoRouterState state) =>
-//       const TemplatesPage();
-// }
+  @override
+  TemplatesPage build(BuildContext context, GoRouterState state) =>
+      const TemplatesPage();
+}
 
-// // /// Add template route
-// class AddTemplateRoute extends GoRouteData {
-//   AddTemplateRoute(this.templateID);
-//   static const name = 'add_template';
-//   static const path = 'add_template/:templateID';
-//   static const newItemParam = 'new';
+// /// Add template route
+class AddTemplateRoute extends GoRouteData {
+  AddTemplateRoute(this.templateID);
+  static const name = 'add_template';
+  static const path = 'add_template/:templateID';
+  static const newItemParam = 'new';
 
-//   final String templateID;
+  final String templateID;
 
-//   @override
-//   Widget build(BuildContext context, GoRouterState state) =>
-//       AddTemplatePage(templateID: templateID);
-// }
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      AddTemplatePage(templateID: templateID);
+}
 
-// /// Speciality Templates Route
-// class SharedTemplatesRoute extends GoRouteData {
-//   const SharedTemplatesRoute(this.speciality);
-//   static const name = 'shared_templates/:speciality';
-//   static const path = name;
+/// Speciality Templates Route
+class SharedTemplatesRoute extends GoRouteData {
+  const SharedTemplatesRoute(this.speciality);
+  static const name = 'shared_templates/:speciality';
+  static const path = name;
 
-//   final String speciality;
+  final String speciality;
 
-//   @override
-//   Widget build(BuildContext context, GoRouterState state) =>
-//       SharedTemplatesPage(speciality: speciality);
-// }
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      SharedTemplatesPage(speciality: speciality);
+}
 
-// /// Speciality shared template route
-// class SharedTemplateRoute extends GoRouteData {
-//   SharedTemplateRoute(this.$extra)
-//       : templateID = $extra.templateID,
-//         speciality = $extra.speciality;
+/// Speciality shared template route
+class SharedTemplateRoute extends GoRouteData {
+  SharedTemplateRoute(this.$extra)
+      : templateID = $extra.templateID,
+        speciality = $extra.speciality;
 
-//   static const name = 'shared_template/:templateID';
-//   static const path = name;
+  static const name = 'shared_template/:templateID';
+  static const path = name;
 
-//   final SharedTemplateModel $extra;
-//   final String templateID;
-//   final String speciality;
+  final SharedTemplateModel $extra;
+  final String templateID;
+  final String speciality;
 
-//   @override
-//   Widget build(BuildContext context, GoRouterState state) =>
-//       SharedTemplatePage($extra);
-// }
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      SharedTemplatePage($extra);
+}

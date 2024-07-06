@@ -8,15 +8,15 @@ part of 'template_model.dart';
 
 _TemplateModel _$TemplateModelFromJson(Map<String, dynamic> json) =>
     _TemplateModel()
-      ..templateID = json['templateID'] as String?
-      ..speciality = json['speciality'] as String?
+      ..templateID = json['templateID'] as String
+      ..speciality = json['speciality'] as String
       ..title = json['title'] as String?
       ..desc = json['desc'] as String?
       ..type = json['type'] as String?
       ..fields = (json['fields'] as List<dynamic>)
           .map((e) => $TemplateFieldModel.fromJson(e as Map<String, dynamic>))
           .toList()
-      ..shared = json['shared'] as bool?
+      ..shared = json['shared'] as bool
       ..createdAt = (json['createdAt'] as num?)?.toInt()
       ..timestamp = (json['timestamp'] as num?)?.toInt()
       ..removed = (json['removed'] as num?)?.toInt();

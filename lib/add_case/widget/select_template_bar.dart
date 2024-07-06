@@ -1,4 +1,3 @@
-import 'package:app_data/app_data.dart';
 import 'package:app_extensions/app_extensions.dart';
 import 'package:app_l10n/app_l10n.dart';
 import 'package:app_models/app_models.dart';
@@ -127,11 +126,11 @@ class _TemplatesBottomSheet extends StatelessWidget {
               ElevatedButton(
                 child: const Text('Create Template'),
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  // Navigator.of(context).pop();
 
                   ///  go to add template screen
-                  // AddTemplateRoute(AddTemplateRoute.newItemParam)
-                  //     .push<void>(context);
+                  AddTemplateRoute(AddTemplateRoute.newItemParam)
+                      .push<void>(context);
                 },
               ),
             ],

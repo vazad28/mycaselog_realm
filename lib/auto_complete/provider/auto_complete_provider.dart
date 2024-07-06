@@ -14,20 +14,18 @@ typedef MergeAutocomplete = void Function(String, String);
 
 @riverpod
 class AutoCompleteNotifier extends _$AutoCompleteNotifier {
-  late final AppData _appData;
+  late final DatabaseService _databaseService;
   @override
   FutureOr<List<String>> build() {
-    _appData = ref.watch(appDataProvider);
+    _databaseService = ref.watch(databaseServiceProvider);
     return [];
   }
 
   Future<List<String>> diagnosisAutoComplete(String? query) {
-    return _appData.databaseService.casesCollection
-        .getAutoCompleteDiagnosis(query);
+    return _databaseService.casesCollection.getAutoCompleteDiagnosis(query);
   }
 
   Future<List<String>> surgeryAutoComplete(String? query) {
-    return _appData.databaseService.casesCollection
-        .getAutoCompleteSurgery(query);
+    return _databaseService.casesCollection.getAutoCompleteSurgery(query);
   }
 }

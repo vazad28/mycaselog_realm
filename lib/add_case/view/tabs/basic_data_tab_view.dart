@@ -25,7 +25,7 @@ class BasicDataTabView extends ConsumerWidget {
         LabeledDivider(
           label: 'Basic case data',
         ),
-         BasicDataForm(),
+        BasicDataForm(),
       ],
     );
   }
@@ -41,16 +41,10 @@ class _PatientDataView extends ConsumerWidget with AddCaseEventMixin {
     if (caseModel == null) return Loading(text: S.of(context).noData);
 
     final crypt = caseModel.patientModel?.crypt;
-    final patientModel = caseModel.patientModel;
 
     const child = PatientDataForm();
 
     if (crypt != null) return child;
-    if (patientModel == null) {
-      return const Loading(
-        text: 'Patient Model is null',
-      );
-    }
 
     return Stack(
       alignment: Alignment.center,
@@ -59,6 +53,13 @@ class _PatientDataView extends ConsumerWidget with AddCaseEventMixin {
         FabButton(
           roundedCorner: true,
           onPressed: () {
+            final patientModel = caseModel.patientModel;
+            if (patientModel == null) {
+              return;
+              // const Loading(
+              //   text: 'Patient Model is null',
+              // );
+            }
             context
                 .openModalScreen<PatientModel?>(
               //TextRecognizerView()

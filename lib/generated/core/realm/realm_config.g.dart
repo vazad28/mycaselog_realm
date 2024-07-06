@@ -6,7 +6,7 @@ part of '../../../core/realm/realm_config.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$realmConfigHash() => r'abd0a5decf871ba389e1f815a6aa950da3f6d1c9';
+String _$realmConfigHash() => r'15487d3ea66237236e00e4583535b90e34858ccc';
 
 /// Realm config provider
 ///

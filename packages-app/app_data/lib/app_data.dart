@@ -1,5 +1,5 @@
 library app_data;
 
-export 'src/app_data.dart';
+export 'src/database/database_service.dart';
 export 'src/failures/repository_failure.dart';
 export 'src/repositories/repositories.dart';

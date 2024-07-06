@@ -5,4 +5,8 @@ abstract class CasesRepository {
   Future<Result<CaseModel, RepositoryFailure>> addCase(
     CaseModel caseModel,
   );
+
+  FutureOr<int> getTotalCaseCount();
+
+  RealmResults<CaseModel> loadCases();
 }

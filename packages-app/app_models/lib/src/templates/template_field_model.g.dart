@@ -17,7 +17,10 @@ $TemplateFieldModel _$$TemplateFieldModelFromJson(Map<String, dynamic> json) =>
       ..defaultValue = json['defaultValue'] as String?
       ..value = json['value'] as String?
       ..inputMask = json['inputMask'] as String?
-      ..suffixText = json['suffixText'] as String?;
+      ..suffixText = json['suffixText'] as String?
+      ..fieldType = $enumDecode(_$FieldTypeEnumMap, json['fieldType'])
+      ..fieldDataType =
+          $enumDecode(_$FieldDataTypeEnumMap, json['fieldDataType']);
 
 Map<String, dynamic> _$$TemplateFieldModelToJson(
         $TemplateFieldModel instance) =>
@@ -31,4 +34,20 @@ Map<String, dynamic> _$$TemplateFieldModelToJson(
       'value': instance.value,
       'inputMask': instance.inputMask,
       'suffixText': instance.suffixText,
+      'fieldType': _$FieldTypeEnumMap[instance.fieldType]!,
+      'fieldDataType': _$FieldDataTypeEnumMap[instance.fieldDataType]!,
     };
+
+const _$FieldTypeEnumMap = {
+  FieldType.text: 'text',
+  FieldType.number: 'number',
+  FieldType.bool: 'bool',
+  FieldType.radio: 'radio',
+  FieldType.select: 'select',
+};
+
+const _$FieldDataTypeEnumMap = {
+  FieldDataType.string: 'string',
+  FieldDataType.int: 'int',
+  FieldDataType.bool: 'bool',
+};

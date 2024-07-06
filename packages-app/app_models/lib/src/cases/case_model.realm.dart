@@ -13,28 +13,30 @@ class CaseModel extends _CaseModel
 
   CaseModel(
     String caseID, {
-    int? surgeryDate,
+    int surgeryDate = 0,
     PatientModel? patientModel,
-    int? createdAt,
+    int createdAt = 0,
     String? anesthesia,
     String? anesthesiaBlock,
-    int? asa = 2,
+    int asa = 2,
     Iterable<String> assistant = const [],
     String? comments,
     String? cpt,
     String? diagnosis,
-    int? ebl = 0,
+    int ebl = 0,
     String? icd,
     String? location,
     String? side,
     String? surgery,
     Iterable<TemplateFieldModel> fieldsData = const [],
     String? templateID,
-    int? removed = 0,
-    int? timestamp = 0,
+    int removed = 0,
+    int timestamp = 0,
   }) {
     if (!_defaultsSet) {
       _defaultsSet = RealmObjectBase.setDefaults<CaseModel>({
+        'surgeryDate': 0,
+        'createdAt': 0,
         'asa': 2,
         'ebl': 0,
         'removed': 0,
@@ -73,10 +75,9 @@ class CaseModel extends _CaseModel
   set caseID(String value) => RealmObjectBase.set(this, 'caseID', value);
 
   @override
-  int? get surgeryDate => RealmObjectBase.get<int>(this, 'surgeryDate') as int?;
+  int get surgeryDate => RealmObjectBase.get<int>(this, 'surgeryDate') as int;
   @override
-  set surgeryDate(int? value) =>
-      RealmObjectBase.set(this, 'surgeryDate', value);
+  set surgeryDate(int value) => RealmObjectBase.set(this, 'surgeryDate', value);
 
   @override
   PatientModel? get patientModel =>
@@ -86,9 +87,9 @@ class CaseModel extends _CaseModel
       RealmObjectBase.set(this, 'patientModel', value);
 
   @override
-  int? get createdAt => RealmObjectBase.get<int>(this, 'createdAt') as int?;
+  int get createdAt => RealmObjectBase.get<int>(this, 'createdAt') as int;
   @override
-  set createdAt(int? value) => RealmObjectBase.set(this, 'createdAt', value);
+  set createdAt(int value) => RealmObjectBase.set(this, 'createdAt', value);
 
   @override
   String? get anesthesia =>
@@ -105,9 +106,9 @@ class CaseModel extends _CaseModel
       RealmObjectBase.set(this, 'anesthesiaBlock', value);
 
   @override
-  int? get asa => RealmObjectBase.get<int>(this, 'asa') as int?;
+  int get asa => RealmObjectBase.get<int>(this, 'asa') as int;
   @override
-  set asa(int? value) => RealmObjectBase.set(this, 'asa', value);
+  set asa(int value) => RealmObjectBase.set(this, 'asa', value);
 
   @override
   RealmList<String> get assistant =>
@@ -134,9 +135,9 @@ class CaseModel extends _CaseModel
   set diagnosis(String? value) => RealmObjectBase.set(this, 'diagnosis', value);
 
   @override
-  int? get ebl => RealmObjectBase.get<int>(this, 'ebl') as int?;
+  int get ebl => RealmObjectBase.get<int>(this, 'ebl') as int;
   @override
-  set ebl(int? value) => RealmObjectBase.set(this, 'ebl', value);
+  set ebl(int value) => RealmObjectBase.set(this, 'ebl', value);
 
   @override
   String? get icd => RealmObjectBase.get<String>(this, 'icd') as String?;
@@ -176,14 +177,14 @@ class CaseModel extends _CaseModel
       RealmObjectBase.set(this, 'templateID', value);
 
   @override
-  int? get removed => RealmObjectBase.get<int>(this, 'removed') as int?;
+  int get removed => RealmObjectBase.get<int>(this, 'removed') as int;
   @override
-  set removed(int? value) => RealmObjectBase.set(this, 'removed', value);
+  set removed(int value) => RealmObjectBase.set(this, 'removed', value);
 
   @override
-  int? get timestamp => RealmObjectBase.get<int>(this, 'timestamp') as int?;
+  int get timestamp => RealmObjectBase.get<int>(this, 'timestamp') as int;
   @override
-  set timestamp(int? value) => RealmObjectBase.set(this, 'timestamp', value);
+  set timestamp(int value) => RealmObjectBase.set(this, 'timestamp', value);
 
   @override
   Stream<RealmObjectChanges<CaseModel>> get changes =>
@@ -277,14 +278,14 @@ class CaseModel extends _CaseModel
     register(_toEJson, _fromEJson);
     return SchemaObject(ObjectType.realmObject, CaseModel, 'CaseModel', [
       SchemaProperty('caseID', RealmPropertyType.string, primaryKey: true),
-      SchemaProperty('surgeryDate', RealmPropertyType.int, optional: true),
+      SchemaProperty('surgeryDate', RealmPropertyType.int),
       SchemaProperty('patientModel', RealmPropertyType.object,
           optional: true, linkTarget: 'PatientModel'),
-      SchemaProperty('createdAt', RealmPropertyType.int, optional: true),
+      SchemaProperty('createdAt', RealmPropertyType.int),
       SchemaProperty('anesthesia', RealmPropertyType.string, optional: true),
       SchemaProperty('anesthesiaBlock', RealmPropertyType.string,
           optional: true),
-      SchemaProperty('asa', RealmPropertyType.int, optional: true),
+      SchemaProperty('asa', RealmPropertyType.int),
       SchemaProperty('assistant', RealmPropertyType.string,
           collectionType: RealmCollectionType.list),
       SchemaProperty('comments', RealmPropertyType.string,
@@ -292,9 +293,10 @@ class CaseModel extends _CaseModel
       SchemaProperty('cpt', RealmPropertyType.string, optional: true),
       SchemaProperty('diagnosis', RealmPropertyType.string,
           optional: true, indexType: RealmIndexType.fullText),
-      SchemaProperty('ebl', RealmPropertyType.int, optional: true),
+      SchemaProperty('ebl', RealmPropertyType.int),
       SchemaProperty('icd', RealmPropertyType.string, optional: true),
-      SchemaProperty('location', RealmPropertyType.string, optional: true),
+      SchemaProperty('location', RealmPropertyType.string,
+          optional: true, indexType: RealmIndexType.regular),
       SchemaProperty('side', RealmPropertyType.string, optional: true),
       SchemaProperty('surgery', RealmPropertyType.string,
           optional: true, indexType: RealmIndexType.fullText),
@@ -302,8 +304,9 @@ class CaseModel extends _CaseModel
           linkTarget: 'TemplateFieldModel',
           collectionType: RealmCollectionType.list),
       SchemaProperty('templateID', RealmPropertyType.string, optional: true),
-      SchemaProperty('removed', RealmPropertyType.int, optional: true),
-      SchemaProperty('timestamp', RealmPropertyType.int, optional: true),
+      SchemaProperty('removed', RealmPropertyType.int,
+          indexType: RealmIndexType.regular),
+      SchemaProperty('timestamp', RealmPropertyType.int),
     ]);
   }();
 
@@ -315,28 +318,22 @@ class PatientModel extends _PatientModel
     with RealmEntity, RealmObjectBase, RealmObject {
   static var _defaultsSet = false;
 
-  PatientModel(
-    String patientID, {
+  PatientModel({
     String? crypt,
     String? initials,
     String? name,
     String? yob,
-    double? bmi = 0,
+    double bmi = 0,
     String? gender,
     String? mrn,
     String? phone,
     String? address,
-    int? createdAt = 0,
-    int? timestamp = 0,
   }) {
     if (!_defaultsSet) {
       _defaultsSet = RealmObjectBase.setDefaults<PatientModel>({
         'bmi': 0,
-        'createdAt': 0,
-        'timestamp': 0,
       });
     }
-    RealmObjectBase.set(this, 'patientID', patientID);
     RealmObjectBase.set(this, 'crypt', crypt);
     RealmObjectBase.set(this, 'initials', initials);
     RealmObjectBase.set(this, 'name', name);
@@ -346,17 +343,9 @@ class PatientModel extends _PatientModel
     RealmObjectBase.set(this, 'mrn', mrn);
     RealmObjectBase.set(this, 'phone', phone);
     RealmObjectBase.set(this, 'address', address);
-    RealmObjectBase.set(this, 'createdAt', createdAt);
-    RealmObjectBase.set(this, 'timestamp', timestamp);
   }
 
   PatientModel._();
-
-  @override
-  String get patientID =>
-      RealmObjectBase.get<String>(this, 'patientID') as String;
-  @override
-  set patientID(String value) => RealmObjectBase.set(this, 'patientID', value);
 
   @override
   String? get crypt => RealmObjectBase.get<String>(this, 'crypt') as String?;
@@ -380,9 +369,9 @@ class PatientModel extends _PatientModel
   set yob(String? value) => RealmObjectBase.set(this, 'yob', value);
 
   @override
-  double? get bmi => RealmObjectBase.get<double>(this, 'bmi') as double?;
+  double get bmi => RealmObjectBase.get<double>(this, 'bmi') as double;
   @override
-  set bmi(double? value) => RealmObjectBase.set(this, 'bmi', value);
+  set bmi(double value) => RealmObjectBase.set(this, 'bmi', value);
 
   @override
   String? get gender => RealmObjectBase.get<String>(this, 'gender') as String?;
@@ -406,16 +395,6 @@ class PatientModel extends _PatientModel
   set address(String? value) => RealmObjectBase.set(this, 'address', value);
 
   @override
-  int? get createdAt => RealmObjectBase.get<int>(this, 'createdAt') as int?;
-  @override
-  set createdAt(int? value) => RealmObjectBase.set(this, 'createdAt', value);
-
-  @override
-  int? get timestamp => RealmObjectBase.get<int>(this, 'timestamp') as int?;
-  @override
-  set timestamp(int? value) => RealmObjectBase.set(this, 'timestamp', value);
-
-  @override
   Stream<RealmObjectChanges<PatientModel>> get changes =>
       RealmObjectBase.getChanges<PatientModel>(this);
 
@@ -429,7 +408,6 @@ class PatientModel extends _PatientModel
 
   EJsonValue toEJson() {
     return <String, dynamic>{
-      'patientID': patientID.toEJson(),
       'crypt': crypt.toEJson(),
       'initials': initials.toEJson(),
       'name': name.toEJson(),
@@ -439,8 +417,6 @@ class PatientModel extends _PatientModel
       'mrn': mrn.toEJson(),
       'phone': phone.toEJson(),
       'address': address.toEJson(),
-      'createdAt': createdAt.toEJson(),
-      'timestamp': timestamp.toEJson(),
     };
   }
 
@@ -448,7 +424,6 @@ class PatientModel extends _PatientModel
   static PatientModel _fromEJson(EJsonValue ejson) {
     return switch (ejson) {
       {
-        'patientID': EJsonValue patientID,
         'crypt': EJsonValue crypt,
         'initials': EJsonValue initials,
         'name': EJsonValue name,
@@ -458,11 +433,8 @@ class PatientModel extends _PatientModel
         'mrn': EJsonValue mrn,
         'phone': EJsonValue phone,
         'address': EJsonValue address,
-        'createdAt': EJsonValue createdAt,
-        'timestamp': EJsonValue timestamp,
       } =>
         PatientModel(
-          fromEJson(patientID),
           crypt: fromEJson(crypt),
           initials: fromEJson(initials),
           name: fromEJson(name),
@@ -472,8 +444,6 @@ class PatientModel extends _PatientModel
           mrn: fromEJson(mrn),
           phone: fromEJson(phone),
           address: fromEJson(address),
-          createdAt: fromEJson(createdAt),
-          timestamp: fromEJson(timestamp),
         ),
       _ => raiseInvalidEJson(ejson),
     };
@@ -483,18 +453,16 @@ class PatientModel extends _PatientModel
     RealmObjectBase.registerFactory(PatientModel._);
     register(_toEJson, _fromEJson);
     return SchemaObject(ObjectType.realmObject, PatientModel, 'PatientModel', [
-      SchemaProperty('patientID', RealmPropertyType.string, primaryKey: true),
       SchemaProperty('crypt', RealmPropertyType.string, optional: true),
-      SchemaProperty('initials', RealmPropertyType.string, optional: true),
+      SchemaProperty('initials', RealmPropertyType.string,
+          optional: true, indexType: RealmIndexType.fullText),
       SchemaProperty('name', RealmPropertyType.string, optional: true),
       SchemaProperty('yob', RealmPropertyType.string, optional: true),
-      SchemaProperty('bmi', RealmPropertyType.double, optional: true),
+      SchemaProperty('bmi', RealmPropertyType.double),
       SchemaProperty('gender', RealmPropertyType.string, optional: true),
       SchemaProperty('mrn', RealmPropertyType.string, optional: true),
       SchemaProperty('phone', RealmPropertyType.string, optional: true),
       SchemaProperty('address', RealmPropertyType.string, optional: true),
-      SchemaProperty('createdAt', RealmPropertyType.int, optional: true),
-      SchemaProperty('timestamp', RealmPropertyType.int, optional: true),
     ]);
   }();
 

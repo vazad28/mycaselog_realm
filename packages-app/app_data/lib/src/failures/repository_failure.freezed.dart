@@ -23,6 +23,8 @@ mixin _$RepositoryFailure {
     required TResult Function() noConnection,
     required TResult Function() noStatsData,
     required TResult Function() noUserTemplates,
+    required TResult Function() createUserModelFailure,
+    required TResult Function() userModelNotExistFailure,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -32,6 +34,8 @@ mixin _$RepositoryFailure {
     TResult? Function()? noConnection,
     TResult? Function()? noStatsData,
     TResult? Function()? noUserTemplates,
+    TResult? Function()? createUserModelFailure,
+    TResult? Function()? userModelNotExistFailure,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -41,6 +45,8 @@ mixin _$RepositoryFailure {
     TResult Function()? noConnection,
     TResult Function()? noStatsData,
     TResult Function()? noUserTemplates,
+    TResult Function()? createUserModelFailure,
+    TResult Function()? userModelNotExistFailure,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -52,6 +58,10 @@ mixin _$RepositoryFailure {
     required TResult Function(RepositoryFailureNoStatsData value) noStatsData,
     required TResult Function(RepositoryFailureNoUserTemplates value)
         noUserTemplates,
+    required TResult Function(RepositoryFailureCreateUserModel value)
+        createUserModelFailure,
+    required TResult Function(RepositoryFailureUserModelNotExist value)
+        userModelNotExistFailure,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -61,6 +71,10 @@ mixin _$RepositoryFailure {
     TResult? Function(RepositoryFailureNoConnection value)? noConnection,
     TResult? Function(RepositoryFailureNoStatsData value)? noStatsData,
     TResult? Function(RepositoryFailureNoUserTemplates value)? noUserTemplates,
+    TResult? Function(RepositoryFailureCreateUserModel value)?
+        createUserModelFailure,
+    TResult? Function(RepositoryFailureUserModelNotExist value)?
+        userModelNotExistFailure,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -70,6 +84,10 @@ mixin _$RepositoryFailure {
     TResult Function(RepositoryFailureNoConnection value)? noConnection,
     TResult Function(RepositoryFailureNoStatsData value)? noStatsData,
     TResult Function(RepositoryFailureNoUserTemplates value)? noUserTemplates,
+    TResult Function(RepositoryFailureCreateUserModel value)?
+        createUserModelFailure,
+    TResult Function(RepositoryFailureUserModelNotExist value)?
+        userModelNotExistFailure,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -166,6 +184,8 @@ class _$RepositoryFailureGenericImpl implements RepositoryFailureGeneric {
     required TResult Function() noConnection,
     required TResult Function() noStatsData,
     required TResult Function() noUserTemplates,
+    required TResult Function() createUserModelFailure,
+    required TResult Function() userModelNotExistFailure,
   }) {
     return generic(message);
   }
@@ -178,6 +198,8 @@ class _$RepositoryFailureGenericImpl implements RepositoryFailureGeneric {
     TResult? Function()? noConnection,
     TResult? Function()? noStatsData,
     TResult? Function()? noUserTemplates,
+    TResult? Function()? createUserModelFailure,
+    TResult? Function()? userModelNotExistFailure,
   }) {
     return generic?.call(message);
   }
@@ -190,6 +212,8 @@ class _$RepositoryFailureGenericImpl implements RepositoryFailureGeneric {
     TResult Function()? noConnection,
     TResult Function()? noStatsData,
     TResult Function()? noUserTemplates,
+    TResult Function()? createUserModelFailure,
+    TResult Function()? userModelNotExistFailure,
     required TResult orElse(),
   }) {
     if (generic != null) {
@@ -207,6 +231,10 @@ class _$RepositoryFailureGenericImpl implements RepositoryFailureGeneric {
     required TResult Function(RepositoryFailureNoStatsData value) noStatsData,
     required TResult Function(RepositoryFailureNoUserTemplates value)
         noUserTemplates,
+    required TResult Function(RepositoryFailureCreateUserModel value)
+        createUserModelFailure,
+    required TResult Function(RepositoryFailureUserModelNotExist value)
+        userModelNotExistFailure,
   }) {
     return generic(this);
   }
@@ -219,6 +247,10 @@ class _$RepositoryFailureGenericImpl implements RepositoryFailureGeneric {
     TResult? Function(RepositoryFailureNoConnection value)? noConnection,
     TResult? Function(RepositoryFailureNoStatsData value)? noStatsData,
     TResult? Function(RepositoryFailureNoUserTemplates value)? noUserTemplates,
+    TResult? Function(RepositoryFailureCreateUserModel value)?
+        createUserModelFailure,
+    TResult? Function(RepositoryFailureUserModelNotExist value)?
+        userModelNotExistFailure,
   }) {
     return generic?.call(this);
   }
@@ -231,6 +263,10 @@ class _$RepositoryFailureGenericImpl implements RepositoryFailureGeneric {
     TResult Function(RepositoryFailureNoConnection value)? noConnection,
     TResult Function(RepositoryFailureNoStatsData value)? noStatsData,
     TResult Function(RepositoryFailureNoUserTemplates value)? noUserTemplates,
+    TResult Function(RepositoryFailureCreateUserModel value)?
+        createUserModelFailure,
+    TResult Function(RepositoryFailureUserModelNotExist value)?
+        userModelNotExistFailure,
     required TResult orElse(),
   }) {
     if (generic != null) {
@@ -321,6 +357,8 @@ class _$RepositoryFailureFromErrorImpl implements RepositoryFailureFromError {
     required TResult Function() noConnection,
     required TResult Function() noStatsData,
     required TResult Function() noUserTemplates,
+    required TResult Function() createUserModelFailure,
+    required TResult Function() userModelNotExistFailure,
   }) {
     return fromError(err);
   }
@@ -333,6 +371,8 @@ class _$RepositoryFailureFromErrorImpl implements RepositoryFailureFromError {
     TResult? Function()? noConnection,
     TResult? Function()? noStatsData,
     TResult? Function()? noUserTemplates,
+    TResult? Function()? createUserModelFailure,
+    TResult? Function()? userModelNotExistFailure,
   }) {
     return fromError?.call(err);
   }
@@ -345,6 +385,8 @@ class _$RepositoryFailureFromErrorImpl implements RepositoryFailureFromError {
     TResult Function()? noConnection,
     TResult Function()? noStatsData,
     TResult Function()? noUserTemplates,
+    TResult Function()? createUserModelFailure,
+    TResult Function()? userModelNotExistFailure,
     required TResult orElse(),
   }) {
     if (fromError != null) {
@@ -362,6 +404,10 @@ class _$RepositoryFailureFromErrorImpl implements RepositoryFailureFromError {
     required TResult Function(RepositoryFailureNoStatsData value) noStatsData,
     required TResult Function(RepositoryFailureNoUserTemplates value)
         noUserTemplates,
+    required TResult Function(RepositoryFailureCreateUserModel value)
+        createUserModelFailure,
+    required TResult Function(RepositoryFailureUserModelNotExist value)
+        userModelNotExistFailure,
   }) {
     return fromError(this);
   }
@@ -374,6 +420,10 @@ class _$RepositoryFailureFromErrorImpl implements RepositoryFailureFromError {
     TResult? Function(RepositoryFailureNoConnection value)? noConnection,
     TResult? Function(RepositoryFailureNoStatsData value)? noStatsData,
     TResult? Function(RepositoryFailureNoUserTemplates value)? noUserTemplates,
+    TResult? Function(RepositoryFailureCreateUserModel value)?
+        createUserModelFailure,
+    TResult? Function(RepositoryFailureUserModelNotExist value)?
+        userModelNotExistFailure,
   }) {
     return fromError?.call(this);
   }
@@ -386,6 +436,10 @@ class _$RepositoryFailureFromErrorImpl implements RepositoryFailureFromError {
     TResult Function(RepositoryFailureNoConnection value)? noConnection,
     TResult Function(RepositoryFailureNoStatsData value)? noStatsData,
     TResult Function(RepositoryFailureNoUserTemplates value)? noUserTemplates,
+    TResult Function(RepositoryFailureCreateUserModel value)?
+        createUserModelFailure,
+    TResult Function(RepositoryFailureUserModelNotExist value)?
+        userModelNotExistFailure,
     required TResult orElse(),
   }) {
     if (fromError != null) {
@@ -453,6 +507,8 @@ class _$RepositoryFailureNoConnectionImpl
     required TResult Function() noConnection,
     required TResult Function() noStatsData,
     required TResult Function() noUserTemplates,
+    required TResult Function() createUserModelFailure,
+    required TResult Function() userModelNotExistFailure,
   }) {
     return noConnection();
   }
@@ -465,6 +521,8 @@ class _$RepositoryFailureNoConnectionImpl
     TResult? Function()? noConnection,
     TResult? Function()? noStatsData,
     TResult? Function()? noUserTemplates,
+    TResult? Function()? createUserModelFailure,
+    TResult? Function()? userModelNotExistFailure,
   }) {
     return noConnection?.call();
   }
@@ -477,6 +535,8 @@ class _$RepositoryFailureNoConnectionImpl
     TResult Function()? noConnection,
     TResult Function()? noStatsData,
     TResult Function()? noUserTemplates,
+    TResult Function()? createUserModelFailure,
+    TResult Function()? userModelNotExistFailure,
     required TResult orElse(),
   }) {
     if (noConnection != null) {
@@ -494,6 +554,10 @@ class _$RepositoryFailureNoConnectionImpl
     required TResult Function(RepositoryFailureNoStatsData value) noStatsData,
     required TResult Function(RepositoryFailureNoUserTemplates value)
         noUserTemplates,
+    required TResult Function(RepositoryFailureCreateUserModel value)
+        createUserModelFailure,
+    required TResult Function(RepositoryFailureUserModelNotExist value)
+        userModelNotExistFailure,
   }) {
     return noConnection(this);
   }
@@ -506,6 +570,10 @@ class _$RepositoryFailureNoConnectionImpl
     TResult? Function(RepositoryFailureNoConnection value)? noConnection,
     TResult? Function(RepositoryFailureNoStatsData value)? noStatsData,
     TResult? Function(RepositoryFailureNoUserTemplates value)? noUserTemplates,
+    TResult? Function(RepositoryFailureCreateUserModel value)?
+        createUserModelFailure,
+    TResult? Function(RepositoryFailureUserModelNotExist value)?
+        userModelNotExistFailure,
   }) {
     return noConnection?.call(this);
   }
@@ -518,6 +586,10 @@ class _$RepositoryFailureNoConnectionImpl
     TResult Function(RepositoryFailureNoConnection value)? noConnection,
     TResult Function(RepositoryFailureNoStatsData value)? noStatsData,
     TResult Function(RepositoryFailureNoUserTemplates value)? noUserTemplates,
+    TResult Function(RepositoryFailureCreateUserModel value)?
+        createUserModelFailure,
+    TResult Function(RepositoryFailureUserModelNotExist value)?
+        userModelNotExistFailure,
     required TResult orElse(),
   }) {
     if (noConnection != null) {
@@ -580,6 +652,8 @@ class _$RepositoryFailureNoStatsDataImpl
     required TResult Function() noConnection,
     required TResult Function() noStatsData,
     required TResult Function() noUserTemplates,
+    required TResult Function() createUserModelFailure,
+    required TResult Function() userModelNotExistFailure,
   }) {
     return noStatsData();
   }
@@ -592,6 +666,8 @@ class _$RepositoryFailureNoStatsDataImpl
     TResult? Function()? noConnection,
     TResult? Function()? noStatsData,
     TResult? Function()? noUserTemplates,
+    TResult? Function()? createUserModelFailure,
+    TResult? Function()? userModelNotExistFailure,
   }) {
     return noStatsData?.call();
   }
@@ -604,6 +680,8 @@ class _$RepositoryFailureNoStatsDataImpl
     TResult Function()? noConnection,
     TResult Function()? noStatsData,
     TResult Function()? noUserTemplates,
+    TResult Function()? createUserModelFailure,
+    TResult Function()? userModelNotExistFailure,
     required TResult orElse(),
   }) {
     if (noStatsData != null) {
@@ -621,6 +699,10 @@ class _$RepositoryFailureNoStatsDataImpl
     required TResult Function(RepositoryFailureNoStatsData value) noStatsData,
     required TResult Function(RepositoryFailureNoUserTemplates value)
         noUserTemplates,
+    required TResult Function(RepositoryFailureCreateUserModel value)
+        createUserModelFailure,
+    required TResult Function(RepositoryFailureUserModelNotExist value)
+        userModelNotExistFailure,
   }) {
     return noStatsData(this);
   }
@@ -633,6 +715,10 @@ class _$RepositoryFailureNoStatsDataImpl
     TResult? Function(RepositoryFailureNoConnection value)? noConnection,
     TResult? Function(RepositoryFailureNoStatsData value)? noStatsData,
     TResult? Function(RepositoryFailureNoUserTemplates value)? noUserTemplates,
+    TResult? Function(RepositoryFailureCreateUserModel value)?
+        createUserModelFailure,
+    TResult? Function(RepositoryFailureUserModelNotExist value)?
+        userModelNotExistFailure,
   }) {
     return noStatsData?.call(this);
   }
@@ -645,6 +731,10 @@ class _$RepositoryFailureNoStatsDataImpl
     TResult Function(RepositoryFailureNoConnection value)? noConnection,
     TResult Function(RepositoryFailureNoStatsData value)? noStatsData,
     TResult Function(RepositoryFailureNoUserTemplates value)? noUserTemplates,
+    TResult Function(RepositoryFailureCreateUserModel value)?
+        createUserModelFailure,
+    TResult Function(RepositoryFailureUserModelNotExist value)?
+        userModelNotExistFailure,
     required TResult orElse(),
   }) {
     if (noStatsData != null) {
@@ -707,6 +797,8 @@ class _$RepositoryFailureNoUserTemplatesImpl
     required TResult Function() noConnection,
     required TResult Function() noStatsData,
     required TResult Function() noUserTemplates,
+    required TResult Function() createUserModelFailure,
+    required TResult Function() userModelNotExistFailure,
   }) {
     return noUserTemplates();
   }
@@ -719,6 +811,8 @@ class _$RepositoryFailureNoUserTemplatesImpl
     TResult? Function()? noConnection,
     TResult? Function()? noStatsData,
     TResult? Function()? noUserTemplates,
+    TResult? Function()? createUserModelFailure,
+    TResult? Function()? userModelNotExistFailure,
   }) {
     return noUserTemplates?.call();
   }
@@ -731,6 +825,8 @@ class _$RepositoryFailureNoUserTemplatesImpl
     TResult Function()? noConnection,
     TResult Function()? noStatsData,
     TResult Function()? noUserTemplates,
+    TResult Function()? createUserModelFailure,
+    TResult Function()? userModelNotExistFailure,
     required TResult orElse(),
   }) {
     if (noUserTemplates != null) {
@@ -748,6 +844,10 @@ class _$RepositoryFailureNoUserTemplatesImpl
     required TResult Function(RepositoryFailureNoStatsData value) noStatsData,
     required TResult Function(RepositoryFailureNoUserTemplates value)
         noUserTemplates,
+    required TResult Function(RepositoryFailureCreateUserModel value)
+        createUserModelFailure,
+    required TResult Function(RepositoryFailureUserModelNotExist value)
+        userModelNotExistFailure,
   }) {
     return noUserTemplates(this);
   }
@@ -760,6 +860,10 @@ class _$RepositoryFailureNoUserTemplatesImpl
     TResult? Function(RepositoryFailureNoConnection value)? noConnection,
     TResult? Function(RepositoryFailureNoStatsData value)? noStatsData,
     TResult? Function(RepositoryFailureNoUserTemplates value)? noUserTemplates,
+    TResult? Function(RepositoryFailureCreateUserModel value)?
+        createUserModelFailure,
+    TResult? Function(RepositoryFailureUserModelNotExist value)?
+        userModelNotExistFailure,
   }) {
     return noUserTemplates?.call(this);
   }
@@ -772,6 +876,10 @@ class _$RepositoryFailureNoUserTemplatesImpl
     TResult Function(RepositoryFailureNoConnection value)? noConnection,
     TResult Function(RepositoryFailureNoStatsData value)? noStatsData,
     TResult Function(RepositoryFailureNoUserTemplates value)? noUserTemplates,
+    TResult Function(RepositoryFailureCreateUserModel value)?
+        createUserModelFailure,
+    TResult Function(RepositoryFailureUserModelNotExist value)?
+        userModelNotExistFailure,
     required TResult orElse(),
   }) {
     if (noUserTemplates != null) {
@@ -784,4 +892,294 @@ class _$RepositoryFailureNoUserTemplatesImpl
 abstract class RepositoryFailureNoUserTemplates implements RepositoryFailure {
   const factory RepositoryFailureNoUserTemplates() =
       _$RepositoryFailureNoUserTemplatesImpl;
+}
+
+/// @nodoc
+abstract class _$$RepositoryFailureCreateUserModelImplCopyWith<$Res> {
+  factory _$$RepositoryFailureCreateUserModelImplCopyWith(
+          _$RepositoryFailureCreateUserModelImpl value,
+          $Res Function(_$RepositoryFailureCreateUserModelImpl) then) =
+      __$$RepositoryFailureCreateUserModelImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$RepositoryFailureCreateUserModelImplCopyWithImpl<$Res>
+    extends _$RepositoryFailureCopyWithImpl<$Res,
+        _$RepositoryFailureCreateUserModelImpl>
+    implements _$$RepositoryFailureCreateUserModelImplCopyWith<$Res> {
+  __$$RepositoryFailureCreateUserModelImplCopyWithImpl(
+      _$RepositoryFailureCreateUserModelImpl _value,
+      $Res Function(_$RepositoryFailureCreateUserModelImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$RepositoryFailureCreateUserModelImpl
+    implements RepositoryFailureCreateUserModel {
+  const _$RepositoryFailureCreateUserModelImpl();
+
+  @override
+  String toString() {
+    return 'RepositoryFailure.createUserModelFailure()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$RepositoryFailureCreateUserModelImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message) generic,
+    required TResult Function(Object err) fromError,
+    required TResult Function() noConnection,
+    required TResult Function() noStatsData,
+    required TResult Function() noUserTemplates,
+    required TResult Function() createUserModelFailure,
+    required TResult Function() userModelNotExistFailure,
+  }) {
+    return createUserModelFailure();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String message)? generic,
+    TResult? Function(Object err)? fromError,
+    TResult? Function()? noConnection,
+    TResult? Function()? noStatsData,
+    TResult? Function()? noUserTemplates,
+    TResult? Function()? createUserModelFailure,
+    TResult? Function()? userModelNotExistFailure,
+  }) {
+    return createUserModelFailure?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message)? generic,
+    TResult Function(Object err)? fromError,
+    TResult Function()? noConnection,
+    TResult Function()? noStatsData,
+    TResult Function()? noUserTemplates,
+    TResult Function()? createUserModelFailure,
+    TResult Function()? userModelNotExistFailure,
+    required TResult orElse(),
+  }) {
+    if (createUserModelFailure != null) {
+      return createUserModelFailure();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(RepositoryFailureGeneric value) generic,
+    required TResult Function(RepositoryFailureFromError value) fromError,
+    required TResult Function(RepositoryFailureNoConnection value) noConnection,
+    required TResult Function(RepositoryFailureNoStatsData value) noStatsData,
+    required TResult Function(RepositoryFailureNoUserTemplates value)
+        noUserTemplates,
+    required TResult Function(RepositoryFailureCreateUserModel value)
+        createUserModelFailure,
+    required TResult Function(RepositoryFailureUserModelNotExist value)
+        userModelNotExistFailure,
+  }) {
+    return createUserModelFailure(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(RepositoryFailureGeneric value)? generic,
+    TResult? Function(RepositoryFailureFromError value)? fromError,
+    TResult? Function(RepositoryFailureNoConnection value)? noConnection,
+    TResult? Function(RepositoryFailureNoStatsData value)? noStatsData,
+    TResult? Function(RepositoryFailureNoUserTemplates value)? noUserTemplates,
+    TResult? Function(RepositoryFailureCreateUserModel value)?
+        createUserModelFailure,
+    TResult? Function(RepositoryFailureUserModelNotExist value)?
+        userModelNotExistFailure,
+  }) {
+    return createUserModelFailure?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(RepositoryFailureGeneric value)? generic,
+    TResult Function(RepositoryFailureFromError value)? fromError,
+    TResult Function(RepositoryFailureNoConnection value)? noConnection,
+    TResult Function(RepositoryFailureNoStatsData value)? noStatsData,
+    TResult Function(RepositoryFailureNoUserTemplates value)? noUserTemplates,
+    TResult Function(RepositoryFailureCreateUserModel value)?
+        createUserModelFailure,
+    TResult Function(RepositoryFailureUserModelNotExist value)?
+        userModelNotExistFailure,
+    required TResult orElse(),
+  }) {
+    if (createUserModelFailure != null) {
+      return createUserModelFailure(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class RepositoryFailureCreateUserModel implements RepositoryFailure {
+  const factory RepositoryFailureCreateUserModel() =
+      _$RepositoryFailureCreateUserModelImpl;
+}
+
+/// @nodoc
+abstract class _$$RepositoryFailureUserModelNotExistImplCopyWith<$Res> {
+  factory _$$RepositoryFailureUserModelNotExistImplCopyWith(
+          _$RepositoryFailureUserModelNotExistImpl value,
+          $Res Function(_$RepositoryFailureUserModelNotExistImpl) then) =
+      __$$RepositoryFailureUserModelNotExistImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$RepositoryFailureUserModelNotExistImplCopyWithImpl<$Res>
+    extends _$RepositoryFailureCopyWithImpl<$Res,
+        _$RepositoryFailureUserModelNotExistImpl>
+    implements _$$RepositoryFailureUserModelNotExistImplCopyWith<$Res> {
+  __$$RepositoryFailureUserModelNotExistImplCopyWithImpl(
+      _$RepositoryFailureUserModelNotExistImpl _value,
+      $Res Function(_$RepositoryFailureUserModelNotExistImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$RepositoryFailureUserModelNotExistImpl
+    implements RepositoryFailureUserModelNotExist {
+  const _$RepositoryFailureUserModelNotExistImpl();
+
+  @override
+  String toString() {
+    return 'RepositoryFailure.userModelNotExistFailure()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$RepositoryFailureUserModelNotExistImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message) generic,
+    required TResult Function(Object err) fromError,
+    required TResult Function() noConnection,
+    required TResult Function() noStatsData,
+    required TResult Function() noUserTemplates,
+    required TResult Function() createUserModelFailure,
+    required TResult Function() userModelNotExistFailure,
+  }) {
+    return userModelNotExistFailure();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String message)? generic,
+    TResult? Function(Object err)? fromError,
+    TResult? Function()? noConnection,
+    TResult? Function()? noStatsData,
+    TResult? Function()? noUserTemplates,
+    TResult? Function()? createUserModelFailure,
+    TResult? Function()? userModelNotExistFailure,
+  }) {
+    return userModelNotExistFailure?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message)? generic,
+    TResult Function(Object err)? fromError,
+    TResult Function()? noConnection,
+    TResult Function()? noStatsData,
+    TResult Function()? noUserTemplates,
+    TResult Function()? createUserModelFailure,
+    TResult Function()? userModelNotExistFailure,
+    required TResult orElse(),
+  }) {
+    if (userModelNotExistFailure != null) {
+      return userModelNotExistFailure();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(RepositoryFailureGeneric value) generic,
+    required TResult Function(RepositoryFailureFromError value) fromError,
+    required TResult Function(RepositoryFailureNoConnection value) noConnection,
+    required TResult Function(RepositoryFailureNoStatsData value) noStatsData,
+    required TResult Function(RepositoryFailureNoUserTemplates value)
+        noUserTemplates,
+    required TResult Function(RepositoryFailureCreateUserModel value)
+        createUserModelFailure,
+    required TResult Function(RepositoryFailureUserModelNotExist value)
+        userModelNotExistFailure,
+  }) {
+    return userModelNotExistFailure(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(RepositoryFailureGeneric value)? generic,
+    TResult? Function(RepositoryFailureFromError value)? fromError,
+    TResult? Function(RepositoryFailureNoConnection value)? noConnection,
+    TResult? Function(RepositoryFailureNoStatsData value)? noStatsData,
+    TResult? Function(RepositoryFailureNoUserTemplates value)? noUserTemplates,
+    TResult? Function(RepositoryFailureCreateUserModel value)?
+        createUserModelFailure,
+    TResult? Function(RepositoryFailureUserModelNotExist value)?
+        userModelNotExistFailure,
+  }) {
+    return userModelNotExistFailure?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(RepositoryFailureGeneric value)? generic,
+    TResult Function(RepositoryFailureFromError value)? fromError,
+    TResult Function(RepositoryFailureNoConnection value)? noConnection,
+    TResult Function(RepositoryFailureNoStatsData value)? noStatsData,
+    TResult Function(RepositoryFailureNoUserTemplates value)? noUserTemplates,
+    TResult Function(RepositoryFailureCreateUserModel value)?
+        createUserModelFailure,
+    TResult Function(RepositoryFailureUserModelNotExist value)?
+        userModelNotExistFailure,
+    required TResult orElse(),
+  }) {
+    if (userModelNotExistFailure != null) {
+      return userModelNotExistFailure(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class RepositoryFailureUserModelNotExist implements RepositoryFailure {
+  const factory RepositoryFailureUserModelNotExist() =
+      _$RepositoryFailureUserModelNotExistImpl;
 }

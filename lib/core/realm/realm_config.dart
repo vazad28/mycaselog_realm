@@ -10,15 +10,23 @@ part '../../generated/core/realm/realm_config.g.dart';
 /// Realm config provider
 @riverpod
 Configuration realmConfig(RealmConfigRef ref) {
-  final config = Configuration.local([
-    AssistantModel.schema,
-    CaseModel.schema,
-    PatientModel.schema,
-    SupportDataModel.schema,
-    SurgeryLocationModel.schema,
-    TemplateFieldModel.schema,
-    TemplateModel.schema,
-  ]);
+  final config = Configuration.local(
+    [
+      AssistantModel.schema,
+      CaseModel.schema,
+      MediaModel.schema,
+      PatientModel.schema,
+      SharedTemplateModel.schema,
+      SupportDataModel.schema,
+      SurgeryLocationModel.schema,
+      TemplateFieldModel.schema,
+      TemplateModel.schema,
+      TimelineNoteModel.schema,
+      UserModel.schema,
+    ],
+    shouldDeleteIfMigrationNeeded: true,
+    //schemaVersion: 2,
+  );
   return config;
 }
 

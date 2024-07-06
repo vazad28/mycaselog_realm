@@ -47,6 +47,8 @@ dependencies:
     path: packages-app/app_data
   label_ocr:
     path: packages-app/label_ocr
+  media_manager:
+    path: packages-app/media_manager
   misc_packages:
     path: packages-app/misc_packages
 
@@ -85,6 +87,7 @@ dependencies:
   json_annotation: ^4.9.0
   share_plus: ^9.0.0
   local_auth: ^2.2.0
+  image_picker: ^1.1.2
   
 dev_dependencies: 
   build_runner: ^2.4.11
