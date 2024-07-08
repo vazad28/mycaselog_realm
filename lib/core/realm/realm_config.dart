@@ -5,20 +5,27 @@ import 'package:app_models/app_models.dart';
 import 'package:realm/realm.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../providers/providers.dart';
+
 part '../../generated/core/realm/realm_config.g.dart';
 
 /// Realm config provider
 @riverpod
 Configuration realmConfig(RealmConfigRef ref) {
+  final user = ref.watch(authenticationUserProvider);
+
+  Configuration.defaultRealmName = '${user.id}.realm';
+
   final config = Configuration.local(
     [
-      AssistantModel.schema,
+      AssistantRealm.schema,
       CaseModel.schema,
       MediaModel.schema,
       PatientModel.schema,
+      SettingsRealm.schema,
       SharedTemplateModel.schema,
-      SupportDataModel.schema,
-      SurgeryLocationModel.schema,
+      SupportDataRealm.schema,
+      SurgeryLocationRealm.schema,
       TemplateFieldModel.schema,
       TemplateModel.schema,
       TimelineNoteModel.schema,
@@ -33,7 +40,11 @@ Configuration realmConfig(RealmConfigRef ref) {
 /// Realm  provider
 @riverpod
 Realm realm(RealmRef ref) {
-  final realm = Realm(ref.watch(realmConfigProvider));
+  final config = ref.watch(realmConfigProvider);
+  final realm = Realm(config);
+  // realm.write(() {
+  //   realm.deleteAll<SettingsRealm>();
+  // });
   return realm;
 }
 

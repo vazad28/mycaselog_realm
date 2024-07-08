@@ -7,7 +7,7 @@ part of '../../../../../support_data/features/activable_fields/provider/activabl
 // **************************************************************************
 
 String _$activableFieldsNotifierHash() =>
-    r'bb80197d1459d0b68f81618e1b3cb82ce29f0e70';
+    r'1b4ed29a02b4ff630ac6764412d377a129e155bc';
 
 /// See also [ActivableFieldsNotifier].
 @ProviderFor(ActivableFieldsNotifier)

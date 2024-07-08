@@ -65,7 +65,7 @@ final addTemplateSeederProvider =
 
 typedef _$AddTemplateSeeder = AutoDisposeNotifier<TemplateModel?>;
 String _$addTemplateNotifierHash() =>
-    r'f5e1c7b3733d5736ac38bd95efee6bc50457ec65';
+    r'067e5650d6847d932e233ade9693efb0f90b433b';
 
 /// ////////////////////////////////////////////////////////////////////
 /// Main provider of the  feature

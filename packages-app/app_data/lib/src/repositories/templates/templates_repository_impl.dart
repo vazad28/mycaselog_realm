@@ -1,5 +1,6 @@
 import 'package:app_models/app_models.dart';
 import 'package:async_result/async_result.dart';
+import 'package:realm/realm.dart';
 
 import '../../../app_data.dart';
 
@@ -24,9 +25,15 @@ class TemplatesRepositoryImpl implements TemplatesRepository {
   @override
   Future<Result<TemplateModel, RepositoryFailure>> addTemplate(
     TemplateModel templateModel,
-  ) {
-    // TODO: implement addTemplate
-    throw UnimplementedError();
+  ) async {
+    try {
+      final model = templateModel..timestamp = ModelUtils.getTimestamp;
+      await _databaseService.templatesCollection
+          .put(templateModel.templateID, model);
+      return Result.success(model);
+    } catch (err) {
+      return Result.failure(RepositoryFailure.fromError(err));
+    }
   }
 
   @override
@@ -37,19 +44,18 @@ class TemplatesRepositoryImpl implements TemplatesRepository {
   }
 
   @override
-  Future<List<TemplateModel>> getAllTemplates() {
-    return Future.sync(() {
-      return _databaseService.templatesCollection.getAllTemplates();
-    });
+  Future<List<TemplateModel>> getAllTemplates() async {
+    return _databaseService.templatesCollection.getAllTemplates();
   }
 
   @override
-  Future<TemplateModel?> getTemplate(String? templateID) {
-    return Future.sync(() {
-      if (templateID == null) return null;
+  Future<TemplateModel?> getTemplate(String? templateID) async {
+    if (templateID == null) return null;
 
-      return _databaseService.templatesCollection.getTemplate(templateID);
-    });
+    final template =
+        _databaseService.templatesCollection.getTemplate(templateID);
+    print(template?.toJson());
+    return template;
   }
 
   @override
@@ -62,9 +68,8 @@ class TemplatesRepositoryImpl implements TemplatesRepository {
   }
 
   @override
-  int getTotalTemplatesCount() {
-    // TODO: implement getTotalTemplatesCount
-    throw UnimplementedError();
+  Stream<RealmResultsChanges<TemplateModel>> getTotalTemplatesCount() {
+    return _databaseService.templatesCollection.templateCount();
   }
 
   @override

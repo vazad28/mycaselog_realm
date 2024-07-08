@@ -1,56 +1,54 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'support_data_model.dart';
+part of 'support_data_realm.dart';
 
 // **************************************************************************
 // RealmObjectGenerator
 // **************************************************************************
 
 // ignore_for_file: type=lint
-class SupportDataModel extends _SupportDataModel
+class SupportDataRealm extends _SupportDataRealm
     with RealmEntity, RealmObjectBase, RealmObject {
   static var _defaultsSet = false;
 
-  SupportDataModel(
-    String? userID, {
-    Iterable<AssistantModel> assistants = const [],
+  SupportDataRealm(
+    String userID, {
+    Iterable<AssistantRealm> assistants = const [],
     Iterable<String> activeBasicFields = const [],
     Iterable<String> anesthesiaBlocks = const [],
-    Iterable<SurgeryLocationModel> surgeryLocations = const [],
-    int? timestamp,
-    bool? synced = false,
+    Iterable<SurgeryLocationRealm> surgeryLocations = const [],
+    int timestamp = 0,
   }) {
     if (!_defaultsSet) {
-      _defaultsSet = RealmObjectBase.setDefaults<SupportDataModel>({
-        'synced': false,
+      _defaultsSet = RealmObjectBase.setDefaults<SupportDataRealm>({
+        'timestamp': 0,
       });
     }
     RealmObjectBase.set(this, 'userID', userID);
-    RealmObjectBase.set<RealmList<AssistantModel>>(
-        this, 'assistants', RealmList<AssistantModel>(assistants));
+    RealmObjectBase.set<RealmList<AssistantRealm>>(
+        this, 'assistants', RealmList<AssistantRealm>(assistants));
     RealmObjectBase.set<RealmList<String>>(
         this, 'activeBasicFields', RealmList<String>(activeBasicFields));
     RealmObjectBase.set<RealmList<String>>(
         this, 'anesthesiaBlocks', RealmList<String>(anesthesiaBlocks));
-    RealmObjectBase.set<RealmList<SurgeryLocationModel>>(this,
-        'surgeryLocations', RealmList<SurgeryLocationModel>(surgeryLocations));
+    RealmObjectBase.set<RealmList<SurgeryLocationRealm>>(this,
+        'surgeryLocations', RealmList<SurgeryLocationRealm>(surgeryLocations));
     RealmObjectBase.set(this, 'timestamp', timestamp);
-    RealmObjectBase.set(this, 'synced', synced);
   }
 
-  SupportDataModel._();
+  SupportDataRealm._();
 
   @override
-  String? get userID => RealmObjectBase.get<String>(this, 'userID') as String?;
+  String get userID => RealmObjectBase.get<String>(this, 'userID') as String;
   @override
-  set userID(String? value) => RealmObjectBase.set(this, 'userID', value);
+  set userID(String value) => RealmObjectBase.set(this, 'userID', value);
 
   @override
-  RealmList<AssistantModel> get assistants =>
-      RealmObjectBase.get<AssistantModel>(this, 'assistants')
-          as RealmList<AssistantModel>;
+  RealmList<AssistantRealm> get assistants =>
+      RealmObjectBase.get<AssistantRealm>(this, 'assistants')
+          as RealmList<AssistantRealm>;
   @override
-  set assistants(covariant RealmList<AssistantModel> value) =>
+  set assistants(covariant RealmList<AssistantRealm> value) =>
       throw RealmUnsupportedSetError();
 
   @override
@@ -70,35 +68,30 @@ class SupportDataModel extends _SupportDataModel
       throw RealmUnsupportedSetError();
 
   @override
-  RealmList<SurgeryLocationModel> get surgeryLocations =>
-      RealmObjectBase.get<SurgeryLocationModel>(this, 'surgeryLocations')
-          as RealmList<SurgeryLocationModel>;
+  RealmList<SurgeryLocationRealm> get surgeryLocations =>
+      RealmObjectBase.get<SurgeryLocationRealm>(this, 'surgeryLocations')
+          as RealmList<SurgeryLocationRealm>;
   @override
-  set surgeryLocations(covariant RealmList<SurgeryLocationModel> value) =>
+  set surgeryLocations(covariant RealmList<SurgeryLocationRealm> value) =>
       throw RealmUnsupportedSetError();
 
   @override
-  int? get timestamp => RealmObjectBase.get<int>(this, 'timestamp') as int?;
+  int get timestamp => RealmObjectBase.get<int>(this, 'timestamp') as int;
   @override
-  set timestamp(int? value) => RealmObjectBase.set(this, 'timestamp', value);
+  set timestamp(int value) => RealmObjectBase.set(this, 'timestamp', value);
 
   @override
-  bool? get synced => RealmObjectBase.get<bool>(this, 'synced') as bool?;
-  @override
-  set synced(bool? value) => RealmObjectBase.set(this, 'synced', value);
+  Stream<RealmObjectChanges<SupportDataRealm>> get changes =>
+      RealmObjectBase.getChanges<SupportDataRealm>(this);
 
   @override
-  Stream<RealmObjectChanges<SupportDataModel>> get changes =>
-      RealmObjectBase.getChanges<SupportDataModel>(this);
-
-  @override
-  Stream<RealmObjectChanges<SupportDataModel>> changesFor(
+  Stream<RealmObjectChanges<SupportDataRealm>> changesFor(
           [List<String>? keyPaths]) =>
-      RealmObjectBase.getChangesFor<SupportDataModel>(this, keyPaths);
+      RealmObjectBase.getChangesFor<SupportDataRealm>(this, keyPaths);
 
   @override
-  SupportDataModel freeze() =>
-      RealmObjectBase.freezeObject<SupportDataModel>(this);
+  SupportDataRealm freeze() =>
+      RealmObjectBase.freezeObject<SupportDataRealm>(this);
 
   EJsonValue toEJson() {
     return <String, dynamic>{
@@ -108,12 +101,11 @@ class SupportDataModel extends _SupportDataModel
       'anesthesiaBlocks': anesthesiaBlocks.toEJson(),
       'surgeryLocations': surgeryLocations.toEJson(),
       'timestamp': timestamp.toEJson(),
-      'synced': synced.toEJson(),
     };
   }
 
-  static EJsonValue _toEJson(SupportDataModel value) => value.toEJson();
-  static SupportDataModel _fromEJson(EJsonValue ejson) {
+  static EJsonValue _toEJson(SupportDataRealm value) => value.toEJson();
+  static SupportDataRealm _fromEJson(EJsonValue ejson) {
     return switch (ejson) {
       {
         'userID': EJsonValue userID,
@@ -122,40 +114,36 @@ class SupportDataModel extends _SupportDataModel
         'anesthesiaBlocks': EJsonValue anesthesiaBlocks,
         'surgeryLocations': EJsonValue surgeryLocations,
         'timestamp': EJsonValue timestamp,
-        'synced': EJsonValue synced,
       } =>
-        SupportDataModel(
+        SupportDataRealm(
           fromEJson(userID),
           assistants: fromEJson(assistants),
           activeBasicFields: fromEJson(activeBasicFields),
           anesthesiaBlocks: fromEJson(anesthesiaBlocks),
           surgeryLocations: fromEJson(surgeryLocations),
           timestamp: fromEJson(timestamp),
-          synced: fromEJson(synced),
         ),
       _ => raiseInvalidEJson(ejson),
     };
   }
 
   static final schema = () {
-    RealmObjectBase.registerFactory(SupportDataModel._);
+    RealmObjectBase.registerFactory(SupportDataRealm._);
     register(_toEJson, _fromEJson);
     return SchemaObject(
-        ObjectType.realmObject, SupportDataModel, 'SupportDataModel', [
-      SchemaProperty('userID', RealmPropertyType.string,
-          optional: true, primaryKey: true),
+        ObjectType.realmObject, SupportDataRealm, 'SupportDataRealm', [
+      SchemaProperty('userID', RealmPropertyType.string, primaryKey: true),
       SchemaProperty('assistants', RealmPropertyType.object,
-          linkTarget: 'AssistantModel',
+          linkTarget: 'AssistantRealm',
           collectionType: RealmCollectionType.list),
       SchemaProperty('activeBasicFields', RealmPropertyType.string,
           collectionType: RealmCollectionType.list),
       SchemaProperty('anesthesiaBlocks', RealmPropertyType.string,
           collectionType: RealmCollectionType.list),
       SchemaProperty('surgeryLocations', RealmPropertyType.object,
-          linkTarget: 'SurgeryLocationModel',
+          linkTarget: 'SurgeryLocationRealm',
           collectionType: RealmCollectionType.list),
-      SchemaProperty('timestamp', RealmPropertyType.int, optional: true),
-      SchemaProperty('synced', RealmPropertyType.bool, optional: true),
+      SchemaProperty('timestamp', RealmPropertyType.int),
     ]);
   }();
 
@@ -163,21 +151,21 @@ class SupportDataModel extends _SupportDataModel
   SchemaObject get objectSchema => RealmObjectBase.getSchema(this) ?? schema;
 }
 
-class AssistantModel extends _AssistantModel
+class AssistantRealm extends _AssistantRealm
     with RealmEntity, RealmObjectBase, RealmObject {
   static var _defaultsSet = false;
 
-  AssistantModel(
+  AssistantRealm(
     String assistantID, {
     String? name,
     String? phone,
     String? photoUrl,
-    int? removed = 0,
-    int? createdAt = 0,
-    int? timestamp = 0,
+    int removed = 0,
+    int createdAt = 0,
+    int timestamp = 0,
   }) {
     if (!_defaultsSet) {
-      _defaultsSet = RealmObjectBase.setDefaults<AssistantModel>({
+      _defaultsSet = RealmObjectBase.setDefaults<AssistantRealm>({
         'removed': 0,
         'createdAt': 0,
         'timestamp': 0,
@@ -192,7 +180,7 @@ class AssistantModel extends _AssistantModel
     RealmObjectBase.set(this, 'timestamp', timestamp);
   }
 
-  AssistantModel._();
+  AssistantRealm._();
 
   @override
   String get assistantID =>
@@ -218,31 +206,31 @@ class AssistantModel extends _AssistantModel
   set photoUrl(String? value) => RealmObjectBase.set(this, 'photoUrl', value);
 
   @override
-  int? get removed => RealmObjectBase.get<int>(this, 'removed') as int?;
+  int get removed => RealmObjectBase.get<int>(this, 'removed') as int;
   @override
-  set removed(int? value) => RealmObjectBase.set(this, 'removed', value);
+  set removed(int value) => RealmObjectBase.set(this, 'removed', value);
 
   @override
-  int? get createdAt => RealmObjectBase.get<int>(this, 'createdAt') as int?;
+  int get createdAt => RealmObjectBase.get<int>(this, 'createdAt') as int;
   @override
-  set createdAt(int? value) => RealmObjectBase.set(this, 'createdAt', value);
+  set createdAt(int value) => RealmObjectBase.set(this, 'createdAt', value);
 
   @override
-  int? get timestamp => RealmObjectBase.get<int>(this, 'timestamp') as int?;
+  int get timestamp => RealmObjectBase.get<int>(this, 'timestamp') as int;
   @override
-  set timestamp(int? value) => RealmObjectBase.set(this, 'timestamp', value);
+  set timestamp(int value) => RealmObjectBase.set(this, 'timestamp', value);
 
   @override
-  Stream<RealmObjectChanges<AssistantModel>> get changes =>
-      RealmObjectBase.getChanges<AssistantModel>(this);
+  Stream<RealmObjectChanges<AssistantRealm>> get changes =>
+      RealmObjectBase.getChanges<AssistantRealm>(this);
 
   @override
-  Stream<RealmObjectChanges<AssistantModel>> changesFor(
+  Stream<RealmObjectChanges<AssistantRealm>> changesFor(
           [List<String>? keyPaths]) =>
-      RealmObjectBase.getChangesFor<AssistantModel>(this, keyPaths);
+      RealmObjectBase.getChangesFor<AssistantRealm>(this, keyPaths);
 
   @override
-  AssistantModel freeze() => RealmObjectBase.freezeObject<AssistantModel>(this);
+  AssistantRealm freeze() => RealmObjectBase.freezeObject<AssistantRealm>(this);
 
   EJsonValue toEJson() {
     return <String, dynamic>{
@@ -256,8 +244,8 @@ class AssistantModel extends _AssistantModel
     };
   }
 
-  static EJsonValue _toEJson(AssistantModel value) => value.toEJson();
-  static AssistantModel _fromEJson(EJsonValue ejson) {
+  static EJsonValue _toEJson(AssistantRealm value) => value.toEJson();
+  static AssistantRealm _fromEJson(EJsonValue ejson) {
     return switch (ejson) {
       {
         'assistantID': EJsonValue assistantID,
@@ -268,7 +256,7 @@ class AssistantModel extends _AssistantModel
         'createdAt': EJsonValue createdAt,
         'timestamp': EJsonValue timestamp,
       } =>
-        AssistantModel(
+        AssistantRealm(
           fromEJson(assistantID),
           name: fromEJson(name),
           phone: fromEJson(phone),
@@ -282,17 +270,17 @@ class AssistantModel extends _AssistantModel
   }
 
   static final schema = () {
-    RealmObjectBase.registerFactory(AssistantModel._);
+    RealmObjectBase.registerFactory(AssistantRealm._);
     register(_toEJson, _fromEJson);
     return SchemaObject(
-        ObjectType.realmObject, AssistantModel, 'AssistantModel', [
+        ObjectType.realmObject, AssistantRealm, 'AssistantRealm', [
       SchemaProperty('assistantID', RealmPropertyType.string, primaryKey: true),
       SchemaProperty('name', RealmPropertyType.string, optional: true),
       SchemaProperty('phone', RealmPropertyType.string, optional: true),
       SchemaProperty('photoUrl', RealmPropertyType.string, optional: true),
-      SchemaProperty('removed', RealmPropertyType.int, optional: true),
-      SchemaProperty('createdAt', RealmPropertyType.int, optional: true),
-      SchemaProperty('timestamp', RealmPropertyType.int, optional: true),
+      SchemaProperty('removed', RealmPropertyType.int),
+      SchemaProperty('createdAt', RealmPropertyType.int),
+      SchemaProperty('timestamp', RealmPropertyType.int),
     ]);
   }();
 
@@ -300,21 +288,21 @@ class AssistantModel extends _AssistantModel
   SchemaObject get objectSchema => RealmObjectBase.getSchema(this) ?? schema;
 }
 
-class SurgeryLocationModel extends _SurgeryLocationModel
+class SurgeryLocationRealm extends _SurgeryLocationRealm
     with RealmEntity, RealmObjectBase, RealmObject {
   static var _defaultsSet = false;
 
-  SurgeryLocationModel(
+  SurgeryLocationRealm(
     String locationID, {
     String? name,
     String? phone,
     String? address,
-    int? removed = 0,
-    int? createdAt = 0,
-    int? timestamp = 0,
+    int removed = 0,
+    int createdAt = 0,
+    int timestamp = 0,
   }) {
     if (!_defaultsSet) {
-      _defaultsSet = RealmObjectBase.setDefaults<SurgeryLocationModel>({
+      _defaultsSet = RealmObjectBase.setDefaults<SurgeryLocationRealm>({
         'removed': 0,
         'createdAt': 0,
         'timestamp': 0,
@@ -329,7 +317,7 @@ class SurgeryLocationModel extends _SurgeryLocationModel
     RealmObjectBase.set(this, 'timestamp', timestamp);
   }
 
-  SurgeryLocationModel._();
+  SurgeryLocationRealm._();
 
   @override
   String get locationID =>
@@ -355,32 +343,32 @@ class SurgeryLocationModel extends _SurgeryLocationModel
   set address(String? value) => RealmObjectBase.set(this, 'address', value);
 
   @override
-  int? get removed => RealmObjectBase.get<int>(this, 'removed') as int?;
+  int get removed => RealmObjectBase.get<int>(this, 'removed') as int;
   @override
-  set removed(int? value) => RealmObjectBase.set(this, 'removed', value);
+  set removed(int value) => RealmObjectBase.set(this, 'removed', value);
 
   @override
-  int? get createdAt => RealmObjectBase.get<int>(this, 'createdAt') as int?;
+  int get createdAt => RealmObjectBase.get<int>(this, 'createdAt') as int;
   @override
-  set createdAt(int? value) => RealmObjectBase.set(this, 'createdAt', value);
+  set createdAt(int value) => RealmObjectBase.set(this, 'createdAt', value);
 
   @override
-  int? get timestamp => RealmObjectBase.get<int>(this, 'timestamp') as int?;
+  int get timestamp => RealmObjectBase.get<int>(this, 'timestamp') as int;
   @override
-  set timestamp(int? value) => RealmObjectBase.set(this, 'timestamp', value);
+  set timestamp(int value) => RealmObjectBase.set(this, 'timestamp', value);
 
   @override
-  Stream<RealmObjectChanges<SurgeryLocationModel>> get changes =>
-      RealmObjectBase.getChanges<SurgeryLocationModel>(this);
+  Stream<RealmObjectChanges<SurgeryLocationRealm>> get changes =>
+      RealmObjectBase.getChanges<SurgeryLocationRealm>(this);
 
   @override
-  Stream<RealmObjectChanges<SurgeryLocationModel>> changesFor(
+  Stream<RealmObjectChanges<SurgeryLocationRealm>> changesFor(
           [List<String>? keyPaths]) =>
-      RealmObjectBase.getChangesFor<SurgeryLocationModel>(this, keyPaths);
+      RealmObjectBase.getChangesFor<SurgeryLocationRealm>(this, keyPaths);
 
   @override
-  SurgeryLocationModel freeze() =>
-      RealmObjectBase.freezeObject<SurgeryLocationModel>(this);
+  SurgeryLocationRealm freeze() =>
+      RealmObjectBase.freezeObject<SurgeryLocationRealm>(this);
 
   EJsonValue toEJson() {
     return <String, dynamic>{
@@ -394,8 +382,8 @@ class SurgeryLocationModel extends _SurgeryLocationModel
     };
   }
 
-  static EJsonValue _toEJson(SurgeryLocationModel value) => value.toEJson();
-  static SurgeryLocationModel _fromEJson(EJsonValue ejson) {
+  static EJsonValue _toEJson(SurgeryLocationRealm value) => value.toEJson();
+  static SurgeryLocationRealm _fromEJson(EJsonValue ejson) {
     return switch (ejson) {
       {
         'locationID': EJsonValue locationID,
@@ -406,7 +394,7 @@ class SurgeryLocationModel extends _SurgeryLocationModel
         'createdAt': EJsonValue createdAt,
         'timestamp': EJsonValue timestamp,
       } =>
-        SurgeryLocationModel(
+        SurgeryLocationRealm(
           fromEJson(locationID),
           name: fromEJson(name),
           phone: fromEJson(phone),
@@ -420,17 +408,17 @@ class SurgeryLocationModel extends _SurgeryLocationModel
   }
 
   static final schema = () {
-    RealmObjectBase.registerFactory(SurgeryLocationModel._);
+    RealmObjectBase.registerFactory(SurgeryLocationRealm._);
     register(_toEJson, _fromEJson);
     return SchemaObject(
-        ObjectType.realmObject, SurgeryLocationModel, 'SurgeryLocationModel', [
+        ObjectType.realmObject, SurgeryLocationRealm, 'SurgeryLocationRealm', [
       SchemaProperty('locationID', RealmPropertyType.string, primaryKey: true),
       SchemaProperty('name', RealmPropertyType.string, optional: true),
       SchemaProperty('phone', RealmPropertyType.string, optional: true),
       SchemaProperty('address', RealmPropertyType.string, optional: true),
-      SchemaProperty('removed', RealmPropertyType.int, optional: true),
-      SchemaProperty('createdAt', RealmPropertyType.int, optional: true),
-      SchemaProperty('timestamp', RealmPropertyType.int, optional: true),
+      SchemaProperty('removed', RealmPropertyType.int),
+      SchemaProperty('createdAt', RealmPropertyType.int),
+      SchemaProperty('timestamp', RealmPropertyType.int),
     ]);
   }();
 

@@ -161,5 +161,44 @@ final statsRepositoryProvider = AutoDisposeProvider<StatsRepository>.internal(
 );
 
 typedef StatsRepositoryRef = AutoDisposeProviderRef<StatsRepository>;
+String _$settingsRepositoryHash() =>
+    r'b16c395ba579fba6f4aa9bc86dd5ae2741723af5';
+
+/// Settings repository provider
+///
+/// Copied from [settingsRepository].
+@ProviderFor(settingsRepository)
+final settingsRepositoryProvider =
+    AutoDisposeProvider<SettingsRepository>.internal(
+  settingsRepository,
+  name: r'settingsRepositoryProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$settingsRepositoryHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef SettingsRepositoryRef = AutoDisposeProviderRef<SettingsRepository>;
+String _$supportDataRepositoryHash() =>
+    r'7901d87821cbb8b46e35c91e27a09651038c0956';
+
+/// Settings repository provider
+///
+/// Copied from [supportDataRepository].
+@ProviderFor(supportDataRepository)
+final supportDataRepositoryProvider =
+    AutoDisposeProvider<SupportDataRepository>.internal(
+  supportDataRepository,
+  name: r'supportDataRepositoryProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$supportDataRepositoryHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef SupportDataRepositoryRef
+    = AutoDisposeProviderRef<SupportDataRepository>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, inference_failure_on_uninitialized_variable, inference_failure_on_function_return_type, inference_failure_on_untyped_parameter, deprecated_member_use_from_same_package

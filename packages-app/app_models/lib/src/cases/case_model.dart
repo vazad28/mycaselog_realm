@@ -165,7 +165,7 @@ class _PatientModel {
   late String? initials;
   late String? name;
   late String? yob;
-  late double bmi = 0;
+  late double? bmi = 0;
   late String? gender;
   late String? mrn;
   late String? phone;

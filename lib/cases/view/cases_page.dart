@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../router/router.dart';
 import '../cases.dart';
+import 'case_view_list.dart';
 
 class CasesPage extends ConsumerStatefulWidget {
   const CasesPage({super.key});

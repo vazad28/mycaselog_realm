@@ -42,7 +42,7 @@ class SurgeryLocationsView extends ConsumerWidget
           onDismissed: () {
             updateSurgeryLocation(
               ref,
-              surgeryLocationModel..removed = 1,
+              surgeryLocationModel.copyWith(removed: 1),
             );
           },
           onTap: () => AddSurgeryLocationRoute(surgeryLocationModel)

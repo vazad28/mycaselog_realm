@@ -10,6 +10,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:recase/recase.dart';
 
 import '../../../../core/services/services.dart';
+import '../../../../settings/settings.dart';
 import '../../../provider/add_case_provider.dart';
 import 'add_patient_modal.dart';
 
@@ -31,8 +32,6 @@ class PatientNameField extends ConsumerWidget with AddCaseStateMixin {
       onTap: (control) async {
         final crypt = cryptControl?.value;
 
-        //print('crypt $crypt');
-
         DecryptedPatientModel? decryptedPatientModel;
 
         /// if crypt string not null, create the decrypted model
@@ -44,10 +43,8 @@ class PatientNameField extends ConsumerWidget with AddCaseStateMixin {
         }
 
         /// check local auth if not debug mode
-        if (buildMode == BuildMode.release
-            //&&
-            //ref.read(appSettingsProvider).localAuthEnabled
-            ) {
+        if (buildMode == BuildMode.release &&
+            ref.read(appSettingsProvider).localAuthEnabled) {
           final authenticated =
               await ref.read(dialogServiceProvider).localAuth();
           if (!authenticated) return;

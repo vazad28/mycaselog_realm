@@ -323,7 +323,7 @@ class PatientModel extends _PatientModel
     String? initials,
     String? name,
     String? yob,
-    double bmi = 0,
+    double? bmi = 0,
     String? gender,
     String? mrn,
     String? phone,
@@ -369,9 +369,9 @@ class PatientModel extends _PatientModel
   set yob(String? value) => RealmObjectBase.set(this, 'yob', value);
 
   @override
-  double get bmi => RealmObjectBase.get<double>(this, 'bmi') as double;
+  double? get bmi => RealmObjectBase.get<double>(this, 'bmi') as double?;
   @override
-  set bmi(double value) => RealmObjectBase.set(this, 'bmi', value);
+  set bmi(double? value) => RealmObjectBase.set(this, 'bmi', value);
 
   @override
   String? get gender => RealmObjectBase.get<String>(this, 'gender') as String?;
@@ -458,7 +458,7 @@ class PatientModel extends _PatientModel
           optional: true, indexType: RealmIndexType.fullText),
       SchemaProperty('name', RealmPropertyType.string, optional: true),
       SchemaProperty('yob', RealmPropertyType.string, optional: true),
-      SchemaProperty('bmi', RealmPropertyType.double),
+      SchemaProperty('bmi', RealmPropertyType.double, optional: true),
       SchemaProperty('gender', RealmPropertyType.string, optional: true),
       SchemaProperty('mrn', RealmPropertyType.string, optional: true),
       SchemaProperty('phone', RealmPropertyType.string, optional: true),

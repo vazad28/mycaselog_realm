@@ -1,9 +1,8 @@
+import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:realm/realm.dart';
 
-import '../model_utils.dart';
+import '../../app_models.dart';
 
-part 'support_data_model.realm.dart';
 part 'support_data_model.g.dart';
 
 enum SupportDataProps {
@@ -18,41 +17,28 @@ enum SupportDataProps {
   settings
 }
 
-@RealmModel()
+@CopyWith()
 @JsonSerializable(explicitToJson: true)
-class _SupportDataModel {
-  @PrimaryKey()
-  late String? userID;
-  late List<_AssistantModel> assistants = [];
-  //late List<PcpModel> pcps = [];
-  late List<String> activeBasicFields = [];
-  late List<String> anesthesiaBlocks = [];
-  late List<_SurgeryLocationModel> surgeryLocations = [];
-  late int? timestamp;
-  late bool? synced = false;
-}
+class SupportDataModel {
+  SupportDataModel({
+    required this.userID,
+    this.assistants = const [],
+    this.activeBasicFields = const [],
+    this.anesthesiaBlocks = const [],
+    this.surgeryLocations = const [],
+    this.timestamp = 0,
+  });
 
-extension SupportDataModelX on SupportDataModel {
-  static SupportDataModel _toRealmObject(_SupportDataModel supportDataModel) {
-    return SupportDataModel(
-      supportDataModel.userID,
-      timestamp: supportDataModel.timestamp,
-    );
+  factory SupportDataModel.fromJson(Map<String, dynamic> json) {
+    return _$SupportDataModelFromJson(json);
   }
 
-  static SupportDataModel zero(String userID) {
-    final timestamp = ModelUtils.getTimestamp;
-
-    final supportDataModel = SupportDataModel(
-      userID,
-      timestamp: timestamp,
-    );
-
-    return supportDataModel;
-  }
-
-  static SupportDataModel fromJson(Map<String, dynamic> json) =>
-      _toRealmObject(_$SupportDataModelFromJson(json));
+  final List<String> activeBasicFields;
+  final List<String> anesthesiaBlocks;
+  final List<AssistantModel> assistants;
+  final List<SurgeryLocationModel> surgeryLocations;
+  final int timestamp;
+  final String userID;
 
   Map<String, dynamic> toJson() => _$SupportDataModelToJson(this);
 }
@@ -71,48 +57,40 @@ enum AssistantModelProps {
 }
 
 /// Assistants embedded in to support data
-
-@RealmModel()
+@CopyWith()
 @JsonSerializable(explicitToJson: true)
-class _AssistantModel {
-  @PrimaryKey()
-  late String assistantID;
-  late String? name;
-  late String? phone;
-  late String? photoUrl;
-  late int? removed = 0;
-  late int? createdAt = 0;
-  late int? timestamp = 0;
+class AssistantModel {
+  const AssistantModel({
+    required this.assistantID,
+    this.name,
+    this.phone,
+    this.photoUrl,
+    this.removed = 0,
+    this.createdAt = 0,
+    this.timestamp = 0,
+  });
 
-  static AssistantModel fromJson(Map<String, dynamic> json) =>
-      AssistantModelX.fromJson(json);
+  factory AssistantModel.fromJson(Map<String, dynamic> json) =>
+      _$AssistantModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$AssistantModelToJson(this);
-}
-
-extension AssistantModelX on AssistantModel {
-  static AssistantModel _toRealmObject(_AssistantModel assistantModel) {
-    return AssistantModel(
-      assistantModel.assistantID,
-      createdAt: assistantModel.timestamp,
-      timestamp: assistantModel.timestamp,
-    );
-  }
-
-  static AssistantModel zero() {
+  factory AssistantModel.zero() {
     final timestamp = ModelUtils.getTimestamp;
-    final assistantModel = AssistantModel(
-      ModelUtils.uniqueID,
-      createdAt: timestamp,
+    return AssistantModel(
+      assistantID: ModelUtils.uniqueID,
       timestamp: timestamp,
+      createdAt: timestamp,
     );
-
-    return assistantModel;
   }
 
-  static AssistantModel fromJson(Map<String, dynamic> json) =>
-      _toRealmObject(_$AssistantModelFromJson(json));
+  final String assistantID;
+  final int createdAt;
+  final String? name;
+  final String? phone;
+  final String? photoUrl;
+  final int removed;
+  final int timestamp;
 
+  @override
   Map<String, dynamic> toJson() => _$AssistantModelToJson(this);
 }
 
@@ -130,47 +108,39 @@ enum SurgeryLocationProps {
 }
 
 /// Surgery  locations embedded into support data
-@RealmModel()
-@JsonSerializable(explicitToJson: true)
-class _SurgeryLocationModel {
-  @PrimaryKey()
-  late String locationID;
-  late String? name;
-  late String? phone;
-  late String? address;
-  late int? removed = 0;
-  late int? createdAt = 0;
-  late int? timestamp = 0;
+@CopyWith()
+@JsonSerializable()
+class SurgeryLocationModel {
+  SurgeryLocationModel({
+    required this.locationID,
+    this.name,
+    this.phone,
+    this.address,
+    this.removed = 0,
+    this.createdAt = 0,
+    this.timestamp = 0,
+  });
 
-  static SurgeryLocationModel fromJson(Map<String, dynamic> json) =>
-      SurgeryLocationModelX.fromJson(json);
+  factory SurgeryLocationModel.fromJson(Map<String, dynamic> json) =>
+      _$SurgeryLocationModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$SurgeryLocationModelToJson(this);
-}
-
-extension SurgeryLocationModelX on SurgeryLocationModel {
-  static SurgeryLocationModel _toRealmObject(
-      _SurgeryLocationModel assistantModel) {
-    return SurgeryLocationModel(
-      assistantModel.locationID,
-      createdAt: assistantModel.timestamp,
-      timestamp: assistantModel.timestamp,
-    );
-  }
-
-  static SurgeryLocationModel zero() {
+  factory SurgeryLocationModel.zero() {
     final timestamp = ModelUtils.getTimestamp;
-    final surgeryLocationModel = SurgeryLocationModel(
-      ModelUtils.uniqueID,
-      createdAt: timestamp,
+    return SurgeryLocationModel(
+      locationID: ModelUtils.uniqueID,
       timestamp: timestamp,
+      createdAt: timestamp,
     );
-
-    return surgeryLocationModel;
   }
 
-  static SurgeryLocationModel fromJson(Map<String, dynamic> json) =>
-      _toRealmObject(_$SurgeryLocationModelFromJson(json));
+  final String locationID;
+  final String? address;
+  final int createdAt;
+  final String? name;
+  final String? phone;
+  final int removed;
+  final int timestamp;
 
+  @override
   Map<String, dynamic> toJson() => _$SurgeryLocationModelToJson(this);
 }

@@ -46,7 +46,7 @@ class ActivableFieldsNotifier extends _$ActivableFieldsNotifier {
       supportDataNotifierProvider.select((value) => value.activeBasicFields),
     );
 
-    if (fieldList == null) return ActivableAddCaseField.values;
+    if (fieldList.isEmpty) return ActivableAddCaseField.values;
 
     return fieldList
         .map((name) => ActivableAddCaseField.values.byName(name))

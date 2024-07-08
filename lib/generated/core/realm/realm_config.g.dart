@@ -6,7 +6,7 @@ part of '../../../core/realm/realm_config.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$realmConfigHash() => r'15487d3ea66237236e00e4583535b90e34858ccc';
+String _$realmConfigHash() => r'96951492055e42ed7523f928c16b8df985302eb9';
 
 /// Realm config provider
 ///
@@ -22,7 +22,7 @@ final realmConfigProvider = AutoDisposeProvider<Configuration>.internal(
 );
 
 typedef RealmConfigRef = AutoDisposeProviderRef<Configuration>;
-String _$realmHash() => r'd4798eedb7f6423413ffdcfe325209c116e319f1';
+String _$realmHash() => r'd2113e9e82f8c113e9fa0660e4ea3e675a1b487e';
 
 /// Realm  provider
 ///

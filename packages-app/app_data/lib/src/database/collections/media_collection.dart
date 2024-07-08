@@ -24,6 +24,13 @@ class MediaCollection extends DatabaseCollection<MediaModel> {
           );
 
   @override
+  Future<MediaModel> upsert(MediaModel model) async {
+    final mediaModel = model..timestamp = ModelUtils.getTimestamp;
+    await put(model.mediaID, mediaModel);
+    return mediaModel;
+  }
+
+  @override
   Stream<List<MediaModel>> listenForChanges() {
     return stream.map((querySnapshot) {
       final documents = querySnapshot.docChanges
@@ -31,12 +38,6 @@ class MediaCollection extends DatabaseCollection<MediaModel> {
             final model = MediaModelX.fromJson(change.doc.data()!);
             switch (change.type) {
               case DocumentChangeType.added:
-                final localModel = _realm.find<MediaModel>(model.caseID);
-                if (localModel == null) {
-                  _realm.write(() => _realm.add(model));
-                }
-                return model;
-
               case DocumentChangeType.modified:
                 _realm.write(() => _realm.add<MediaModel>(model, update: true));
                 return model;

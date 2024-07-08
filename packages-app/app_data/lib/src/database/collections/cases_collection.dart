@@ -12,8 +12,6 @@ class CasesCollection extends DatabaseCollection<CaseModel> {
 
   final Realm _realm;
 
-  String get getLastSyncTimestampKey => lastSyncTimestampKey;
-
   @override
   String get path => '$root/$userID/${DbCollection.cases.name}';
 
@@ -26,19 +24,26 @@ class CasesCollection extends DatabaseCollection<CaseModel> {
           );
 
   @override
+  Future<CaseModel> upsert(CaseModel model) async {
+    final caseModel = model..timestamp = ModelUtils.getTimestamp;
+    await put(model.caseID, caseModel);
+    return caseModel;
+  }
+
+  @override
   Stream<List<CaseModel>> listenForChanges() {
     return stream.map((querySnapshot) {
       final documents = querySnapshot.docChanges
           .map((change) {
             final model = CaseModelX.fromJson(change.doc.data()!);
-            //print('CasesCollection ${model.caseID}');
+            print('CasesCollection ${model.caseID} ${change.type.toString()}');
             switch (change.type) {
               case DocumentChangeType.added:
-                final localModel = _realm.find<CaseModel>(model.caseID);
-                if (localModel == null) {
-                  _realm.write(() => _realm.add(model));
-                }
-                return model;
+              // final localModel = _realm.find<CaseModel>(model.caseID);
+              // if (localModel == null) {
+              //   _realm.write(() => _realm.add(model));
+              // }
+              // return model;
 
               case DocumentChangeType.modified:
                 _realm.write(() => _realm.add<CaseModel>(model, update: true));
@@ -102,11 +107,17 @@ class CasesCollection extends DatabaseCollection<CaseModel> {
 
   List<CaseModel> search(String searchTerm) {
     final casesList = _realm.query<CaseModel>(
-      // ignore: use_raw_strings
-      'diagnosis TEXT \$0 OR surgery TEXT \$0 OR patientModel.initials',
+      r'diagnosis TEXT $0 OR surgery TEXT $0 OR comments TEXT $0',
       ['$searchTerm*'],
     );
 
+    // final casesPatientList = _realm.query<PatientModel>(
+    //   r'initials TEXT $0',
+    //   ['$searchTerm*'],
+    // );
+    // final cases = _realm.all<CaseModel>();
+    // final casesList =
+    //     cases.query("patientModel[*].initials == '$searchTerm'");
     return casesList.toList();
   }
 

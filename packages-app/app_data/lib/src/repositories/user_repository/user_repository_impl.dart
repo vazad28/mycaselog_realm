@@ -2,6 +2,7 @@ import 'dart:io' show File;
 
 import 'package:app_models/app_models.dart';
 import 'package:async_result/async_result.dart';
+import 'package:logger_client/logger_client.dart';
 import 'package:storage/storage.dart';
 
 import '../../../../app_data.dart';
@@ -12,7 +13,7 @@ part 'user_storage.dart';
 /// {@template user_repository}
 /// Repository which manages the user domain.
 /// {@endtemplate}
-class UserRepositoryImpl extends UserRepository {
+class UserRepositoryImpl extends UserRepository with LoggerMixin {
   /// {@macro user_repository}
   UserRepositoryImpl({
     required DatabaseService databaseService,
@@ -31,14 +32,8 @@ class UserRepositoryImpl extends UserRepository {
   /// Add new user model to databse
   Future<void> createUserModel(UserModel userModel) async {
     try {
-      // if (userModel.userID == null) {
-      //   throw const RepositoryFailure.generic(
-      //     'UserModel has no userID',
-      //   );
-      // }
-
       await _databaseService.usersCollection
-          .upsertUserModel(userModel..timestamp = ModelUtils.getTimestamp)
+          .upsert(userModel)
           .then((_) => _userStorage.setUserModel(userModel));
     } catch (error, stackTrace) {
       Error.throwWithStackTrace(
@@ -53,23 +48,15 @@ class UserRepositoryImpl extends UserRepository {
   Future<Result<UserModel, RepositoryFailure>> getCurrentUserModel(
       String userID) async {
     try {
-      final userModel = _userStorage.getUserModel(userID) ??
-          await _databaseService.usersCollection.getSingle(userID) ??
-          UserModelX.zero(userID: userID);
-
-      // if (userModel == null) {
-      //   return Result.failure(
-      //     const RepositoryFailure.userModelNotExistFailure(),
-      //   );
-      // }
-
-      _userStorage.setUserModel(userModel);
+      final userModel =
+          await _databaseService.usersCollection.getCurrentUserModel();
 
       /// user should be created by now.
       return Result.success(userModel);
     } catch (error) {
+      logger.severe(error.toString());
       return Result.failure(
-        const RepositoryFailure.createUserModelFailure(),
+        const RepositoryFailure.userModelNotExistFailure(),
       );
     }
   }

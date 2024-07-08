@@ -85,12 +85,25 @@ FtsSearchRepository ftsSearchRepository(FtsSearchRepositoryRef ref) {
 /// Stats Repository provider
 @riverpod
 StatsRepository statsRepository(StatsRepositoryRef ref) {
-  /// listen for cases update
-  //ref.watch(isarDatabaseWatcherProvider);
-
   return StatsRepositoryImpl(
     databaseService: ref.watch(databaseServiceProvider),
     ftsSearch: ref.watch(ftsSearchRepositoryProvider),
+  );
+}
+
+/// Settings repository provider
+@riverpod
+SettingsRepository settingsRepository(SettingsRepositoryRef ref) {
+  return SettingsRepositoryImpl(
+    databaseService: ref.watch(databaseServiceProvider),
+  );
+}
+
+/// Settings repository provider
+@riverpod
+SupportDataRepository supportDataRepository(SupportDataRepositoryRef ref) {
+  return SupportDataRepositoryImpl(
+    databaseService: ref.watch(databaseServiceProvider),
   );
 }
 

@@ -5,115 +5,35 @@ import 'package:app_models/app_models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logger_client/logger_client.dart';
-import 'package:realm/realm.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../core/providers/providers.dart';
-import '../../core/realm/realm_config.dart';
 import '../../core/services/services.dart';
 import '../support_data.dart';
 
 part '../../generated/support_data/provider/support_data_provider.freezed.dart';
 part '../../generated/support_data/provider/support_data_provider.g.dart';
-
-/// ////////////////////////////////////////////////////////////////////
-/// Event and Mixins
-/// ////////////////////////////////////////////////////////////////////
-@Freezed(
-  copyWith: false,
-  equal: false,
-  when: FreezedWhenOptions.none,
-  map: FreezedMapOptions(maybeMap: false, mapOrNull: false),
-  fromJson: false,
-  toJson: false,
-)
-class SupportDataEvent with _$SupportDataEvent {
-  const factory SupportDataEvent.updateActivableFields(
-    List<ActivableAddCaseField> fields,
-  ) = _UpdateActivableField;
-
-  const factory SupportDataEvent.updateAnesthesiaBlocks(
-    List<String> blocks,
-  ) = _UpdateAnesthesiaBlock;
-
-  const factory SupportDataEvent.updateAssistants(
-    List<AssistantModel> assistantModels,
-  ) = _UpdateAssistants;
-
-  const factory SupportDataEvent.addAssistant(
-    AssistantModel assistantModel,
-  ) = _AddAssistants;
-
-  const factory SupportDataEvent.addSurgeryLocation(
-    SurgeryLocationModel surgeryLocationModel,
-  ) = _AddSurgeryLocation;
-
-  const factory SupportDataEvent.updateSurgeryLocations(
-    List<SurgeryLocationModel> surgeryLocations,
-  ) = _UpdateSurgeryLocations;
-}
-
-mixin class SupportDataEventMixin {}
-
-mixin class SupportDataStateMixin {
-  SupportDataModel supportDataModel(WidgetRef ref) => ref.watch(
-        supportDataNotifierProvider,
-      );
-
-  List<String> anesthesiaBlocks(WidgetRef ref) => ref.watch(
-        supportDataNotifierProvider
-            .select((value) => value.anesthesiaBlocks ?? []),
-      );
-
-  List<ActivableAddCaseField> activableAddCaseFields(WidgetRef ref) {
-    final fieldList = ref.watch(
-      supportDataNotifierProvider.select((value) => value.activeBasicFields),
-    );
-
-    //if (fieldList == null) return ActivableAddCaseField.values;
-
-    return fieldList
-        .map((name) => ActivableAddCaseField.values.byName(name))
-        .toList();
-  }
-}
+part './support_data_mixin.dart';
 
 /// ////////////////////////////////////////////////////////////////////
 /// Main providers
 /// ////////////////////////////////////////////////////////////////////
 @Riverpod(keepAlive: true)
 class SupportDataNotifier extends _$SupportDataNotifier with LoggerMixin {
-  StreamSubscription<List<SupportDataModel>>? subscription;
-
   @override
   SupportDataModel build() {
-    final authenticationUser = ref.watch(authenticationUserProvider);
-    final realm = ref.read(realmProvider);
-
-    final collection = ref.watch(databaseServiceProvider).supportDataCollection;
-
-    subscription = collection.listenForChanges().listen((documents) {
-      // Handle document changes (added, modified)
-      print('new SupportDataModel should be painted');
-    });
-
-    ref.onDispose(() {
-      logger.fine('cases notifier dispose called');
-      subscription?.cancel();
-    });
-
-    return realm.find<SupportDataModel>(authenticationUser.id) ??
-        SupportDataModelX.zero(authenticationUser.id);
+    final result =
+        ref.read(supportDataRepositoryProvider).getSupportData().getOrThrow();
+    return result;
   }
 
-  void _updateSupportData(
+  Future<void> _updateSupportData(
     SupportDataModel supportDataModel,
-  ) {
+  ) async {
     try {
-      ref
-          .read(databaseServiceProvider)
-          .supportDataCollection
-          .put(supportDataModel.userID ?? 'annonymous', supportDataModel);
+      await ref
+          .read(supportDataRepositoryProvider)
+          .setSupportData(supportDataModel);
 
       state = supportDataModel;
     } catch (err) {
@@ -126,21 +46,17 @@ class SupportDataNotifier extends _$SupportDataNotifier with LoggerMixin {
   Future<void> on(SupportDataEvent event) async {
     event.map(
       updateAnesthesiaBlocks: (value) {
-        _updateSupportData(
-            state..anesthesiaBlocks = RealmList<String>(value.blocks));
+        _updateSupportData(state.copyWith(anesthesiaBlocks: value.blocks));
       },
       updateAssistants: (value) {
-        _updateSupportData(state
-          ..assistants = RealmList<AssistantModel>(value.assistantModels));
+        _updateSupportData(state.copyWith(assistants: value.assistantModels));
       },
       addAssistant: (value) {
         _onAddAssistant(value.assistantModel);
       },
       updateSurgeryLocations: (value) {
         _updateSupportData(
-          state
-            ..surgeryLocations =
-                RealmList<SurgeryLocationModel>(value.surgeryLocations),
+          state.copyWith(surgeryLocations: value.surgeryLocations),
         );
       },
       addSurgeryLocation: (value) {
@@ -148,18 +64,16 @@ class SupportDataNotifier extends _$SupportDataNotifier with LoggerMixin {
       },
       updateActivableFields: (value) {
         _updateSupportData(
-          state..activeBasicFields = RealmList<String>(value.fields.names),
+          state.copyWith(activeBasicFields: value.fields.names),
         );
       },
-      // putPcp: (value) {
-      //   _onPutPcp(value.pcpModel);
-      // },
     );
   }
 
   // /// Put assistant
   void _onAddAssistant(AssistantModel assistantModel) {
-    final assistants = List<AssistantModel>.from(state.assistants);
+    final assistants =
+        List<AssistantModel>.from(state.assistants ?? <AssistantModel>[]);
     final index = assistants.indexWhere(
       (element) => element.assistantID == assistantModel.assistantID,
     );
@@ -170,14 +84,13 @@ class SupportDataNotifier extends _$SupportDataNotifier with LoggerMixin {
       assistants[index] = assistantModel;
     }
 
-    _updateSupportData(
-        state..assistants = RealmList<AssistantModel>(assistants));
+    _updateSupportData(state.copyWith(assistants: assistants));
   }
 
   /// On suregry location model update
   void _onAddSurgeryLocation(SurgeryLocationModel surgeryLocation) {
     final locations = List<SurgeryLocationModel>.from(
-      state.surgeryLocations,
+      state.surgeryLocations ?? <SurgeryLocationModel>[],
     );
     final index = locations.indexWhere(
       (element) => element.locationID == surgeryLocation.locationID,
@@ -188,8 +101,7 @@ class SupportDataNotifier extends _$SupportDataNotifier with LoggerMixin {
       locations[index] = surgeryLocation;
     }
 
-    _updateSupportData(state = state
-      ..surgeryLocations = RealmList<SurgeryLocationModel>(locations));
+    _updateSupportData(state = state.copyWith(surgeryLocations: locations));
   }
 
   // ignore: unused_element
@@ -211,13 +123,15 @@ class SupportDataNotifier extends _$SupportDataNotifier with LoggerMixin {
 
   // ignore: unused_element
   void _onPutAnesthesiaBlock(String block) {
-    final blocks = List<String>.from(state.anesthesiaBlocks);
+    final blocks = List<String>.from(state.anesthesiaBlocks ?? []);
     if (blocks.contains(block)) {
       blocks.remove(block);
     } else {
       blocks.add(block);
     }
 
-    _updateSupportData(state..anesthesiaBlocks = RealmList<String>(blocks));
+    _updateSupportData(state.copyWith(anesthesiaBlocks: blocks));
   }
+
+  void load() {}
 }

@@ -16,7 +16,7 @@ class SelectTemplateBar extends ConsumerWidget
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currCaseTemplate = watchCurrentSelectedTemplate(ref);
+    final currCaseTemplate = ref.watch(currentCaseTemplateProvider);
 
     final Widget child = InkWell(
       onTap: () {
@@ -75,21 +75,18 @@ class _SelectTemplateBottomSheet extends ConsumerWidget
     return templatesListState.when(
       loading: () => const Loading(),
       error: (e, st) => Loading(text: S.of(context).errorLoadingData),
-      data: (result) => result.when(
-        failure: (failure) => Loading(text: failure.toString()),
-        success: (templates) => _TemplatesBottomSheet(
-          selectedTemplateID: currTemplate?.templateID,
-          templates: templates.where((e) => e.removed == 0).toList(),
-          onSelect: (templateModel) {
-            if (currTemplate == null ||
-                currTemplate?.templateID != templateModel.templateID) {
-              /// call addCaseNotifier to set the current forms data into an
-              /// object before the new template models fields are rendered
-              onTemplateChange(ref, templateModel);
-              return;
-            }
-          },
-        ),
+      data: (templates) => _TemplatesBottomSheet(
+        selectedTemplateID: currTemplate?.templateID,
+        templates: templates.where((e) => e.removed == 0).toList(),
+        onSelect: (templateModel) {
+          if (currTemplate == null ||
+              currTemplate?.templateID != templateModel.templateID) {
+            /// call addCaseNotifier to set the current forms data into an
+            /// object before the new template models fields are rendered
+            onTemplateChange(ref, templateModel);
+            return;
+          }
+        },
       ),
     );
   }

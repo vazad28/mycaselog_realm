@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'auth_flow/auth_flow.dart';
 import 'core/app_vars.dart';
 import 'router/providers/app_router.dart';
+import 'settings/settings.dart';
 
 class MycaselogApp extends ConsumerWidget {
   const MycaselogApp({super.key});
@@ -25,10 +26,18 @@ class MycaselogApp extends ConsumerWidget {
 
     final theme = MaterialTheme(textTheme);
 
+    final themeMode = ref.watch(currentThemeModeProvider);
+
     final materialApp = MaterialApp.router(
       routerConfig: ref.read(mycaselogRouterProvider),
       scaffoldMessengerKey: AppVars.appScaffoldMessengerKey,
-      theme: brightness == Brightness.light ? theme.light() : theme.dark(),
+      theme: themeMode == 0
+          ? brightness == Brightness.light
+              ? theme.light()
+              : theme.dark()
+          : themeMode == 1
+              ? theme.light()
+              : theme.dark(),
       localizationsDelegates: const [
         S.delegate,
         GlobalMaterialLocalizations.delegate,

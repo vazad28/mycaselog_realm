@@ -7,7 +7,7 @@ part of '../../../add_case/provider/add_case_provider.dart';
 // **************************************************************************
 
 String _$templateModelsListHash() =>
-    r'e7ae018bc30470df3e5893d6f14f0123f69ba192';
+    r'aec1305657975ddac0a007e302141a6a0ba47e89';
 
 /// ////////////////////////////////////////////////////////////////////
 /// Helper providers
@@ -17,7 +17,7 @@ String _$templateModelsListHash() =>
 /// Copied from [templateModelsList].
 @ProviderFor(templateModelsList)
 final templateModelsListProvider =
-    AutoDisposeFutureProvider<Result<List<TemplateModel>, Exception>>.internal(
+    AutoDisposeFutureProvider<List<TemplateModel>>.internal(
   templateModelsList,
   name: r'templateModelsListProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -28,7 +28,7 @@ final templateModelsListProvider =
 );
 
 typedef TemplateModelsListRef
-    = AutoDisposeFutureProviderRef<Result<List<TemplateModel>, Exception>>;
+    = AutoDisposeFutureProviderRef<List<TemplateModel>>;
 String _$decryptPatientModelHash() =>
     r'4f5eae163aac915f6ac25f20f13f278fb69521cb';
 
@@ -472,7 +472,7 @@ final templatedDataFormGroupProvider = AutoDisposeProvider<FormGroup>.internal(
 );
 
 typedef TemplatedDataFormGroupRef = AutoDisposeProviderRef<FormGroup>;
-String _$addCaseSeederHash() => r'5fb4244ade41c7aa2c1d4aa88073cd15d680800f';
+String _$addCaseSeederHash() => r'5c411c2502f17eb2891e8e84e088136f460d9278';
 
 /// ////////////////////////////////////////////////////////////////////
 /// Seeder provider
@@ -492,7 +492,7 @@ final addCaseSeederProvider =
 );
 
 typedef _$AddCaseSeeder = AutoDisposeNotifier<AddCaseSeedModel?>;
-String _$addCaseNotifierHash() => r'76e2f8cb9cd96ea3d25600545c98e36b9397b834';
+String _$addCaseNotifierHash() => r'096cfc5149527e3d0b844404f8538f6792605d19';
 
 /// ////////////////////////////////////////////////////////////////////
 /// Main provider of the  feature

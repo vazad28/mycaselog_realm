@@ -1,3 +1,4 @@
+import 'package:app_models/app_models.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger_client/logger_client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,7 +18,7 @@ abstract class DatabaseCollection<T> with LoggerMixin {
   final String path = '';
 
   /// Last sync time in local storage
-  final String _lastSyncTimestampKey = '${T.runtimeType}_lastSyncTimestampKey';
+  final String _lastSyncTimestampKey = '${T}_lastSyncTimestampKey';
   String get lastSyncTimestampKey => _lastSyncTimestampKey;
 
   /// Collection ref for the collection
@@ -32,11 +33,16 @@ abstract class DatabaseCollection<T> with LoggerMixin {
   CollectionReference<T> get withConverter =>
       throw UnimplementedError('withConverter not set');
 
+  /// method to be overridden in collection for adding data
+  /// to both local Realm and Firestore
+  Future<T> upsert(T model);
+
   void createCollectionStream({int? lastSyncTimestamp}) {
+    final timestamp = (lastSyncTimestamp ?? getLastSyncTimestamp) - 10000;
     _stream = collectionRef
         .where(
           'timestamp',
-          isGreaterThan: (lastSyncTimestamp ?? getLastSyncTimestamp) - 50000,
+          isGreaterThan: timestamp < 0 ? 0 : timestamp,
         )
         .snapshots();
   }
@@ -98,9 +104,10 @@ abstract class DatabaseCollection<T> with LoggerMixin {
       sharedPrefs.getInt(_lastSyncTimestampKey) ?? 0;
 
   void setLastSyncTimestamp() {
+    print('setLastSyncTimestamp for key - $_lastSyncTimestampKey');
     sharedPrefs.setInt(
       _lastSyncTimestampKey,
-      DateTime.now().millisecondsSinceEpoch,
+      ModelUtils.getTimestamp,
     );
   }
 }

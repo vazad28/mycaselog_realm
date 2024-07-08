@@ -30,13 +30,6 @@ class FtsSearchRepositoryImpl extends FtsSearchRepository with LoggerMixin {
     // if list of IDs is empty return empty
     if (caseModels.isEmpty) return [];
 
-    /// get case models for the case ids obtained in search from fts table
-    // final caseModels =
-    //     (await _databaseService.casesCollection.getAllByCaseIDs(caseIDs))
-    //         .nonNulls
-    //         .sortByDescending((e) => e.createdAt)
-    //         .toList();
-
     /// return results if matching
     if (T == CaseModel) {
       return caseModels as List<T>;

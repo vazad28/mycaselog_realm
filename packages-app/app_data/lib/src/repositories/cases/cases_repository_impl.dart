@@ -21,7 +21,7 @@ class CasesRepositoryImpl extends CasesRepository {
     CaseModel caseModel,
   ) async {
     try {
-      await _databaseService.casesCollection.put(caseModel.caseID, caseModel);
+      await _databaseService.casesCollection.upsert(caseModel);
       return Result.success(caseModel);
     } catch (err) {
       return Result.failure(RepositoryFailure.fromError(err));

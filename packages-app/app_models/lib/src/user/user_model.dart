@@ -2,7 +2,6 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:realm/realm.dart';
 
 import '../../app_models.dart';
-import '../subscription/subscription.dart';
 
 part 'user_model.g.dart';
 part 'user_model.realm.dart';
@@ -31,6 +30,10 @@ class _UserModel {
     return SubscriptionPlan.values
         .byName(_subscriptionPlan ?? SubscriptionPlan.none.name);
   }
+
+  @Ignored()
+  set subscriptionPlan(SubscriptionPlan value) =>
+      _subscriptionPlan = value.name;
 
   UserModel toRealmObject() {
     return UserModel(

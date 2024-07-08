@@ -10,7 +10,7 @@ import './domain/database_collection.dart';
 
 part 'collections/cases_collection.dart';
 part 'collections/media_collection.dart';
-// part 'collections/settings_collection.dart';
+part 'collections/settings_collection.dart';
 part 'collections/support_data_collection.dart';
 // part 'collections/sync_collection.dart';
 part 'collections/templates_collection.dart';
@@ -30,7 +30,7 @@ class DatabaseService {
         _mediaCollection = MediaCollection(userID, realm, sharedPrefs),
         // _notesCollection = NotesCollection(userID),
         _usersCollection = UsersCollection(userID, realm, sharedPrefs),
-        // _settingsCollection = SettingsCollection(userID),
+        _settingsCollection = SettingsCollection(userID, realm, sharedPrefs),
         _supportDataCollection =
             SupportDataCollection(userID, realm, sharedPrefs),
         _timelineNotesCollection =
@@ -48,7 +48,7 @@ class DatabaseService {
   // late final NotesCollection _notesCollection;
   late final UsersCollection _usersCollection;
   late final SupportDataCollection _supportDataCollection;
-  // late final SettingsCollection _settingsCollection;
+  late final SettingsCollection _settingsCollection;
   late final TimelineNotesCollection _timelineNotesCollection;
   late final TemplatesCollection _templatesCollection;
 
@@ -71,7 +71,7 @@ class DatabaseService {
   UsersCollection get usersCollection => _usersCollection;
 
   /// Settings Collecton getter
-  //SettingsCollection get settingsCollection => _settingsCollection;
+  SettingsCollection get settingsCollection => _settingsCollection;
 
   /// Support Data Collection
   SupportDataCollection get supportDataCollection => _supportDataCollection;

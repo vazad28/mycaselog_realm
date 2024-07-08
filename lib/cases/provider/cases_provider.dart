@@ -45,44 +45,19 @@ class CaseTileStyle extends _$CaseTileStyle {
 
 @Riverpod(keepAlive: true)
 class CasesNotifier extends _$CasesNotifier with LoggerMixin {
-  //StreamSubscription<List<CaseModel>>? subscription;
+  StreamSubscription<RealmResultsChanges<CaseModel>>? subscription;
 
   final scrollController = ScrollController();
 
   @override
   RealmResults<CaseModel> build() {
-    //final casesCollection = ref.watch(databaseServiceProvider).casesCollection;
-
-    //subscription = casesCollection.listenForChanges().listen((documents) {
-    // Handle document changes (added, modified)
-    // for (final document in documents) {
-    //   print('new data  should be painted');
-    //   state = loadCases();
-    // }
-    //});
-
-    ref.onDispose(() {
-      logger.fine('cases notifier dispose called');
-      //subscription?.cancel();
-    });
-
-    return loadCases();
-  }
-
-  RealmResults<CaseModel> loadCases() {
     return ref.read(casesRepositoryProvider).loadCases();
-    // final realm = ref.read(realmProvider);
-    // final cases = realm.all<CaseModel>();
-    // print('There are ${cases.length} cases.');
-    // return cases;
   }
 
   Future<void> addCase() async {
     try {
       final caseModel = CaseModelX.zero();
       await ref.read(casesRepositoryProvider).addCase(caseModel);
-      // } on RepositoryFailure (f){
-      //   logger.severe(f.toString());
     } catch (err) {
       logger.severe(err.toString());
     }

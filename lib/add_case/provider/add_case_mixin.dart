@@ -19,13 +19,13 @@ mixin AddCaseEventMixin {
 }
 
 mixin AddCaseStateMixin {
-  TemplateModel? watchCurrentSelectedTemplate(WidgetRef ref) =>
-      ref.watch(currentCaseTemplateProvider);
+  // TemplateModel? watchCurrentSelectedTemplate(WidgetRef ref) =>
+  //     ref.watch(currentCaseTemplateProvider);
 
   FormGroup watchTemplatedDataFormGroup(WidgetRef ref) =>
       ref.watch(templatedDataFormGroupProvider);
 
-  AsyncValue<Result<List<TemplateModel>, Exception>> watchTemplateModelsList(
+  AsyncValue<List<TemplateModel>> watchTemplateModelsList(
     WidgetRef ref,
   ) =>
       ref.watch(templateModelsListProvider);

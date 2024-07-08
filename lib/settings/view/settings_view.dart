@@ -1,25 +1,62 @@
-import 'package:app_annotations/app_annotations.dart';
+import 'package:app_l10n/app_l10n.dart';
+import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:recase/recase.dart';
 
-import '../../core/providers/sync_providers.dart';
-import '../settings.dart';
+import '../sections/sections.dart';
 
-class SettingsView extends ConsumerWidget
-    with SettingsEventMixin, SettingsStateMixin {
-  const SettingsView({Key? key}) : super(key: key);
+class SettingsView extends StatelessWidget {
+  const SettingsView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final settingsAsync = ref.watch(settingsNotifierProvider);
+  Widget build(BuildContext context) {
+    return SliverList(
+      delegate: SliverChildListDelegate(
+        [
+          /// Spacer
+          VerticalSpacer.large,
 
-    return Center(
-        child: ElevatedButton(
-            onPressed: () {
-              ref
-                  .read(firestoreSyncProvider.notifier)
-                  .resetSyncForCollection(DbCollection.cases);
-            },
-            child: const Text('Reset Cases Sync')));
+          /// main setting - All theme and Templates setting
+          SettingsTileHeader(title: context.l10n.themeSettings.titleCase),
+          const SettingsTileDivider(full: true),
+          const ThemeSettingsSection(),
+
+          /// Spacer
+          VerticalSpacer.large,
+
+          /// General app settings
+          SettingsTileHeader(title: S.of(context).generalSettings.titleCase),
+          const SettingsTileDivider(full: true),
+          const GeneralSettingsSection(),
+
+          /// Spacer
+          VerticalSpacer.large,
+
+          /// Templates settings
+          SettingsTileHeader(title: S.of(context).surgeryTemplates.titleCase),
+          const SettingsTileDivider(full: true),
+          const TemplatesSettingsSection(),
+
+          /// Spacer
+          VerticalSpacer.large,
+
+          /// Support app settings
+          SettingsTileHeader(
+            title: S.of(context).supportDataSettings.titleCase,
+          ),
+          const SettingsTileDivider(full: true),
+          const SupportDataSettingsSection(),
+
+          /// Spacing
+          VerticalSpacer.large,
+
+          /// Sync app settings
+          SettingsTileHeader(title: S.of(context).databaseSettings.titleCase),
+          const SettingsTileDivider(full: true),
+          const SyncSettingsSection(),
+          VerticalSpacer.large,
+        ],
+      ),
+    );
   }
 }

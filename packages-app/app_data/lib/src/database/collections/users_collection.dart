@@ -12,18 +12,23 @@ class UsersCollection extends DatabaseCollection<UserModel> {
 
   final Realm _realm;
 
-  String get getLastSyncTimestampKey => lastSyncTimestampKey;
-
   @override
-  String get path => '$root/$userID/${DbCollection.cases.name}';
+  String get path => 'users/$userID/data';
 
   @override
   CollectionReference<UserModel> get withConverter =>
       firestore.collection(path).withConverter<UserModel>(
             fromFirestore: (snapshot, _) =>
                 UserModelX.fromJson(snapshot.data()!),
-            toFirestore: (caseModel, _) => caseModel.toJson(),
+            toFirestore: (userModel, _) => userModel.toJson(),
           );
+
+  @override
+  Future<UserModel> upsert(UserModel model) async {
+    final userModel = model..timestamp = ModelUtils.getTimestamp;
+    await put(userID, userModel);
+    return userModel;
+  }
 
   @override
   Stream<List<UserModel>> listenForChanges() {
@@ -33,12 +38,6 @@ class UsersCollection extends DatabaseCollection<UserModel> {
             final model = UserModelX.fromJson(change.doc.data()!);
             switch (change.type) {
               case DocumentChangeType.added:
-                final localModel = _realm.find<UserModel>(model.userID);
-                if (localModel == null) {
-                  _realm.write(() => _realm.add(model));
-                }
-                return model;
-
               case DocumentChangeType.modified:
                 _realm.write(() => _realm.add<UserModel>(model, update: true));
                 return model;
@@ -57,7 +56,14 @@ class UsersCollection extends DatabaseCollection<UserModel> {
     });
   }
 
-  Future<void> upsertUserModel(UserModel userModel) {
-    return put(userID, userModel);
+  Future<UserModel> getCurrentUserModel() async {
+    final userModel = _realm.find<UserModel>(userID);
+    if (userModel != null) return userModel;
+
+    final serverUserModel =
+        await getSingle(userID) ?? UserModelX.zero(userID: userID);
+
+    _realm.write(() => _realm.add<UserModel>(serverUserModel, update: true));
+    return serverUserModel;
   }
 }

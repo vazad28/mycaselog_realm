@@ -1,4 +1,7 @@
+import 'package:app_models/app_models.dart';
+import 'package:async_result/async_result.dart';
 import 'package:logger_client/logger_client.dart';
+import 'package:realm/realm.dart';
 
 import '../../../../app_data.dart';
 
@@ -11,38 +14,30 @@ class SupportDataRepositoryImpl extends SupportDataRepository with LoggerMixin {
 
   final DatabaseService _databaseService;
 
-  // @override
-  // Future<Result<SupportDataModel, RepositoryFailure>> getSupportData() async {
-  //   try {
-  //     final data = await _databaseService.supportDataCollection
-  //             .getSupportData() ??
-  //         SupportDataModel(_appData.currentUser.id);
-  //     return Result<SupportDataModel, RepositoryFailure>.success(data);
-  //   } catch (err, st) {
-  //     logger.severe(err, st);
-  //     return Result.failure(RepositoryFailure.fromError(err));
-  //   }
-  // }
+  @override
+  Result<SupportDataModel, RepositoryFailure> getSupportData() {
+    try {
+      final data = _databaseService.supportDataCollection.getSupportData();
 
-  // @override
-  // Future<Result<SupportDataModel, RepositoryFailure>> updateSupportData(
-  //   SupportDataModel supportDataModel,
-  // ) async {
-  //   try {
-  //     final updatedSupportDataModel =
-  //         supportDataModel.copyWith(timestamp: ModelUtils.getTimestamp);
+      return Result.success(data);
+    } catch (err, st) {
+      logger.severe(err, st);
+      return Result.failure(RepositoryFailure.fromError(err));
+    }
+  }
 
-  //     await _appData.local.supportDataCollection.put(updatedSupportDataModel);
+  @override
+  Future<Result<SupportDataModel, RepositoryFailure>> setSupportData(
+    SupportDataModel supportDataModel,
+  ) async {
+    try {
+      final model =
+          await _databaseService.supportDataCollection.upsert(supportDataModel);
 
-  //     ///update server and on error save the request in pending collection
-  //     await _appData.remote.supportDataCollection.updatedSupportDataModel(
-  //       updatedSupportDataModel,
-  //     );
-
-  //     return Result.success(supportDataModel);
-  //   } catch (err) {
-  //     logger.severe(err);
-  //     return Result.failure(RepositoryFailure.fromError(err));
-  //   }
-  // }
+      return Result.success(model);
+    } catch (err) {
+      logger.severe(err);
+      return Result.failure(RepositoryFailure.fromError(err));
+    }
+  }
 }

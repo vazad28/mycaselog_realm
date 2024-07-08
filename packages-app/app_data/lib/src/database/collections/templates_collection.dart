@@ -12,10 +12,8 @@ class TemplatesCollection extends DatabaseCollection<TemplateModel> {
 
   final Realm _realm;
 
-  String get getLastSyncTimestampKey => lastSyncTimestampKey;
-
   @override
-  String get path => '$root/$userID/${DbCollection.cases.name}';
+  String get path => '$root/$userID/${DbCollection.templates.name}';
 
   @override
   CollectionReference<TemplateModel> get withConverter =>
@@ -26,19 +24,21 @@ class TemplatesCollection extends DatabaseCollection<TemplateModel> {
           );
 
   @override
+  Future<TemplateModel> upsert(TemplateModel model) async {
+    final templateModel = model..timestamp = ModelUtils.getTimestamp;
+    await put(model.templateID, templateModel);
+    return templateModel;
+  }
+
+  @override
   Stream<List<TemplateModel>> listenForChanges() {
     return stream.map((querySnapshot) {
       final documents = querySnapshot.docChanges
           .map((change) {
             final model = TemplateModelX.fromJson(change.doc.data()!);
+
             switch (change.type) {
               case DocumentChangeType.added:
-                final localModel = _realm.find<TemplateModel>(model.templateID);
-                if (localModel == null) {
-                  _realm.write(() => _realm.add(model));
-                }
-                return model;
-
               case DocumentChangeType.modified:
                 _realm.write(
                     () => _realm.add<TemplateModel>(model, update: true));
@@ -64,5 +64,9 @@ class TemplatesCollection extends DatabaseCollection<TemplateModel> {
 
   List<TemplateModel> getAllTemplates() {
     return _realm.all<TemplateModel>().toList();
+  }
+
+  Stream<RealmResultsChanges<TemplateModel>> templateCount() {
+    return _realm.all<TemplateModel>().changes;
   }
 }

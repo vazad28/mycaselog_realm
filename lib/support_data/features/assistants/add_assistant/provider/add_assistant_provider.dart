@@ -167,7 +167,7 @@ class AddAssistantNotifier extends _$AddAssistantNotifier with LoggerMixin {
   AssistantModel? _createModelToSave() {
     /// update with basic data
     final assistantModelJson = {..._originalModelJson, ..._formGroup.value};
-    return AssistantModelX.fromJson(assistantModelJson);
+    return AssistantModel.fromJson(assistantModelJson);
   }
 
   /// ---- DO the form submit  ---

@@ -5,7 +5,7 @@ abstract class TemplatesRepository {
   Future<List<TemplateModel>> getAllTemplates();
 
   // Get total case count for enless list view
-  int getTotalTemplatesCount();
+  Stream<RealmResultsChanges<TemplateModel>> getTotalTemplatesCount();
 
   // Get  single caseModel by caseID
   Future<TemplateModel?> getTemplate(String? templateID);

@@ -16,7 +16,9 @@ _UserModel _$UserModelFromJson(Map<String, dynamic> json) => _UserModel()
   ..about = json['about'] as String?
   ..creationTime = (json['creationTime'] as num?)?.toInt()
   ..lastSignInTime = (json['lastSignInTime'] as num?)?.toInt()
-  ..timestamp = (json['timestamp'] as num).toInt();
+  ..timestamp = (json['timestamp'] as num).toInt()
+  ..subscriptionPlan =
+      $enumDecode(_$SubscriptionPlanEnumMap, json['subscriptionPlan']);
 
 Map<String, dynamic> _$UserModelToJson(_UserModel instance) =>
     <String, dynamic>{
@@ -30,4 +32,12 @@ Map<String, dynamic> _$UserModelToJson(_UserModel instance) =>
       'creationTime': instance.creationTime,
       'lastSignInTime': instance.lastSignInTime,
       'timestamp': instance.timestamp,
+      'subscriptionPlan': _$SubscriptionPlanEnumMap[instance.subscriptionPlan]!,
     };
+
+const _$SubscriptionPlanEnumMap = {
+  SubscriptionPlan.none: 'none',
+  SubscriptionPlan.basic: 'basic',
+  SubscriptionPlan.plus: 'plus',
+  SubscriptionPlan.premium: 'premium',
+};

@@ -24,6 +24,13 @@ class TimelineNotesCollection extends DatabaseCollection<TimelineNoteModel> {
           );
 
   @override
+  Future<TimelineNoteModel> upsert(TimelineNoteModel model) async {
+    final timelineNoteModel = model..timestamp = ModelUtils.getTimestamp;
+    await put(model.noteID, timelineNoteModel);
+    return timelineNoteModel;
+  }
+
+  @override
   Stream<List<TimelineNoteModel>> listenForChanges() {
     return stream.map((querySnapshot) {
       final documents = querySnapshot.docChanges
@@ -31,12 +38,6 @@ class TimelineNotesCollection extends DatabaseCollection<TimelineNoteModel> {
             final model = TimelineNoteModelX.fromJson(change.doc.data()!);
             switch (change.type) {
               case DocumentChangeType.added:
-                final localModel = _realm.find<TimelineNoteModel>(model.caseID);
-                if (localModel == null) {
-                  _realm.write(() => _realm.add(model));
-                }
-                return model;
-
               case DocumentChangeType.modified:
                 _realm.write(
                     () => _realm.add<TimelineNoteModel>(model, update: true));

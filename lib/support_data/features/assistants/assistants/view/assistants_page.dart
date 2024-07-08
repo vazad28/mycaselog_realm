@@ -23,7 +23,7 @@ class AssistantsPage extends ConsumerWidget with AssistantsEventMixin {
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () {
-              AddAssistantRoute(AssistantModelX.zero(), newRecord: true)
+              AddAssistantRoute(AssistantModel.zero(), newRecord: true)
                   .push<AssistantModel>(context);
             },
           ),

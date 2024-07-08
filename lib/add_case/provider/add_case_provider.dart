@@ -75,10 +75,7 @@ class AddCaseSeeder extends _$AddCaseSeeder {
 
     originalModelJson = caseModel.toJson();
 
-    /// let the loading spinner show and allow screen animation finish
-    await Future<void>.delayed(const Duration(milliseconds: 300));
-
-    /// add default surgery location her in the object so that our method
+    /// add default surgery location here in the object so that our method
     /// to check for any change in form works
     final defaultSurgeryLocation =
         ref.read(localStorageProvider).getDefaultSurgeryLocation;
@@ -87,6 +84,9 @@ class AddCaseSeeder extends _$AddCaseSeeder {
       caseModel.location =
           defaultSurgeryLocation.isEmpty ? null : defaultSurgeryLocation;
     }
+
+    /// let the loading spinner show and allow screen animation finish
+    await Future<void>.delayed(const Duration(milliseconds: 200));
 
     state = AddCaseSeedModel(
       caseModel: caseModel,
@@ -205,8 +205,6 @@ class AddCaseNotifier extends _$AddCaseNotifier with LoggerMixin {
     /// update with basic data
     final caseModelJson = {..._originalModelJson, ..._basicDataForm.value};
 
-    //print(_patientDataForm.value);
-
     final currTemplateModel = ref.read(currentCaseTemplateProvider);
 
     final createdModel = CaseModelX.fromJson(caseModelJson)
@@ -254,16 +252,16 @@ class AddCaseNotifier extends _$AddCaseNotifier with LoggerMixin {
       final formToModel = _createModelToSave();
 
       /// check equality using props defined in Model using equatable
-      final caseDataEqual = const DeepCollectionEquality()
+      final modelsAreEqual = const DeepCollectionEquality()
           .equals(formToModel?.toJson(), _originalModelJson);
 
       /// compare form fields data as bare bone json
-      final templateFieldsEqual = const DeepCollectionEquality().equals(
+      final fieldsAreEqual = const DeepCollectionEquality().equals(
         _originalModelJson['fieldsData'] as List<Map<String, dynamic>>?,
         formToModel?.fieldsData.map((e) => e.toJson()).toList(),
       );
 
-      return caseDataEqual && templateFieldsEqual;
+      return modelsAreEqual && fieldsAreEqual;
     } catch (err) {
       logger.severe(err);
       state = StateOf<CaseModel>.failure(AppFailure.generic(err));
@@ -277,12 +275,11 @@ class AddCaseNotifier extends _$AddCaseNotifier with LoggerMixin {
 /// ////////////////////////////////////////////////////////////////////
 /// List of templates of user
 @riverpod
-Future<Result<List<TemplateModel>, Exception>> templateModelsList(
+Future<List<TemplateModel>> templateModelsList(
   TemplateModelsListRef ref,
 ) {
   /// ToDo
-  //return ref.watch(templatesRepositoryProvider).getAllTemplates();
-  return Future.sync(() => Result.success(<TemplateModel>[]));
+  return ref.watch(templatesRepositoryProvider).getAllTemplates();
 }
 
 ///

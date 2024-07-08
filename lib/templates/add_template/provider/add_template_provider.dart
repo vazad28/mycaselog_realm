@@ -194,10 +194,14 @@ class AddTemplateNotifier extends _$AddTemplateNotifier with LoggerMixin {
     /// update with basic data
     final templateModelJson = {..._originalModelJson, ..._formGroup.value};
 
-    final fields = RealmList<TemplateFieldModel>(
+    final model = TemplateModelX.fromJson(templateModelJson);
+    model.fields.clear();
+
+    model.fields.addAll(
       ref.read(addTemplateFieldsNotifierProvider)?.toList() ?? [],
     );
-    return TemplateModelX.fromJson(templateModelJson)..fields = fields;
+
+    return model;
   }
 
   /// ---- DO the form submit  ---
@@ -227,21 +231,15 @@ class AddTemplateNotifier extends _$AddTemplateNotifier with LoggerMixin {
       /// Create model instance with form data
       final formToModel = _createModelToSave();
 
-      /// check equality using props defined in Model using equatable
-      final modelsAreEqual = formToModel == originalModel;
-
-      //print('modelsAreEqual  $modelsAreEqual');
+      /// check equality using json
+      final modelsAreEqual = const DeepCollectionEquality()
+          .equals(formToModel?.toJson(), _originalModelJson);
 
       /// compare form fields data as bare bone json
       final fieldsAreEqual = const DeepCollectionEquality().equals(
         _originalModelJson['fields'] as List<Map<String, dynamic>>?,
-        formToModel?.fields?.map((e) => e.toJson()).toList(),
+        formToModel?.fields.map((e) => e.toJson()).toList(),
       );
-
-      // print(_originalModelJson['fields']);
-      // print(formToModel?.fields);
-
-      // print('fieldsAreEqual  $fieldsAreEqual');
 
       return modelsAreEqual && fieldsAreEqual;
     } catch (err) {
