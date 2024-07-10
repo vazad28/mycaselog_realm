@@ -3,8 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../cases.dart';
 
-class CaseTileStyleToggle extends ConsumerWidget
-    with CasesEventMixin, CasesStateMixin {
+class CaseTileStyleToggle extends ConsumerWidget {
   const CaseTileStyleToggle({super.key});
 
   static const _tileDisplayIcons = [
@@ -15,15 +14,15 @@ class CaseTileStyleToggle extends ConsumerWidget
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final style = watchCaseTileStyle(ref);
+    final caseTileStyle = ref.watch(caseTileStyleProvider);
 
     // ignore: require_trailing_commas
     return IconButton(
       onPressed: () {
-        final toggledStyle = style == 2 ? 0 : style + 1;
-        updateCaseTileStyle(ref, toggledStyle);
+        final toggledStyle = caseTileStyle == 2 ? 0 : caseTileStyle + 1;
+        ref.watch(caseTileStyleProvider.notifier).update(toggledStyle);
       },
-      icon: _tileDisplayIcons[style],
+      icon: _tileDisplayIcons[caseTileStyle],
     );
   }
 }

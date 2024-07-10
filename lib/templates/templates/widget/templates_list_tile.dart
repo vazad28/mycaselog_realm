@@ -15,8 +15,7 @@ import '../templates.dart';
 /// We pass an instance of the model and not voidCallback as we need
 /// tap and long press to call for different methods on ViewModel
 /// ////////////////////////////////////////////////////////////////////
-class TemplatesListTile extends ConsumerWidget
-    with TemplatesEventMixin, TemplatesStateMixin {
+class TemplatesListTile extends ConsumerWidget {
   const TemplatesListTile({
     required this.templateModel,
     super.key,
@@ -50,6 +49,7 @@ class TemplatesListTile extends ConsumerWidget
   }
 
   List<Widget> _menuOptionInactiveTemplates(BuildContext ctx, WidgetRef ref) {
+    final notifier = ref.watch(templatesListProvider.notifier);
     return [
       ListTile(
         title: const Text('Re-activate Template'),
@@ -59,7 +59,7 @@ class TemplatesListTile extends ConsumerWidget
         ),
         onTap: () {
           Navigator.of(ctx).pop();
-          onTemplateTap(ref, TemplatesEvent.reactivateTemplate(templateModel));
+          notifier.on(TemplatesEvent.reactivateTemplate(templateModel));
         },
       ),
       const Divider(indent: 64),
@@ -72,7 +72,7 @@ class TemplatesListTile extends ConsumerWidget
         subtitle: const Text('Deleting a template can not be undone'),
         onTap: () {
           Navigator.of(ctx).pop();
-          onTemplateTap(ref, TemplatesEvent.deleteTemplate(templateModel));
+          notifier.on(TemplatesEvent.deleteTemplate(templateModel));
         },
       ),
     ];
@@ -82,6 +82,7 @@ class TemplatesListTile extends ConsumerWidget
     BuildContext ctx,
     WidgetRef ref,
   ) {
+    final notifier = ref.watch(templatesListProvider.notifier);
     return [
       if (templateModel.shared == false)
         ListTile(
@@ -90,7 +91,7 @@ class TemplatesListTile extends ConsumerWidget
           subtitle: const Text('Share template with other users of the app'),
           onTap: () {
             Navigator.of(ctx).pop();
-            onTemplateTap(ref, TemplatesEvent.shareTemplate(templateModel));
+            notifier.on(TemplatesEvent.shareTemplate(templateModel));
           },
         ),
       // ignore: use_if_null_to_convert_nulls_to_bools
@@ -102,7 +103,7 @@ class TemplatesListTile extends ConsumerWidget
               const Text('Remove this template from shared templates list'),
           onTap: () {
             Navigator.of(ctx).pop();
-            onTemplateTap(ref, TemplatesEvent.unShareTemplate(templateModel));
+            notifier.on(TemplatesEvent.unShareTemplate(templateModel));
           },
         ),
       const Divider(indent: 64),
@@ -114,7 +115,7 @@ class TemplatesListTile extends ConsumerWidget
         ),
         onTap: () {
           Navigator.of(ctx).pop();
-          onTemplateTap(ref, TemplatesEvent.deactivateTemplate(templateModel));
+          notifier.on(TemplatesEvent.deactivateTemplate(templateModel));
         },
       ),
     ];

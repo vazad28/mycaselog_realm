@@ -30,7 +30,7 @@ class SurgeryLocationsPage extends ConsumerWidget
             icon: const Icon(Icons.add),
             onPressed: () {
               AddSurgeryLocationRoute(
-                SurgeryLocationModel.zero(),
+                SurgeryLocationModelX.zero(),
                 newRecord: true,
               )
                   .push<SurgeryLocationModel?>(context)

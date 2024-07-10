@@ -85,6 +85,6 @@ class SharedTemplateNotifier extends _$SharedTemplateNotifier {
         .watch(addTemplateSeederProvider.notifier)
         .seedWithImportedTemplate(templateModel);
 
-    state = StateOf.success(templateModel.templateID!);
+    state = StateOf.success(templateModel.templateID);
   }
 }

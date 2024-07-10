@@ -91,22 +91,22 @@ class StatsRepositoryImpl with LoggerMixin implements StatsRepository {
     );
   }
 
-  @override
-  Future<Result<UserStatsModel, RepositoryFailure>> getUserStats() async {
-    try {
-      final casesCount = _databaseService.casesCollection.countAll();
+  // @override
+  // Future<Result<UserStatsModel, RepositoryFailure>> getUserStats() async {
+  //   try {
+  //     final casesCount = _databaseService.casesCollection.countAll();
 
-      final mediaCount = _databaseService.mediaCollection.countAll();
+  //     final mediaCount = _databaseService.mediaCollection.countAll();
 
-      final notesCount = _databaseService.timelineNotesCollection.countAll();
+  //     final notesCount = _databaseService.timelineNotesCollection.countAll();
 
-      return Result.success(
-        UserStatsModel(cases: casesCount, media: mediaCount, notes: notesCount),
-      );
-    } catch (err) {
-      return Result.failure(RepositoryFailure.fromError(err));
-    }
-  }
+  //     return Result.success(
+  //       UserStatsModel(cases: casesCount, media: mediaCount, notes: notesCount),
+  //     );
+  //   } catch (err) {
+  //     return Result.failure(RepositoryFailure.fromError(err));
+  //   }
+  // }
 
   @override
   Future<List<CaseModel>> getStatsCases(List<String> idList) async {

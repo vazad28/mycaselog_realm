@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../case_details.dart';
 
 class CaseDetailsView extends ConsumerWidget with CaseDetailsEventMixin, CaseDetailsStateMixin{
-  const CaseDetailsView({Key? key}) : super(key: key);
+  const CaseDetailsView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

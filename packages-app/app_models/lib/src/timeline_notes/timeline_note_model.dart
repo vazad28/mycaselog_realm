@@ -29,7 +29,7 @@ class _TimelineNoteModel {
         createdAt: createdAt,
         initialTimestamp: initialTimestamp,
         removed: removed,
-        timestamp: timestamp);
+        timestamp: timestamp,);
   }
 }
 

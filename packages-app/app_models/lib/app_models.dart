@@ -1,15 +1,15 @@
-library app_models;
+
+export './extensions.dart';
 
 /// Realms
 export 'src/cases/case_model.dart';
 export 'src/media/media_model.dart';
 export 'src/model_utils.dart';
-export 'src/settings/realm/settings_realm.dart';
+export 'src/notes/note_model.dart';
 export 'src/settings/settings_model.dart';
 export 'src/stats/chart_req_model.dart';
 export 'src/stats/user_stats_model.dart';
 export 'src/subscription/subscription.dart';
-export 'src/support_data/realm/support_data_realm.dart';
 export 'src/support_data/support_data_model.dart';
 export 'src/templates/shared_template_model.dart';
 export 'src/templates/template_field_model.dart';

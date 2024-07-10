@@ -1,5 +1,9 @@
 import 'package:storage/storage.dart';
 
+import '../../authentication_client.dart';
+
+import '../repository/authentication_repository.dart';
+
 /// Storage keys for the [AuthenticationUserStorage].
 abstract class AuthenticationUserStorageKeys {
   /// Number of times that a user opened the application.

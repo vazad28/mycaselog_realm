@@ -6,11 +6,11 @@ part of '../../../core/providers/repository_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$databaseServiceHash() => r'19c80bc505703ba7cf25182804554aef296e6af5';
+String _$databaseServiceHash() => r'9a6dc463267dfdff6d4ab5d9cc033a8532384156';
 
 /// See also [databaseService].
 @ProviderFor(databaseService)
-final databaseServiceProvider = Provider<DatabaseService>.internal(
+final databaseServiceProvider = AutoDisposeProvider<DatabaseService>.internal(
   databaseService,
   name: r'databaseServiceProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -20,7 +20,7 @@ final databaseServiceProvider = Provider<DatabaseService>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef DatabaseServiceRef = ProviderRef<DatabaseService>;
+typedef DatabaseServiceRef = AutoDisposeProviderRef<DatabaseService>;
 String _$encryptionRepositoryHash() =>
     r'f89531b779bcc15cfe132068a90703f63f488864';
 
@@ -74,25 +74,9 @@ final userRepositoryProvider = AutoDisposeProvider<UserRepository>.internal(
 );
 
 typedef UserRepositoryRef = AutoDisposeProviderRef<UserRepository>;
-String _$casesRepositoryHash() => r'f53e55d364e9d6774cf87d745f379fec5dff0a4f';
-
-/// Cases repository provider
-///
-/// Copied from [casesRepository].
-@ProviderFor(casesRepository)
-final casesRepositoryProvider = AutoDisposeProvider<CasesRepository>.internal(
-  casesRepository,
-  name: r'casesRepositoryProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$casesRepositoryHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef CasesRepositoryRef = AutoDisposeProviderRef<CasesRepository>;
 String _$mediaRepositoryHash() => r'8d3be2ef7e6340f1de41ee0c84e266b179804d52';
 
+/// Cases repository provider
 /// Media Repository provider
 ///
 /// Copied from [mediaRepository].
@@ -161,44 +145,36 @@ final statsRepositoryProvider = AutoDisposeProvider<StatsRepository>.internal(
 );
 
 typedef StatsRepositoryRef = AutoDisposeProviderRef<StatsRepository>;
-String _$settingsRepositoryHash() =>
-    r'b16c395ba579fba6f4aa9bc86dd5ae2741723af5';
+String _$notesRepositoryHash() => r'e9d660cb7dc3ccd6934d86e9db021adda9dfc340';
 
 /// Settings repository provider
 ///
-/// Copied from [settingsRepository].
-@ProviderFor(settingsRepository)
-final settingsRepositoryProvider =
-    AutoDisposeProvider<SettingsRepository>.internal(
-  settingsRepository,
-  name: r'settingsRepositoryProvider',
+/// Copied from [notesRepository].
+@ProviderFor(notesRepository)
+final notesRepositoryProvider = AutoDisposeProvider<NotesRepository>.internal(
+  notesRepository,
+  name: r'notesRepositoryProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$settingsRepositoryHash,
+      : _$notesRepositoryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef SettingsRepositoryRef = AutoDisposeProviderRef<SettingsRepository>;
-String _$supportDataRepositoryHash() =>
-    r'7901d87821cbb8b46e35c91e27a09651038c0956';
+typedef NotesRepositoryRef = AutoDisposeProviderRef<NotesRepository>;
+String _$dbHash() => r'a5baa178c0ee8940f62283ab1a9bd42b462df5dd';
 
-/// Settings repository provider
-///
-/// Copied from [supportDataRepository].
-@ProviderFor(supportDataRepository)
-final supportDataRepositoryProvider =
-    AutoDisposeProvider<SupportDataRepository>.internal(
-  supportDataRepository,
-  name: r'supportDataRepositoryProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$supportDataRepositoryHash,
+/// See also [Db].
+@ProviderFor(Db)
+final dbProvider = AutoDisposeNotifierProvider<Db, DatabaseService>.internal(
+  Db.new,
+  name: r'dbProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$dbHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef SupportDataRepositoryRef
-    = AutoDisposeProviderRef<SupportDataRepository>;
+typedef _$Db = AutoDisposeNotifier<DatabaseService>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, inference_failure_on_uninitialized_variable, inference_failure_on_function_return_type, inference_failure_on_untyped_parameter, deprecated_member_use_from_same_package

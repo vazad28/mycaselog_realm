@@ -86,6 +86,9 @@ class _$AppFailureCopyWithImpl<$Res, $Val extends AppFailure>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of AppFailure
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -104,6 +107,9 @@ class __$$CredentialsExistFailureImplCopyWithImpl<$Res>
       _$CredentialsExistFailureImpl _value,
       $Res Function(_$CredentialsExistFailureImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AppFailure
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -209,6 +215,9 @@ class __$$CredentialsUserMismatchFailureImplCopyWithImpl<$Res>
       _$CredentialsUserMismatchFailureImpl _value,
       $Res Function(_$CredentialsUserMismatchFailureImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AppFailure
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -317,6 +326,8 @@ class __$$CustomFailureImplCopyWithImpl<$Res>
       _$CustomFailureImpl _value, $Res Function(_$CustomFailureImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AppFailure
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -353,7 +364,9 @@ class _$CustomFailureImpl extends CustomFailure {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(err));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AppFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CustomFailureImplCopyWith<_$CustomFailureImpl> get copyWith =>
@@ -426,7 +439,10 @@ abstract class CustomFailure extends AppFailure {
   const CustomFailure._() : super._();
 
   Object? get err;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AppFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CustomFailureImplCopyWith<_$CustomFailureImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -449,6 +465,8 @@ class __$$AppFailureFromFailureImplCopyWithImpl<$Res>
       $Res Function(_$AppFailureFromFailureImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AppFailure
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -488,7 +506,9 @@ class _$AppFailureFromFailureImpl extends AppFailureFromFailure {
   @override
   int get hashCode => Object.hash(runtimeType, exception);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AppFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AppFailureFromFailureImplCopyWith<_$AppFailureFromFailureImpl>
@@ -563,7 +583,10 @@ abstract class AppFailureFromFailure extends AppFailure {
   const AppFailureFromFailure._() : super._();
 
   Exception get exception;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AppFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AppFailureFromFailureImplCopyWith<_$AppFailureFromFailureImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -582,6 +605,9 @@ class __$$DecryptionFailureImplCopyWithImpl<$Res>
   __$$DecryptionFailureImplCopyWithImpl(_$DecryptionFailureImpl _value,
       $Res Function(_$DecryptionFailureImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AppFailure
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -686,6 +712,9 @@ class __$$DeviceHasAnotherAccountFailureImplCopyWithImpl<$Res>
       _$DeviceHasAnotherAccountFailureImpl _value,
       $Res Function(_$DeviceHasAnotherAccountFailureImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AppFailure
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -791,6 +820,9 @@ class __$$EncryptionFailureImplCopyWithImpl<$Res>
   __$$EncryptionFailureImplCopyWithImpl(_$EncryptionFailureImpl _value,
       $Res Function(_$EncryptionFailureImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AppFailure
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -893,6 +925,9 @@ class __$$NoStatsDataImplCopyWithImpl<$Res>
   __$$NoStatsDataImplCopyWithImpl(
       _$NoStatsDataImpl _value, $Res Function(_$NoStatsDataImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AppFailure
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -995,6 +1030,9 @@ class __$$FileNotFoundFailureImplCopyWithImpl<$Res>
   __$$FileNotFoundFailureImplCopyWithImpl(_$FileNotFoundFailureImpl _value,
       $Res Function(_$FileNotFoundFailureImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AppFailure
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1101,6 +1139,8 @@ class __$$FirebaseFailureImplCopyWithImpl<$Res>
       _$FirebaseFailureImpl _value, $Res Function(_$FirebaseFailureImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AppFailure
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1139,7 +1179,9 @@ class _$FirebaseFailureImpl extends _FirebaseFailure {
   @override
   int get hashCode => Object.hash(runtimeType, err);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AppFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$FirebaseFailureImplCopyWith<_$FirebaseFailureImpl> get copyWith =>
@@ -1214,7 +1256,10 @@ abstract class _FirebaseFailure extends AppFailure {
   const _FirebaseFailure._() : super._();
 
   FirebaseException get err;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AppFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$FirebaseFailureImplCopyWith<_$FirebaseFailureImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1235,6 +1280,9 @@ class __$$MissingCredsOnServerFailureImplCopyWithImpl<$Res>
       _$MissingCredsOnServerFailureImpl _value,
       $Res Function(_$MissingCredsOnServerFailureImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AppFailure
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1341,6 +1389,9 @@ class __$$MissingFormDataFailureImplCopyWithImpl<$Res>
       _$MissingFormDataFailureImpl _value,
       $Res Function(_$MissingFormDataFailureImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AppFailure
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1444,6 +1495,9 @@ class __$$FormHasErrorFailureImplCopyWithImpl<$Res>
   __$$FormHasErrorFailureImplCopyWithImpl(_$FormHasErrorFailureImpl _value,
       $Res Function(_$FormHasErrorFailureImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AppFailure
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1547,6 +1601,9 @@ class __$$MissingDataFailureImplCopyWithImpl<$Res>
   __$$MissingDataFailureImplCopyWithImpl(_$MissingDataFailureImpl _value,
       $Res Function(_$MissingDataFailureImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AppFailure
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1649,6 +1706,9 @@ class __$$NoCollectionFailureImplCopyWithImpl<$Res>
   __$$NoCollectionFailureImplCopyWithImpl(_$NoCollectionFailureImpl _value,
       $Res Function(_$NoCollectionFailureImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AppFailure
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1755,6 +1815,8 @@ class __$$PlatformFailureImplCopyWithImpl<$Res>
       _$PlatformFailureImpl _value, $Res Function(_$PlatformFailureImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AppFailure
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1793,7 +1855,9 @@ class _$PlatformFailureImpl extends PlatformFailure {
   @override
   int get hashCode => Object.hash(runtimeType, err);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AppFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PlatformFailureImplCopyWith<_$PlatformFailureImpl> get copyWith =>
@@ -1868,7 +1932,10 @@ abstract class PlatformFailure extends AppFailure {
   const PlatformFailure._() : super._();
 
   PlatformException get err;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AppFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PlatformFailureImplCopyWith<_$PlatformFailureImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1887,6 +1954,9 @@ class __$$UnknownFailureImplCopyWithImpl<$Res>
   __$$UnknownFailureImplCopyWithImpl(
       _$UnknownFailureImpl _value, $Res Function(_$UnknownFailureImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AppFailure
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1989,6 +2059,9 @@ class __$$UserEmailNotVerifiedImplCopyWithImpl<$Res>
   __$$UserEmailNotVerifiedImplCopyWithImpl(_$UserEmailNotVerifiedImpl _value,
       $Res Function(_$UserEmailNotVerifiedImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AppFailure
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -2092,6 +2165,9 @@ class __$$UserNotAvailableImplCopyWithImpl<$Res>
   __$$UserNotAvailableImplCopyWithImpl(_$UserNotAvailableImpl _value,
       $Res Function(_$UserNotAvailableImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AppFailure
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -2194,6 +2270,9 @@ class __$$NullValueFailureImplCopyWithImpl<$Res>
   __$$NullValueFailureImplCopyWithImpl(_$NullValueFailureImpl _value,
       $Res Function(_$NullValueFailureImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AppFailure
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc

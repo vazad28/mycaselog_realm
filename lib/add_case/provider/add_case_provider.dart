@@ -69,9 +69,12 @@ class AddCaseSeeder extends _$AddCaseSeeder {
 
   /// called by view with passed param caseID to load case model
   Future<void> seed(CaseModel caseModel, {bool newRecord = false}) async {
-    final templateModel = await ref
-        .read(templatesRepositoryProvider)
-        .getTemplate(caseModel.templateID);
+    final templateModel = caseModel.templateID == null
+        ? null
+        : ref
+            .watch(dbProvider)
+            .templatesCollection
+            .getSingle('templateID', caseModel.templateID!);
 
     originalModelJson = caseModel.toJson();
 
@@ -215,15 +218,13 @@ class AddCaseNotifier extends _$AddCaseNotifier with LoggerMixin {
 
     createdModel.fieldsData.addAll(_createFieldsData(currTemplateModel) ?? []);
 
-    //print(createdModel.toJson());
     return createdModel;
   }
 
   /// ---- DO the form submit  ---
   Future<void> _doSubmit(CaseModel modelToSubmit) async {
-    final result = await ref
-        .read(casesRepositoryProvider)
-        .addCase(modelToSubmit..timestamp = ModelUtils.getTimestamp);
+    await ref.read(dbProvider).casesCollection.put(modelToSubmit.caseID,
+        modelToSubmit..timestamp = ModelUtils.getTimestamp,);
 
     /// set last used location  as default location to use next time
     if (modelToSubmit.location != null) {
@@ -232,15 +233,7 @@ class AddCaseNotifier extends _$AddCaseNotifier with LoggerMixin {
           .setDefaultSurgeryLocation(modelToSubmit.location!);
     }
 
-    result.when(
-      success: (res) {
-        state = StateOf<CaseModel>.success(res);
-      },
-      failure: (failure) {
-        logger.severe(failure);
-        state = StateOf<CaseModel>.failure(failure);
-      },
-    );
+    state = StateOf<CaseModel>.success(modelToSubmit);
   }
 
   /// ----- can pop -----
@@ -274,14 +267,6 @@ class AddCaseNotifier extends _$AddCaseNotifier with LoggerMixin {
 /// Helper providers
 /// ////////////////////////////////////////////////////////////////////
 /// List of templates of user
-@riverpod
-Future<List<TemplateModel>> templateModelsList(
-  TemplateModelsListRef ref,
-) {
-  /// ToDo
-  return ref.watch(templatesRepositoryProvider).getAllTemplates();
-}
-
 ///
 /// Add case template provider
 ///

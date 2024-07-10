@@ -5,14 +5,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logger_client/logger_client.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:realm/realm.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:state_of/state_of.dart';
 
 import '../../../core/failures/app_failures.dart';
 import '../../../core/providers/providers.dart';
 import '../../../router/router.dart';
-import '../../templates/templates.dart';
 import 'add_template_fields_provider.dart';
 
 part '../../../generated/templates/add_template/provider/add_template_provider.freezed.dart';
@@ -38,9 +36,6 @@ mixin AddTemplateEventMixin {
 }
 
 mixin AddTemplateStateMixin {
-  AsyncValue<List<TemplateModel>> getMyTemplatesList(WidgetRef ref) =>
-      ref.watch(myTemplatesForFieldsImportProvider);
-
   FormGroup getTemplateFieldFormGroup(WidgetRef ref) =>
       ref.watch(addTemplateFormGroupProvider);
 
@@ -79,12 +74,15 @@ class AddTemplateSeeder extends _$AddTemplateSeeder {
 
   /// called by view with passed param caseID to load case model
   void seed(String templateID, String userSpeciality) {
-    ref.read(templatesRepositoryProvider).getTemplate(templateID).then((value) {
-      final model = value ?? TemplateModelX.zero()
-        ..speciality = userSpeciality;
-      state = model;
-      originalModelJson = model.toJson();
-    });
+    final templateModel = ref
+        .watch(dbProvider)
+        .templatesCollection
+        .getSingle('templateID', templateID);
+
+    final model = templateModel ?? TemplateModelX.zero()
+      ..speciality = userSpeciality;
+    state = model;
+    originalModelJson = model.toJson();
   }
 
   void seedWithImportedTemplate(TemplateModel templateModel) {
@@ -93,16 +91,6 @@ class AddTemplateSeeder extends _$AddTemplateSeeder {
   }
 
   Map<String, dynamic> originalModelJson = {};
-}
-
-@riverpod
-Future<List<TemplateModel>> myTemplatesForFieldsImport(Ref ref) async {
-  final result = await ref.read(templatesRepositoryProvider).getAllTemplates();
-  return result;
-  // return result.when(
-  //   success: (templates) => templates,
-  //   failure: (failure) => throw failure,
-  // );
 }
 
 /// ////////////////////////////////////////////////////////////////////
@@ -206,22 +194,15 @@ class AddTemplateNotifier extends _$AddTemplateNotifier with LoggerMixin {
 
   /// ---- DO the form submit  ---
   Future<void> _doSubmit(TemplateModel modelToSubmit) async {
-    final result =
-        await ref.read(templatesRepositoryProvider).addTemplate(modelToSubmit);
-
-    result.when(
-      success: (res) {
-        /// refresh templates
-        ref
-            .watch(templatesNotifierProvider.notifier)
-            .on(const TemplatesEvent.refreshTemplates());
-        state = StateOf<TemplateModel>.success(res);
-      },
-      failure: (failure) {
-        logger.severe(failure);
-        state = StateOf<TemplateModel>.failure(failure);
-      },
-    );
+    try {
+      await ref
+          .read(dbProvider)
+          .templatesCollection
+          .put(modelToSubmit.templateID, modelToSubmit);
+      state = StateOf<TemplateModel>.success(modelToSubmit);
+    } catch (err) {
+      state = StateOf<TemplateModel>.failure(err.toAppFailure());
+    }
   }
 
   /// ----- can pop -----

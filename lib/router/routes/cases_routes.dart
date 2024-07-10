@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../add_case/add_case.dart';
+import '../../case_details/case_details.dart';
 import '../../cases/cases.dart';
 import '../utils/route_animations.dart';
 
@@ -11,7 +12,7 @@ part '../../generated/router/routes/cases_routes.g.dart';
 @TypedGoRoute<CasesRoute>(
   path: CasesRoute.path,
   routes: <TypedGoRoute<GoRouteData>>[
-    // TypedGoRoute<CaseDetailsRoute>(path: CaseDetailsRoute.path),
+    TypedGoRoute<CaseDetailsRoute>(path: CaseDetailsRoute.path),
     TypedGoRoute<AddCaseRoute>(path: AddCaseRoute.path),
   ],
 )
@@ -49,18 +50,18 @@ class AddCaseRoute extends GoRouteData {
       );
 }
 
-// /// cases details route
-// class CaseDetailsRoute extends GoRouteData {
-//   CaseDetailsRoute(this.$extra, {this.activeTab}) : caseID = $extra.caseID;
+/// cases details route
+class CaseDetailsRoute extends GoRouteData {
+  CaseDetailsRoute(this.$extra, {this.activeTab}) : caseID = $extra.caseID;
 
-//   static const path = ':caseID/:activeTab';
-//   static const name = 'case_details';
+  static const path = ':caseID/:activeTab';
+  static const name = 'case_details';
 
-//   final int? activeTab;
-//   final String caseID;
-//   final CaseModel $extra;
+  final int? activeTab;
+  final String caseID;
+  final CaseModel $extra;
 
-//   @override
-//   Widget build(BuildContext context, GoRouterState state) =>
-//       CaseDetailsPage(caseModel: $extra, activeTab: activeTab);
-// }
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      CaseDetailsPage(caseModel: $extra, activeTab: activeTab);
+}

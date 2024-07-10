@@ -1,22 +1,10 @@
 // ignore_for_file: require_trailing_commas
 
-import 'package:app_data/app_data.dart';
 import 'package:app_models/app_models.dart';
-import 'package:app_ui/app_ui.dart';
-import 'package:async_result/async_result.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/failures/app_failures.dart';
-import '../../core/providers/providers.dart';
-
-///
-/// provider for user mini stats
-///
-final userMiniStatsProvider =
-    FutureProvider.autoDispose<Result<UserStatsModel, Exception>>((ref) {
-  return ref.watch(statsRepositoryProvider).getUserStats();
-});
+import '../provider/user_profile_provider.dart';
 
 /// User Mini widget
 class UserMiniStatsWidget extends ConsumerWidget {
@@ -28,13 +16,7 @@ class UserMiniStatsWidget extends ConsumerWidget {
 
     return ConstrainedBox(
       constraints: const BoxConstraints(maxHeight: 68, maxWidth: 300),
-      child: userMiniStatsData.maybeWhen(
-        data: (statsResult) => statsResult.when(
-          failure: (l) => Text(l.toLocalizedString()),
-          success: (r) => statsTile(context, r),
-        ),
-        orElse: () => const Loading(),
-      ),
+      child: statsTile(context, userMiniStatsData),
     );
   }
 

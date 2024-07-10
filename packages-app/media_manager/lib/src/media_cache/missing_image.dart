@@ -2311,5 +2311,5 @@ final Uint8List kMissingImage = Uint8List.fromList(<int>[
   174,
   66,
   96,
-  130
+  130,
 ]);

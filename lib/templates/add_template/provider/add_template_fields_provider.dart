@@ -62,10 +62,6 @@ class AddTemplateFieldsNotifier extends _$AddTemplateFieldsNotifier
     final templateModel = ref.watch(addTemplateSeederProvider);
 
     return templateModel?.fields;
-    // if (templateModel?.fields?.isEmpty ?? true) {
-    //   return null;
-    // }
-    // return templateModel?.fields ?? [];
   }
 
   Future<void> on(AddTemplateFieldsEvent event) async {

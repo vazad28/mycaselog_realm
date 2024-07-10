@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../medias.dart';
 
 class MediasView extends ConsumerWidget with MediasEventMixin, MediasStateMixin{
-  const MediasView({Key? key}) : super(key: key);
+  const MediasView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

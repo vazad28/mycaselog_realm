@@ -71,4 +71,10 @@ class FtsSearchRepositoryImpl extends FtsSearchRepository with LoggerMixin {
       throw Exception('Search model type not defined');
     }
   }
+
+  @override
+  Future<List<NoteModel>> searchNotes(String searchTerm) async {
+    // list of case IDs matching the search term
+    return _databaseService.notesCollection.search(searchTerm);
+  }
 }

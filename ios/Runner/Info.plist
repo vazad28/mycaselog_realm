@@ -65,5 +65,7 @@
 		</dict>
 	</array>
 	<!-- End of the Google Sign-in Section -->
+	<key>FLTEnableImpeller</key>
+	<false/>
 </dict>
 </plist>

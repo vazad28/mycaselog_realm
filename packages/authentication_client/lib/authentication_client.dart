@@ -1,4 +1,3 @@
-library authentication_client;
 
 export './src/authentication_user/authentication_user.dart';
 export './src/authentication_user/authentication_user_storage.dart';

@@ -18,24 +18,34 @@ part './support_data_mixin.dart';
 /// ////////////////////////////////////////////////////////////////////
 /// Main providers
 /// ////////////////////////////////////////////////////////////////////
-@Riverpod(keepAlive: true)
+@riverpod
 class SupportDataNotifier extends _$SupportDataNotifier with LoggerMixin {
   @override
   SupportDataModel build() {
-    final result =
-        ref.read(supportDataRepositoryProvider).getSupportData().getOrThrow();
-    return result;
+    final userID = ref.watch(authenticationUserProvider).id;
+
+    final sub = ref
+        .watch(dbProvider)
+        .supportDataCollection
+        .getSingleStream('userID', userID)
+        .listen((data) {
+      if (data.results.isEmpty) return;
+      state = SupportDataModelX.fromJson(data.results.single.toJson());
+    });
+
+    ref.onDispose(sub.cancel);
+
+    return SupportDataModelX.zero(userID);
   }
 
   Future<void> _updateSupportData(
     SupportDataModel supportDataModel,
   ) async {
     try {
-      await ref
-          .read(supportDataRepositoryProvider)
-          .setSupportData(supportDataModel);
-
-      state = supportDataModel;
+      await ref.watch(dbProvider).supportDataCollection.put(
+            ref.watch(authenticationUserProvider).id,
+            supportDataModel.toRealmObject(),
+          );
     } catch (err) {
       ref.watch(dialogServiceProvider).showSnackBar(err.toString());
     }
@@ -46,17 +56,18 @@ class SupportDataNotifier extends _$SupportDataNotifier with LoggerMixin {
   Future<void> on(SupportDataEvent event) async {
     event.map(
       updateAnesthesiaBlocks: (value) {
-        _updateSupportData(state.copyWith(anesthesiaBlocks: value.blocks));
+        _updateSupportData(state..anesthesiaBlocks = value.blocks.toRealmList);
       },
       updateAssistants: (value) {
-        _updateSupportData(state.copyWith(assistants: value.assistantModels));
+        _updateSupportData(
+            state..assistants = value.assistantModels.toRealmList,);
       },
       addAssistant: (value) {
         _onAddAssistant(value.assistantModel);
       },
       updateSurgeryLocations: (value) {
         _updateSupportData(
-          state.copyWith(surgeryLocations: value.surgeryLocations),
+          state..surgeryLocations = value.surgeryLocations.toRealmList,
         );
       },
       addSurgeryLocation: (value) {
@@ -64,7 +75,7 @@ class SupportDataNotifier extends _$SupportDataNotifier with LoggerMixin {
       },
       updateActivableFields: (value) {
         _updateSupportData(
-          state.copyWith(activeBasicFields: value.fields.names),
+          state..activeBasicFields = value.fields.names.toRealmList,
         );
       },
     );
@@ -72,8 +83,7 @@ class SupportDataNotifier extends _$SupportDataNotifier with LoggerMixin {
 
   // /// Put assistant
   void _onAddAssistant(AssistantModel assistantModel) {
-    final assistants =
-        List<AssistantModel>.from(state.assistants ?? <AssistantModel>[]);
+    final assistants = List<AssistantModel>.from(state.assistants);
     final index = assistants.indexWhere(
       (element) => element.assistantID == assistantModel.assistantID,
     );
@@ -84,13 +94,13 @@ class SupportDataNotifier extends _$SupportDataNotifier with LoggerMixin {
       assistants[index] = assistantModel;
     }
 
-    _updateSupportData(state.copyWith(assistants: assistants));
+    _updateSupportData(state..assistants = assistants.toRealmList);
   }
 
   /// On suregry location model update
   void _onAddSurgeryLocation(SurgeryLocationModel surgeryLocation) {
     final locations = List<SurgeryLocationModel>.from(
-      state.surgeryLocations ?? <SurgeryLocationModel>[],
+      state.surgeryLocations,
     );
     final index = locations.indexWhere(
       (element) => element.locationID == surgeryLocation.locationID,
@@ -101,7 +111,7 @@ class SupportDataNotifier extends _$SupportDataNotifier with LoggerMixin {
       locations[index] = surgeryLocation;
     }
 
-    _updateSupportData(state = state.copyWith(surgeryLocations: locations));
+    _updateSupportData(state = state..surgeryLocations = locations.toRealmList);
   }
 
   // ignore: unused_element
@@ -130,7 +140,7 @@ class SupportDataNotifier extends _$SupportDataNotifier with LoggerMixin {
       blocks.add(block);
     }
 
-    _updateSupportData(state.copyWith(anesthesiaBlocks: blocks));
+    _updateSupportData(state..anesthesiaBlocks = blocks.toRealmList);
   }
 
   void load() {}

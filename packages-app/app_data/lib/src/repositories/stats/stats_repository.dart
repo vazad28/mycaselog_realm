@@ -13,5 +13,5 @@ abstract class StatsRepository {
   Future<List<CaseModel>> getStatsCases(List<String> idList);
 
   /// Get stats for the user
-  Future<Result<UserStatsModel, RepositoryFailure>> getUserStats();
+  //Future<Result<UserStatsModel, RepositoryFailure>> getUserStats();
 }

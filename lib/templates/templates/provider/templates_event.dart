@@ -26,8 +26,6 @@ class TemplatesEvent with _$TemplatesEvent {
     TemplateModel templateModel,
   ) = _ReactivateTemplate;
 
-  const factory TemplatesEvent.refreshTemplates() = _RefreshTemplates;
-
   const factory TemplatesEvent.shareTemplate(
     TemplateModel templateModel,
   ) = _ShareTemplate;

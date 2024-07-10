@@ -60,6 +60,6 @@ class _StartUpPageState extends ConsumerState<StartUpPage> with LoggerMixin {
             message: e.toString(),
             onRetry: () => ref.invalidate(startUpProvider),
           );
-        });
+        },);
   }
 }

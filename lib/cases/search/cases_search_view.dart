@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/providers/providers.dart';
 import '../../core/services/services.dart';
-import '../provider/cases_provider.dart';
 import 'case_search_result_tile.dart';
 
 enum CasesSearchBarStyle { icon, bar }
@@ -23,8 +23,7 @@ class CasesSearchView extends ConsumerStatefulWidget {
       _CasesSearchViewState();
 }
 
-class _CasesSearchViewState extends ConsumerState<CasesSearchView>
-    with CasesEventMixin {
+class _CasesSearchViewState extends ConsumerState<CasesSearchView> {
   final _focusNode = FocusScopeNode();
   var _searchHistory = <String>[];
   var _results = <CaseModel>[];
@@ -88,7 +87,9 @@ class _CasesSearchViewState extends ConsumerState<CasesSearchView>
   }
 
   Future<void> handleSelection(String selectedText) async {
-    final caseModels = await onSearchCases(ref, selectedText);
+    final caseModels = await ref
+        .read(ftsSearchRepositoryProvider)
+        .searchCaseMedia<CaseModel>(selectedText);
 
     setState(() {
       try {

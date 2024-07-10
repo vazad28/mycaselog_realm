@@ -1,13 +1,11 @@
 import 'package:app_l10n/app_l10n.dart';
 import 'package:app_models/app_models.dart';
 import 'package:app_ui/app_ui.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../router/router.dart';
 import '../cases.dart';
-import 'case_view_list.dart';
 
 class CasesPage extends ConsumerStatefulWidget {
   const CasesPage({super.key});
@@ -16,7 +14,7 @@ class CasesPage extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _CasesPageState();
 }
 
-class _CasesPageState extends ConsumerState<CasesPage> with CasesEventMixin {
+class _CasesPageState extends ConsumerState<CasesPage> {
   final _scrollController = ScrollController();
 
   @override
@@ -34,15 +32,10 @@ class _CasesPageState extends ConsumerState<CasesPage> with CasesEventMixin {
         physics: const BouncingScrollPhysics(
           parent: AlwaysScrollableScrollPhysics(),
         ),
-        slivers: [
-          const CasesAppBar(),
-          const CasesSearchBar(),
-          CupertinoSliverRefreshControl(
-            builder: customScrollViewRefreshIndicator,
-            refreshTriggerPullDistance: 140,
-            onRefresh: () => pullDownToRefresh(ref),
-          ),
-          const CasesView(),
+        slivers: const [
+          CasesAppBar(),
+          CasesSearchBar(),
+          CasesView(),
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,

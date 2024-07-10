@@ -25,11 +25,6 @@ mixin AddCaseStateMixin {
   FormGroup watchTemplatedDataFormGroup(WidgetRef ref) =>
       ref.watch(templatedDataFormGroupProvider);
 
-  AsyncValue<List<TemplateModel>> watchTemplateModelsList(
-    WidgetRef ref,
-  ) =>
-      ref.watch(templateModelsListProvider);
-
   List<SurgeryLocationModel> watchSurgeryLocations(WidgetRef ref) =>
       ref.watch(
         supportDataNotifierProvider.select((value) => value.surgeryLocations),

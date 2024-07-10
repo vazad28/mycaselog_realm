@@ -57,7 +57,7 @@ class SharedTemplateView extends StatelessWidget {
               style: context.textTheme.titleMedium,
             ),
             const Divider(),
-            ...sharedTemplateModel.fields!
+            ...sharedTemplateModel.fields
                 .map((e) => SharedTemplateField(templateField: e)),
           ],
         ),

@@ -21,8 +21,6 @@ class AuthenticationRepository {
       _authenticationClient.user;
 
   /// Starts the Sign In with Apple Flow.
-  ///
-  /// Throws a [LogInWithAppleFailure] if an exception occurs.
   Future<void> logInWithApple() async {
     try {
       await _authenticationClient.logInWithApple();
@@ -34,9 +32,6 @@ class AuthenticationRepository {
   }
 
   /// Starts the Sign In with Google Flow.
-  ///
-  /// Throws a [LogInWithGoogleCanceled] if the flow is canceled by the user.
-  /// Throws a [LogInWithGoogleFailure] if an exception occurs.
   Future<void> logInWithGoogle() async {
     try {
       await _authenticationClient.logInWithGoogle();
@@ -50,9 +45,6 @@ class AuthenticationRepository {
   }
 
   /// Starts the Sign In with Twitter Flow.
-  ///
-  /// Throws a [LogInWithTwitterCanceled] if the flow is canceled by the user.
-  /// Throws a [LogInWithTwitterFailure] if an exception occurs.
   Future<void> logInWithTwitter() async {
     try {
       await _authenticationClient.logInWithTwitter();
@@ -66,9 +58,6 @@ class AuthenticationRepository {
   }
 
   /// Starts the Sign In with Facebook Flow.
-  ///
-  /// Throws a [LogInWithFacebookCanceled] if the flow is canceled by the user.
-  /// Throws a [LogInWithFacebookFailure] if an exception occurs.
   Future<void> logInWithFacebook() async {
     try {
       await _authenticationClient.logInWithFacebook();
@@ -82,9 +71,6 @@ class AuthenticationRepository {
   }
 
   /// Signs out the current user which will emit
-  /// [User.anonymous] from the [user] Stream.
-  ///
-  /// Throws a [LogOutFailure] if an exception occurs.
   Future<void> logOut() async {
     try {
       await _authenticationClient.logOut();

@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:app_data/app_data.dart';
 import 'package:app_l10n/app_l10n.dart';
 import 'package:app_models/app_models.dart';
 import 'package:app_ui/app_ui.dart';
@@ -99,18 +98,14 @@ class _AddTemplatePageController extends ConsumerState<AddTemplatePage>
 
   void _seedTemplate() {
     final userID = ref.read(authenticationUserProvider).id;
-    ref.read(userRepositoryProvider).getCurrentUserModel(userID).then((result) {
-      result.when(
-        success: (userModel) {
-          if (userModel.speciality?.isEmpty ?? true) {
-            _needUserSpeciality();
-          } else {
-            seedFormProvider(ref, widget.templateID, userModel.speciality!);
-          }
-        },
-        failure: (f) => context.showSnackBar('Error retrieving user model'),
-      );
-    });
+    final userModel =
+        ref.read(dbProvider).usersCollection.getSingle('userID', userID);
+
+    if (userModel?.speciality?.isEmpty ?? true) {
+      _needUserSpeciality();
+    } else {
+      seedFormProvider(ref, widget.templateID, userModel!.speciality!);
+    }
   }
 }
 

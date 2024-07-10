@@ -17,13 +17,15 @@ class BasicDataTabView extends ConsumerWidget {
     return ListView(
       padding: const EdgeInsets.only(left: 12, right: 12),
       children: const [
-        SizedBox(height: 8),
+        //SizedBox(height: 8),
         LabeledDivider(
           label: 'Patient data',
+          height: 36,
         ),
         _PatientDataView(),
         LabeledDivider(
           label: 'Basic case data',
+          height: 36,
         ),
         BasicDataForm(),
       ],

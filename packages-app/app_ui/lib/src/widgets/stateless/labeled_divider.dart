@@ -6,11 +6,13 @@ class LabeledDivider extends StatelessWidget {
     super.key,
     this.color,
     this.backgroundColor,
+    this.height = 24,
   });
 
   final String label;
   final Color? color;
   final Color? backgroundColor;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class LabeledDivider extends StatelessWidget {
     );
 
     return SizedBox(
-      height: 24,
+      height: height,
       child: Row(
         children: [
           Flexible(

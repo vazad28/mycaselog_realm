@@ -8,15 +8,34 @@ import 'providers.dart';
 
 part '../../generated/core/providers/repository_providers.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 DatabaseService databaseService(DatabaseServiceRef ref) {
   final currentUser = ref.watch(authenticationUserProvider);
 
   return DatabaseService(
-    realm: ref.read(realmProvider),
+    realm: ref.watch(realmProvider),
     userID: currentUser.id,
     sharedPrefs: ref.watch(sharedPrefsProvider),
   );
+}
+
+@riverpod
+class Db extends _$Db {
+  @override
+  DatabaseService build() {
+    final databaseService = ref.watch(databaseServiceProvider);
+    return databaseService;
+  }
+
+  CasesCollection get casesCollection => state.casesCollection;
+  MediaCollection get mediaCollection => state.mediaCollection;
+  NotesCollection get notesCollection => state.notesCollection;
+  SettingsCollection get settingsCollection => state.settingsCollection;
+  SupportDataCollection get supportDataCollection =>
+      state.supportDataCollection;
+  TemplatesCollection get templatesCollection => state.templatesCollection;
+  TimelineNotesCollection get timelineNotesCollection =>
+      state.timelineNotesCollection;
 }
 
 /// Encryption repository
@@ -50,12 +69,12 @@ UserRepository userRepository(
 }
 
 /// Cases repository provider
-@riverpod
-CasesRepository casesRepository(CasesRepositoryRef ref) {
-  return CasesRepositoryImpl(
-    databaseService: ref.watch(databaseServiceProvider),
-  );
-}
+// @riverpod
+// CasesRepository casesRepository(CasesRepositoryRef ref) {
+//   return CasesRepositoryImpl(
+//     databaseService: ref.watch(databaseServiceProvider),
+//   );
+// }
 
 /// Media Repository provider
 @riverpod
@@ -92,20 +111,28 @@ StatsRepository statsRepository(StatsRepositoryRef ref) {
 }
 
 /// Settings repository provider
+// @riverpod
+// SettingsRepository settingsRepository(SettingsRepositoryRef ref) {
+//   return SettingsRepositoryImpl(
+//     databaseService: ref.watch(databaseServiceProvider),
+//   );
+// }
+
+//Notes
 @riverpod
-SettingsRepository settingsRepository(SettingsRepositoryRef ref) {
-  return SettingsRepositoryImpl(
+NotesRepository notesRepository(NotesRepositoryRef ref) {
+  return NotesRepositoryImpl(
     databaseService: ref.watch(databaseServiceProvider),
   );
 }
 
 /// Settings repository provider
-@riverpod
-SupportDataRepository supportDataRepository(SupportDataRepositoryRef ref) {
-  return SupportDataRepositoryImpl(
-    databaseService: ref.watch(databaseServiceProvider),
-  );
-}
+// @riverpod
+// SupportDataRepository supportDataRepository(SupportDataRepositoryRef ref) {
+//   return SupportDataRepositoryImpl(
+//     databaseService: ref.watch(databaseServiceProvider),
+//   );
+// }
 
 /// Passcode provider
 /// the value is set from app startup provider on async

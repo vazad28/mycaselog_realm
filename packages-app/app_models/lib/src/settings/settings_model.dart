@@ -1,49 +1,80 @@
-import 'package:copy_with_extension/copy_with_extension.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:realm/realm.dart';
 
+import '../../../app_models.dart';
+
+part 'settings_model.realm.dart';
 part 'settings_model.g.dart';
 
-@CopyWith()
-@JsonSerializable()
-class SettingsModel {
-  SettingsModel({
-    required this.userID,
-    this.biometricEnabled = false,
-    this.syncOnStart = false,
-    this.localAuthEnabled = false,
-    this.uploadFullSizePhoto = false,
-    this.caseTileNavigate = 0,
-    this.caseTileStyle = 0,
-    this.showByLocation,
-    this.themeMode = 0,
-    this.language = 'en',
-    this.fontFamily,
-    this.seedColorHex = '0xfff44336',
-    this.timestamp = 0,
-  });
+@RealmModel()
+@JsonSerializable(explicitToJson: true)
+class _SettingsModel {
+  @PrimaryKey()
+  late String userID;
+  late bool biometricEnabled = false;
+  late int caseTileNavigate = 0;
+  late int caseTileStyle = 0;
+  late String? showByLocation;
+  late bool syncOnStart = true;
+  late bool localAuthEnabled = true;
+  late int timestamp = 0;
+  late bool uploadFullSizePhoto = false;
+  late int themeMode = 0;
+  late String language = 'en';
+  late String? fontFamily;
+  late String seedColorHex = '0xfff44336';
 
-  factory SettingsModel.zero(String? userID) {
-    return SettingsModel(userID: userID ?? 'annonymous');
+  SettingsModel toRealmObject() {
+    return SettingsModel(
+      userID,
+      biometricEnabled: biometricEnabled,
+      caseTileNavigate: caseTileNavigate,
+      caseTileStyle: caseTileStyle,
+      showByLocation: showByLocation,
+      syncOnStart: syncOnStart,
+      localAuthEnabled: localAuthEnabled,
+      timestamp: timestamp,
+      uploadFullSizePhoto: uploadFullSizePhoto,
+      themeMode: themeMode,
+      language: language,
+      fontFamily: fontFamily,
+      seedColorHex: seedColorHex,
+    );
   }
+}
 
-  final bool biometricEnabled;
-  final int caseTileNavigate;
-  final int caseTileStyle;
-  final String? showByLocation;
-  final bool syncOnStart;
-  final bool localAuthEnabled;
-  final int timestamp;
-  final bool uploadFullSizePhoto;
-  final int themeMode;
-  final String language;
-  final String? fontFamily;
-  final String seedColorHex;
-  final String userID;
+extension SettingsModelX on SettingsModel {
+  static SettingsModel fromJson(Map<String, dynamic> json) =>
+      _$SettingsModelFromJson(json).toRealmObject();
 
   Map<String, dynamic> toJson() => _$SettingsModelToJson(this);
 
-  // ignore: sort_constructors_first
-  factory SettingsModel.fromJson(Map<String, dynamic> json) {
-    return _$SettingsModelFromJson(json);
+  static SettingsModel zero(String userID) {
+    final timestamp = ModelUtils.getTimestamp;
+
+    final settingsRealm = SettingsModel(
+      userID,
+      timestamp: timestamp,
+    );
+
+    return settingsRealm;
   }
+
+  // static SettingsModel fromModel(SettingsModel model) {
+  //   return SettingsModel(
+  //     model.userID,
+  //     biometricEnabled: model.biometricEnabled,
+  //     caseTileNavigate: model.caseTileNavigate,
+  //     caseTileStyle: model.caseTileStyle,
+  //     showByLocation: model.showByLocation,
+  //     syncOnStart: model.syncOnStart,
+  //     localAuthEnabled: model.localAuthEnabled,
+  //     timestamp: model.timestamp,
+  //     uploadFullSizePhoto: model.uploadFullSizePhoto,
+  //     themeMode: model.themeMode,
+  //     language: model.language,
+  //     fontFamily: model.fontFamily,
+  //     seedColorHex: model.seedColorHex,
+  //   );
+  // }
 }

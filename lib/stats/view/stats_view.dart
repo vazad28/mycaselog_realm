@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../stats.dart';
 
 class StatsView extends ConsumerWidget with StatsEventMixin, StatsStateMixin{
-  const StatsView({Key? key}) : super(key: key);
+  const StatsView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -46,6 +46,8 @@ class DiagnosisField extends ConsumerWidget {
         suffixIcon: const Icon(ThemeConstants.suffixIcon),
       ),
       readOnly: true,
+      minLines: 1,
+      maxLines: 4,
       onTap: (control) {
         showSearch<String?>(
           context: context,
@@ -82,6 +84,8 @@ class SurgeryField extends ConsumerWidget {
         suffixIcon: const Icon(ThemeConstants.suffixIcon),
       ),
       readOnly: true,
+      minLines: 1,
+      maxLines: 4,
       onTap: (control) {
         showSearch<String?>(
           context: context,
@@ -279,6 +283,8 @@ class CommentsField extends StatelessWidget {
         suffixIcon: const Icon(ThemeConstants.suffixIcon),
       ),
       readOnly: true,
+      maxLines: 4,
+      minLines: 1,
       onTap: (control) {
         context
             .openModalScreen<String?>(

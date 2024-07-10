@@ -16,12 +16,13 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$TemplatesEvent {
+  TemplateModel get templateModel => throw _privateConstructorUsedError;
+
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_DeactivateTemplate value) deactivateTemplate,
     required TResult Function(_DeleteTemplate value) deleteTemplate,
     required TResult Function(_ReactivateTemplate value) reactivateTemplate,
-    required TResult Function(_RefreshTemplates value) refreshTemplates,
     required TResult Function(_ShareTemplate value) shareTemplate,
     required TResult Function(_UnShareTemplate value) unShareTemplate,
   }) =>
@@ -47,7 +48,6 @@ class _$DeactivateTemplateImpl implements _DeactivateTemplate {
     required TResult Function(_DeactivateTemplate value) deactivateTemplate,
     required TResult Function(_DeleteTemplate value) deleteTemplate,
     required TResult Function(_ReactivateTemplate value) reactivateTemplate,
-    required TResult Function(_RefreshTemplates value) refreshTemplates,
     required TResult Function(_ShareTemplate value) shareTemplate,
     required TResult Function(_UnShareTemplate value) unShareTemplate,
   }) {
@@ -59,6 +59,7 @@ abstract class _DeactivateTemplate implements TemplatesEvent {
   const factory _DeactivateTemplate(final TemplateModel templateModel) =
       _$DeactivateTemplateImpl;
 
+  @override
   TemplateModel get templateModel;
 }
 
@@ -81,7 +82,6 @@ class _$DeleteTemplateImpl implements _DeleteTemplate {
     required TResult Function(_DeactivateTemplate value) deactivateTemplate,
     required TResult Function(_DeleteTemplate value) deleteTemplate,
     required TResult Function(_ReactivateTemplate value) reactivateTemplate,
-    required TResult Function(_RefreshTemplates value) refreshTemplates,
     required TResult Function(_ShareTemplate value) shareTemplate,
     required TResult Function(_UnShareTemplate value) unShareTemplate,
   }) {
@@ -93,6 +93,7 @@ abstract class _DeleteTemplate implements TemplatesEvent {
   const factory _DeleteTemplate(final TemplateModel templateModel) =
       _$DeleteTemplateImpl;
 
+  @override
   TemplateModel get templateModel;
 }
 
@@ -115,7 +116,6 @@ class _$ReactivateTemplateImpl implements _ReactivateTemplate {
     required TResult Function(_DeactivateTemplate value) deactivateTemplate,
     required TResult Function(_DeleteTemplate value) deleteTemplate,
     required TResult Function(_ReactivateTemplate value) reactivateTemplate,
-    required TResult Function(_RefreshTemplates value) refreshTemplates,
     required TResult Function(_ShareTemplate value) shareTemplate,
     required TResult Function(_UnShareTemplate value) unShareTemplate,
   }) {
@@ -127,35 +127,8 @@ abstract class _ReactivateTemplate implements TemplatesEvent {
   const factory _ReactivateTemplate(final TemplateModel templateModel) =
       _$ReactivateTemplateImpl;
 
+  @override
   TemplateModel get templateModel;
-}
-
-/// @nodoc
-
-class _$RefreshTemplatesImpl implements _RefreshTemplates {
-  const _$RefreshTemplatesImpl();
-
-  @override
-  String toString() {
-    return 'TemplatesEvent.refreshTemplates()';
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_DeactivateTemplate value) deactivateTemplate,
-    required TResult Function(_DeleteTemplate value) deleteTemplate,
-    required TResult Function(_ReactivateTemplate value) reactivateTemplate,
-    required TResult Function(_RefreshTemplates value) refreshTemplates,
-    required TResult Function(_ShareTemplate value) shareTemplate,
-    required TResult Function(_UnShareTemplate value) unShareTemplate,
-  }) {
-    return refreshTemplates(this);
-  }
-}
-
-abstract class _RefreshTemplates implements TemplatesEvent {
-  const factory _RefreshTemplates() = _$RefreshTemplatesImpl;
 }
 
 /// @nodoc
@@ -177,7 +150,6 @@ class _$ShareTemplateImpl implements _ShareTemplate {
     required TResult Function(_DeactivateTemplate value) deactivateTemplate,
     required TResult Function(_DeleteTemplate value) deleteTemplate,
     required TResult Function(_ReactivateTemplate value) reactivateTemplate,
-    required TResult Function(_RefreshTemplates value) refreshTemplates,
     required TResult Function(_ShareTemplate value) shareTemplate,
     required TResult Function(_UnShareTemplate value) unShareTemplate,
   }) {
@@ -189,6 +161,7 @@ abstract class _ShareTemplate implements TemplatesEvent {
   const factory _ShareTemplate(final TemplateModel templateModel) =
       _$ShareTemplateImpl;
 
+  @override
   TemplateModel get templateModel;
 }
 
@@ -211,7 +184,6 @@ class _$UnShareTemplateImpl implements _UnShareTemplate {
     required TResult Function(_DeactivateTemplate value) deactivateTemplate,
     required TResult Function(_DeleteTemplate value) deleteTemplate,
     required TResult Function(_ReactivateTemplate value) reactivateTemplate,
-    required TResult Function(_RefreshTemplates value) refreshTemplates,
     required TResult Function(_ShareTemplate value) shareTemplate,
     required TResult Function(_UnShareTemplate value) unShareTemplate,
   }) {
@@ -223,5 +195,6 @@ abstract class _UnShareTemplate implements TemplatesEvent {
   const factory _UnShareTemplate(final TemplateModel templateModel) =
       _$UnShareTemplateImpl;
 
+  @override
   TemplateModel get templateModel;
 }

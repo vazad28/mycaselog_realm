@@ -1,6 +1,5 @@
 import 'package:app_models/app_models.dart';
 import 'package:async_result/async_result.dart';
-import 'package:realm/realm.dart';
 
 import '../../../app_data.dart';
 
@@ -44,32 +43,12 @@ class TemplatesRepositoryImpl implements TemplatesRepository {
   }
 
   @override
-  Future<List<TemplateModel>> getAllTemplates() async {
-    return _databaseService.templatesCollection.getAllTemplates();
-  }
-
-  @override
-  Future<TemplateModel?> getTemplate(String? templateID) async {
-    if (templateID == null) return null;
-
-    final template =
-        _databaseService.templatesCollection.getTemplate(templateID);
-    print(template?.toJson());
-    return template;
-  }
-
-  @override
   Future<TemplateFieldModel?> getTemplateField(
     String templateID,
     String templateFieldID,
   ) {
     // TODO: implement getTemplateField
     throw UnimplementedError();
-  }
-
-  @override
-  Stream<RealmResultsChanges<TemplateModel>> getTotalTemplatesCount() {
-    return _databaseService.templatesCollection.templateCount();
   }
 
   @override

@@ -1,12 +1,12 @@
-part of './cases_repository_impl.dart';
+// part of './cases_repository_impl.dart';
 
-abstract class CasesRepository {
-  // Add a new case
-  Future<Result<CaseModel, RepositoryFailure>> addCase(
-    CaseModel caseModel,
-  );
+// abstract class CasesRepository {
+//   // Add a new case
+//   // Future<Result<CaseModel, RepositoryFailure>> addCase(
+//   //   CaseModel caseModel,
+//   // );
 
-  FutureOr<int> getTotalCaseCount();
+//   FutureOr<int> getTotalCaseCount();
 
-  RealmResults<CaseModel> loadCases();
-}
+//   RealmResults<CaseModel> loadCases();
+// }

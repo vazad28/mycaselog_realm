@@ -175,7 +175,7 @@ class AddSurgeryLocationNotifier extends _$AddSurgeryLocationNotifier
       ..._originalModelJson,
       ..._formGroup.value,
     };
-    return SurgeryLocationModel.fromJson(surgeryLocaltionModelJson);
+    return SurgeryLocationModelX.fromJson(surgeryLocaltionModelJson);
   }
 
   /// ---- DO the form submit  ---

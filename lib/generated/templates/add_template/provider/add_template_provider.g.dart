@@ -6,24 +6,6 @@ part of '../../../../templates/add_template/provider/add_template_provider.dart'
 // RiverpodGenerator
 // **************************************************************************
 
-String _$myTemplatesForFieldsImportHash() =>
-    r'd60063173ae56a486be2cf1ed96b213f46115b52';
-
-/// See also [myTemplatesForFieldsImport].
-@ProviderFor(myTemplatesForFieldsImport)
-final myTemplatesForFieldsImportProvider =
-    AutoDisposeFutureProvider<List<TemplateModel>>.internal(
-  myTemplatesForFieldsImport,
-  name: r'myTemplatesForFieldsImportProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$myTemplatesForFieldsImportHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef MyTemplatesForFieldsImportRef
-    = AutoDisposeFutureProviderRef<List<TemplateModel>>;
 String _$addTemplateFormGroupHash() =>
     r'96f9ec9babb38b193c8b15e4ff17749a801d35a8';
 
@@ -44,7 +26,7 @@ final addTemplateFormGroupProvider = AutoDisposeProvider<FormGroup>.internal(
 );
 
 typedef AddTemplateFormGroupRef = AutoDisposeProviderRef<FormGroup>;
-String _$addTemplateSeederHash() => r'd51fa6155aefc3ee148970eb9935f1aac95bca29';
+String _$addTemplateSeederHash() => r'497e37a1fea37e4d9518a154fd82d6eaa77ab57e';
 
 /// ////////////////////////////////////////////////////////////////////
 ///  seeder
@@ -65,7 +47,7 @@ final addTemplateSeederProvider =
 
 typedef _$AddTemplateSeeder = AutoDisposeNotifier<TemplateModel?>;
 String _$addTemplateNotifierHash() =>
-    r'067e5650d6847d932e233ade9693efb0f90b433b';
+    r'28cd6c70d635924c842da53e6115632ed8be31fd';
 
 /// ////////////////////////////////////////////////////////////////////
 /// Main provider of the  feature

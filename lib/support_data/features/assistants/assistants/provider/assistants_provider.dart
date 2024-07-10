@@ -64,7 +64,7 @@ List<AssistantModel> assistantsList(AssistantsListRef ref) {
   final assistants = ref.watch(
     supportDataNotifierProvider.select(
       (value) =>
-          value.assistants?.where((element) => element.removed == 0).toList(),
+          value.assistants.where((element) => element.removed == 0).toList(),
     ),
   );
 

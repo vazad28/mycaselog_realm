@@ -217,7 +217,7 @@ class _SharedTemplatesNotifierProviderElement
 }
 
 String _$sharedTemplateNotifierHash() =>
-    r'd67d55770ecdd7b5847ee5a33ec143ce8d3c1af5';
+    r'4915c153cc9f582a00a327283f55d692992dfb42';
 
 /// See also [SharedTemplateNotifier].
 @ProviderFor(SharedTemplateNotifier)

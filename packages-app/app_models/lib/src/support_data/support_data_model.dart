@@ -1,8 +1,9 @@
-import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:realm/realm.dart';
 
-import '../../app_models.dart';
+import '../model_utils.dart';
 
+part 'support_data_model.realm.dart';
 part 'support_data_model.g.dart';
 
 enum SupportDataProps {
@@ -17,28 +18,45 @@ enum SupportDataProps {
   settings
 }
 
-@CopyWith()
+@RealmModel()
 @JsonSerializable(explicitToJson: true)
-class SupportDataModel {
-  SupportDataModel({
-    required this.userID,
-    this.assistants = const [],
-    this.activeBasicFields = const [],
-    this.anesthesiaBlocks = const [],
-    this.surgeryLocations = const [],
-    this.timestamp = 0,
-  });
+class _SupportDataModel {
+  @PrimaryKey()
+  late String userID;
+  late List<_AssistantModel> assistants = [];
+  late List<String> activeBasicFields = [];
+  late List<String> anesthesiaBlocks = [];
+  late List<_SurgeryLocationModel> surgeryLocations = [];
+  late int timestamp = 0;
 
-  factory SupportDataModel.fromJson(Map<String, dynamic> json) {
-    return _$SupportDataModelFromJson(json);
+  SupportDataModel toRealmObject() {
+    return SupportDataModel(userID,
+        assistants: assistants
+            .map((e) => AssistantModelX.fromJson(e.toJson()))
+            .toList(),
+        activeBasicFields: activeBasicFields,
+        anesthesiaBlocks: anesthesiaBlocks,
+        surgeryLocations: surgeryLocations
+            .map((e) => SurgeryLocationModelX.fromJson(e.toJson()))
+            .toList(),
+        timestamp: timestamp,);
+  }
+}
+
+extension SupportDataModelX on SupportDataModel {
+  static SupportDataModel zero(String userID) {
+    final timestamp = ModelUtils.getTimestamp;
+
+    final supportDataModel = SupportDataModel(
+      userID,
+      timestamp: timestamp,
+    );
+
+    return supportDataModel;
   }
 
-  final List<String> activeBasicFields;
-  final List<String> anesthesiaBlocks;
-  final List<AssistantModel> assistants;
-  final List<SurgeryLocationModel> surgeryLocations;
-  final int timestamp;
-  final String userID;
+  static SupportDataModel fromJson(Map<String, dynamic> json) =>
+      _$SupportDataModelFromJson(json).toRealmObject();
 
   Map<String, dynamic> toJson() => _$SupportDataModelToJson(this);
 }
@@ -57,40 +75,48 @@ enum AssistantModelProps {
 }
 
 /// Assistants embedded in to support data
-@CopyWith()
+
+@RealmModel()
 @JsonSerializable(explicitToJson: true)
-class AssistantModel {
-  const AssistantModel({
-    required this.assistantID,
-    this.name,
-    this.phone,
-    this.photoUrl,
-    this.removed = 0,
-    this.createdAt = 0,
-    this.timestamp = 0,
-  });
+class _AssistantModel {
+  @PrimaryKey()
+  late String assistantID;
+  late String? name;
+  late String? phone;
+  late String? photoUrl;
+  late int? removed = 0;
+  late int? createdAt = 0;
+  late int? timestamp = 0;
 
-  factory AssistantModel.fromJson(Map<String, dynamic> json) =>
-      _$AssistantModelFromJson(json);
+  static AssistantModel fromJson(Map<String, dynamic> json) =>
+      AssistantModelX.fromJson(json);
 
-  factory AssistantModel.zero() {
-    final timestamp = ModelUtils.getTimestamp;
+  Map<String, dynamic> toJson() => _$AssistantModelToJson(this);
+}
+
+extension AssistantModelX on AssistantModel {
+  static AssistantModel _toRealmObject(_AssistantModel assistantModel) {
     return AssistantModel(
-      assistantID: ModelUtils.uniqueID,
-      timestamp: timestamp,
-      createdAt: timestamp,
+      assistantModel.assistantID,
+      createdAt: assistantModel.timestamp,
+      timestamp: assistantModel.timestamp,
     );
   }
 
-  final String assistantID;
-  final int createdAt;
-  final String? name;
-  final String? phone;
-  final String? photoUrl;
-  final int removed;
-  final int timestamp;
+  static AssistantModel zero() {
+    final timestamp = ModelUtils.getTimestamp;
+    final assistantModel = AssistantModel(
+      ModelUtils.uniqueID,
+      createdAt: timestamp,
+      timestamp: timestamp,
+    );
 
-  @override
+    return assistantModel;
+  }
+
+  static AssistantModel fromJson(Map<String, dynamic> json) =>
+      _toRealmObject(_$AssistantModelFromJson(json));
+
   Map<String, dynamic> toJson() => _$AssistantModelToJson(this);
 }
 
@@ -108,39 +134,47 @@ enum SurgeryLocationProps {
 }
 
 /// Surgery  locations embedded into support data
-@CopyWith()
-@JsonSerializable()
-class SurgeryLocationModel {
-  SurgeryLocationModel({
-    required this.locationID,
-    this.name,
-    this.phone,
-    this.address,
-    this.removed = 0,
-    this.createdAt = 0,
-    this.timestamp = 0,
-  });
+@RealmModel()
+@JsonSerializable(explicitToJson: true)
+class _SurgeryLocationModel {
+  @PrimaryKey()
+  late String locationID;
+  late String? name;
+  late String? phone;
+  late String? address;
+  late int? removed = 0;
+  late int? createdAt = 0;
+  late int? timestamp = 0;
 
-  factory SurgeryLocationModel.fromJson(Map<String, dynamic> json) =>
-      _$SurgeryLocationModelFromJson(json);
+  static SurgeryLocationModel fromJson(Map<String, dynamic> json) =>
+      SurgeryLocationModelX.fromJson(json);
 
-  factory SurgeryLocationModel.zero() {
-    final timestamp = ModelUtils.getTimestamp;
+  Map<String, dynamic> toJson() => _$SurgeryLocationModelToJson(this);
+}
+
+extension SurgeryLocationModelX on SurgeryLocationModel {
+  static SurgeryLocationModel _toRealmObject(
+      _SurgeryLocationModel assistantModel,) {
     return SurgeryLocationModel(
-      locationID: ModelUtils.uniqueID,
-      timestamp: timestamp,
-      createdAt: timestamp,
+      assistantModel.locationID,
+      createdAt: assistantModel.timestamp,
+      timestamp: assistantModel.timestamp,
     );
   }
 
-  final String locationID;
-  final String? address;
-  final int createdAt;
-  final String? name;
-  final String? phone;
-  final int removed;
-  final int timestamp;
+  static SurgeryLocationModel zero() {
+    final timestamp = ModelUtils.getTimestamp;
+    final surgeryLocationModel = SurgeryLocationModel(
+      ModelUtils.uniqueID,
+      createdAt: timestamp,
+      timestamp: timestamp,
+    );
 
-  @override
+    return surgeryLocationModel;
+  }
+
+  static SurgeryLocationModel fromJson(Map<String, dynamic> json) =>
+      _toRealmObject(_$SurgeryLocationModelFromJson(json));
+
   Map<String, dynamic> toJson() => _$SurgeryLocationModelToJson(this);
 }

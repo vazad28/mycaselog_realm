@@ -1,5 +1,4 @@
 import 'package:app_annotations/app_annotations.dart';
-import 'package:app_data/app_data.dart';
 import 'package:app_extensions/app_extensions.dart';
 import 'package:app_l10n/app_l10n.dart';
 import 'package:app_ui/app_ui.dart';
@@ -9,7 +8,6 @@ import 'package:misc_packages/misc_packages.dart';
 import 'package:recase/recase.dart';
 
 import '../../core/failures/app_failures.dart';
-import '../../core/providers/providers.dart';
 import '../../core/providers/sync_providers.dart';
 import 'sync_time_selector.dart';
 
@@ -43,9 +41,13 @@ class SyncItemTile<T> extends ConsumerWidget {
                         .watch(syncResultProvider(dbCollection).notifier)
                         .showLoading();
 
+                    final collectionToSync =
+                        ref.read(syncCollectionsMapProvider)[dbCollection];
+                    if (collectionToSync == null) return;
+
                     ref
-                        .read(firestoreSyncProvider.notifier)
-                        .resetSyncForCollection(dbCollection, timestamp);
+                        .read(collectionSyncProvider(collectionToSync).notifier)
+                        .resetSyncCollection(dbCollection, timestamp);
                   },
                 );
               },
@@ -106,10 +108,10 @@ class _SyncItemTileTrailing<T> extends ConsumerWidget {
       initialized: (_) => const SizedBox.shrink(),
     );
 
-    return TextButton(
-      onPressed: onTap.call,
-      child: Text(S.of(context).sync),
-    );
+    // return TextButton(
+    //   onPressed: onTap.call,
+    //   child: Text(S.of(context).sync),
+    // );
   }
 
   // Future<void> _openSyncTimeOptions(
@@ -139,7 +141,7 @@ class _SyncItemTileSubtitle extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // final textTheme = Theme.of(context).textTheme;
-    return Text('subtitle');
+    return const Text('subtitle');
 
     // final lastSyncTimestamp = ref
     //     .watch(syncRepositoryProvider)

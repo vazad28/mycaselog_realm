@@ -8,7 +8,7 @@ import 'package:recase/recase.dart';
 import '../../../router/routes/routes.dart';
 import '../templates.dart';
 
-class TemplatesPage extends ConsumerWidget with TemplatesStateMixin {
+class TemplatesPage extends ConsumerWidget {
   const TemplatesPage({super.key});
 
   static Page<void> page() => const MaterialPage<void>(child: TemplatesPage());
@@ -23,7 +23,7 @@ class TemplatesPage extends ConsumerWidget with TemplatesStateMixin {
       body: const TemplatesView(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: ScrollReactiveFabButton(
-        templatesListScrollController(ref),
+        ref.watch(templatesListProvider.notifier).scrollController,
         key: const Key('__add_template_fab_button_key__'),
         title: S.of(context).addTemplate.titleCase,
         onTap: () => context.openModalBottomSheet<void>(
@@ -35,7 +35,7 @@ class TemplatesPage extends ConsumerWidget with TemplatesStateMixin {
             addSharedTemplate: () {
               _showSpecialitySelectionSheet(context).then((speciality) {
                 if (speciality != null) {
-                  SharedTemplatesRoute(speciality!).push<void>(context);
+                  SharedTemplatesRoute(speciality).push<void>(context);
                 }
               });
             },

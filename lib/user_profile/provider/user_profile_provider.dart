@@ -7,7 +7,6 @@ import 'package:image_picker/image_picker.dart' show ImagePicker, ImageSource;
 import 'package:logger_client/logger_client.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../core/failures/app_failures.dart';
 import '../../core/providers/providers.dart';
 import '../../core/services/services.dart';
 
@@ -89,16 +88,35 @@ mixin UserProfileStateMixin {
 /// Main Providers
 /// ////////////////////////////////////////////////////////////////////
 
+/// provider for user mini stats
+@riverpod
+UserStatsModel userMiniStats(UserMiniStatsRef ref) {
+  final casesCount = ref.watch(dbProvider).casesCollection.getCount();
+  final mediaCount = ref.watch(dbProvider).mediaCollection.getCount();
+  final notesCount = ref.watch(dbProvider).timelineNotesCollection.getCount();
+
+  return UserStatsModel(
+      cases: casesCount, media: mediaCount, notes: notesCount,);
+}
+
 @riverpod
 class UserProfileNotifier extends _$UserProfileNotifier with LoggerMixin {
+  String get userID => ref.watch(authenticationUserProvider).id;
+
   @override
   UserModel build() {
-    final authenticationUser = ref.watch(authenticationUserProvider);
+    final sub = ref
+        .watch(dbProvider)
+        .usersCollection
+        .getSingleStream('userID', userID)
+        .listen((data) {
+      if (data.results.isEmpty) return;
+      state = UserModelX.fromJson(data.results.single.toJson());
+    });
 
-    // load supportData on authentication user status change
-    if (!authenticationUser.isAnonymous) _loadUserModel(authenticationUser.id);
+    ref.onDispose(sub.cancel);
 
-    return UserModelX.zero(userID: authenticationUser.id);
+    return UserModelX.zero(userID: userID);
   }
 
   /// Map events to state
@@ -124,27 +142,9 @@ class UserProfileNotifier extends _$UserProfileNotifier with LoggerMixin {
 
   /// Save user model with any updates
   void _updateUserModel(UserModel userModel) {
-    /// we are not saving data if the user is anonymous as can
-    /// happen on logout
+    /// we are not saving data if the user is anonymous as can happen on logout
     if (userModel.userID.isEmpty) return;
-    ref.read(userRepositoryProvider).updateUserModel(userModel);
-    state = userModel;
-  }
-
-  Future<void> _loadUserModel(String userID) async {
-    final result =
-        await ref.read(userRepositoryProvider).getCurrentUserModel(userID);
-
-    result.when(
-      success: (data) {
-        state = data;
-      },
-      failure: (err) {
-        ref
-            .watch(dialogServiceProvider)
-            .showInfoDialog(err.toLocalizedString());
-      },
-    );
+    ref.read(dbProvider).usersCollection.put(userID, userModel);
   }
 
   /// Upload user avatar photo

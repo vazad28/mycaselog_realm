@@ -2,6 +2,7 @@ import 'package:app_models/app_models.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../add_note/add_note.dart';
 import '../../notes/notes.dart';
 import '../utils/route_animations.dart';
 
@@ -10,7 +11,7 @@ part '../../generated/router/routes/notes_routes.g.dart';
 @TypedGoRoute<NotesRoute>(
   path: NotesRoute.path,
   routes: <TypedGoRoute<GoRouteData>>[
-    //TypedGoRoute<AddNoteRoute>(path: AddNoteRoute.path),
+    TypedGoRoute<AddNoteRoute>(path: AddNoteRoute.path),
   ],
 )
 
@@ -28,18 +29,18 @@ class NotesRoute extends GoRouteData {
       );
 }
 
-// class AddNoteRoute extends GoRouteData {
-//   AddNoteRoute(this.$extra, {this.newRecord = false}) : noteID = $extra.noteID;
-//   static const name = 'add_note';
-//   static const path = 'note/:noteID';
+class AddNoteRoute extends GoRouteData {
+  AddNoteRoute(this.$extra, {this.newRecord = false}) : noteID = $extra.noteID;
+  static const name = 'add_note';
+  static const path = 'note/:noteID';
 
-//   final NoteModel $extra;
-//   final String noteID;
-//   final bool newRecord;
+  final NoteModel $extra;
+  final String noteID;
+  final bool newRecord;
 
-//   @override
-//   Widget build(BuildContext context, GoRouterState state) => AddNotePage(
-//         noteModel: $extra,
-//         newRecord: newRecord,
-//       );
-// }
+  @override
+  Widget build(BuildContext context, GoRouterState state) => AddNotePage(
+        noteModel: $extra,
+        newRecord: newRecord,
+      );
+}

@@ -2,6 +2,7 @@
 // automatically populated by the server when you download the
 // template app through the Atlas App Services UI or CLI.
 import 'package:app_models/app_models.dart';
+import 'package:flutter/foundation.dart';
 import 'package:realm/realm.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -10,28 +11,34 @@ import '../providers/providers.dart';
 part '../../generated/core/realm/realm_config.g.dart';
 
 /// Realm config provider
+//@Riverpod(keepAlive: true)
 @riverpod
 Configuration realmConfig(RealmConfigRef ref) {
   final user = ref.watch(authenticationUserProvider);
+
+  if (user.isAnonymous) {
+    return Configuration.local([]);
+  }
 
   Configuration.defaultRealmName = '${user.id}.realm';
 
   final config = Configuration.local(
     [
-      AssistantRealm.schema,
+      AssistantModel.schema,
       CaseModel.schema,
       MediaModel.schema,
+      NoteModel.schema,
       PatientModel.schema,
-      SettingsRealm.schema,
+      SettingsModel.schema,
       SharedTemplateModel.schema,
-      SupportDataRealm.schema,
-      SurgeryLocationRealm.schema,
+      SupportDataModel.schema,
+      SurgeryLocationModel.schema,
       TemplateFieldModel.schema,
       TemplateModel.schema,
       TimelineNoteModel.schema,
       UserModel.schema,
     ],
-    shouldDeleteIfMigrationNeeded: true,
+    shouldDeleteIfMigrationNeeded: kDebugMode,
     //schemaVersion: 2,
   );
   return config;
@@ -45,6 +52,15 @@ Realm realm(RealmRef ref) {
   // realm.write(() {
   //   realm.deleteAll<SettingsRealm>();
   // });
+
+  // ref.onDispose(() {
+  //   if (ref.exists(realmProvider)) {
+  //     print('CLOSE REALM INSTANCE');
+  //     realm.close();
+  //   }
+  // });
+
+  print('CREATING REALM INSTANCE');
   return realm;
 }
 

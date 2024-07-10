@@ -3,8 +3,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../core/providers/providers.dart';
 import '../../core/providers/sync_providers.dart';
-import '../../settings/settings.dart';
-import '../../support_data/support_data.dart';
 
 part '../../generated/start_up/provider/start_up_provider.g.dart';
 
@@ -30,8 +28,7 @@ class StartUp extends _$StartUp {
     // ignore: unused_local_variable
     final syncActivate = ref.read(firestoreSyncProvider);
 
-    ref.watch(appSettingsProvider.notifier).load();
-    ref.watch(supportDataNotifierProvider.notifier).load();
+    //ref.watch(supportDataNotifierProvider.notifier).load();
   }
 
   /// Method will check custom claims to see if the passcode exist in the

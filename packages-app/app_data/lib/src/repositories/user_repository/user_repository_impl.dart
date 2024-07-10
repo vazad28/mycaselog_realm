@@ -32,9 +32,7 @@ class UserRepositoryImpl extends UserRepository with LoggerMixin {
   /// Add new user model to databse
   Future<void> createUserModel(UserModel userModel) async {
     try {
-      await _databaseService.usersCollection
-          .upsert(userModel)
-          .then((_) => _userStorage.setUserModel(userModel));
+      await _databaseService.usersCollection.put(userModel.userID, userModel);
     } catch (error, stackTrace) {
       Error.throwWithStackTrace(
         const RepositoryFailure.createUserModelFailure(),
@@ -46,10 +44,11 @@ class UserRepositoryImpl extends UserRepository with LoggerMixin {
   /// Load use model
   @override
   Future<Result<UserModel, RepositoryFailure>> getCurrentUserModel(
-      String userID) async {
+      String userID,) async {
     try {
-      final userModel =
-          await _databaseService.usersCollection.getCurrentUserModel();
+      final userModel = _databaseService.usersCollection
+              .getSingle('userID', _databaseService.userID) ??
+          UserModelX.zero(userID: userID);
 
       /// user should be created by now.
       return Result.success(userModel);
@@ -76,18 +75,18 @@ class UserRepositoryImpl extends UserRepository with LoggerMixin {
     }
   }
 
-  @override
-  Future<Result<UserStatsModel, RepositoryFailure>> getUserStats() async {
-    try {
-      final casesCount = _databaseService.casesCollection.countAll();
-      final mediaCount = _databaseService.mediaCollection.countAll();
-      final notesCount = _databaseService.timelineNotesCollection.countAll();
+  // @override
+  // Future<Result<UserStatsModel, RepositoryFailure>> getUserStats() async {
+  //   try {
+  //     final casesCount = _databaseService.casesCollection.countAll();
+  //     final mediaCount = _databaseService.mediaCollection.countAll();
+  //     final notesCount = _databaseService.timelineNotesCollection.countAll();
 
-      return Result.success(
-        UserStatsModel(cases: casesCount, media: mediaCount, notes: notesCount),
-      );
-    } catch (err) {
-      return Result.failure(RepositoryFailure.fromError(err));
-    }
-  }
+  //     return Result.success(
+  //       UserStatsModel(cases: casesCount, media: mediaCount, notes: notesCount),
+  //     );
+  //   } catch (err) {
+  //     return Result.failure(RepositoryFailure.fromError(err));
+  //   }
+  // }
 }

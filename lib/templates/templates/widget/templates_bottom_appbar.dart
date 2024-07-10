@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../provider/templates_provider.dart';
 
 class TemplatesBottomAppBar extends ConsumerWidget
-    with TemplatesEventMixin, TemplatesStateMixin
     implements PreferredSizeWidget {
   const TemplatesBottomAppBar({super.key});
 
@@ -28,8 +27,10 @@ class TemplatesBottomAppBar extends ConsumerWidget
             ),
           ),
           TextButton(
-            onPressed: () => showHideActiveTemplate(ref),
-            child: showActiveTemplatesOnly(ref)
+            onPressed: () => ref
+                .watch(showActiveTemplatesProvider.notifier)
+                .update((cb) => !cb),
+            child: ref.watch(showActiveTemplatesProvider)
                 ? const Text('ACTIVE')
                 : const Text('IN-ACTIVE'),
           ),

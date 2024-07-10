@@ -6,7 +6,7 @@ part of '../../../../../../support_data/features/assistants/assistants/provider/
 // RiverpodGenerator
 // **************************************************************************
 
-String _$assistantsListHash() => r'b306036996baafa02697ffb00f64bc74f1a5e53b';
+String _$assistantsListHash() => r'ca3d93730188b1a0b5ed922a3173b4b6fea8fba1';
 
 /// Provider to keep the state of Assistants
 ///

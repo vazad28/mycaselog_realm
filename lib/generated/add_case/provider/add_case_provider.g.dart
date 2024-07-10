@@ -6,29 +6,6 @@ part of '../../../add_case/provider/add_case_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$templateModelsListHash() =>
-    r'aec1305657975ddac0a007e302141a6a0ba47e89';
-
-/// ////////////////////////////////////////////////////////////////////
-/// Helper providers
-/// ////////////////////////////////////////////////////////////////////
-/// List of templates of user
-///
-/// Copied from [templateModelsList].
-@ProviderFor(templateModelsList)
-final templateModelsListProvider =
-    AutoDisposeFutureProvider<List<TemplateModel>>.internal(
-  templateModelsList,
-  name: r'templateModelsListProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$templateModelsListHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef TemplateModelsListRef
-    = AutoDisposeFutureProviderRef<List<TemplateModel>>;
 String _$decryptPatientModelHash() =>
     r'4f5eae163aac915f6ac25f20f13f278fb69521cb';
 
@@ -472,7 +449,7 @@ final templatedDataFormGroupProvider = AutoDisposeProvider<FormGroup>.internal(
 );
 
 typedef TemplatedDataFormGroupRef = AutoDisposeProviderRef<FormGroup>;
-String _$addCaseSeederHash() => r'5c411c2502f17eb2891e8e84e088136f460d9278';
+String _$addCaseSeederHash() => r'ae772e07223306c913aca55daeb8ece53743ccb4';
 
 /// ////////////////////////////////////////////////////////////////////
 /// Seeder provider
@@ -492,7 +469,7 @@ final addCaseSeederProvider =
 );
 
 typedef _$AddCaseSeeder = AutoDisposeNotifier<AddCaseSeedModel?>;
-String _$addCaseNotifierHash() => r'096cfc5149527e3d0b844404f8538f6792605d19';
+String _$addCaseNotifierHash() => r'9671dee9f4378bdf3d179215a5502014c581b78e';
 
 /// ////////////////////////////////////////////////////////////////////
 /// Main provider of the  feature
@@ -515,6 +492,10 @@ typedef _$AddCaseNotifier = AutoDisposeNotifier<StateOf<CaseModel>>;
 String _$currentCaseTemplateHash() =>
     r'7625b612e4ce9b122ff1d9280a2efbb26ab6e9d2';
 
+/// ////////////////////////////////////////////////////////////////////
+/// Helper providers
+/// ////////////////////////////////////////////////////////////////////
+/// List of templates of user
 ///
 /// Add case template provider
 ///

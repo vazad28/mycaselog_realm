@@ -1,4 +1,3 @@
-import 'package:app_data/app_data.dart';
 import 'package:app_l10n/app_l10n.dart';
 import 'package:authentication_client/authentication_client.dart';
 import 'package:firebase_auth/firebase_auth.dart';

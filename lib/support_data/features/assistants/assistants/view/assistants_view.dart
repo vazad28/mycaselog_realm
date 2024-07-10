@@ -41,7 +41,7 @@ class AssistantsView extends ConsumerWidget
           title: assistantModel.name ?? 'No name',
           subTitle: assistantModel.phone,
           onDismissed: () {
-            updateAssistant(ref, assistantModel.copyWith(removed: 1));
+            updateAssistant(ref, assistantModel..removed = 1);
           },
           onTap: () => AddAssistantRoute(assistantModel)
               .push<AssistantModel>(context)

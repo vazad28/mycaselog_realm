@@ -47,7 +47,7 @@ class _TemplateModel {
         shared: shared,
         createdAt: createdAt,
         timestamp: timestamp,
-        removed: removed);
+        removed: removed,);
   }
 
   static TemplateModel fromJson(Map<String, dynamic> json) =>

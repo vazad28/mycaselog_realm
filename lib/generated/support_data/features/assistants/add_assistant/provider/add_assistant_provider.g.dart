@@ -48,7 +48,7 @@ final addAssistantSeederProvider =
 
 typedef _$AddAssistantSeeder = AutoDisposeNotifier<AssistantModel?>;
 String _$addAssistantNotifierHash() =>
-    r'bf59fccafe29869d463c3b9545af1b70b94b6a42';
+    r'cd492f3662ca29d40380b9d24409eee9919c5370';
 
 /// ////////////////////////////////////////////////////////////////////
 /// Main provider of the  feature

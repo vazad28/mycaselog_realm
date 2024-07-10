@@ -49,7 +49,7 @@ final addSurgeryLocationSeederProvider = AutoDisposeNotifierProvider<
 
 typedef _$AddSurgeryLocationSeeder = AutoDisposeNotifier<SurgeryLocationModel?>;
 String _$addSurgeryLocationNotifierHash() =>
-    r'388e3d32654ef716909c81484c6039a4ac1e0433';
+    r'cb81f8afec628a9051c6f7cf7b1527d679d34350';
 
 /// ////////////////////////////////////////////////////////////////////
 /// Main provider of the  feature

@@ -1,6 +1,6 @@
+import 'package:app_annotations/app_annotations.dart';
 import 'package:app_l10n/app_l10n.dart';
 import 'package:app_ui/app_ui.dart';
-import 'package:app_annotations/app_annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:recase/recase.dart';
 

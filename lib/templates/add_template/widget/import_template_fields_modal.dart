@@ -40,34 +40,29 @@ class _ImportTemplateFieldsModal extends ConsumerWidget
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final templatesListState = getMyTemplatesList(ref);
+    final templateModels = ref.watch(templatesListProvider);
 
-    return templatesListState.when(
-      data: (templateModels) {
-        if (templateModels.isEmpty) {
-          return Loading(text: context.l10n.noUserTemplates);
-        }
-        return ListView.separated(
-          itemCount: templateModels.length,
-          padding: const EdgeInsets.all(4),
-          separatorBuilder: (_, index) => const Divider(height: 1, indent: 16),
-          itemBuilder: (_, index) {
-            final templateModel = templateModels[index];
+    if (templateModels.isEmpty) {
+      return Loading(text: context.l10n.noUserTemplates);
+    }
 
-            return MaterialCard.outlined(
-              onTap: () {
-                Navigator.pop(context, templateModels[index]);
-              },
-              child: MaterialCardTile(
-                title: templateModel.title?.titleCase ?? context.l10n.noTitle,
-                subTitle: templateModel.desc ?? context.l10n.noDescription,
-              ),
-            ).paddingAll(8);
+    return ListView.separated(
+      itemCount: templateModels.length,
+      padding: const EdgeInsets.all(4),
+      separatorBuilder: (_, index) => const Divider(height: 1, indent: 16),
+      itemBuilder: (_, index) {
+        final templateModel = templateModels[index];
+
+        return MaterialCard.outlined(
+          onTap: () {
+            Navigator.pop(context, templateModels[index]);
           },
-        );
+          child: MaterialCardTile(
+            title: templateModel.title?.titleCase ?? context.l10n.noTitle,
+            subTitle: templateModel.desc ?? context.l10n.noDescription,
+          ),
+        ).paddingAll(8);
       },
-      loading: () => const Loading(),
-      error: (err, st) => Loading(text: err.toString()),
     );
   }
 }
