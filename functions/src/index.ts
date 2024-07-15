@@ -30,27 +30,6 @@ function dateTimeStringToMillisecondsSinceEpoch(dateTimeString: string): number 
 }
 
 
-// exports.onUserUpdate = functions.firestore
-//     .document('users/{userId}/data/{userId}') // Replace '{userId}' with a wildcard if needed
-//     .onUpdate(async (change, context) => {
-//         // const afterData = change.after.data();
-//         // const beforeData = change.before.data();
-
-//         // Access specific updated fields (optional)
-//         // const updatedField = afterData.myField - beforeData.myField;
-
-//         // Perform actions based on the update
-//         console.log("User document with ID", context.params.userId, "updated");
-//         // Add your function logic here
-//         // You can access the updated and previous data using 'afterData' and 'beforeData'
-
-//         //add custom claims
-//         await admin.auth().setCustomUserClaims(context.params.userId, {
-//             mclPasscode: 'mykutchu28'
-//         });
-//     });
-
-
 exports.setUserPasscode = functions.auth.user().onCreate(async (user) => {
     const passcode = generatePasscode();
 
@@ -106,25 +85,38 @@ exports.setUserPasscode = functions.auth.user().onCreate(async (user) => {
     await userDocument.set(data);
 });
 
-// export const onCreateUser = functions.auth.user().onCreate(async (user) => {
-//     const passcode = generatePasscode();
-//     console.log('Generated passcode:', passcode); // Optional for logging
+/// CREATE LAST SYNC TIME
+// Create a Cloud Function triggered by writes to the 'media' collection
+// exports.lastCasesTimestamp = functions.firestore
+//     .document('usersData/{userID}/cases/{docId}')
+//     .onWrite(async (change, context) => {
+//         /// get firestore instance
+//         const firestore = admin.firestore();
+//         const userID = context.params.userID;
+//         // Prepare a write to 'last_timestamps' collection
+//         const timestampRef = firestore.collection(`usersData/${userID}/last_timestamps`).doc('cases');
+//         const timestamp = admin.firestore.Timestamp.now().toMillis();
+//         const timestampData = { timestamp: timestamp };
 
-//     try {
-//         // Check if the user already has the moderator claim.
-//         const claims = await admin.auth().getUser(user.uid).then((userRecord) => userRecord.customClaims);
+//         // Write the timestamp to 'last_timestamps' collection
+//         await timestampRef.set(timestampData);
 
-//         if (claims && claims.passcode) {
-//             console.log('passcode already exist:', passcode); // Optional for logging
-//             return;
-//         }
+//         console.log('Timestamp written to last_timestamps collection:', timestamp);
+//     });
 
-//         // Set the custom user claims.
-//         await admin.auth().setCustomUserClaims(user.uid, {
-//             passcode: passcode,
-//         });
+// exports.lastCasesTimestamp = functions.firestore
+//     .document('usersData/{userID}/templates/{docId}')
+//     .onWrite(async (change, context) => {
+//         /// get firestore instance
+//         const firestore = admin.firestore();
+//         const userID = context.params.userID;
+//         // Prepare a write to 'last_timestamps' collection
+//         const timestampRef = firestore.collection(`usersData/${userID}/last_timestamps`).doc('templates');
+//         const timestamp = admin.firestore.Timestamp.now().toMillis();
+//         const timestampData = { timestamp: timestamp };
 
-//     } catch (error) {
-//         console.error('Error adding custom claim:', error);
-//     }
-// });
+//         // Write the timestamp to 'last_timestamps' collection
+//         await timestampRef.set(timestampData);
+
+//         console.log('Timestamp written to last_timestamps collection:', timestamp);
+//     });

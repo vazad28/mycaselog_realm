@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../search/notes_search_anchor.dart';
 import 'note_tile_style_toggle.dart';
+import 'notes_count_widget.dart';
 
 class NotesAppBar extends StatelessWidget {
   const NotesAppBar({super.key});
@@ -21,16 +22,16 @@ class NotesAppBar extends StatelessWidget {
         titlePadding: const EdgeInsetsDirectional.only(start: 24, bottom: 16),
         title: Row(
           children: [
-            Expanded(
-              child: Text(
-                'Notes',
-                textAlign: TextAlign.left,
-                style: Theme.of(context)
-                    .textTheme
-                    .headlineSmall
-                    ?.copyWith(letterSpacing: -1),
-              ),
-            ),
+            Expanded(child: NotesCountWidget()
+                // child: Text(
+                //   'Notes',
+                //   textAlign: TextAlign.left,
+                //   style: Theme.of(context)
+                //       .textTheme
+                //       .headlineSmall
+                //       ?.copyWith(letterSpacing: -1),
+                // ),
+                ),
           ],
         ),
       ),

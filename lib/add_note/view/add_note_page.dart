@@ -5,11 +5,10 @@ import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_quill_to_pdf/flutter_quill_to_pdf.dart' hide Rule;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger_client/logger_client.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
 import '../../core/providers/providers.dart';
+import '../../core/services/form_submit.dart';
 import '../../router/router.dart';
 import '../quill/my_quill_editor.dart';
 import '../widget/quill_toolbar_bottom.dart';
@@ -42,7 +41,6 @@ class _AddNotePageState extends ConsumerState<AddNotePage> with LoggerMixin {
 
   final bool _canPop = false;
   bool _editorHasFocus = false;
-  final bool _isSubmitting = false;
 
   @override
   void initState() {
@@ -92,9 +90,8 @@ class _AddNotePageState extends ConsumerState<AddNotePage> with LoggerMixin {
           ),
         ),
         actions: [
-          IconButton(
-            onPressed: _doSubmit,
-            icon: _isSubmitting ? const Spinner() : const Icon(Icons.check),
+          SubmitFormWidget(
+            future: _doSubmit,
           ),
           MenuAnchor(
             builder: (context, controller, child) {
@@ -273,14 +270,6 @@ class _AddNotePageState extends ConsumerState<AddNotePage> with LoggerMixin {
           .watch(dbProvider)
           .notesCollection
           .put(widget.noteModel.noteID, noteModelUnmanaged.toRealmObject());
-
-      // ref.watch(dbProvider).notesCollection.upsert(authorID, () {
-      //   final model = widget.noteModel
-      //     ..title = _titleFieldController.text
-      //     ..note = _controller.document.toJsonString
-      //     ..authorID = authorID;
-      //   return model;
-      // });
 
       await Future<void>.delayed(Durations.medium4);
 

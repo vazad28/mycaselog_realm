@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../stats.dart';
 
-class StatsPage extends ConsumerWidget with StatsEventMixin, StatsStateMixin{
+class StatsPage extends StatefulWidget {
   const StatsPage({super.key});
 
   static Page<void> page() => const MaterialPage<void>(child: StatsPage());
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final notifier = ref.watch(statsNotifierProvider.notifier);
-    
+  State<StatsPage> createState() => _StatsPageState();
+}
 
-    return  Scaffold(
-      appBar: AppBar(title: const Text('StatsScreen'),),
-      body: const StatsView(),
+class _StatsPageState extends State<StatsPage> {
+  @override
+  Widget build(BuildContext context) {
+    final orientation = MediaQuery.of(context).orientation;
+
+    return Scaffold(
+      appBar:
+          orientation == Orientation.portrait ? const StatsSearchBar() : null,
+      body: StatsView(orientation),
     );
   }
 }

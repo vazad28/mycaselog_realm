@@ -86,7 +86,7 @@ class _NotesSearchAnchorState extends ConsumerState<NotesSearchAnchor> {
 
   Future<void> handleSelection(String selectedText) async {
     final noteModels =
-        await ref.read(ftsSearchRepositoryProvider).searchNotes(selectedText);
+        await ref.read(ftsSearchServiceProvider).searchNotes(selectedText);
 
     setState(() {
       try {

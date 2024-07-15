@@ -44,7 +44,7 @@ class AuthenticationUser extends Equatable {
   bool get isEmailVerified => emailVerified ?? false;
 
   /// Anonymous user which represents an unauthenticated user.
-  static const anonymous = AuthenticationUser(id: '');
+  static const anonymous = AuthenticationUser(id: 'anonymous');
 
   AuthenticationUser copyWith({
     String? id,

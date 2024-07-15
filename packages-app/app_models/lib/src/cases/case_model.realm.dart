@@ -14,7 +14,6 @@ class CaseModel extends _CaseModel
   CaseModel(
     String caseID, {
     int surgeryDate = 0,
-    PatientModel? patientModel,
     int createdAt = 0,
     String? anesthesia,
     String? anesthesiaBlock,
@@ -28,10 +27,13 @@ class CaseModel extends _CaseModel
     String? location,
     String? side,
     String? surgery,
-    Iterable<TemplateFieldModel> fieldsData = const [],
     String? templateID,
     int removed = 0,
     int timestamp = 0,
+    PatientModel? patientModel,
+    Iterable<TemplateFieldModel> fieldsData = const [],
+    Iterable<MediaModel> medias = const [],
+    Iterable<TimelineNoteModel> notes = const [],
   }) {
     if (!_defaultsSet) {
       _defaultsSet = RealmObjectBase.setDefaults<CaseModel>({
@@ -45,7 +47,6 @@ class CaseModel extends _CaseModel
     }
     RealmObjectBase.set(this, 'caseID', caseID);
     RealmObjectBase.set(this, 'surgeryDate', surgeryDate);
-    RealmObjectBase.set(this, 'patientModel', patientModel);
     RealmObjectBase.set(this, 'createdAt', createdAt);
     RealmObjectBase.set(this, 'anesthesia', anesthesia);
     RealmObjectBase.set(this, 'anesthesiaBlock', anesthesiaBlock);
@@ -60,11 +61,16 @@ class CaseModel extends _CaseModel
     RealmObjectBase.set(this, 'location', location);
     RealmObjectBase.set(this, 'side', side);
     RealmObjectBase.set(this, 'surgery', surgery);
-    RealmObjectBase.set<RealmList<TemplateFieldModel>>(
-        this, 'fieldsData', RealmList<TemplateFieldModel>(fieldsData));
     RealmObjectBase.set(this, 'templateID', templateID);
     RealmObjectBase.set(this, 'removed', removed);
     RealmObjectBase.set(this, 'timestamp', timestamp);
+    RealmObjectBase.set(this, 'patientModel', patientModel);
+    RealmObjectBase.set<RealmList<TemplateFieldModel>>(
+        this, 'fieldsData', RealmList<TemplateFieldModel>(fieldsData));
+    RealmObjectBase.set<RealmList<MediaModel>>(
+        this, 'medias', RealmList<MediaModel>(medias));
+    RealmObjectBase.set<RealmList<TimelineNoteModel>>(
+        this, 'notes', RealmList<TimelineNoteModel>(notes));
   }
 
   CaseModel._();
@@ -78,13 +84,6 @@ class CaseModel extends _CaseModel
   int get surgeryDate => RealmObjectBase.get<int>(this, 'surgeryDate') as int;
   @override
   set surgeryDate(int value) => RealmObjectBase.set(this, 'surgeryDate', value);
-
-  @override
-  PatientModel? get patientModel =>
-      RealmObjectBase.get<PatientModel>(this, 'patientModel') as PatientModel?;
-  @override
-  set patientModel(covariant PatientModel? value) =>
-      RealmObjectBase.set(this, 'patientModel', value);
 
   @override
   int get createdAt => RealmObjectBase.get<int>(this, 'createdAt') as int;
@@ -162,14 +161,6 @@ class CaseModel extends _CaseModel
   set surgery(String? value) => RealmObjectBase.set(this, 'surgery', value);
 
   @override
-  RealmList<TemplateFieldModel> get fieldsData =>
-      RealmObjectBase.get<TemplateFieldModel>(this, 'fieldsData')
-          as RealmList<TemplateFieldModel>;
-  @override
-  set fieldsData(covariant RealmList<TemplateFieldModel> value) =>
-      throw RealmUnsupportedSetError();
-
-  @override
   String? get templateID =>
       RealmObjectBase.get<String>(this, 'templateID') as String?;
   @override
@@ -187,6 +178,36 @@ class CaseModel extends _CaseModel
   set timestamp(int value) => RealmObjectBase.set(this, 'timestamp', value);
 
   @override
+  PatientModel? get patientModel =>
+      RealmObjectBase.get<PatientModel>(this, 'patientModel') as PatientModel?;
+  @override
+  set patientModel(covariant PatientModel? value) =>
+      RealmObjectBase.set(this, 'patientModel', value);
+
+  @override
+  RealmList<TemplateFieldModel> get fieldsData =>
+      RealmObjectBase.get<TemplateFieldModel>(this, 'fieldsData')
+          as RealmList<TemplateFieldModel>;
+  @override
+  set fieldsData(covariant RealmList<TemplateFieldModel> value) =>
+      throw RealmUnsupportedSetError();
+
+  @override
+  RealmList<MediaModel> get medias =>
+      RealmObjectBase.get<MediaModel>(this, 'medias') as RealmList<MediaModel>;
+  @override
+  set medias(covariant RealmList<MediaModel> value) =>
+      throw RealmUnsupportedSetError();
+
+  @override
+  RealmList<TimelineNoteModel> get notes =>
+      RealmObjectBase.get<TimelineNoteModel>(this, 'notes')
+          as RealmList<TimelineNoteModel>;
+  @override
+  set notes(covariant RealmList<TimelineNoteModel> value) =>
+      throw RealmUnsupportedSetError();
+
+  @override
   Stream<RealmObjectChanges<CaseModel>> get changes =>
       RealmObjectBase.getChanges<CaseModel>(this);
 
@@ -201,7 +222,6 @@ class CaseModel extends _CaseModel
     return <String, dynamic>{
       'caseID': caseID.toEJson(),
       'surgeryDate': surgeryDate.toEJson(),
-      'patientModel': patientModel.toEJson(),
       'createdAt': createdAt.toEJson(),
       'anesthesia': anesthesia.toEJson(),
       'anesthesiaBlock': anesthesiaBlock.toEJson(),
@@ -215,10 +235,13 @@ class CaseModel extends _CaseModel
       'location': location.toEJson(),
       'side': side.toEJson(),
       'surgery': surgery.toEJson(),
-      'fieldsData': fieldsData.toEJson(),
       'templateID': templateID.toEJson(),
       'removed': removed.toEJson(),
       'timestamp': timestamp.toEJson(),
+      'patientModel': patientModel.toEJson(),
+      'fieldsData': fieldsData.toEJson(),
+      'medias': medias.toEJson(),
+      'notes': notes.toEJson(),
     };
   }
 
@@ -228,7 +251,6 @@ class CaseModel extends _CaseModel
       {
         'caseID': EJsonValue caseID,
         'surgeryDate': EJsonValue surgeryDate,
-        'patientModel': EJsonValue patientModel,
         'createdAt': EJsonValue createdAt,
         'anesthesia': EJsonValue anesthesia,
         'anesthesiaBlock': EJsonValue anesthesiaBlock,
@@ -242,15 +264,17 @@ class CaseModel extends _CaseModel
         'location': EJsonValue location,
         'side': EJsonValue side,
         'surgery': EJsonValue surgery,
-        'fieldsData': EJsonValue fieldsData,
         'templateID': EJsonValue templateID,
         'removed': EJsonValue removed,
         'timestamp': EJsonValue timestamp,
+        'patientModel': EJsonValue patientModel,
+        'fieldsData': EJsonValue fieldsData,
+        'medias': EJsonValue medias,
+        'notes': EJsonValue notes,
       } =>
         CaseModel(
           fromEJson(caseID),
           surgeryDate: fromEJson(surgeryDate),
-          patientModel: fromEJson(patientModel),
           createdAt: fromEJson(createdAt),
           anesthesia: fromEJson(anesthesia),
           anesthesiaBlock: fromEJson(anesthesiaBlock),
@@ -264,10 +288,13 @@ class CaseModel extends _CaseModel
           location: fromEJson(location),
           side: fromEJson(side),
           surgery: fromEJson(surgery),
-          fieldsData: fromEJson(fieldsData),
           templateID: fromEJson(templateID),
           removed: fromEJson(removed),
           timestamp: fromEJson(timestamp),
+          patientModel: fromEJson(patientModel),
+          fieldsData: fromEJson(fieldsData),
+          medias: fromEJson(medias),
+          notes: fromEJson(notes),
         ),
       _ => raiseInvalidEJson(ejson),
     };
@@ -279,8 +306,6 @@ class CaseModel extends _CaseModel
     return SchemaObject(ObjectType.realmObject, CaseModel, 'CaseModel', [
       SchemaProperty('caseID', RealmPropertyType.string, primaryKey: true),
       SchemaProperty('surgeryDate', RealmPropertyType.int),
-      SchemaProperty('patientModel', RealmPropertyType.object,
-          optional: true, linkTarget: 'PatientModel'),
       SchemaProperty('createdAt', RealmPropertyType.int),
       SchemaProperty('anesthesia', RealmPropertyType.string, optional: true),
       SchemaProperty('anesthesiaBlock', RealmPropertyType.string,
@@ -300,13 +325,20 @@ class CaseModel extends _CaseModel
       SchemaProperty('side', RealmPropertyType.string, optional: true),
       SchemaProperty('surgery', RealmPropertyType.string,
           optional: true, indexType: RealmIndexType.fullText),
-      SchemaProperty('fieldsData', RealmPropertyType.object,
-          linkTarget: 'TemplateFieldModel',
-          collectionType: RealmCollectionType.list),
       SchemaProperty('templateID', RealmPropertyType.string, optional: true),
       SchemaProperty('removed', RealmPropertyType.int,
           indexType: RealmIndexType.regular),
       SchemaProperty('timestamp', RealmPropertyType.int),
+      SchemaProperty('patientModel', RealmPropertyType.object,
+          optional: true, linkTarget: 'PatientModel'),
+      SchemaProperty('fieldsData', RealmPropertyType.object,
+          linkTarget: 'TemplateFieldModel',
+          collectionType: RealmCollectionType.list),
+      SchemaProperty('medias', RealmPropertyType.object,
+          linkTarget: 'MediaModel', collectionType: RealmCollectionType.list),
+      SchemaProperty('notes', RealmPropertyType.object,
+          linkTarget: 'TimelineNoteModel',
+          collectionType: RealmCollectionType.list),
     ]);
   }();
 
@@ -463,6 +495,215 @@ class PatientModel extends _PatientModel
       SchemaProperty('mrn', RealmPropertyType.string, optional: true),
       SchemaProperty('phone', RealmPropertyType.string, optional: true),
       SchemaProperty('address', RealmPropertyType.string, optional: true),
+    ]);
+  }();
+
+  @override
+  SchemaObject get objectSchema => RealmObjectBase.getSchema(this) ?? schema;
+}
+
+class MediaModel extends _MediaModel
+    with RealmEntity, RealmObjectBase, RealmObject {
+  static var _defaultsSet = false;
+
+  MediaModel(
+    String mediaID,
+    String authorID, {
+    String? fileType,
+    String? fileName,
+    String? fileUri,
+    String? mediumUri,
+    String? thumbUri,
+    String? caseID,
+    String? status,
+    String? comment,
+    int removed = 0,
+    int createdAt = 0,
+    int timestamp = 0,
+  }) {
+    if (!_defaultsSet) {
+      _defaultsSet = RealmObjectBase.setDefaults<MediaModel>({
+        'removed': 0,
+        'createdAt': 0,
+        'timestamp': 0,
+      });
+    }
+    RealmObjectBase.set(this, 'mediaID', mediaID);
+    RealmObjectBase.set(this, 'authorID', authorID);
+    RealmObjectBase.set(this, 'fileType', fileType);
+    RealmObjectBase.set(this, 'fileName', fileName);
+    RealmObjectBase.set(this, 'fileUri', fileUri);
+    RealmObjectBase.set(this, 'mediumUri', mediumUri);
+    RealmObjectBase.set(this, 'thumbUri', thumbUri);
+    RealmObjectBase.set(this, 'caseID', caseID);
+    RealmObjectBase.set(this, 'status', status);
+    RealmObjectBase.set(this, 'comment', comment);
+    RealmObjectBase.set(this, 'removed', removed);
+    RealmObjectBase.set(this, 'createdAt', createdAt);
+    RealmObjectBase.set(this, 'timestamp', timestamp);
+  }
+
+  MediaModel._();
+
+  @override
+  String get mediaID => RealmObjectBase.get<String>(this, 'mediaID') as String;
+  @override
+  set mediaID(String value) => RealmObjectBase.set(this, 'mediaID', value);
+
+  @override
+  String get authorID =>
+      RealmObjectBase.get<String>(this, 'authorID') as String;
+  @override
+  set authorID(String value) => RealmObjectBase.set(this, 'authorID', value);
+
+  @override
+  String? get fileType =>
+      RealmObjectBase.get<String>(this, 'fileType') as String?;
+  @override
+  set fileType(String? value) => RealmObjectBase.set(this, 'fileType', value);
+
+  @override
+  String? get fileName =>
+      RealmObjectBase.get<String>(this, 'fileName') as String?;
+  @override
+  set fileName(String? value) => RealmObjectBase.set(this, 'fileName', value);
+
+  @override
+  String? get fileUri =>
+      RealmObjectBase.get<String>(this, 'fileUri') as String?;
+  @override
+  set fileUri(String? value) => RealmObjectBase.set(this, 'fileUri', value);
+
+  @override
+  String? get mediumUri =>
+      RealmObjectBase.get<String>(this, 'mediumUri') as String?;
+  @override
+  set mediumUri(String? value) => RealmObjectBase.set(this, 'mediumUri', value);
+
+  @override
+  String? get thumbUri =>
+      RealmObjectBase.get<String>(this, 'thumbUri') as String?;
+  @override
+  set thumbUri(String? value) => RealmObjectBase.set(this, 'thumbUri', value);
+
+  @override
+  String? get caseID => RealmObjectBase.get<String>(this, 'caseID') as String?;
+  @override
+  set caseID(String? value) => RealmObjectBase.set(this, 'caseID', value);
+
+  @override
+  String? get _status => RealmObjectBase.get<String>(this, 'status') as String?;
+  @override
+  set _status(String? value) => RealmObjectBase.set(this, 'status', value);
+
+  @override
+  String? get comment =>
+      RealmObjectBase.get<String>(this, 'comment') as String?;
+  @override
+  set comment(String? value) => RealmObjectBase.set(this, 'comment', value);
+
+  @override
+  int get removed => RealmObjectBase.get<int>(this, 'removed') as int;
+  @override
+  set removed(int value) => RealmObjectBase.set(this, 'removed', value);
+
+  @override
+  int get createdAt => RealmObjectBase.get<int>(this, 'createdAt') as int;
+  @override
+  set createdAt(int value) => RealmObjectBase.set(this, 'createdAt', value);
+
+  @override
+  int get timestamp => RealmObjectBase.get<int>(this, 'timestamp') as int;
+  @override
+  set timestamp(int value) => RealmObjectBase.set(this, 'timestamp', value);
+
+  @override
+  Stream<RealmObjectChanges<MediaModel>> get changes =>
+      RealmObjectBase.getChanges<MediaModel>(this);
+
+  @override
+  Stream<RealmObjectChanges<MediaModel>> changesFor([List<String>? keyPaths]) =>
+      RealmObjectBase.getChangesFor<MediaModel>(this, keyPaths);
+
+  @override
+  MediaModel freeze() => RealmObjectBase.freezeObject<MediaModel>(this);
+
+  EJsonValue toEJson() {
+    return <String, dynamic>{
+      'mediaID': mediaID.toEJson(),
+      'authorID': authorID.toEJson(),
+      'fileType': fileType.toEJson(),
+      'fileName': fileName.toEJson(),
+      'fileUri': fileUri.toEJson(),
+      'mediumUri': mediumUri.toEJson(),
+      'thumbUri': thumbUri.toEJson(),
+      'caseID': caseID.toEJson(),
+      'status': _status.toEJson(),
+      'comment': comment.toEJson(),
+      'removed': removed.toEJson(),
+      'createdAt': createdAt.toEJson(),
+      'timestamp': timestamp.toEJson(),
+    };
+  }
+
+  static EJsonValue _toEJson(MediaModel value) => value.toEJson();
+  static MediaModel _fromEJson(EJsonValue ejson) {
+    return switch (ejson) {
+      {
+        'mediaID': EJsonValue mediaID,
+        'authorID': EJsonValue authorID,
+        'fileType': EJsonValue fileType,
+        'fileName': EJsonValue fileName,
+        'fileUri': EJsonValue fileUri,
+        'mediumUri': EJsonValue mediumUri,
+        'thumbUri': EJsonValue thumbUri,
+        'caseID': EJsonValue caseID,
+        'status': EJsonValue _status,
+        'comment': EJsonValue comment,
+        'removed': EJsonValue removed,
+        'createdAt': EJsonValue createdAt,
+        'timestamp': EJsonValue timestamp,
+      } =>
+        MediaModel(
+          fromEJson(mediaID),
+          fromEJson(authorID),
+          fileType: fromEJson(fileType),
+          fileName: fromEJson(fileName),
+          fileUri: fromEJson(fileUri),
+          mediumUri: fromEJson(mediumUri),
+          thumbUri: fromEJson(thumbUri),
+          caseID: fromEJson(caseID),
+          status: fromEJson(_status),
+          comment: fromEJson(comment),
+          removed: fromEJson(removed),
+          createdAt: fromEJson(createdAt),
+          timestamp: fromEJson(timestamp),
+        ),
+      _ => raiseInvalidEJson(ejson),
+    };
+  }
+
+  static final schema = () {
+    RealmObjectBase.registerFactory(MediaModel._);
+    register(_toEJson, _fromEJson);
+    return SchemaObject(ObjectType.realmObject, MediaModel, 'MediaModel', [
+      SchemaProperty('mediaID', RealmPropertyType.string, primaryKey: true),
+      SchemaProperty('authorID', RealmPropertyType.string),
+      SchemaProperty('fileType', RealmPropertyType.string, optional: true),
+      SchemaProperty('fileName', RealmPropertyType.string, optional: true),
+      SchemaProperty('fileUri', RealmPropertyType.string, optional: true),
+      SchemaProperty('mediumUri', RealmPropertyType.string, optional: true),
+      SchemaProperty('thumbUri', RealmPropertyType.string, optional: true),
+      SchemaProperty('caseID', RealmPropertyType.string,
+          optional: true, indexType: RealmIndexType.regular),
+      SchemaProperty('_status', RealmPropertyType.string,
+          mapTo: 'status', optional: true),
+      SchemaProperty('comment', RealmPropertyType.string,
+          optional: true, indexType: RealmIndexType.fullText),
+      SchemaProperty('removed', RealmPropertyType.int,
+          indexType: RealmIndexType.regular),
+      SchemaProperty('createdAt', RealmPropertyType.int),
+      SchemaProperty('timestamp', RealmPropertyType.int),
     ]);
   }();
 

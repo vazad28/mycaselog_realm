@@ -28,7 +28,7 @@ final addTemplateFieldFormGroupProvider =
 
 typedef AddTemplateFieldFormGroupRef = AutoDisposeProviderRef<FormGroup>;
 String _$addTemplateFieldSeederHash() =>
-    r'c657c773b22bb774943fb98c7b0d4e5039363af5';
+    r'a2c42d43fa0d1d6892650e86b99dbb3e4f8450c5';
 
 /// ////////////////////////////////////////////////////////////////////
 ///  seeder
@@ -87,7 +87,7 @@ final fieldOptionsProvider =
 
 typedef _$FieldOptions = AutoDisposeNotifier<List<String>?>;
 String _$addTemplateFieldNotifierHash() =>
-    r'53a0fc66afbe773fec7cda57cff402793a3388ba';
+    r'a53be025926249436196b1abb1a9d812c54fd5ac';
 
 /// See also [AddTemplateFieldNotifier].
 @ProviderFor(AddTemplateFieldNotifier)

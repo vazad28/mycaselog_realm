@@ -9,8 +9,7 @@ import 'package:misc_packages/misc_packages.dart';
 import '../../add_template_field/add_template_field.dart';
 import '../add_template.dart';
 
-class AddTemplateFieldList extends ConsumerWidget
-    with AddTemplateFieldsEventMixin, AddTemplateFieldsStateMixin {
+class AddTemplateFieldList extends ConsumerWidget with AddTemplateFieldsMixin {
   const AddTemplateFieldList({super.key});
 
   /// if the temlplate has no fields

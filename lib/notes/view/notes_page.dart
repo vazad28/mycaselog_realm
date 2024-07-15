@@ -42,7 +42,7 @@ class _NotesPageState extends ConsumerState<NotesPage> {
         slivers: const [
           NotesAppBar(),
           SliverPadding(
-            padding: EdgeInsets.all(AppSpacing.md),
+            padding: EdgeInsets.all(AppSpacing.sm),
             sliver: NotesView(),
           ),
         ],

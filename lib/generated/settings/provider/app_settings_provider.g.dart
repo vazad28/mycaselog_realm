@@ -6,23 +6,7 @@ part of '../../../settings/provider/app_settings_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$currentThemeModeHash() => r'c6acab42ff584ebacbd44357bd057ef0db857cb5';
-
-/// See also [CurrentThemeMode].
-@ProviderFor(CurrentThemeMode)
-final currentThemeModeProvider =
-    AutoDisposeNotifierProvider<CurrentThemeMode, int>.internal(
-  CurrentThemeMode.new,
-  name: r'currentThemeModeProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$currentThemeModeHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$CurrentThemeMode = AutoDisposeNotifier<int>;
-String _$appSettingsHash() => r'5214bcc6251f60a1cdb5acf855df998e8c3266c4';
+String _$appSettingsHash() => r'01e920834fd6128bec2c2297850470a55df5919a';
 
 /// See also [AppSettings].
 @ProviderFor(AppSettings)

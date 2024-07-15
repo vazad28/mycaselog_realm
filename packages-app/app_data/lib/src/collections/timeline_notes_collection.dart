@@ -1,58 +1,58 @@
-part of '../database_service.dart';
+// part of '../database_service.dart';
 
-/// Implementation of [DatabaseCollection] with [TimelineNotesCollection] collection
-class TimelineNotesCollection extends DatabaseCollection<TimelineNoteModel> {
-  TimelineNotesCollection(
-    super.user,
-    super.realm,
-    super.sharedPrefs,
-  ) {
-    createCollectionStream();
-  }
+// /// Implementation of [DatabaseCollection] with [TimelineNotesCollection] collection
+// class TimelineNotesCollection extends DatabaseCollection<TimelineNoteModel> {
+//   TimelineNotesCollection(
+//     super.user,
+//     super.realm,
+//     super.sharedPrefs,
+//   ) {
+//     createCollectionStream();
+//   }
 
-  @override
-  String get path => '$root/$userID/${DbCollection.timelineNotes.name}';
+//   @override
+//   String get path => '$root/$userID/${DbCollection.timelineNotes.name}';
 
-  @override
-  CollectionReference<TimelineNoteModel> get withConverter =>
-      firestore.collection(path).withConverter<TimelineNoteModel>(
-            fromFirestore: (snapshot, _) =>
-                TimelineNoteModelX.fromJson(snapshot.data()!),
-            toFirestore: (timelineNoteModel, _) => timelineNoteModel.toJson(),
-          );
+//   @override
+//   CollectionReference<TimelineNoteModel> get withConverter =>
+//       firestore.collection(path).withConverter<TimelineNoteModel>(
+//             fromFirestore: (snapshot, _) =>
+//                 TimelineNoteModelX.fromJson(snapshot.data()!),
+//             toFirestore: (timelineNoteModel, _) => timelineNoteModel.toJson(),
+//           );
 
-  @override
-  Stream<List<TimelineNoteModel>> listenForChanges() {
-    return stream.map((querySnapshot) {
-      final documents = querySnapshot.docChanges
-          .map((change) {
-            final model = TimelineNoteModelX.fromJson(change.doc.data()!);
-            switch (change.type) {
-              case DocumentChangeType.added:
-              case DocumentChangeType.modified:
-                realm.write(
-                    () => realm.add<TimelineNoteModel>(model, update: true),);
-                return model;
+//   @override
+//   Stream<List<TimelineNoteModel>> listenForChanges() {
+//     return stream.map((querySnapshot) {
+//       final documents = querySnapshot.docChanges
+//           .map((change) {
+//             final model = TimelineNoteModelX.fromJson(change.doc.data()!);
+//             switch (change.type) {
+//               case DocumentChangeType.added:
+//               case DocumentChangeType.modified:
+//                 realm.write(
+//                   () => realm.add<TimelineNoteModel>(model, update: true),
+//                 );
+//                 return model;
 
-              case DocumentChangeType.removed:
-                realm.write(() => realm.delete<TimelineNoteModel>(model));
-                return null;
-            }
-          })
-          .whereType<TimelineNoteModel>()
-          .toList();
+//               case DocumentChangeType.removed:
+//                 realm.write(() => realm.delete<TimelineNoteModel>(model));
+//                 return null;
+//             }
+//           })
+//           .whereType<TimelineNoteModel>()
+//           .toList();
 
-      // set last update time
-      setLastSyncTimestamp();
-      return documents;
-    });
-  }
+//       // set last update time
+//       setLastSyncTimestamp();
+//       return documents;
+//     });
+//   }
 
-  /// Get notes for a case
-  List<TimelineNoteModel> getCaseNotes(String caseID) {
-    return realm
-        .all<TimelineNoteModel>()
-        .where((e) => e.caseID == caseID)
-        .toList();
-  }
-}
+//   /// Get notes for a case
+//   RealmResults<TimelineNoteModel> getCaseNotes(String caseID) {
+//     return realm
+//         .all<TimelineNoteModel>()
+//         .query(r'caseID == $0 and removed == $1', [caseID, 0]);
+//   }
+// }

@@ -20,7 +20,7 @@ class StorageCollection with LoggerMixin {
   }
 
   /// Upload user Avatar
-  FutureOr<String> uploadAvatar(File file) async {
+  Future<String> uploadAvatar(File file) async {
     final ref = storageRef('_avatars');
     return ref.putFile(file).then((_) => ref.getDownloadURL());
   }

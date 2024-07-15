@@ -30,17 +30,20 @@ class _SupportDataModel {
   late int timestamp = 0;
 
   SupportDataModel toRealmObject() {
-    return SupportDataModel(userID,
-        assistants: assistants
-            .map((e) => AssistantModelX.fromJson(e.toJson()))
-            .toList(),
-        activeBasicFields: activeBasicFields,
-        anesthesiaBlocks: anesthesiaBlocks,
-        surgeryLocations: surgeryLocations
-            .map((e) => SurgeryLocationModelX.fromJson(e.toJson()))
-            .toList(),
-        timestamp: timestamp,);
+    return SupportDataModel(
+      userID,
+      assistants: assistants.map((e) => AssistantModel._fromEJson(e.toEJson())),
+      //X.fromJson(e.toJson())).toList(),
+      activeBasicFields: activeBasicFields,
+      anesthesiaBlocks: anesthesiaBlocks,
+      surgeryLocations: surgeryLocations
+          .map((e) => SurgeryLocationModel._fromEJson(e.toEJson()))
+          .toList(),
+      timestamp: timestamp,
+    );
   }
+
+  Map<String, dynamic> toJson() => _$SupportDataModelToJson(this);
 }
 
 extension SupportDataModelX on SupportDataModel {
@@ -57,8 +60,6 @@ extension SupportDataModelX on SupportDataModel {
 
   static SupportDataModel fromJson(Map<String, dynamic> json) =>
       _$SupportDataModelFromJson(json).toRealmObject();
-
-  Map<String, dynamic> toJson() => _$SupportDataModelToJson(this);
 }
 
 /// ////////////////////////////////////////////////////////////////////
@@ -92,17 +93,21 @@ class _AssistantModel {
       AssistantModelX.fromJson(json);
 
   Map<String, dynamic> toJson() => _$AssistantModelToJson(this);
+
+  AssistantModel toRealmObject() {
+    return AssistantModel(
+      assistantID,
+      name: name,
+      phone: phone,
+      photoUrl: photoUrl,
+      removed: removed,
+      createdAt: timestamp,
+      timestamp: timestamp,
+    );
+  }
 }
 
 extension AssistantModelX on AssistantModel {
-  static AssistantModel _toRealmObject(_AssistantModel assistantModel) {
-    return AssistantModel(
-      assistantModel.assistantID,
-      createdAt: assistantModel.timestamp,
-      timestamp: assistantModel.timestamp,
-    );
-  }
-
   static AssistantModel zero() {
     final timestamp = ModelUtils.getTimestamp;
     final assistantModel = AssistantModel(
@@ -115,9 +120,9 @@ extension AssistantModelX on AssistantModel {
   }
 
   static AssistantModel fromJson(Map<String, dynamic> json) =>
-      _toRealmObject(_$AssistantModelFromJson(json));
+      _$AssistantModelFromJson(json).toRealmObject();
 
-  Map<String, dynamic> toJson() => _$AssistantModelToJson(this);
+  //Map<String, dynamic> toJson() => _$AssistantModelToJson(this);
 }
 
 /// ////////////////////////////////////////////////////////////////////
@@ -150,18 +155,21 @@ class _SurgeryLocationModel {
       SurgeryLocationModelX.fromJson(json);
 
   Map<String, dynamic> toJson() => _$SurgeryLocationModelToJson(this);
+
+  SurgeryLocationModel toRealmObject() {
+    return SurgeryLocationModel(
+      locationID,
+      name: name,
+      phone: phone,
+      address: address,
+      removed: removed,
+      createdAt: timestamp,
+      timestamp: timestamp,
+    );
+  }
 }
 
 extension SurgeryLocationModelX on SurgeryLocationModel {
-  static SurgeryLocationModel _toRealmObject(
-      _SurgeryLocationModel assistantModel,) {
-    return SurgeryLocationModel(
-      assistantModel.locationID,
-      createdAt: assistantModel.timestamp,
-      timestamp: assistantModel.timestamp,
-    );
-  }
-
   static SurgeryLocationModel zero() {
     final timestamp = ModelUtils.getTimestamp;
     final surgeryLocationModel = SurgeryLocationModel(
@@ -174,7 +182,7 @@ extension SurgeryLocationModelX on SurgeryLocationModel {
   }
 
   static SurgeryLocationModel fromJson(Map<String, dynamic> json) =>
-      _toRealmObject(_$SurgeryLocationModelFromJson(json));
+      _$SurgeryLocationModelFromJson(json).toRealmObject();
 
-  Map<String, dynamic> toJson() => _$SurgeryLocationModelToJson(this);
+  //Map<String, dynamic> toJson() => _$SurgeryLocationModelToJson(this);
 }

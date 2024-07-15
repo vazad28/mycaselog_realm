@@ -1,15 +1,44 @@
+import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../case_details.dart';
 
-class CaseDetailsView extends ConsumerWidget with CaseDetailsEventMixin, CaseDetailsStateMixin{
-  const CaseDetailsView({super.key});
+class CaseDetailsView extends StatelessWidget {
+  const CaseDetailsView({
+    required this.tabController,
+    required this.onTap,
+    super.key,
+  });
+
+  final void Function(int) onTap;
+  final TabController tabController;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final caseDetailsAsync = ref.watch(caseDetailsNotifierProvider);
-
-    return const Center(child: Text('CaseDetailsView'));
+  Widget build(BuildContext context) {
+    return TabBarView(
+      controller: tabController,
+      children: [
+        GestureDetector(
+          onTap: () => onTap(0),
+          child: const KeepAliveWrapper(
+            key: Key('__basicCaseDataTab__'),
+            child: CaseDetailsBasicTab(),
+          ),
+        ),
+        GestureDetector(
+          onTap: () => onTap(1),
+          child: const KeepAliveWrapper(
+            key: Key('__templateCaseDataTab__'),
+            child: CaseDetailsTemplatedTab(),
+          ),
+        ),
+        const KeepAliveWrapper(
+          key: Key('__templateCaseDataTab__'),
+          child:
+              //CaseTimelinePageStepper()
+              CaseDetailsTimelineTab(),
+        ),
+      ],
+    );
   }
 }

@@ -11,7 +11,7 @@ import '../../../core/app_vars.dart';
 import '../provider/add_template_field_provider.dart';
 
 class FieldTypeSelectorWidget extends ConsumerWidget
-    with AddTemplateFieldEventMixin, AddTemplateFieldStateMixin {
+    with AddTemplateFieldMixin {
   FieldTypeSelectorWidget({super.key});
 
   final items = FieldType.values

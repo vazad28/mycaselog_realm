@@ -1,44 +1,24 @@
 import 'package:app_models/app_models.dart';
-
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logger_client/logger_client.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:realm/realm.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:state_of/state_of.dart';
 
 import '../../../core/failures/app_failures.dart';
-import '../../../router/router.dart';
 
-part '../../../generated/templates/add_template_field/provider/add_template_field_provider.freezed.dart';
 part '../../../generated/templates/add_template_field/provider/add_template_field_provider.g.dart';
 
 /// ////////////////////////////////////////////////////////////////////
 /// MIXINS
 /// ////////////////////////////////////////////////////////////////////
-@Freezed(
-  copyWith: false,
-  equal: false,
-  when: FreezedWhenOptions.none,
-  map: FreezedMapOptions(maybeMap: false, mapOrNull: false),
-)
-class AddTemplateFieldEvent with _$AddTemplateFieldEvent {
-  const factory AddTemplateFieldEvent.onSubmit() = _OnSubmitForm;
-}
-
-mixin AddTemplateFieldEventMixin {
-  void submit(WidgetRef ref) => ref
-      .watch(addTemplateFieldNotifierProvider.notifier)
-      .on(const AddTemplateFieldEvent.onSubmit());
+mixin AddTemplateFieldMixin {
+  void submit(WidgetRef ref) =>
+      ref.watch(addTemplateFieldNotifierProvider.notifier).onSubmit();
 
   void setTemplateFieldType(WidgetRef ref, FieldType fieldType) =>
       ref.watch(templateFieldTypeProvider.notifier).update(fieldType);
-}
 
-mixin AddTemplateFieldStateMixin {
   FormGroup getTemplateFieldFormGroup(WidgetRef ref) =>
       ref.watch(addTemplateFieldFormGroupProvider);
 
@@ -56,9 +36,6 @@ mixin AddTemplateFieldStateMixin {
 
   bool canPop(WidgetRef ref) =>
       ref.watch(addTemplateFieldNotifierProvider.notifier).canPop();
-
-  RouteObserver<ModalRoute<void>> pageRouteObserver(WidgetRef ref) =>
-      ref.read(shellRoutesObserversProvider).settingsRouteObserver;
 }
 
 /// ////////////////////////////////////////////////////////////////////
@@ -72,7 +49,7 @@ class AddTemplateFieldSeeder extends _$AddTemplateFieldSeeder {
   /// called by view with passed param caseID to load case model
   Future<void> seed(TemplateFieldModel model) async {
     originalModelJson = model.toJson();
-    state = model;
+    state = TemplateFieldModelX.fromJson(model.toJson());
   }
 
   late final Map<String, dynamic> originalModelJson;
@@ -184,18 +161,8 @@ class AddTemplateFieldNotifier extends _$AddTemplateFieldNotifier
   StateOf<TemplateFieldModel> build() =>
       const StateOf<TemplateFieldModel>.init();
 
-  /// Event  mapper
-  void on(AddTemplateFieldEvent e) {
-    e.map(
-      onSubmit: (_) {
-        _formSubmitAttempted = true;
-        _onSubmit();
-      },
-    );
-  }
-
   /// Method to submit the form
-  void _onSubmit() {
+  void onSubmit() {
     try {
       _formSubmitAttempted = true;
       state = const StateOf<TemplateFieldModel>.loading();
@@ -232,12 +199,15 @@ class AddTemplateFieldNotifier extends _$AddTemplateFieldNotifier
     /// update with basic data
     final templateFieldModelJson = {..._originalModelJson, ..._formGroup.value};
 
-    final options =
-        RealmList<String>(ref.read(fieldOptionsProvider)?.toList() ?? []);
+    final model = TemplateFieldModelX.fromJson(templateFieldModelJson)
+      ..fieldType = ref.read(templateFieldTypeProvider);
 
-    return TemplateFieldModelX.fromJson(templateFieldModelJson)
-      ..fieldType = ref.read(templateFieldTypeProvider)
-      ..options = options;
+    model.options.clear();
+
+    final options =
+        (ref.read(fieldOptionsProvider)?.toList() ?? []).toRealmList;
+    model.options.addAll(options);
+    return model;
   }
 
   /// ---- DO the form submit  ---

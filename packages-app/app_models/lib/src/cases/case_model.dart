@@ -2,9 +2,7 @@ import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:realm/realm.dart';
 
-import '../media/media_model.dart';
-import '../model_utils.dart';
-import '../templates/template_field_model.dart';
+import '../../app_models.dart';
 
 part 'case_model.g.dart';
 part 'case_model.realm.dart';
@@ -39,7 +37,10 @@ enum BasicDataModelProps {
 }
 
 class HybridCaseModel {
-  HybridCaseModel({required this.caseModel, this.mediaModels = const []});
+  HybridCaseModel({
+    required this.caseModel,
+    required this.mediaModels,
+  });
 
   final CaseModel caseModel;
   final List<MediaModel> mediaModels;
@@ -51,7 +52,6 @@ class _CaseModel {
   @PrimaryKey()
   late String caseID;
   late int surgeryDate = 0;
-  late _PatientModel? patientModel;
   late int createdAt = 0;
   late String? anesthesia;
   late String? anesthesiaBlock;
@@ -69,18 +69,24 @@ class _CaseModel {
   late String? side;
   @Indexed(RealmIndexType.fullText)
   late String? surgery;
-  // late PcpModel? pcpModel;
-  late List<$TemplateFieldModel> fieldsData = [];
   late String? templateID;
   @Indexed()
   late int removed = 0;
   late int timestamp = 0;
+  late _PatientModel? patientModel;
+  late List<$TemplateFieldModel> fieldsData = [];
+  late List<_MediaModel> medias = [];
+  late List<$TimelineNoteModel> notes = [];
+
+  //@JsonKey(includeFromJson: false, includeToJson: false)
+  //@Ignored()
+  // One-to-many relationship that the backlink is created for  in media Model.
+  //late List<_MediaModel> mediaModels;
 
   CaseModel toRealmObject() {
     return CaseModel(
       caseID,
       surgeryDate: surgeryDate,
-      patientModel: patientModel?.toRealmObject(),
       createdAt: createdAt,
       anesthesia: anesthesia,
       anesthesiaBlock: anesthesiaBlock,
@@ -94,12 +100,15 @@ class _CaseModel {
       location: location,
       side: side,
       surgery: surgery,
+      templateID: templateID,
+      removed: removed,
+      patientModel: patientModel?.toRealmObject(),
+      timestamp: timestamp,
       fieldsData: fieldsData
           .map((e) => TemplateFieldModelX.fromJson(e.toJson()))
           .toList(),
-      templateID: templateID,
-      removed: removed,
-      timestamp: timestamp,
+      medias: medias.map((e) => MediaModelX.fromJson(e.toJson())).toList(),
+      notes: notes.map((e) => TimelineNoteModelX.fromJson(e.toJson())).toList(),
     );
   }
 }
@@ -116,6 +125,8 @@ extension CaseModelX on CaseModel {
     final caseModel = CaseModel(
       ModelUtils.uniqueID,
       patientModel: PatientModelX.zero(),
+      medias: [],
+      notes: [],
       surgeryDate: timestamp,
       createdAt: timestamp,
       timestamp: timestamp,
@@ -246,5 +257,108 @@ class DecryptedPatientModel {
       name: name ?? this.name,
       phone: phone ?? this.phone,
     );
+  }
+}
+
+/// ////////////////////////////////////////////////////////////////////
+/// Media Model
+/// ////////////////////////////////////////////////////////////////////
+///Media status
+enum MediaStatus {
+  cancelled,
+  failed,
+  processing,
+  queued,
+  removed,
+  success,
+  uploading,
+}
+
+class HybridMediaModel {
+  HybridMediaModel({
+    required this.caseModel,
+    required this.mediaModel,
+  });
+
+  final CaseModel? caseModel;
+  final MediaModel mediaModel;
+}
+
+@RealmModel()
+@JsonSerializable(explicitToJson: true)
+class _MediaModel {
+  @PrimaryKey()
+  late String mediaID;
+  late String authorID;
+  late String? fileType;
+  late String? fileName;
+  late String? fileUri;
+  late String? mediumUri;
+  late String? thumbUri;
+  @Indexed()
+  late String? caseID;
+  @MapTo('status')
+  late String? _status;
+  @Ignored()
+  MediaStatus get status {
+    return MediaStatus.values.byName(_status ?? MediaStatus.queued.name);
+  }
+
+  @Ignored()
+  set status(MediaStatus value) => _status = value.name;
+
+  @Indexed(RealmIndexType.fullText)
+  late String? comment;
+  @Indexed()
+  late int removed = 0;
+  late int createdAt = 0;
+  late int timestamp = 0;
+
+  // Backlink field. Links back to the `tasks` property in the `odel` model.
+  // @JsonKey(includeFromJson: false, includeToJson: false)
+  // @Backlink(#mediaModels)
+  // late Iterable<_CaseModel> linkedCaseModel;
+
+  MediaModel toRealmObject() {
+    return MediaModel(
+      mediaID,
+      authorID,
+      fileType: fileType,
+      fileName: fileName,
+      fileUri: fileUri,
+      mediumUri: mediumUri,
+      thumbUri: thumbUri,
+      caseID: caseID,
+      status: _status,
+      comment: comment,
+      removed: removed,
+      createdAt: createdAt,
+      timestamp: timestamp,
+    );
+  }
+
+  static MediaModel fromJson(Map<String, dynamic> json) =>
+      MediaModelX.fromJson(json);
+
+  Map<String, dynamic> toJson() => _$MediaModelToJson(this);
+}
+
+extension MediaModelX on MediaModel {
+  static MediaModel fromJson(Map<String, dynamic> json) =>
+      _$MediaModelFromJson(json).toRealmObject();
+
+  Map<String, dynamic> toJson() => _$MediaModelToJson(this);
+
+  static MediaModel zero(String authorID) {
+    final timestamp = ModelUtils.getTimestamp;
+
+    final mediaModel = MediaModel(
+      ModelUtils.uniqueID,
+      authorID,
+      createdAt: timestamp,
+      timestamp: timestamp,
+    );
+
+    return mediaModel;
   }
 }

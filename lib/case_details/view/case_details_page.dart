@@ -1,26 +1,143 @@
-import 'package:app_models/src/cases/case_model.dart';
+import 'dart:async';
+
+import 'package:app_extensions/app_extensions.dart';
+import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logger_client/logger_client.dart';
+import 'package:misc_packages/misc_packages.dart';
 
+//import '../../case_pdf/case_pdf.dart';
+import '../../router/router.dart';
+import '../../settings/settings.dart';
 import '../case_details.dart';
 
-class CaseDetailsPage extends ConsumerWidget
-    with CaseDetailsEventMixin, CaseDetailsStateMixin {
+class CaseDetailsPage extends ConsumerStatefulWidget {
   const CaseDetailsPage({
+    required this.caseID,
+    this.activeTab,
     super.key,
-    required CaseModel caseModel,
-    int? activeTab,
   });
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final notifier = ref.watch(caseDetailsNotifierProvider.notifier);
+  final String caseID;
+  final int? activeTab;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('CaseDetailsScreen'),
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _CaseDetailsPageState();
+}
+
+class _CaseDetailsPageState extends ConsumerState<CaseDetailsPage>
+    with CaseDetailsMixin, TickerProviderStateMixin, LoggerMixin {
+  /// Late insstance variales
+  late int _activeTab;
+  late TabController _tabController;
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    /// active tab based on router or settings
+    _activeTab =
+        widget.activeTab ?? ref.read(appSettingsProvider).caseTileNavigate;
+
+    if (_activeTab > 2) _activeTab = 0;
+
+    /// set active tab
+    _tabController =
+        TabController(vsync: this, length: 3, initialIndex: _activeTab)
+
+          /// set listener for the tab change to update the bottom nav bar
+          ..addListener(() {
+            ref
+                .watch(bottomNavVisibilityProvider.notifier)
+                .update(value: _tabController.index != 2);
+          });
+
+    /// Seed the provider
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.watch(caseIDSeeder.notifier).update((_) => widget.caseID);
+    });
+
+    if (_activeTab == 2) {
+      Future<void>.delayed(Duration.zero).then((value) {
+        ref.watch(bottomNavVisibilityProvider.notifier).update(value: false);
+      });
+    }
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final scaffold = Scaffold(
+      body: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            SliverOverlapAbsorber(
+              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+              sliver: CaseDetailsAppBar(
+                tabController: _tabController,
+                innerBoxIsScrolled: innerBoxIsScrolled,
+                onMoreMenuTap: _onCaseDetailsMoreMenuTap,
+              ),
+            ),
+          ];
+        },
+        body: ref.watch(caseIDSeeder) == null
+            ? const Loading()
+            : CaseDetailsView(
+                tabController: _tabController,
+                onTap: _openAddCase,
+              ),
       ),
-      body: const CaseDetailsView(),
     );
+
+    return PopScope(
+      child: scaffold,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!ref.read(bottomNavVisibilityProvider)) {
+          ref.watch(bottomNavVisibilityProvider.notifier).update(
+                value: true,
+              );
+        }
+      },
+    );
+  }
+
+  Future<void> _openAddCase(int index) {
+    final currentCaseModel = watchCaseDetailsModel(ref).requireValue;
+    return AddCaseRoute(currentCaseModel, tabIndex: index)
+        .push<String?>(context);
+  }
+
+  Future<void> _onCaseDetailsMoreMenuTap() {
+    return context
+        .openActionsBottomSheet(caseDetailsActions.values.toList())
+        .then((selected) {
+      if (!mounted || selected == null) return null;
+
+      if (selected.action == CaseDetailsActionEnum.generateCasePdf) {
+        // ignore: use_build_context_synchronously
+        // AppVars.rootContext.openModalScreen<CaseModel?>(
+        //   CasePdfPage(
+        //     caseModel: watchCaseDetailsModel(ref).requireValue,
+        //   ),
+        // );
+      } else if (selected.action == CaseDetailsActionEnum.duplicateCase) {
+        context.showSnackBar('Not implemented yet');
+        // return AddCaseRoute(getDuplicateCase(ref))
+        //     .push<String?>(context)
+        //     .then((caseID) async {
+        //   if (caseID != null) reSeedCaseDetailsPage(ref, caseID);
+        // });
+      } else if (selected.action == CaseDetailsActionEnum.deleteCase) {
+        context.showSnackBar('Not implemented yet');
+      }
+    });
   }
 }

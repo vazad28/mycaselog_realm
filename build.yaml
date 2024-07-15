@@ -12,11 +12,12 @@ targets:
       realm:realm_generator:
         enabled: true
         generate_for: 
-          include:
-            - lib/core/realm/**.dart
           exclude:
-            - packages/**.dart
-            - packages-app/**.dart
+            - lib/**.dart
+          include:
+            #- packages/**.dart
+            - packages-app/app_models/**.dart
+            - packages-app/app_data/**.dart
       freezed|freezed:
         enabled: true
         generate_for:
@@ -38,6 +39,8 @@ targets:
             - lib/**_provider.dart
           exclude:
             - lib/**_routes.dart
+            - packages/**.dart
+            - packages-app/**.dart
       go_router_builder:
         generate_for:
           - lib/**_routes.dart

@@ -1,3 +1,4 @@
+import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -28,8 +29,8 @@ class NotesView extends ConsumerWidget {
         key: widgetKey,
         crossAxisCount:
             noteStyle == NoteTileStyleEnum.grid ? crossAxisCount : 1,
-        mainAxisSpacing: 4,
-        crossAxisSpacing: 4,
+        mainAxisSpacing: AppSpacing.sm,
+        crossAxisSpacing: AppSpacing.sm,
         childCount: notes.length,
         itemBuilder: (context, int index) {
           return NoteItem(

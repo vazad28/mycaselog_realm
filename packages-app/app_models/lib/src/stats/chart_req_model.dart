@@ -75,7 +75,9 @@ class ChartReqModel {
         activeTab: activeTab ?? this.activeTab,
         chartData: chartData ?? this.chartData,
         chartType: chartType ?? this.chartType,
-        currMonth: currMonth ?? this.currMonth,
+
+        /// dont set  this to this.currMonth  else currMonth = null will never be set
+        currMonth: currMonth,
         currYear: currYear ?? this.currYear,
         filterClause: filterClause ?? this.filterClause,
         fromStamp: fromStamp ?? this.fromStamp,

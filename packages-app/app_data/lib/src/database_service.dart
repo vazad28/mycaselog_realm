@@ -1,4 +1,5 @@
 import 'package:app_annotations/app_annotations.dart';
+import 'package:app_extensions/app_extensions.dart';
 import 'package:app_models/app_models.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -9,14 +10,13 @@ import 'collections/storage_collection.dart';
 import 'domain/database_collection.dart';
 
 part 'collections/cases_collection.dart';
-part 'collections/media_collection.dart';
+//part 'collections/media_collection.dart';
+part 'collections/notes_collection.dart';
 part 'collections/settings_collection.dart';
 part 'collections/support_data_collection.dart';
 part 'collections/templates_collection.dart';
-part 'collections/timeline_notes_collection.dart';
+//part 'collections/timeline_notes_collection.dart';
 part 'collections/users_collection.dart';
-// part 'collections/vault_collection.dart';
-part 'collections/notes_collection.dart';
 
 class DatabaseService {
   DatabaseService({
@@ -24,33 +24,40 @@ class DatabaseService {
     required Realm realm,
     required SharedPreferences sharedPrefs,
   })  : _userID = userID,
+        _realm = realm,
         _storageCollection = StorageCollection(userID),
         _casesCollection = CasesCollection(userID, realm, sharedPrefs),
-        _mediaCollection = MediaCollection(userID, realm, sharedPrefs),
+        //_mediaCollection = MediaCollection(userID, realm, sharedPrefs),
         _notesCollection = NotesCollection(userID, realm, sharedPrefs),
         _usersCollection = UsersCollection(userID, realm, sharedPrefs),
         _settingsCollection = SettingsCollection(userID, realm, sharedPrefs),
         _supportDataCollection =
             SupportDataCollection(userID, realm, sharedPrefs),
-        _timelineNotesCollection =
-            TimelineNotesCollection(userID, realm, sharedPrefs),
+        // _timelineNotesCollection =
+        //     TimelineNotesCollection(userID, realm, sharedPrefs),
         _templatesCollection = TemplatesCollection(userID, realm, sharedPrefs);
 
   FirebaseFirestore get firestore => FirebaseFirestore.instance;
   FirebaseStorage get firestoreStorage => FirebaseStorage.instance;
 
   late final String _userID;
+  late final Realm _realm;
   String get userID => _userID;
+
+  ///  a generic method to allow write block for object updates
+  T updateRealmObject<T>(T Function() writeCallback) {
+    return _realm.write(writeCallback);
+  }
 
   /// Storage
   late final StorageCollection _storageCollection;
   late final CasesCollection _casesCollection;
-  late final MediaCollection _mediaCollection;
+  //late final MediaCollection _mediaCollection;
   late final NotesCollection _notesCollection;
   late final UsersCollection _usersCollection;
   late final SupportDataCollection _supportDataCollection;
   late final SettingsCollection _settingsCollection;
-  late final TimelineNotesCollection _timelineNotesCollection;
+  //late final TimelineNotesCollection _timelineNotesCollection;
   late final TemplatesCollection _templatesCollection;
 
   /// Firebase storage
@@ -60,7 +67,7 @@ class DatabaseService {
   CasesCollection get casesCollection => _casesCollection;
 
   /// Media Collection  getter
-  MediaCollection get mediaCollection => _mediaCollection;
+  //MediaCollection get mediaCollection => _mediaCollection;
 
   /// Notes Collection getter
   NotesCollection get notesCollection => _notesCollection;
@@ -75,8 +82,8 @@ class DatabaseService {
   SupportDataCollection get supportDataCollection => _supportDataCollection;
 
   /// Timeline NOtes Collection  getter
-  TimelineNotesCollection get timelineNotesCollection =>
-      _timelineNotesCollection;
+  // TimelineNotesCollection get timelineNotesCollection =>
+  //     _timelineNotesCollection;
 
   /// Templates Collection  getter
   TemplatesCollection get templatesCollection => _templatesCollection;

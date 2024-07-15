@@ -5,8 +5,7 @@ import 'package:recase/recase.dart';
 
 import '../../../support_data.dart';
 
-class ActivableBasicField extends ConsumerWidget
-    with ActivableFieldsEventMixin {
+class ActivableBasicField extends ConsumerWidget {
   const ActivableBasicField(this.field, this.activeFields, {super.key});
 
   final List<ActivableAddCaseField> activeFields;
@@ -18,7 +17,17 @@ class ActivableBasicField extends ConsumerWidget
     final active = activeFields.contains(field);
 
     return InkWell(
-      onTap: () => updateActivableField(ref, field),
+      onTap: () {
+        final fields = List<ActivableAddCaseField>.from(activeFields);
+        if (fields.contains(field)) {
+          fields.remove(field);
+        } else {
+          fields.add(field);
+        }
+        ref
+            .watch(supportDataNotifierProvider.notifier)
+            .upsertActivableFields(fields);
+      },
       child: InputDecorator(
         decoration: InputDecoration(
           labelText: labelText,

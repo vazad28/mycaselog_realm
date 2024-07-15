@@ -7,7 +7,7 @@ part of '../../../../templates/shared_templates/provider/shared_templates_provid
 // **************************************************************************
 
 String _$sharedTemplatesNotifierHash() =>
-    r'325b00c3117c90216949994ae19c98f49813d6cb';
+    r'fc02adecef7c128c90c32037916630eb8de26bb9';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -31,11 +31,11 @@ class _SystemHash {
 }
 
 abstract class _$SharedTemplatesNotifier
-    extends BuildlessAutoDisposeNotifier<StateOf<List<SharedTemplateModel>>> {
-  late final String? speciality;
+    extends BuildlessAutoDisposeNotifier<List<SharedTemplateModel>> {
+  late final String speciality;
 
-  StateOf<List<SharedTemplateModel>> build(
-    String? speciality,
+  List<SharedTemplateModel> build(
+    String speciality,
   );
 }
 
@@ -64,7 +64,7 @@ class SharedTemplatesNotifierFamily extends Family {
 
   /// See also [SharedTemplatesNotifier].
   SharedTemplatesNotifierProvider call(
-    String? speciality,
+    String speciality,
   ) {
     return SharedTemplatesNotifierProvider(
       speciality,
@@ -105,10 +105,10 @@ class _$SharedTemplatesNotifierFamilyOverride implements FamilyOverride {
 
 /// See also [SharedTemplatesNotifier].
 class SharedTemplatesNotifierProvider extends AutoDisposeNotifierProviderImpl<
-    SharedTemplatesNotifier, StateOf<List<SharedTemplateModel>>> {
+    SharedTemplatesNotifier, List<SharedTemplateModel>> {
   /// See also [SharedTemplatesNotifier].
   SharedTemplatesNotifierProvider(
-    String? speciality,
+    String speciality,
   ) : this._internal(
           () => SharedTemplatesNotifier()..speciality = speciality,
           from: sharedTemplatesNotifierProvider,
@@ -133,10 +133,10 @@ class SharedTemplatesNotifierProvider extends AutoDisposeNotifierProviderImpl<
     required this.speciality,
   }) : super.internal();
 
-  final String? speciality;
+  final String speciality;
 
   @override
-  StateOf<List<SharedTemplateModel>> runNotifierBuild(
+  List<SharedTemplateModel> runNotifierBuild(
     covariant SharedTemplatesNotifier notifier,
   ) {
     return notifier.build(
@@ -161,13 +161,13 @@ class SharedTemplatesNotifierProvider extends AutoDisposeNotifierProviderImpl<
   }
 
   @override
-  (String?,) get argument {
+  (String,) get argument {
     return (speciality,);
   }
 
   @override
   AutoDisposeNotifierProviderElement<SharedTemplatesNotifier,
-      StateOf<List<SharedTemplateModel>>> createElement() {
+      List<SharedTemplateModel>> createElement() {
     return _SharedTemplatesNotifierProviderElement(this);
   }
 
@@ -201,18 +201,18 @@ class SharedTemplatesNotifierProvider extends AutoDisposeNotifierProviderImpl<
 }
 
 mixin SharedTemplatesNotifierRef
-    on AutoDisposeNotifierProviderRef<StateOf<List<SharedTemplateModel>>> {
+    on AutoDisposeNotifierProviderRef<List<SharedTemplateModel>> {
   /// The parameter `speciality` of this provider.
-  String? get speciality;
+  String get speciality;
 }
 
 class _SharedTemplatesNotifierProviderElement
     extends AutoDisposeNotifierProviderElement<SharedTemplatesNotifier,
-        StateOf<List<SharedTemplateModel>>> with SharedTemplatesNotifierRef {
+        List<SharedTemplateModel>> with SharedTemplatesNotifierRef {
   _SharedTemplatesNotifierProviderElement(super.provider);
 
   @override
-  String? get speciality =>
+  String get speciality =>
       (origin as SharedTemplatesNotifierProvider).speciality;
 }
 

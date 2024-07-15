@@ -9,7 +9,7 @@ import '../../../core/app_vars.dart';
 import '../../index.dart';
 
 class AddFieldBar extends ConsumerWidget
-    with AddTemplateStateMixin, AddTemplateFieldsEventMixin {
+    with AddTemplateStateMixin, AddTemplateFieldsMixin {
   const AddFieldBar({super.key});
 
   @override

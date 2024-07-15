@@ -1,103 +1,108 @@
-import 'package:json_annotation/json_annotation.dart';
-import 'package:realm/realm.dart';
+// import 'package:json_annotation/json_annotation.dart';
+// import 'package:realm/realm.dart';
 
-import '../cases/case_model.dart';
-import '../model_utils.dart';
+// import '../cases/case_model.dart';
+// import '../model_utils.dart';
 
-part 'media_model.g.dart';
-part 'media_model.realm.dart';
+// part 'media_model.g.dart';
+// part 'media_model.realm.dart';
 
-///Media status
-enum MediaStatus {
-  cancelled,
-  failed,
-  processing,
-  queued,
-  removed,
-  success,
-  uploading,
-}
+// ///Media status
+// enum MediaStatus {
+//   cancelled,
+//   failed,
+//   processing,
+//   queued,
+//   removed,
+//   success,
+//   uploading,
+// }
 
-class HybridMediaModel {
-  HybridMediaModel({
-    required this.caseModel,
-    required this.mediaModel,
-  });
+// class HybridMediaModel {
+//   HybridMediaModel({
+//     required this.caseModel,
+//     required this.mediaModel,
+//   });
 
-  final CaseModel? caseModel;
-  final MediaModel mediaModel;
-}
+//   final CaseModel? caseModel;
+//   final MediaModel mediaModel;
+// }
 
-@RealmModel()
-@JsonSerializable(explicitToJson: true)
-class _MediaModel {
-  @PrimaryKey()
-  late String mediaID;
-  late String authorID;
-  late String? fileType;
-  late String? fileName;
-  late String? fileUri;
-  late String? mediumUri;
-  late String? thumbUri;
-  @Indexed()
-  late String? caseID;
-  @MapTo('status')
-  late String? _status;
-  @Ignored()
-  MediaStatus get status {
-    return MediaStatus.values.byName(_status ?? MediaStatus.queued.name);
-  }
+// @RealmModel()
+// @JsonSerializable(explicitToJson: true)
+// class $MediaModel {
+//   @PrimaryKey()
+//   late String mediaID;
+//   late String authorID;
+//   late String? fileType;
+//   late String? fileName;
+//   late String? fileUri;
+//   late String? mediumUri;
+//   late String? thumbUri;
+//   @Indexed()
+//   late String? caseID;
+//   @MapTo('status')
+//   late String? _status;
+//   @Ignored()
+//   MediaStatus get status {
+//     return MediaStatus.values.byName(_status ?? MediaStatus.queued.name);
+//   }
 
-  @Ignored()
-  set status(MediaStatus value) => _status = value.name;
+//   @Ignored()
+//   set status(MediaStatus value) => _status = value.name;
 
-  @Indexed(RealmIndexType.fullText)
-  late String? comment;
-  @Indexed()
-  late int removed = 0;
-  late int createdAt = 0;
-  late int timestamp = 0;
+//   @Indexed(RealmIndexType.fullText)
+//   late String? comment;
+//   @Indexed()
+//   late int removed = 0;
+//   late int createdAt = 0;
+//   late int timestamp = 0;
 
-  MediaModel toRealmObject() {
-    return MediaModel(
-      mediaID,
-      authorID,
-      fileType: fileType,
-      fileName: fileName,
-      fileUri: fileUri,
-      mediumUri: mediumUri,
-      thumbUri: thumbUri,
-      caseID: caseID,
-      status: _status,
-      comment: comment,
-      removed: removed,
-      createdAt: createdAt,
-      timestamp: timestamp,
-    );
-  }
+//   // Backlink field. Links back to the `tasks` property in the `odel` model.
+//   @Ignored()
+//   @Backlink(#mediaModels)
+//   late Iterable<$CaseModel> linkedCaseModel;
 
-  static MediaModel fromJson(Map<String, dynamic> json) =>
-      MediaModelX.fromJson(json);
+//   MediaModel toRealmObject() {
+//     return MediaModel(
+//       mediaID,
+//       authorID,
+//       fileType: fileType,
+//       fileName: fileName,
+//       fileUri: fileUri,
+//       mediumUri: mediumUri,
+//       thumbUri: thumbUri,
+//       caseID: caseID,
+//       status: _status,
+//       comment: comment,
+//       removed: removed,
+//       createdAt: createdAt,
+//       timestamp: timestamp,
+//     );
+//   }
 
-  Map<String, dynamic> toJson() => _$MediaModelToJson(this);
-}
+//   // static MediaModel fromJson(Map<String, dynamic> json) =>
+//   //     MediaModelX.fromJson(json);
 
-extension MediaModelX on MediaModel {
-  static MediaModel fromJson(Map<String, dynamic> json) =>
-      _$MediaModelFromJson(json).toRealmObject();
+//   Map<String, dynamic> toJson() => _$$MediaModelToJson(this);
+// }
 
-  Map<String, dynamic> toJson() => _$MediaModelToJson(this);
+// extension MediaModelX on MediaModel {
+//   static MediaModel fromJson(Map<String, dynamic> json) =>
+//       _$$MediaModelFromJson(json).toRealmObject();
 
-  static MediaModel zero(String authorID) {
-    final timestamp = ModelUtils.getTimestamp;
+//   Map<String, dynamic> toJson() => _$$MediaModelToJson(this);
 
-    final mediaModel = MediaModel(
-      ModelUtils.uniqueID,
-      authorID,
-      createdAt: timestamp,
-      timestamp: timestamp,
-    );
+//   static MediaModel zero(String authorID) {
+//     final timestamp = ModelUtils.getTimestamp;
 
-    return mediaModel;
-  }
-}
+//     final mediaModel = MediaModel(
+//       ModelUtils.uniqueID,
+//       authorID,
+//       createdAt: timestamp,
+//       timestamp: timestamp,
+//     );
+
+//     return mediaModel;
+//   }
+// }

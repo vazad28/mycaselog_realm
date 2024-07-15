@@ -72,11 +72,7 @@ class NotesCollection extends DatabaseCollection<NoteModel> {
   }
 
   // @override
-  // NoteModel? getSingle(String id) {
-  //   try {
-  //     return realm.query<NoteModel>(r'noteID == $0', [id]).first;
-  //   } catch (err) {
-  //     return null;
-  //   }
+  // Stream<RealmObjectChanges<NoteModel>>? getSingleStream(String primaryKey) {
+  //   return realm.find<NoteModel>(primaryKey)?.changes;
   // }
 }

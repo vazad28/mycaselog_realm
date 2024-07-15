@@ -1,4 +1,9 @@
-export 'provider/stats_provider.dart';
+export 'helper/helper.dart';
+export 'provider/chart_providers/chart_providers.dart';
+export 'provider/stats_cases_provider.dart';
+export 'provider/stats_mixin.dart';
+export 'provider/stats_providers.dart';
+export 'provider/stats_repository.dart';
 export 'view/stats_page.dart';
 export 'view/stats_view.dart';
 export 'widget/widgets.dart';

@@ -7,7 +7,7 @@ class SyncDataOnAppStartTile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final syncOnStart =
         ref.watch(appSettingsProvider.select((value) => value.syncOnStart));
-    print('SettingToggleTile on tap $syncOnStart');
+
     return SettingToggleTile(
       leading: const Icon(Icons.sync_alt),
       title: S.of(context).syncDataOnAppStart.titleCase,

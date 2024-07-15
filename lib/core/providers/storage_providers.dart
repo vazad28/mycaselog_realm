@@ -23,3 +23,9 @@ PersistentStorage persistentStorage(PersistentStorageRef ref) {
     sharedPreferences: ref.watch(sharedPrefsProvider),
   );
 }
+
+/// app dir path
+@Riverpod(keepAlive: true)
+String appDirPath(AppDirPathRef ref) {
+  throw UnimplementedError();
+}

@@ -74,10 +74,8 @@ class AddTemplateSeeder extends _$AddTemplateSeeder {
 
   /// called by view with passed param caseID to load case model
   void seed(String templateID, String userSpeciality) {
-    final templateModel = ref
-        .watch(dbProvider)
-        .templatesCollection
-        .getSingle('templateID', templateID);
+    final templateModel =
+        ref.watch(dbProvider).templatesCollection.getSingle(templateID);
 
     final model = templateModel ?? TemplateModelX.zero()
       ..speciality = userSpeciality;

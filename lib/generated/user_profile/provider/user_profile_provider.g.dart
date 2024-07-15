@@ -6,7 +6,7 @@ part of '../../../user_profile/provider/user_profile_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userMiniStatsHash() => r'53ec4f8db593f1620c5507e67fcca81015470cea';
+String _$userMiniStatsHash() => r'80363598b1a53b71a138c1fabc124b51816d29ca';
 
 /// ////////////////////////////////////////////////////////////////////
 /// Main Providers
@@ -27,7 +27,7 @@ final userMiniStatsProvider = AutoDisposeProvider<UserStatsModel>.internal(
 
 typedef UserMiniStatsRef = AutoDisposeProviderRef<UserStatsModel>;
 String _$userProfileNotifierHash() =>
-    r'bb42e6fd8fbfd348bdf3de30cdd8d9f30ccba62f';
+    r'384910404b504521f441de1536a1c7640048faea';
 
 /// See also [UserProfileNotifier].
 @ProviderFor(UserProfileNotifier)

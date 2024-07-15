@@ -16,7 +16,6 @@ class CaseTileStyleToggle extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final caseTileStyle = ref.watch(caseTileStyleProvider);
 
-    // ignore: require_trailing_commas
     return IconButton(
       onPressed: () {
         final toggledStyle = caseTileStyle == 2 ? 0 : caseTileStyle + 1;

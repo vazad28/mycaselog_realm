@@ -9,22 +9,10 @@ import 'settings_event.dart';
 part '../../generated/settings/provider/app_settings_provider.g.dart';
 
 @riverpod
-class CurrentThemeMode extends _$CurrentThemeMode {
-  @override
-  int build() {
-    final themeMode =
-        ref.watch(appSettingsProvider.select((value) => value.themeMode));
-    return themeMode;
-  }
-
-  void setThemeMode(int themeModeIndex) => state = themeModeIndex;
-}
-
-@riverpod
 class AppSettings extends _$AppSettings with LoggerMixin {
   @override
   SettingsModel build() {
-    final userID = ref.watch(authenticationUserProvider).id;
+    final userID = ref.read(userIDProvider);
 
     final sub = ref
         .watch(dbProvider)
@@ -41,10 +29,10 @@ class AppSettings extends _$AppSettings with LoggerMixin {
   }
 
   Future<void> _updateSettings(SettingsModel settingsModel) async {
-    await ref.watch(dbProvider).settingsCollection.put(
-          ref.watch(authenticationUserProvider).id,
-          settingsModel.toRealmObject(),
-        );
+    //print('settingsModel.syncOnStart ${settingsModel.syncOnStart}');
+    await ref.read(dbProvider).settingsCollection.put(
+        ref.watch(authenticationUserProvider).id, settingsModel.toRealmObject(),
+        saveLocal: settingsModel.syncOnStart);
   }
 
   void on(SettingsEvent event) {
@@ -60,7 +48,6 @@ class AppSettings extends _$AppSettings with LoggerMixin {
       },
       updateThemeColor: (e) {
         _updateSettings(state..seedColorHex = e.seedColor);
-        // ref.read(currentThemeModeProvider.notifier).setThemeColor(e.seedColor);
       },
       updatesyncOnStart: (e) =>
           _updateSettings(state..syncOnStart = e.syncOnStart),
@@ -71,8 +58,6 @@ class AppSettings extends _$AppSettings with LoggerMixin {
       ),
     );
   }
-
-  void load() {}
 }
 
 @riverpod

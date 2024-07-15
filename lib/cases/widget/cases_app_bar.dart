@@ -26,7 +26,7 @@ class CasesAppBar extends StatelessWidget {
                     ?.copyWith(letterSpacing: -1),
               ),
             ),
-            // const _CasesCountWidget(),
+            //const _CasesCountWidget(),
             // const SizedBox(width: 16)
           ],
         ),

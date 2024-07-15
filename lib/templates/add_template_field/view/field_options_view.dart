@@ -11,8 +11,7 @@ import '../provider/add_template_field_provider.dart';
 import '../widgets/field_option_bar.dart';
 import '../widgets/field_option_tile.dart';
 
-class AddFieldOptionsView extends ConsumerWidget
-    with AddTemplateFieldStateMixin {
+class AddFieldOptionsView extends ConsumerWidget with AddTemplateFieldMixin {
   const AddFieldOptionsView({super.key});
 
   @override

@@ -74,7 +74,7 @@ class AddCaseSeeder extends _$AddCaseSeeder {
         : ref
             .watch(dbProvider)
             .templatesCollection
-            .getSingle('templateID', caseModel.templateID!);
+            .getSingle(caseModel.templateID!);
 
     originalModelJson = caseModel.toJson();
 
@@ -215,7 +215,6 @@ class AddCaseNotifier extends _$AddCaseNotifier with LoggerMixin {
       ..templateID = currTemplateModel?.templateID;
 
     createdModel.fieldsData.clear();
-
     createdModel.fieldsData.addAll(_createFieldsData(currTemplateModel) ?? []);
 
     return createdModel;
@@ -223,43 +222,44 @@ class AddCaseNotifier extends _$AddCaseNotifier with LoggerMixin {
 
   /// ---- DO the form submit  ---
   Future<void> _doSubmit(CaseModel modelToSubmit) async {
-    await ref.read(dbProvider).casesCollection.put(modelToSubmit.caseID,
-        modelToSubmit..timestamp = ModelUtils.getTimestamp,);
+    try {
+      await ref.read(dbProvider).casesCollection.put(
+            modelToSubmit.caseID,
+            modelToSubmit..timestamp = ModelUtils.getTimestamp,
+          );
 
-    /// set last used location  as default location to use next time
-    if (modelToSubmit.location != null) {
-      ref
-          .read(localStorageProvider)
-          .setDefaultSurgeryLocation(modelToSubmit.location!);
+      /// set last used location as default location to use next time
+      if (modelToSubmit.location != null) {
+        ref
+            .read(localStorageProvider)
+            .setDefaultSurgeryLocation(modelToSubmit.location!);
+      }
+
+      state = StateOf<CaseModel>.success(modelToSubmit);
+    } catch (err) {
+      logger.severe(err);
+      state = StateOf<CaseModel>.failure(AppFailure.generic(err));
     }
-
-    state = StateOf<CaseModel>.success(modelToSubmit);
   }
 
   /// ----- can pop -----
   bool canPop() {
-    try {
-      if (_formSubmitAttempted) return true;
+    if (_formSubmitAttempted) return true;
 
-      /// Create model instance with form data
-      final formToModel = _createModelToSave();
+    /// Create model instance with form data
+    final formToModel = _createModelToSave();
 
-      /// check equality using props defined in Model using equatable
-      final modelsAreEqual = const DeepCollectionEquality()
-          .equals(formToModel?.toJson(), _originalModelJson);
+    /// check equality using props defined in Model using equatable
+    final modelsAreEqual = const DeepCollectionEquality()
+        .equals(formToModel?.toJson(), _originalModelJson);
 
-      /// compare form fields data as bare bone json
-      final fieldsAreEqual = const DeepCollectionEquality().equals(
-        _originalModelJson['fieldsData'] as List<Map<String, dynamic>>?,
-        formToModel?.fieldsData.map((e) => e.toJson()).toList(),
-      );
+    /// compare form fields data as bare bone json
+    final fieldsAreEqual = const DeepCollectionEquality().equals(
+      _originalModelJson['fieldsData'] as List<Map<String, dynamic>>?,
+      formToModel?.fieldsData.map((e) => e.toJson()).toList(),
+    );
 
-      return modelsAreEqual && fieldsAreEqual;
-    } catch (err) {
-      logger.severe(err);
-      state = StateOf<CaseModel>.failure(AppFailure.generic(err));
-      return false;
-    }
+    return modelsAreEqual && fieldsAreEqual;
   }
 }
 
@@ -293,7 +293,7 @@ Result<DecryptedPatientModel, EncryptionClientException> decryptPatientModel(
   DecryptPatientModelRef ref,
   String crypt,
 ) {
-  final encryptionService = ref.read(encryptionRepositoryProvider);
+  final encryptionService = ref.read(encryptionServiceProvider);
 
   final jsonDataResult = encryptionService.decrypt(crypt);
 
@@ -311,7 +311,7 @@ Result<String, EncryptionClientException> encryptPatientModel(
   EncryptPatientModelRef ref,
   DecryptedPatientModel decryptedPatientModel,
 ) {
-  final encryptionClient = ref.read(encryptionRepositoryProvider);
+  final encryptionClient = ref.read(encryptionServiceProvider);
 
   return encryptionClient.encrypt(decryptedPatientModel.toJson()).when(
         success: Result.success,

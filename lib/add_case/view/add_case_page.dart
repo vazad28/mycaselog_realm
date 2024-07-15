@@ -100,7 +100,6 @@ class _AddCasePageController extends ConsumerState<AddCasePage>
     return FormPopScopeWrapper(
       canPop: () => canPop(ref),
       visibilitySwitcher: (visibility) {
-        //debugPrint('addcase visibility $visibility');
         switchNavBarVisibility(ref, visibility: visibility);
       },
       routeObserver: pageRouteObserver(ref),

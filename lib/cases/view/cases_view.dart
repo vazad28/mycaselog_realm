@@ -19,12 +19,13 @@ class CasesView extends ConsumerWidget {
         delegate: SliverChildBuilderDelegate(childCount: cases.length,
             (context, index) {
           final caseModel = cases.elementAt(index);
-          final mediaModels =
-              ref.watch(casesProvider.notifier).getCaseMedia(caseModel.caseID);
+          // print(model.mediaModels);
+          // final mediaModels =
+          //     ref.watch(casesProvider.notifier).getCaseMedia(caseModel.caseID);
 
           final hybridCaseModel = HybridCaseModel(
             caseModel: caseModel,
-            mediaModels: mediaModels,
+            mediaModels: caseModel.medias,
           );
 
           return CasesListItem(

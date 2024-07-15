@@ -63,16 +63,16 @@ final authenticationRepositoryProvider =
 typedef AuthenticationRepositoryRef
     = AutoDisposeProviderRef<AuthenticationRepository>;
 String _$authenticationUserStreamHash() =>
-    r'1a96349d48186453a8c2390e1fe940d67d9f0107';
+    r'4b90f438b6f7ef1084865b8d6a1999e0d6e25dc3';
 
 /// Local stream listener provider of the auth state
 ///
-/// Copied from [_authenticationUserStream].
-@ProviderFor(_authenticationUserStream)
-final _authenticationUserStreamProvider =
+/// Copied from [authenticationUserStream].
+@ProviderFor(authenticationUserStream)
+final authenticationUserStreamProvider =
     StreamProvider<AuthenticationUser>.internal(
-  _authenticationUserStream,
-  name: r'_authenticationUserStreamProvider',
+  authenticationUserStream,
+  name: r'authenticationUserStreamProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
       : _$authenticationUserStreamHash,
@@ -80,13 +80,13 @@ final _authenticationUserStreamProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _AuthenticationUserStreamRef = StreamProviderRef<AuthenticationUser>;
+typedef AuthenticationUserStreamRef = StreamProviderRef<AuthenticationUser>;
 String _$authenticationUserHash() =>
-    r'138d40715346c2e7b44129ee9de3d3b0c02405bb';
+    r'54c8c70b75e192693aa42c46715d48d4d1f9b480';
 
 /// Authenticated user provider
 ///
-/// Exposes User in a non aasync manner as regular provider
+/// Exposes User in a non async manner as regular provider
 ///
 /// Copied from [authenticationUser].
 @ProviderFor(authenticationUser)
@@ -101,5 +101,33 @@ final authenticationUserProvider = Provider<AuthenticationUser>.internal(
 );
 
 typedef AuthenticationUserRef = ProviderRef<AuthenticationUser>;
+String _$userIDHash() => r'e8d61e6d3bf3479b61307f5b74b90c17dbda4fdc';
+
+/// See also [userID].
+@ProviderFor(userID)
+final userIDProvider = AutoDisposeProvider<String>.internal(
+  userID,
+  name: r'userIDProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$userIDHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef UserIDRef = AutoDisposeProviderRef<String>;
+String _$logoutHash() => r'2c28a3960c7cb4642b57ed1aedd86774577ec0f7';
+
+/// See also [logout].
+@ProviderFor(logout)
+final logoutProvider = AutoDisposeFutureProvider<void>.internal(
+  logout,
+  name: r'logoutProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$logoutHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef LogoutRef = AutoDisposeFutureProviderRef<void>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, inference_failure_on_uninitialized_variable, inference_failure_on_function_return_type, inference_failure_on_untyped_parameter, deprecated_member_use_from_same_package

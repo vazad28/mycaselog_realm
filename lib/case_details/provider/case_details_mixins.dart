@@ -1,17 +1,19 @@
-
 part of 'case_details_provider.dart';
-/// ////////////////////////////////////////////////////////////////////
-/// Event and Mixins
-/// ////////////////////////////////////////////////////////////////////
-@Freezed(
-    copyWith: false,
-    equal: false,
-    when: FreezedWhenOptions.none,
-    map: FreezedMapOptions(maybeMap: false, mapOrNull: false),)
-class CaseDetailsEvent with _$CaseDetailsEvent {
-  const factory CaseDetailsEvent.addCaseDetails() = _AddCaseDetails;
+
+mixin CaseDetailsMixin {
+  AsyncValue<CaseModel> watchCaseDetailsModel(WidgetRef ref) =>
+      ref.watch(caseDetailsNotifierProvider);
+
+  AsyncValue<TemplateModel?> watchCaseDetailsTemplateModel(WidgetRef ref) =>
+      ref.watch(caseDetailsTemplateModelProvider);
+
+  // CaseModel getDuplicateCase(WidgetRef ref) =>
+  //     ref.watch(caseDetailsNotifierProvider.notifier).duplicateCase();
+
+  List<ActivableAddCaseField> watchActivableFields(WidgetRef ref) => ref
+      .watch(
+        supportDataNotifierProvider.select((value) => value.activeBasicFields),
+      )
+      .map((name) => ActivableAddCaseField.values.byName(name))
+      .toList();
 }
-
-mixin CaseDetailsEventMixin {}
-
-mixin CaseDetailsStateMixin {}

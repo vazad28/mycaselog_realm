@@ -19,9 +19,6 @@ mixin AddCaseEventMixin {
 }
 
 mixin AddCaseStateMixin {
-  // TemplateModel? watchCurrentSelectedTemplate(WidgetRef ref) =>
-  //     ref.watch(currentCaseTemplateProvider);
-
   FormGroup watchTemplatedDataFormGroup(WidgetRef ref) =>
       ref.watch(templatedDataFormGroupProvider);
 

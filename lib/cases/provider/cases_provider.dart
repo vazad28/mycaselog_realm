@@ -38,7 +38,7 @@ class Cases extends _$Cases with LoggerMixin {
 
   Future<void> pullToRefresh() async {}
 
-  List<MediaModel> getCaseMedia(String caseID) {
-    return ref.read(dbProvider).mediaCollection.getCaseMedia(caseID);
-  }
+  // List<MediaModel> getCaseMedia(String caseID) {
+  //   return ref.read(dbProvider).mediaCollection.getCaseMedia(caseID).toList();
+  // }
 }

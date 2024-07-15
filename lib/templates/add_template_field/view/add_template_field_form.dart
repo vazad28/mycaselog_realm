@@ -9,16 +9,15 @@ import 'package:recase/recase.dart';
 import '../add_template_field.dart';
 import 'field_options_view.dart';
 
-class AddTemplateFieldForm extends ConsumerWidget
-    with AddTemplateFieldEventMixin, AddTemplateFieldStateMixin {
+class AddTemplateFieldForm extends ConsumerWidget {
   const AddTemplateFieldForm({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final form = getTemplateFieldFormGroup(ref);
+    final formGroup = ref.watch(addTemplateFieldFormGroupProvider);
 
     return ReactiveForm(
-      formGroup: form,
+      formGroup: formGroup,
       child: Column(
         children: [
           VerticalSpacer.normal,

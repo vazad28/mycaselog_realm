@@ -9,9 +9,6 @@ part of 'case_model.dart';
 _CaseModel _$CaseModelFromJson(Map<String, dynamic> json) => _CaseModel()
   ..caseID = json['caseID'] as String
   ..surgeryDate = (json['surgeryDate'] as num).toInt()
-  ..patientModel = json['patientModel'] == null
-      ? null
-      : _PatientModel.fromJson(json['patientModel'] as Map<String, dynamic>)
   ..createdAt = (json['createdAt'] as num).toInt()
   ..anesthesia = json['anesthesia'] as String?
   ..anesthesiaBlock = json['anesthesiaBlock'] as String?
@@ -26,18 +23,26 @@ _CaseModel _$CaseModelFromJson(Map<String, dynamic> json) => _CaseModel()
   ..location = json['location'] as String?
   ..side = json['side'] as String?
   ..surgery = json['surgery'] as String?
+  ..templateID = json['templateID'] as String?
+  ..removed = (json['removed'] as num).toInt()
+  ..timestamp = (json['timestamp'] as num).toInt()
+  ..patientModel = json['patientModel'] == null
+      ? null
+      : _PatientModel.fromJson(json['patientModel'] as Map<String, dynamic>)
   ..fieldsData = (json['fieldsData'] as List<dynamic>)
       .map((e) => $TemplateFieldModel.fromJson(e as Map<String, dynamic>))
       .toList()
-  ..templateID = json['templateID'] as String?
-  ..removed = (json['removed'] as num).toInt()
-  ..timestamp = (json['timestamp'] as num).toInt();
+  ..medias = (json['medias'] as List<dynamic>)
+      .map((e) => _MediaModel.fromJson(e as Map<String, dynamic>))
+      .toList()
+  ..notes = (json['notes'] as List<dynamic>)
+      .map((e) => $TimelineNoteModel.fromJson(e as Map<String, dynamic>))
+      .toList();
 
 Map<String, dynamic> _$CaseModelToJson(_CaseModel instance) =>
     <String, dynamic>{
       'caseID': instance.caseID,
       'surgeryDate': instance.surgeryDate,
-      'patientModel': instance.patientModel?.toJson(),
       'createdAt': instance.createdAt,
       'anesthesia': instance.anesthesia,
       'anesthesiaBlock': instance.anesthesiaBlock,
@@ -51,10 +56,13 @@ Map<String, dynamic> _$CaseModelToJson(_CaseModel instance) =>
       'location': instance.location,
       'side': instance.side,
       'surgery': instance.surgery,
-      'fieldsData': instance.fieldsData.map((e) => e.toJson()).toList(),
       'templateID': instance.templateID,
       'removed': instance.removed,
       'timestamp': instance.timestamp,
+      'patientModel': instance.patientModel?.toJson(),
+      'fieldsData': instance.fieldsData.map((e) => e.toJson()).toList(),
+      'medias': instance.medias.map((e) => e.toJson()).toList(),
+      'notes': instance.notes.map((e) => e.toJson()).toList(),
     };
 
 _PatientModel _$PatientModelFromJson(Map<String, dynamic> json) =>
@@ -99,3 +107,45 @@ Map<String, dynamic> _$DecryptedPatientModelToJson(
       'name': instance.name,
       'phone': instance.phone,
     };
+
+_MediaModel _$MediaModelFromJson(Map<String, dynamic> json) => _MediaModel()
+  ..mediaID = json['mediaID'] as String
+  ..authorID = json['authorID'] as String
+  ..fileType = json['fileType'] as String?
+  ..fileName = json['fileName'] as String?
+  ..fileUri = json['fileUri'] as String?
+  ..mediumUri = json['mediumUri'] as String?
+  ..thumbUri = json['thumbUri'] as String?
+  ..caseID = json['caseID'] as String?
+  ..status = $enumDecode(_$MediaStatusEnumMap, json['status'])
+  ..comment = json['comment'] as String?
+  ..removed = (json['removed'] as num).toInt()
+  ..createdAt = (json['createdAt'] as num).toInt()
+  ..timestamp = (json['timestamp'] as num).toInt();
+
+Map<String, dynamic> _$MediaModelToJson(_MediaModel instance) =>
+    <String, dynamic>{
+      'mediaID': instance.mediaID,
+      'authorID': instance.authorID,
+      'fileType': instance.fileType,
+      'fileName': instance.fileName,
+      'fileUri': instance.fileUri,
+      'mediumUri': instance.mediumUri,
+      'thumbUri': instance.thumbUri,
+      'caseID': instance.caseID,
+      'status': _$MediaStatusEnumMap[instance.status]!,
+      'comment': instance.comment,
+      'removed': instance.removed,
+      'createdAt': instance.createdAt,
+      'timestamp': instance.timestamp,
+    };
+
+const _$MediaStatusEnumMap = {
+  MediaStatus.cancelled: 'cancelled',
+  MediaStatus.failed: 'failed',
+  MediaStatus.processing: 'processing',
+  MediaStatus.queued: 'queued',
+  MediaStatus.removed: 'removed',
+  MediaStatus.success: 'success',
+  MediaStatus.uploading: 'uploading',
+};

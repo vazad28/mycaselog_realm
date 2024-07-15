@@ -3,8 +3,8 @@ import 'package:realm/realm.dart';
 
 import '../../../app_models.dart';
 
-part 'settings_model.realm.dart';
 part 'settings_model.g.dart';
+part 'settings_model.realm.dart';
 
 @RealmModel()
 @JsonSerializable(explicitToJson: true)
@@ -15,7 +15,7 @@ class _SettingsModel {
   late int caseTileNavigate = 0;
   late int caseTileStyle = 0;
   late String? showByLocation;
-  late bool syncOnStart = true;
+  late bool syncOnStart = false; //<- must be default false. read below *
   late bool localAuthEnabled = true;
   late int timestamp = 0;
   late bool uploadFullSizePhoto = false;
@@ -78,3 +78,11 @@ extension SettingsModelX on SettingsModel {
   //   );
   // }
 }
+
+
+/// We keep sync on start false because the settings providers loads first with
+/// .zero object. The sync provider is watching the settings provider and will trigger
+/// sync based on this value.
+/// 
+/// When the realm listener fires in the settings provider to get the correct obhect
+/// we will either start the sync if the value is on

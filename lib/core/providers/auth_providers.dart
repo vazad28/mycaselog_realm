@@ -1,7 +1,9 @@
 import 'package:authentication_client/authentication_client.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../router/router.dart';
 import 'providers.dart';
 
 part '../../generated/core/providers/auth_providers.g.dart';
@@ -36,21 +38,49 @@ AuthenticationRepository authenticationRepository(
 
 /// Local stream listener provider of the auth state
 @Riverpod(keepAlive: true)
-Stream<AuthenticationUser> _authenticationUserStream(
-  _AuthenticationUserStreamRef ref,
+Stream<AuthenticationUser> authenticationUserStream(
+  AuthenticationUserStreamRef ref,
 ) {
   return ref.watch(authenticationClientProvider).user;
 }
 
 /// Authenticated user provider
 ///
-/// Exposes User in a non aasync manner as regular provider
+/// Exposes User in a non async manner as regular provider
 @Riverpod(keepAlive: true)
 AuthenticationUser authenticationUser(AuthenticationUserRef ref) {
-  final asyncValue = ref.watch(_authenticationUserStreamProvider);
+  final asyncValue = ref.watch(authenticationUserStreamProvider);
 
   return asyncValue.maybeWhen(
     data: (value) => value,
     orElse: () => AuthenticationUser.anonymous,
   );
 }
+
+@riverpod
+String userID(UserIDRef ref) {
+  return ref.watch(authenticationUserProvider).id;
+}
+
+@riverpod
+Future<void> logout(LogoutRef ref) async {
+  await Future<void>.delayed(const Duration(milliseconds: 1000));
+  try {
+    await ref.read(authenticationClientProvider).logOut();
+    ref
+      ..invalidate(dbProvider)
+      ..invalidate(mycaselogRouterProvider);
+  } catch (error, stackTrace) {
+    Error.throwWithStackTrace(
+      Exception('Logout failure'),
+      stackTrace,
+    );
+  }
+}
+
+/// ////////////////////////////////////////////////////////////////////
+/// Passocde provider
+/// ////////////////////////////////////////////////////////////////////
+
+/// set to value of the user clustom claims containing the passcode
+final passcodeProvider = StateProvider<String>((ref) => '');

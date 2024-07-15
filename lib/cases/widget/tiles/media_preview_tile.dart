@@ -1,11 +1,9 @@
-import 'package:app_data/app_data.dart';
 import 'package:app_models/app_models.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/providers/repository_providers.dart';
 import '../../../router/router.dart';
 
 /// ////////////////////////////////////////////////////////////////////
@@ -24,7 +22,9 @@ class MediaPreviewTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    if (hybridCaseModel.mediaModels.isEmpty) return const SizedBox.shrink();
+    if (hybridCaseModel.mediaModels.isEmpty) {
+      return const SizedBox.shrink();
+    }
 
     const height = kToolbarHeight + 12;
 
@@ -44,7 +44,6 @@ class MediaPreviewTile extends ConsumerWidget {
                 mediaModels: hybridCaseModel.mediaModels,
                 index: index,
                 routeObserver: routeObserver,
-                mediaRepository: ref.read(mediaRepositoryProvider),
               ),
             )
             .toList(),
@@ -58,17 +57,17 @@ class _MediaPreviewTile extends StatelessWidget {
     required this.mediaModels,
     required this.index,
     required this.routeObserver,
-    required this.mediaRepository,
+    //required this.mediaRepository,
   });
 
   final List<MediaModel> mediaModels;
   final int index;
   final RouteObserver<ModalRoute<void>>? routeObserver;
-  final MediaRepository mediaRepository;
+  //final MediaRepository mediaRepository;
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return const SizedBox(width: 90, child: Placeholder());
     // return OpenContainer<MediaModel>(
     //   closedElevation: 0,
     //   tappable: false,

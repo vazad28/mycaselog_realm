@@ -7,7 +7,7 @@ part of '../../../add_case/provider/add_case_provider.dart';
 // **************************************************************************
 
 String _$decryptPatientModelHash() =>
-    r'4f5eae163aac915f6ac25f20f13f278fb69521cb';
+    r'be9e68d43132380c0595d5683d8884d5b4efeb56';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -223,7 +223,7 @@ class _DecryptPatientModelProviderElement extends AutoDisposeProviderElement<
 }
 
 String _$encryptPatientModelHash() =>
-    r'14442fb82774687c38cfa89f3f8b50697d3c34fd';
+    r'163d809b296d501822eb093600e241805d830f5f';
 
 /// Encrypted patient data provider
 ///
@@ -449,7 +449,7 @@ final templatedDataFormGroupProvider = AutoDisposeProvider<FormGroup>.internal(
 );
 
 typedef TemplatedDataFormGroupRef = AutoDisposeProviderRef<FormGroup>;
-String _$addCaseSeederHash() => r'ae772e07223306c913aca55daeb8ece53743ccb4';
+String _$addCaseSeederHash() => r'9d6f66d976d1e8a4aa71fbab7a0b8b0f8cef1c83';
 
 /// ////////////////////////////////////////////////////////////////////
 /// Seeder provider
@@ -469,7 +469,7 @@ final addCaseSeederProvider =
 );
 
 typedef _$AddCaseSeeder = AutoDisposeNotifier<AddCaseSeedModel?>;
-String _$addCaseNotifierHash() => r'9671dee9f4378bdf3d179215a5502014c581b78e';
+String _$addCaseNotifierHash() => r'c8b60d8d77cfe80a6e1c60de5bf811a9b7eba82e';
 
 /// ////////////////////////////////////////////////////////////////////
 /// Main provider of the  feature

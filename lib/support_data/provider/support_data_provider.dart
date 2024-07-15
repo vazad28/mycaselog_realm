@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:app_extensions/app_extensions.dart';
 import 'package:app_models/app_models.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logger_client/logger_client.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -11,9 +9,7 @@ import '../../core/providers/providers.dart';
 import '../../core/services/services.dart';
 import '../support_data.dart';
 
-part '../../generated/support_data/provider/support_data_provider.freezed.dart';
 part '../../generated/support_data/provider/support_data_provider.g.dart';
-part './support_data_mixin.dart';
 
 /// ////////////////////////////////////////////////////////////////////
 /// Main providers
@@ -38,80 +34,34 @@ class SupportDataNotifier extends _$SupportDataNotifier with LoggerMixin {
     return SupportDataModelX.zero(userID);
   }
 
-  Future<void> _updateSupportData(
-    SupportDataModel supportDataModel,
-  ) async {
+  Future<void> _updateSupportData() async {
     try {
       await ref.watch(dbProvider).supportDataCollection.put(
             ref.watch(authenticationUserProvider).id,
-            supportDataModel.toRealmObject(),
+            state.toRealmObject(),
           );
     } catch (err) {
       ref.watch(dialogServiceProvider).showSnackBar(err.toString());
     }
   }
 
-  ///
-  /// Map events to state
-  Future<void> on(SupportDataEvent event) async {
-    event.map(
-      updateAnesthesiaBlocks: (value) {
-        _updateSupportData(state..anesthesiaBlocks = value.blocks.toRealmList);
-      },
-      updateAssistants: (value) {
-        _updateSupportData(
-            state..assistants = value.assistantModels.toRealmList,);
-      },
-      addAssistant: (value) {
-        _onAddAssistant(value.assistantModel);
-      },
-      updateSurgeryLocations: (value) {
-        _updateSupportData(
-          state..surgeryLocations = value.surgeryLocations.toRealmList,
-        );
-      },
-      addSurgeryLocation: (value) {
-        _onAddSurgeryLocation(value.surgeryLocationModel);
-      },
-      updateActivableFields: (value) {
-        _updateSupportData(
-          state..activeBasicFields = value.fields.names.toRealmList,
-        );
-      },
-    );
-  }
-
-  // /// Put assistant
-  void _onAddAssistant(AssistantModel assistantModel) {
-    final assistants = List<AssistantModel>.from(state.assistants);
-    final index = assistants.indexWhere(
-      (element) => element.assistantID == assistantModel.assistantID,
-    );
-
-    if (index == -1) {
-      assistants.add(assistantModel);
-    } else {
-      assistants[index] = assistantModel;
-    }
-
-    _updateSupportData(state..assistants = assistants.toRealmList);
-  }
-
   /// On suregry location model update
-  void _onAddSurgeryLocation(SurgeryLocationModel surgeryLocation) {
-    final locations = List<SurgeryLocationModel>.from(
+  Future<void> upsertSurgeryLocation(SurgeryLocationModel surgeryLocation) {
+    final surgeryLocations = List<SurgeryLocationModel>.from(
       state.surgeryLocations,
     );
-    final index = locations.indexWhere(
+    final index = surgeryLocations.indexWhere(
       (element) => element.locationID == surgeryLocation.locationID,
     );
     if (index == -1) {
-      locations.add(surgeryLocation);
+      surgeryLocations.add(surgeryLocation);
     } else {
-      locations[index] = surgeryLocation;
+      surgeryLocations[index] = surgeryLocation;
     }
 
-    _updateSupportData(state = state..surgeryLocations = locations.toRealmList);
+    state.surgeryLocations.clear();
+    state.surgeryLocations.addAll(surgeryLocations);
+    return _updateSupportData();
   }
 
   // ignore: unused_element
@@ -132,16 +82,42 @@ class SupportDataNotifier extends _$SupportDataNotifier with LoggerMixin {
   // }
 
   // ignore: unused_element
-  void _onPutAnesthesiaBlock(String block) {
-    final blocks = List<String>.from(state.anesthesiaBlocks ?? []);
+  Future<void> upsertPutAnesthesiaBlock(String block) {
+    final blocks = List<String>.from(state.anesthesiaBlocks);
     if (blocks.contains(block)) {
       blocks.remove(block);
     } else {
       blocks.add(block);
     }
 
-    _updateSupportData(state..anesthesiaBlocks = blocks.toRealmList);
+    return _updateSupportData();
   }
 
-  void load() {}
+  Future<void> upsertAssistant(AssistantModel assistantModel) {
+    final assistants = List<AssistantModel>.from(state.assistants);
+    final index = assistants.indexWhere(
+      (element) => element.assistantID == assistantModel.assistantID,
+    );
+
+    if (index == -1) {
+      assistants.add(assistantModel);
+    } else {
+      assistants[index] = assistantModel;
+    }
+
+    state.assistants.clear();
+    state.assistants.addAll(assistants);
+    return _updateSupportData();
+  }
+
+  Future<void> upsertActivableFields(List<ActivableAddCaseField> fields) {
+    state.activeBasicFields.clear();
+    state.activeBasicFields.addAll(fields.names);
+    return _updateSupportData();
+  }
+
+  Future<void> upsertAnesthesiaBlock(String block) {
+    state.anesthesiaBlocks.replaceOrAdd(block);
+    return _updateSupportData();
+  }
 }

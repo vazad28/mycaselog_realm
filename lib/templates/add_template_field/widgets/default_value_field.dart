@@ -10,8 +10,7 @@ import 'package:recase/recase.dart';
 import '../../../core/app_vars.dart';
 import '../provider/add_template_field_provider.dart';
 
-class DefaultValueField extends ConsumerWidget
-    with AddTemplateFieldEventMixin, AddTemplateFieldStateMixin {
+class DefaultValueField extends ConsumerWidget with AddTemplateFieldMixin {
   const DefaultValueField({super.key});
 
   @override

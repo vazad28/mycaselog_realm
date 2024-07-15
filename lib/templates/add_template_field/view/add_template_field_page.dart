@@ -11,6 +11,7 @@ import 'package:recase/recase.dart';
 import 'package:state_of/state_of.dart';
 
 import '../../../core/failures/app_failures.dart';
+import '../../../router/router.dart';
 import '../add_template_field.dart';
 
 /// AddTemplateFieldPage ROOT Widget
@@ -32,7 +33,7 @@ class AddTemplateFieldPage extends ConsumerStatefulWidget {
 /// AddTemplateFieldPage CONTROLLER Widget
 class _AddTemplateFieldPageController
     extends ConsumerState<AddTemplateFieldPage>
-    with LoggerMixin, AddTemplateFieldStateMixin, AddTemplateFieldEventMixin {
+    with LoggerMixin, AddTemplateFieldMixin {
   @override
   Widget build(BuildContext context) {
     ref.listen<StateOf<TemplateFieldModel>>(addTemplateFieldNotifierProvider,
@@ -69,9 +70,12 @@ class _AddTemplateFieldPageController
     return FormPopScopeWrapper(
       canPop: () => canPop(ref),
       visibilitySwitcher: (visibility) {
-        //switchNavBarVisibility(ref, visibility: visibility);
+        ref
+            .watch(bottomNavVisibilityProvider.notifier)
+            .update(value: visibility);
       },
-      routeObserver: pageRouteObserver(ref),
+      routeObserver:
+          ref.read(shellRoutesObserversProvider).settingsRouteObserver,
       child: scaffold,
     );
   }

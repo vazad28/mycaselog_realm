@@ -8,7 +8,7 @@ import 'package:misc_packages/misc_packages.dart';
 import 'package:recase/recase.dart';
 
 import '../../core/failures/app_failures.dart';
-import '../../core/providers/sync_providers.dart';
+import '../provider/sync_providers.dart';
 import 'sync_time_selector.dart';
 
 class SyncItemTile<T> extends ConsumerWidget {
@@ -38,16 +38,21 @@ class SyncItemTile<T> extends ConsumerWidget {
                     if (timestamp == null) return;
 
                     ref
-                        .watch(syncResultProvider(dbCollection).notifier)
-                        .showLoading();
+                        .watch(collectionSyncerProvider(dbCollection).notifier)
+                        .syncCollection(timestamp);
 
-                    final collectionToSync =
-                        ref.read(syncCollectionsMapProvider)[dbCollection];
-                    if (collectionToSync == null) return;
+                    // final collectionToSync =
+                    //     ref.read(syncCollectionsMapProvider)[dbCollection];
 
-                    ref
-                        .read(collectionSyncProvider(collectionToSync).notifier)
-                        .resetSyncCollection(dbCollection, timestamp);
+                    // if (collectionToSync == null) return;
+
+                    // ref
+                    //     .watch(syncResultProvider(dbCollection).notifier)
+                    //     .showLoading();
+
+                    // ref
+                    //     .read(collectionSyncProvider(collectionToSync).notifier)
+                    //     .resetSyncCollection(dbCollection, timestamp);
                   },
                 );
               },
@@ -74,7 +79,7 @@ class _SyncItemTileTrailing<T> extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(syncResultProvider(dbCollection));
+    final state = ref.watch(collectionSyncerProvider(dbCollection));
 
     return state.when(
       init: () => TextButton(

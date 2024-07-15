@@ -8,36 +8,39 @@ part 'timeline_note_model.realm.dart';
 
 @RealmModel()
 @JsonSerializable(explicitToJson: true)
-class _TimelineNoteModel {
+class $TimelineNoteModel {
   @PrimaryKey()
   late String noteID;
-  late String? authorID;
-  late String? caseID;
+  late String authorID = 'unknown';
+  late String caseID = 'unknown';
   @Indexed(RealmIndexType.fullText)
   late String? note;
   @Indexed()
   late int createdAt = 0;
-  late int initialTimestamp = 0;
-  late int removed = 0;
   late int timestamp = 0;
 
   TimelineNoteModel toRealmObject() {
-    return TimelineNoteModel(noteID,
-        authorID: authorID,
-        caseID: caseID,
-        note: note,
-        createdAt: createdAt,
-        initialTimestamp: initialTimestamp,
-        removed: removed,
-        timestamp: timestamp,);
+    return TimelineNoteModel(
+      noteID,
+      authorID: authorID,
+      caseID: caseID,
+      note: note,
+      createdAt: createdAt,
+      timestamp: timestamp,
+    );
   }
+
+  static TimelineNoteModel fromJson(Map<String, dynamic> json) =>
+      TimelineNoteModelX.fromJson(json);
+
+  Map<String, dynamic> toJson() => _$$TimelineNoteModelToJson(this);
 }
 
 extension TimelineNoteModelX on TimelineNoteModel {
   static TimelineNoteModel fromJson(Map<String, dynamic> json) =>
-      _$TimelineNoteModelFromJson(json).toRealmObject();
+      _$$TimelineNoteModelFromJson(json).toRealmObject();
 
-  Map<String, dynamic> toJson() => _$TimelineNoteModelToJson(this);
+  Map<String, dynamic> toJson() => _$$TimelineNoteModelToJson(this);
 
   static TimelineNoteModel zero({
     required String caseID,
@@ -50,7 +53,7 @@ extension TimelineNoteModelX on TimelineNoteModel {
       authorID: authorID,
       caseID: caseID,
       createdAt: timestamp,
-      initialTimestamp: timestamp,
+      timestamp: timestamp,
     );
   }
 }

@@ -31,7 +31,8 @@ class SupportDataCollection extends DatabaseCollection<SupportDataModel> {
               case DocumentChangeType.added:
               case DocumentChangeType.modified:
                 realm.write(
-                    () => realm.add<SupportDataModel>(model, update: true),);
+                  () => realm.add<SupportDataModel>(model, update: true),
+                );
                 return model;
 
               case DocumentChangeType.removed:

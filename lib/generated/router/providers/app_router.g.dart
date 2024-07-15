@@ -6,7 +6,7 @@ part of '../../../router/providers/app_router.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$mycaselogRouterHash() => r'e458aec9607c85d763ccf6644c0600a9062dcee8';
+String _$mycaselogRouterHash() => r'e5fefcc20209f0b31d3eacc2390bf777fa16b6e7';
 
 /// A state provider holding the state for the visibility of the
 /// bottom navigation bar

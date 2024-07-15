@@ -49,34 +49,3 @@ class TimelineItemModel {
     );
   }
 }
-
-// part 'timeline_item_model.freezed.dart';
-// part 'timeline_item_model.g.dart';
-
-// @freezed
-// class TimelineItemModel with _$TimelineItemModel {
-//   factory TimelineItemModel({
-//     required String id,
-//     required String? eventDate,
-//     required int eventTimestamp,
-//     required String caseID,
-//     required int surgeryDate,
-//     @Default([]) List<MediaModel> mediaList,
-//     @Default([]) List<TimelineNoteModel> noteList,
-//   }) = _TimelineItemModel;
-
-//   const TimelineItemModel._();
-
-//   factory TimelineItemModel.zero() {
-//     return TimelineItemModel(
-//       id: ModelUtils.uniqueID,
-//       eventDate: '',
-//       eventTimestamp: 0,
-//       caseID: '',
-//       surgeryDate: 0,
-//     );
-//   }
-
-//   factory TimelineItemModel.fromJson(Map<String, Object?> json) =>
-//       _$TimelineItemModelFromJson(json);
-// }

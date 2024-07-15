@@ -44,24 +44,22 @@ extension $CasesRouteExtension on CasesRoute {
 
 extension $CaseDetailsRouteExtension on CaseDetailsRoute {
   static CaseDetailsRoute _fromState(GoRouterState state) => CaseDetailsRoute(
+        state.pathParameters['caseID']!,
         activeTab: int.parse(state.pathParameters['activeTab']!),
-        state.extra as CaseModel,
       );
 
   String get location => GoRouteData.$location(
         '/cases/${Uri.encodeComponent(caseID)}/${Uri.encodeComponent(activeTab!.toString())}',
       );
 
-  void go(BuildContext context) => context.go(location, extra: $extra);
+  void go(BuildContext context) => context.go(location);
 
-  Future<T?> push<T>(BuildContext context) =>
-      context.push<T>(location, extra: $extra);
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
   void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location, extra: $extra);
+      context.pushReplacement(location);
 
-  void replace(BuildContext context) =>
-      context.replace(location, extra: $extra);
+  void replace(BuildContext context) => context.replace(location);
 }
 
 extension $AddCaseRouteExtension on AddCaseRoute {

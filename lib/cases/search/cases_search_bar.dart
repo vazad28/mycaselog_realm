@@ -12,8 +12,8 @@ class CasesSearchBar extends ConsumerWidget {
     return SliverAppBar(
       primary: false,
       pinned: true,
-      expandedHeight: kToolbarHeight + AppSpacing.sm,
-      collapsedHeight: kToolbarHeight + AppSpacing.sm,
+      expandedHeight: kToolbarHeight,
+      collapsedHeight: kToolbarHeight,
       scrolledUnderElevation: 0.5,
       shadowColor: context.colorScheme.shadow.lighter(),
       surfaceTintColor: context.colorScheme.surface,

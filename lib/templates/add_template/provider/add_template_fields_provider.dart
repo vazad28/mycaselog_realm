@@ -32,7 +32,7 @@ class AddTemplateFieldsEvent with _$AddTemplateFieldsEvent {
   }) = _ReOrderFields;
 }
 
-mixin AddTemplateFieldsEventMixin {
+mixin AddTemplateFieldsMixin {
   void addUpdateField(WidgetRef ref, TemplateFieldModel? data) => ref
       .watch(addTemplateFieldsNotifierProvider.notifier)
       .on(AddTemplateFieldsEvent.onAddUpdateField(data));
@@ -44,9 +44,7 @@ mixin AddTemplateFieldsEventMixin {
   void importFields(WidgetRef ref, TemplateModel templateModel) => ref
       .watch(addTemplateFieldsNotifierProvider.notifier)
       .on(AddTemplateFieldsEvent.onImportFields(templateModel));
-}
 
-mixin AddTemplateFieldsStateMixin {
   List<TemplateFieldModel>? templateFieldsListState(WidgetRef ref) =>
       ref.watch(addTemplateFieldsNotifierProvider);
 }

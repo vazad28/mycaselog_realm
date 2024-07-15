@@ -1,15 +1,11 @@
-import 'package:app_ui/app_ui.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+part of './activable_fields_page.dart';
 
-import '../../../support_data.dart';
-
-class ActivableFieldsView extends ConsumerWidget with SupportDataStateMixin {
+class ActivableFieldsView extends ConsumerWidget {
   const ActivableFieldsView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final activeFields = activableAddCaseFields(ref);
+    final activeFields = ref.watch(activableAddCaseFieldsProvider);
 
     return ListView(
       shrinkWrap: true,

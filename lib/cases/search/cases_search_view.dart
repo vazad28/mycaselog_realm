@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/providers/providers.dart';
 import '../../core/services/services.dart';
+import '../provider/cases_provider.dart';
 import 'case_search_result_tile.dart';
 
 enum CasesSearchBarStyle { icon, bar }
@@ -88,7 +88,7 @@ class _CasesSearchViewState extends ConsumerState<CasesSearchView> {
 
   Future<void> handleSelection(String selectedText) async {
     final caseModels = await ref
-        .read(ftsSearchRepositoryProvider)
+        .read(ftsSearchServiceProvider)
         .searchCaseMedia<CaseModel>(selectedText);
 
     setState(() {
@@ -144,7 +144,9 @@ class _CasesSearchViewState extends ConsumerState<CasesSearchView> {
                 },
                 leading: const Icon(Icons.search),
                 hintText: 'Search cases',
-                //trailing: widget.trailing,
+                trailing: const [
+                  _CasesCountWidget(),
+                ],
               )
             : IconButton(
                 icon: const Icon(Icons.search),
@@ -255,6 +257,26 @@ class _SuggestionsView extends StatelessWidget {
         height: 1,
       ),
       itemCount: children.length,
+    );
+  }
+}
+
+class _CasesCountWidget extends ConsumerWidget {
+  const _CasesCountWidget({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return StreamBuilder(
+      stream: ref.watch(casesProvider).changes,
+      builder: (_, snapshot) {
+        return Padding(
+          padding: const EdgeInsets.only(right: AppSpacing.sm),
+          child: Text(
+            (snapshot.data?.results.length ?? 0).toString(),
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+        );
+      },
     );
   }
 }

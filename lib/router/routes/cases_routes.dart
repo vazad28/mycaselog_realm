@@ -52,16 +52,17 @@ class AddCaseRoute extends GoRouteData {
 
 /// cases details route
 class CaseDetailsRoute extends GoRouteData {
-  CaseDetailsRoute(this.$extra, {this.activeTab}) : caseID = $extra.caseID;
+  CaseDetailsRoute(this.caseID, {this.activeTab});
+  // : caseID = $extra.caseID;
 
   static const path = ':caseID/:activeTab';
   static const name = 'case_details';
 
   final int? activeTab;
   final String caseID;
-  final CaseModel $extra;
+  //final CaseModel $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      CaseDetailsPage(caseModel: $extra, activeTab: activeTab);
+      CaseDetailsPage(caseID: caseID, activeTab: activeTab);
 }

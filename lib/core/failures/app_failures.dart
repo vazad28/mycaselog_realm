@@ -75,17 +75,13 @@ extension ErrorToAppExeptionMapperX on Object? {
   AppFailure toAppFailure() {
     final err = this;
     if (err is FirebaseException) {
-      //logger.severe(err.message, err, err.stackTrace);
       return AppFailure.firebase(err);
     } else if (err is PlatformException) {
-      //logger.severe(err.details);
       return AppFailure.platform(err);
     } else {
       if (err is AppFailure) {
-        //logger.info(err.toLocalizedString());
         return err;
       } else {
-        //logger.severe(err.toString());
         return AppFailure.generic(err.toString());
       }
     }

@@ -28,16 +28,7 @@ class CasesCollection extends DatabaseCollection<CaseModel> {
           .map((change) {
             final model = CaseModelX.fromJson(change.doc.data()!);
             print('CasesCollection ${model.caseID} ${change.type}');
-            switch (change.type) {
-              case DocumentChangeType.added:
-              case DocumentChangeType.modified:
-                realm.write(() => realm.add<CaseModel>(model, update: true));
-                return model;
-
-              case DocumentChangeType.removed:
-                realm.write(() => realm.delete<CaseModel>(model));
-                return null;
-            }
+            return realm.write(() => realm.add<CaseModel>(model, update: true));
           })
           .whereType<CaseModel>()
           .toList();
@@ -56,13 +47,9 @@ class CasesCollection extends DatabaseCollection<CaseModel> {
   Future<List<String>> getAutoCompleteDiagnosis(
     String? query,
   ) async {
-    if (query == null) {
-      final diagnosisList = realm.all<CaseModel>().take(50);
-      return diagnosisList.map((e) => e.diagnosis).nonNulls.toSet().toList();
-    }
-
-    final diagnosisList =
-        realm.query<CaseModel>(r'diagnosis TEXT $0', ['$query*']);
+    final diagnosisList = (query == null)
+        ? realm.all<CaseModel>().take(50)
+        : realm.query<CaseModel>(r'diagnosis TEXT $0', ['$query*']);
     return diagnosisList.map((e) => e.diagnosis).nonNulls.toSet().toList();
   }
 
@@ -70,35 +57,27 @@ class CasesCollection extends DatabaseCollection<CaseModel> {
   Future<List<String>> getAutoCompleteSurgery(
     String? query,
   ) async {
-    if (query == null) {
-      final surgeryList = realm.all<CaseModel>().take(50);
-      return surgeryList.map((e) => e.surgery).nonNulls.toSet().toList();
-    }
-
-    final surgeryList =
-        // ignore: use_raw_strings
-        realm.query<CaseModel>('surgery TEXT \$0', ['$query*']);
+    final surgeryList = (query == null)
+        ? realm.all<CaseModel>().take(50)
+        : realm.query<CaseModel>(r'surgery TEXT $0', ['$query*']);
     return surgeryList.map((e) => e.surgery).nonNulls.toSet().toList();
   }
 
   List<CaseModel> getAllByCaseIDs(List<String> caseIDs) {
-    // ignore: use_raw_strings
-    return realm.query<CaseModel>('caseID IN \$0', [caseIDs]).toList();
+    return realm.query<CaseModel>(r'caseID IN $0', [caseIDs]).toList();
   }
-
-  // int countAll() {
-  //   return realm.all<CaseModel>().where((e) => e.removed == 0).length;
-  // }
 
   List<CaseModel> search(String searchTerm) {
     final casesList = realm.query<CaseModel>(
-      r'diagnosis TEXT $0 OR surgery TEXT $0 OR comments TEXT $0 OR patientModel[*].initials TEXT $0',
+      r'''
+        diagnosis TEXT $0 OR 
+        surgery TEXT $0 OR 
+        comments TEXT $0 OR 
+        patientModel[*].initials TEXT $0''',
       ['$searchTerm*'],
     );
     return casesList.toList();
   }
-
-  //RealmResults<CaseModel> loadCases() => realm.all<CaseModel>();
 
   /// get cases between two timestamps among caseIDs
   List<CaseModel> casesBetweenTimestamp({
@@ -107,13 +86,17 @@ class CasesCollection extends DatabaseCollection<CaseModel> {
     List<String>? idList,
   }) {
     final params = [0, fromTimestamp, toTimestamp];
+
     final cases = realm.query<CaseModel>(
-      r'removed == $0 AND surgeryDate >= $1 AND surgeryDate <= $2',
+      r'''
+        removed == $0 AND 
+        surgeryDate >= $1 AND 
+        surgeryDate <= $2''',
       params,
     );
 
     if (idList != null) {
-      return cases.query(r'caseID IN $0', idList).toList();
+      return cases.query(r'caseID IN $0', [idList]).toList();
     }
 
     return cases.toList();
@@ -125,12 +108,83 @@ class CasesCollection extends DatabaseCollection<CaseModel> {
     return cases.first.surgeryDate;
   }
 
-  // @override
-  // CaseModel? getSingle(String id) {
-  //   try {
-  //     return realm.query<CaseModel>(r'caseID == $0', [id]).first;
-  //   } catch (err) {
-  //     return null;
-  //   }
-  // }
+  Future<void> putMedia(MediaModel mediaModel, {bool delete = false}) async {
+    final caseModel = realm.find<CaseModel>(mediaModel.caseID);
+    if (caseModel == null) return;
+
+    await realm.writeAsync(() {
+      if (delete) {
+        caseModel.medias.removeWhere((e) => e.mediaID == mediaModel.mediaID);
+      } else {
+        caseModel.medias.replaceOrAddComplex(
+          mediaModel,
+          (mediaModel) => mediaModel.mediaID,
+        );
+      }
+      update(caseModel.caseID, {
+        'medias': caseModel.toJson()['medias'] ?? [],
+        'timestamp': ModelUtils.getTimestamp
+      });
+    });
+  }
+
+  Future<void> putNote(TimelineNoteModel timelineNoteModel,
+      {bool delete = false}) async {
+    final caseModel = realm.find<CaseModel>(timelineNoteModel.caseID);
+    if (caseModel == null) return;
+
+    await realm.writeAsync(() {
+      if (delete) {
+        caseModel.notes
+            .removeWhere((e) => e.noteID == timelineNoteModel.noteID);
+      } else {
+        caseModel.notes.replaceOrAddComplex(
+          timelineNoteModel,
+          (timelineNoteModel) => timelineNoteModel.noteID,
+        );
+      }
+      update(caseModel.caseID, {
+        'notes': caseModel.notes.map((e) => e.toJson()).toList(),
+        'timestamp': ModelUtils.getTimestamp
+      });
+    });
+  }
+
+  Future<void> updateTimelineData(
+    String caseID,
+    List<MediaModel> mediaList,
+    List<TimelineNoteModel> noteList,
+    int timestamp,
+  ) async {
+    final caseModel = realm.find<CaseModel>(caseID);
+    if (caseModel == null) return;
+    await realm.writeAsync(() {
+      final updatedMediaList = mediaList.map((e) => e..createdAt = timestamp);
+      final updatedNotesList = noteList.map((e) => e..createdAt = timestamp);
+
+      for (final media in updatedMediaList) {
+        caseModel.medias.replaceOrAddComplex(media, (media) => media.mediaID);
+      }
+
+      for (final note in updatedNotesList) {
+        caseModel.notes.replaceOrAddComplex(note, (note) => note.noteID);
+      }
+    });
+
+    await put(caseID, caseModel);
+  }
+
+  Map<DbCollection, int>? caseMediaNoteCount() {
+    final allCases = getAll();
+    try {
+      return {
+        DbCollection.cases: allCases.length,
+        DbCollection.media: allCases.fold(0, (a, b) => b.medias.length),
+        DbCollection.notes: allCases.fold(0, (a, b) => b.notes.length)
+      };
+    } catch (err) {
+      logger.severe(err.toString());
+      return null;
+    }
+  }
 }

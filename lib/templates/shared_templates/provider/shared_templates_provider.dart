@@ -12,33 +12,26 @@ part '../../../generated/templates/shared_templates/provider/shared_templates_pr
 class SharedTemplatesNotifier extends _$SharedTemplatesNotifier
     with LoggerMixin {
   @override
-  StateOf<List<SharedTemplateModel>> build(String? speciality) {
-    loadSharedTemplates(speciality);
-    return const StateOf<List<SharedTemplateModel>>.init();
-  }
+  List<SharedTemplateModel> build(String speciality) {
+    ref
+        .watch(dbProvider)
+        .templatesCollection
+        .getSharedTemplates(speciality)
+        .changes
+        .listen((data) {
+      state = data.results.toList();
+    });
 
-  Future<void> loadSharedTemplates(String? speciality) async {
-    if (speciality == null) return;
-
-    final result = await ref
-        .watch(templatesRepositoryProvider)
-        .getAllSharedTemplates(speciality);
-
-    state = result.when(
-      failure: StateOf<List<SharedTemplateModel>>.failure,
-      success: StateOf<List<SharedTemplateModel>>.success,
-    );
+    return [];
   }
 
   /// Import a template
   void importSharedTemplate(
     SharedTemplateModel sharedTemplateModel,
   ) {
-    // try {
     final timestamp = ModelUtils.getTimestamp;
 
     final json = sharedTemplateModel.toJson();
-    //print(json);
 
     final templateModel = TemplateModelX.fromJson(json)
       ..templateID = ModelUtils.uniqueID
@@ -51,12 +44,6 @@ class SharedTemplatesNotifier extends _$SharedTemplatesNotifier
     ref
         .watch(addTemplateSeederProvider.notifier)
         .seedWithImportedTemplate(templateModel);
-
-    //   await Future<void>.delayed(Durations.medium1);
-    //   return templateModel.templateID;
-    // } catch (err) {
-    //   return null;
-    // }
   }
 }
 

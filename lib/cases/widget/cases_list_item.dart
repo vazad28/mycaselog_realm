@@ -27,7 +27,7 @@ class CasesListItem extends StatelessWidget {
       openColor: context.colorScheme.surface,
       closedElevation: 0,
       openBuilder: (context, action) {
-        return CaseDetailsPage(caseModel: hybridCaseModel.caseModel);
+        return CaseDetailsPage(caseID: hybridCaseModel.caseModel.caseID);
       },
       tappable: false,
       closedBuilder: (context, action) {

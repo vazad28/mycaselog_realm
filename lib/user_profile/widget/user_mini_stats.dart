@@ -1,9 +1,11 @@
 // ignore_for_file: require_trailing_commas
 
+import 'package:app_annotations/app_annotations.dart';
 import 'package:app_models/app_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/providers/db_provider.dart';
 import '../provider/user_profile_provider.dart';
 
 /// User Mini widget
@@ -12,7 +14,19 @@ class UserMiniStatsWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final userMiniStatsData = ref.watch(userMiniStatsProvider);
+    //final userMiniStatsData = ref.watch(userMiniStatsProvider);
+    final caseMediaNoteCount =
+        ref.watch(dbProvider).casesCollection.caseMediaNoteCount();
+    if (caseMediaNoteCount == null)
+      return SizedBox(
+        child: Text('NO  stats data'),
+      );
+
+    final userMiniStatsData = UserStatsModel(
+      cases: caseMediaNoteCount[DbCollection.cases] ?? 0,
+      media: caseMediaNoteCount[DbCollection.media] ?? 0,
+      notes: caseMediaNoteCount[DbCollection.notes] ?? 0,
+    );
 
     return ConstrainedBox(
       constraints: const BoxConstraints(maxHeight: 68, maxWidth: 300),

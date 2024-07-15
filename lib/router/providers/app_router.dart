@@ -18,12 +18,12 @@ class MycaselogRouter extends _$MycaselogRouter {
   GoRouter build() {
     final router = GoRouter(
       navigatorKey: AppVars.appRootNavigatorKey,
-      initialLocation: AuthFlowRoute.path,
+      initialLocation: CasesRoute.path,
       routes: ref.read(routesProvider),
       errorPageBuilder: (context, state) => const NoTransitionPage(
         child: PageNotFoundScreen(),
       ),
-      redirect: _redirector,
+      //redirect: _redirector,
     );
 
     return router;
@@ -35,21 +35,23 @@ class MycaselogRouter extends _$MycaselogRouter {
     // trigger any new rebuild through `context.watch`
     final authFlowState = ref.read(authFlowNotifierProvider);
 
-    final isAuthorizing = state.matchedLocation == AuthFlowRoute.path;
+    // final isAuthorizing = state.matchedLocation == AuthFlowRoute.path;
 
     final isAuthorized = authFlowState.isAuthorized;
 
-    // Go to /auth_flow if the user is not final authorized
-    if (!isAuthorized && !isAuthorizing) {
-      //print('!isAuthorized && !isAuthorizing');
-      return AuthFlowRoute.path;
-    }
+    // // Go to /auth_flow if the user is not final authorized
+    // if (!isAuthorized && !isAuthorizing) {
+    //   //print('!isAuthorized && !isAuthorizing');
+    //   return AuthFlowRoute.path;
+    // }
 
-    // Go to /cases in root tabs if the user is signed in and tries to go to /signin.
-    else if (isAuthorized && isAuthorizing) {
-      //print('isAuthorized && isAuthorizing');
-      return CasesRoute.path;
-    }
+    // // Go to /cases in root tabs if the user is signed in and tries to go to /signin.
+    // else if (isAuthorized && isAuthorizing) {
+    //   //print('isAuthorized && isAuthorizing');
+    //   return CasesRoute.path;
+    // }
+
+    if (isAuthorized) return CasesRoute.path;
     // no redirect
     return null;
   }

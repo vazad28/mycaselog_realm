@@ -1,9 +1,10 @@
-
 export './extensions.dart';
+export 'src/case_media/case_media_model.dart';
 
 /// Realms
 export 'src/cases/case_model.dart';
 export 'src/media/media_model.dart';
+export 'src/media/media_upload_model.dart';
 export 'src/model_utils.dart';
 export 'src/notes/note_model.dart';
 export 'src/settings/settings_model.dart';

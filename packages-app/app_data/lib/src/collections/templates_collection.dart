@@ -48,4 +48,10 @@ class TemplatesCollection extends DatabaseCollection<TemplateModel> {
       return documents;
     });
   }
+
+  RealmResults<SharedTemplateModel> getSharedTemplates(String speciality) {
+    return realm
+        .all<SharedTemplateModel>()
+        .query(r'speciality  ==  $0', [speciality]);
+  }
 }

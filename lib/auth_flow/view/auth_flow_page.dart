@@ -4,16 +4,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../onboarding/onboarding.dart';
+import '../../passcode/passcode.dart';
 import '../../router/utils/route_animations.dart';
 import '../../signin/signin.dart';
-import '../../splash/splash_page.dart';
-import '../../start_up/start_up.dart';
 import '../auth_flow.dart';
 
 class AuthFlowPage extends ConsumerWidget {
   const AuthFlowPage({super.key});
 
-  static Page<void> page() => const MaterialPage<void>(child: AuthFlowPage());
+  //static Page<void> page() => const MaterialPage<void>(child: AuthFlowPage());
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -38,7 +37,7 @@ class AuthFlowPage extends ConsumerWidget {
       authenticated: (_) => [
         SharedAxisTransitionPage(
           key: const ValueKey('__AuthFlowPage_PasscodePage_route_key__'),
-          child: const StartUpPage(),
+          child: const PasscodePage(),
         ),
       ],
       unauthenticated: () => [
@@ -47,10 +46,12 @@ class AuthFlowPage extends ConsumerWidget {
           child: const SigninPage(),
         ),
       ],
+
+      /// placeholder widget as on authorized state Router will manage redirection
       authorized: (_) => [
         const NoTransitionPage(
           key: ValueKey('__AuthFlowPage_SplashPage_route_key__'),
-          child: SplashPage(),
+          child: SizedBox.shrink(),
         ),
       ],
     );
