@@ -17,12 +17,12 @@ class NotesAppBar extends StatelessWidget {
       pinned: false,
       snap: true,
       surfaceTintColor: context.colorScheme.surface,
-      flexibleSpace: FlexibleSpaceBar(
+      flexibleSpace: const FlexibleSpaceBar(
         centerTitle: false,
-        titlePadding: const EdgeInsetsDirectional.only(start: 24, bottom: 16),
+        titlePadding: EdgeInsetsDirectional.only(start: 24, bottom: 16),
         title: Row(
           children: [
-            Expanded(child: NotesCountWidget()
+            Expanded(child: NotesCountWidget(),
                 // child: Text(
                 //   'Notes',
                 //   textAlign: TextAlign.left,

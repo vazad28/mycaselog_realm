@@ -41,7 +41,8 @@ enum ActivableAddCaseField {
 /// Provider to keep the state of Assistants
 @riverpod
 List<ActivableAddCaseField> activableAddCaseFields(
-    ActivableAddCaseFieldsRef ref) {
+  ActivableAddCaseFieldsRef ref,
+) {
   final activableFields = ref.watch(
     supportDataNotifierProvider.select(
       (value) => value.activeBasicFields,

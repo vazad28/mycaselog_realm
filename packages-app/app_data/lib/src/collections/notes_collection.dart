@@ -38,7 +38,7 @@ class NotesCollection extends DatabaseCollection<NoteModel> {
       final documents = querySnapshot.docChanges
           .map((change) {
             final model = NoteModelX.fromJson(change.doc.data()!);
-            print('NotesCollection ${model.noteID} ${change.type}');
+            //print('NotesCollection ${model.noteID} ${change.type}');
             switch (change.type) {
               case DocumentChangeType.added:
               case DocumentChangeType.modified:

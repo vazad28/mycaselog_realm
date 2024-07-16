@@ -27,7 +27,7 @@ class CasesCollection extends DatabaseCollection<CaseModel> {
       final documents = querySnapshot.docChanges
           .map((change) {
             final model = CaseModelX.fromJson(change.doc.data()!);
-            print('CasesCollection ${model.caseID} ${change.type}');
+            //print('CasesCollection ${model.caseID} ${change.type}');
             return realm.write(() => realm.add<CaseModel>(model, update: true));
           })
           .whereType<CaseModel>()
@@ -115,21 +115,27 @@ class CasesCollection extends DatabaseCollection<CaseModel> {
     await realm.writeAsync(() {
       if (delete) {
         caseModel.medias.removeWhere((e) => e.mediaID == mediaModel.mediaID);
+
+        /// delete media from storage too
       } else {
         caseModel.medias.replaceOrAddComplex(
           mediaModel,
           (mediaModel) => mediaModel.mediaID,
         );
       }
-      update(caseModel.caseID, {
-        'medias': caseModel.toJson()['medias'] ?? [],
-        'timestamp': ModelUtils.getTimestamp
-      });
+      // update(caseModel.caseID, {
+      //   'medias': caseModel.toJson()['medias'] ?? [],
+      //   'timestamp': ModelUtils.getTimestamp
+      // });
     });
+
+    await put(caseModel.caseID, caseModel);
   }
 
-  Future<void> putNote(TimelineNoteModel timelineNoteModel,
-      {bool delete = false}) async {
+  Future<void> putNote(
+    TimelineNoteModel timelineNoteModel, {
+    bool delete = false,
+  }) async {
     final caseModel = realm.find<CaseModel>(timelineNoteModel.caseID);
     if (caseModel == null) return;
 
@@ -143,11 +149,12 @@ class CasesCollection extends DatabaseCollection<CaseModel> {
           (timelineNoteModel) => timelineNoteModel.noteID,
         );
       }
-      update(caseModel.caseID, {
-        'notes': caseModel.notes.map((e) => e.toJson()).toList(),
-        'timestamp': ModelUtils.getTimestamp
-      });
+      // update(caseModel.caseID, {
+      //   'notes': caseModel.notes.map((e) => e.toJson()).toList(),
+      //   'timestamp': ModelUtils.getTimestamp
+      // });
     });
+    await put(caseModel.caseID, caseModel);
   }
 
   Future<void> updateTimelineData(
@@ -180,7 +187,7 @@ class CasesCollection extends DatabaseCollection<CaseModel> {
       return {
         DbCollection.cases: allCases.length,
         DbCollection.media: allCases.fold(0, (a, b) => b.medias.length),
-        DbCollection.notes: allCases.fold(0, (a, b) => b.notes.length)
+        DbCollection.notes: allCases.fold(0, (a, b) => b.notes.length),
       };
     } catch (err) {
       logger.severe(err.toString());

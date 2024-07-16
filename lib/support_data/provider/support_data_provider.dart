@@ -23,13 +23,13 @@ class SupportDataNotifier extends _$SupportDataNotifier with LoggerMixin {
     final sub = ref
         .watch(dbProvider)
         .supportDataCollection
-        .getSingleStream('userID', userID)
+        .getSingle(userID)
+        ?.changes
         .listen((data) {
-      if (data.results.isEmpty) return;
-      state = SupportDataModelX.fromJson(data.results.single.toJson());
+      state = SupportDataModelX.fromJson(data.object.toJson());
     });
 
-    ref.onDispose(sub.cancel);
+    ref.onDispose(() => sub?.cancel());
 
     return SupportDataModelX.zero(userID);
   }

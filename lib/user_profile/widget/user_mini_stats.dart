@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/providers/db_provider.dart';
-import '../provider/user_profile_provider.dart';
 
 /// User Mini widget
 class UserMiniStatsWidget extends ConsumerWidget {
@@ -17,10 +16,11 @@ class UserMiniStatsWidget extends ConsumerWidget {
     //final userMiniStatsData = ref.watch(userMiniStatsProvider);
     final caseMediaNoteCount =
         ref.watch(dbProvider).casesCollection.caseMediaNoteCount();
-    if (caseMediaNoteCount == null)
-      return SizedBox(
+    if (caseMediaNoteCount == null) {
+      return const SizedBox(
         child: Text('NO  stats data'),
       );
+    }
 
     final userMiniStatsData = UserStatsModel(
       cases: caseMediaNoteCount[DbCollection.cases] ?? 0,

@@ -8,9 +8,9 @@ import 'package:misc_packages/misc_packages.dart';
 import 'package:recase/recase.dart';
 
 import '../../core/mixins/mixins.dart';
-import '../../media_uploader/media_uploader.dart';
+import '../../core/providers/providers.dart';
 
-class Thumbnail extends ConsumerStatefulWidget {
+class Thumbnail extends ConsumerWidget with MediaMixin {
   const Thumbnail({
     required this.mediaModel,
     this.width = 120,
@@ -21,19 +21,14 @@ class Thumbnail extends ConsumerStatefulWidget {
   final double width;
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _ThumbnailState();
-}
-
-class _ThumbnailState extends ConsumerState<Thumbnail> with MediaMixin {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final cachedImage = CachedImage(
-      key: ValueKey(widget.mediaModel),
-      mediaModel: widget.mediaModel,
+      key: ValueKey(mediaModel),
+      mediaModel: mediaModel,
       width: 96,
     );
 
-    final child = switch (widget.mediaModel.status) {
+    final child = switch (mediaModel.status) {
       MediaStatus.queued ||
       MediaStatus.uploading ||
       MediaStatus.failed =>
@@ -41,22 +36,19 @@ class _ThumbnailState extends ConsumerState<Thumbnail> with MediaMixin {
           alignment: Alignment.center,
           children: [
             cachedImage,
-            if (widget.mediaModel.status == MediaStatus.failed)
+            if (mediaModel.status == MediaStatus.failed)
               Icon(Icons.error, color: Colors.red.shade400, size: 48),
-            if (widget.mediaModel.status != MediaStatus.failed)
+            if (mediaModel.status != MediaStatus.failed)
               MediaUploadOverlayWidget(
-                mediaModel: widget.mediaModel,
-                width: widget.width,
-                uploadController: () {
-                  return ref
-                          .read(imageUploadControllerList)
-                          .getUploadController(widget.mediaModel.mediaID) ??
-                      ref
-                          .read(imageUploadControllerList)
-                          .addController(mediaModel: widget.mediaModel);
-                },
                 key: Key(
-                    '__media_upload_overlay_widget_${widget.mediaModel.mediaID}__'),
+                    '__media_upload_overlay_widget_${mediaModel.mediaID}__',),
+                mediaModel: mediaModel,
+                width: width,
+                uploadController: MediaManager.getUploadController(
+                  mediaModel: mediaModel,
+                  mediaUploadRepository:
+                      ref.read(imageUploadRepositoryProvider),
+                ),
               ),
           ],
         ),
@@ -69,31 +61,31 @@ class _ThumbnailState extends ConsumerState<Thumbnail> with MediaMixin {
 
     return InkWell(
       onTap: () {},
-      onLongPress: _onLongPressOfThumb,
+      onLongPress: () async {
+        await context
+            .openActionsBottomSheet(thumbnailActions)
+            .then((appAction) {
+          switch (appAction?.action) {
+            case ThumbnailActionsEnum.deleteMedia:
+              if (!context.mounted) return;
+              context
+                  .showConfirmDialog(S.current.contentHardDeleteWarning)
+                  .then((res) {
+                if (!res) return;
+
+                ///  use mixin
+                deleteMedia(ref, mediaModel);
+              });
+
+            case ThumbnailActionsEnum.shareMedia:
+              shareMedia(ref, mediaModel);
+            default:
+              break;
+          }
+        });
+      },
       child: child,
     );
-  }
-
-  Future<void> _onLongPressOfThumb() async {
-    await context.openActionsBottomSheet(thumbnailActions).then((appAction) {
-      switch (appAction?.action) {
-        case ThumbnailActionsEnum.deleteMedia:
-          if (!context.mounted) return;
-          context
-              .showConfirmDialog(S.current.contentHardDeleteWarning)
-              .then((res) {
-            if (!res) return;
-
-            ///  use mixin
-            deleteMedia(ref, widget.mediaModel);
-          });
-
-        case ThumbnailActionsEnum.shareMedia:
-          shareMedia(ref, widget.mediaModel);
-        default:
-          break;
-      }
-    });
   }
 }
 

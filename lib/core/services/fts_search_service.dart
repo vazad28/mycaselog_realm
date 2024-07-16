@@ -77,16 +77,16 @@ class FtsSearchService {
     return ref.watch(dbProvider).notesCollection.search(searchTerm);
   }
 
-  String _processSearchTerm(String? searchTerm) {
-    String searchTermProcessed;
+  // String _processSearchTerm(String? searchTerm) {
+  //   String searchTermProcessed;
 
-    final split = searchTerm?.split(RegExp(r'\s+')) ?? [];
-    if (split.length > 1) {
-      searchTermProcessed = split.map((term) => '$term*').join(' ');
-    } else {
-      searchTermProcessed = '$searchTerm*';
-    }
+  //   final split = searchTerm?.split(RegExp(r'\s+')) ?? [];
+  //   if (split.length > 1) {
+  //     searchTermProcessed = split.map((term) => '$term*').join(' ');
+  //   } else {
+  //     searchTermProcessed = '$searchTerm*';
+  //   }
 
-    return searchTermProcessed;
-  }
+  //   return searchTermProcessed;
+  // }
 }

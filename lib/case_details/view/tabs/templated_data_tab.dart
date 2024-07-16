@@ -110,8 +110,7 @@ class _TemplateCaseDataWidget extends StatelessWidget {
 
     /// remove the field models that are not in the current template fields
     if (templateModel != null) {
-      final templateSlugs =
-          templateModel!.fields.map((e) => e.slug).toList() ?? [];
+      final templateSlugs = templateModel!.fields.map((e) => e.slug).toList();
       fieldsList.removeWhere((e) => !templateSlugs.contains(e.slug));
     }
 

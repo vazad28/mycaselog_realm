@@ -6,7 +6,6 @@ import 'package:app_models/app_models.dart';
 import 'package:flutter/material.dart';
 
 import '../../media_manager.dart';
-import 'transparent_image.dart';
 
 class CachedImage extends StatelessWidget {
   const CachedImage({

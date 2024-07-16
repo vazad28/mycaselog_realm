@@ -15,7 +15,7 @@ class MycaselogApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen(firestoreSyncProvider, (previous, next) {
-      print('firestoreSyncProvider provider created');
+      debugPrint('firestoreSyncProvider provider created');
     });
 
     final brightness = View.of(context).platformDispatcher.platformBrightness;

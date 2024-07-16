@@ -32,7 +32,7 @@ class SharedTemplatesView extends ConsumerWidget {
                 .then((newTemplateID) {
               /// if the callback was with ID, the imported  template was saved
               /// So we go to the templates home screen
-              if (newTemplateID != null) {
+              if (context.mounted && newTemplateID != null) {
                 context.pop();
               }
             });

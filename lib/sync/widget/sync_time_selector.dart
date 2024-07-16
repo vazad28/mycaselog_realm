@@ -40,7 +40,8 @@ class SyncTimeSelector extends StatelessWidget {
                   .showConfirmDialog(S.of(context).syncAllDataWarning)
                   .then((res) {
                 if (res == true) {
-                  Navigator.of(context).pop(); //<- close modal sheet
+                  if (context.mounted)
+                    Navigator.of(context).pop(); //<- close modal sheet
                   onSelect(0);
                 }
               });

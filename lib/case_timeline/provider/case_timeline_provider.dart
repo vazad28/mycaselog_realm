@@ -1,15 +1,11 @@
-import 'package:app_data/app_data.dart';
 import 'package:app_extensions/app_extensions.dart';
 import 'package:app_models/app_models.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger_client/logger_client.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:state_of/state_of.dart';
 
 import '../../case_details/case_details.dart';
 import '../../core/providers/providers.dart';
-import '../../core/services/services.dart';
-import 'case_timeline_actions.dart';
 
 part '../../generated/case_timeline/provider/case_timeline_provider.g.dart';
 
@@ -25,18 +21,18 @@ class CaseTimelineNotifier extends _$CaseTimelineNotifier with LoggerMixin {
     final sub = ref
         .watch(dbProvider)
         .casesCollection
-        .getSingleStream('caseID', caseID)
+        .getSingle(caseID)
+        ?.changes
         .listen((data) {
-      if (data.results.isEmpty) return;
-      _createTimelines(data.results.single);
+      _createTimelines(data.object);
     });
 
-    ref.onDispose(sub.cancel);
+    ref.onDispose(() => sub?.cancel());
 
     return const StateOf<List<TimelineItemModel>>.success([]);
   }
 
-  void _createTimelines(CaseModel caseModel
+  void _createTimelines(CaseModel caseModel,
       // List<MediaModel> medias,
       // List<TimelineNoteModel> notes,
       // int surgeryDate,
@@ -111,5 +107,23 @@ class CaseTimelineNotifier extends _$CaseTimelineNotifier with LoggerMixin {
       map.putIfAbsent(kee, () => <TimelineNoteModel>[]).add(timelineNote);
     }
     return map;
+  }
+
+  void createTempTimelineItem(CaseModel caseModel, DateTime dateTime) {
+    final stateList = List<TimelineItemModel>.from(state.data?.toList() ?? []);
+    final eventDate = dateTime.formatYMD();
+
+    final timelineItem = TimelineItemModel.zero().copyWith(
+      eventDate: eventDate,
+      caseID: caseModel.caseID,
+      surgeryDate: caseModel.surgeryDate,
+      eventTimestamp: eventDate.timestampFromYMD(),
+      mediaList: [],
+      noteList: [],
+    );
+
+    stateList.add(timelineItem);
+
+    state = StateOf.success(stateList);
   }
 }

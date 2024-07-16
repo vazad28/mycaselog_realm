@@ -509,12 +509,12 @@ class MediaModel extends _MediaModel
   MediaModel(
     String mediaID,
     String authorID, {
+    String? caseID = 'unknown',
     String? fileType,
     String? fileName,
     String? fileUri,
     String? mediumUri,
     String? thumbUri,
-    String? caseID,
     String? status,
     String? comment,
     int removed = 0,
@@ -523,6 +523,7 @@ class MediaModel extends _MediaModel
   }) {
     if (!_defaultsSet) {
       _defaultsSet = RealmObjectBase.setDefaults<MediaModel>({
+        'caseID': 'unknown',
         'removed': 0,
         'createdAt': 0,
         'timestamp': 0,
@@ -530,12 +531,12 @@ class MediaModel extends _MediaModel
     }
     RealmObjectBase.set(this, 'mediaID', mediaID);
     RealmObjectBase.set(this, 'authorID', authorID);
+    RealmObjectBase.set(this, 'caseID', caseID);
     RealmObjectBase.set(this, 'fileType', fileType);
     RealmObjectBase.set(this, 'fileName', fileName);
     RealmObjectBase.set(this, 'fileUri', fileUri);
     RealmObjectBase.set(this, 'mediumUri', mediumUri);
     RealmObjectBase.set(this, 'thumbUri', thumbUri);
-    RealmObjectBase.set(this, 'caseID', caseID);
     RealmObjectBase.set(this, 'status', status);
     RealmObjectBase.set(this, 'comment', comment);
     RealmObjectBase.set(this, 'removed', removed);
@@ -555,6 +556,11 @@ class MediaModel extends _MediaModel
       RealmObjectBase.get<String>(this, 'authorID') as String;
   @override
   set authorID(String value) => RealmObjectBase.set(this, 'authorID', value);
+
+  @override
+  String? get caseID => RealmObjectBase.get<String>(this, 'caseID') as String?;
+  @override
+  set caseID(String? value) => RealmObjectBase.set(this, 'caseID', value);
 
   @override
   String? get fileType =>
@@ -585,11 +591,6 @@ class MediaModel extends _MediaModel
       RealmObjectBase.get<String>(this, 'thumbUri') as String?;
   @override
   set thumbUri(String? value) => RealmObjectBase.set(this, 'thumbUri', value);
-
-  @override
-  String? get caseID => RealmObjectBase.get<String>(this, 'caseID') as String?;
-  @override
-  set caseID(String? value) => RealmObjectBase.set(this, 'caseID', value);
 
   @override
   String? get _status => RealmObjectBase.get<String>(this, 'status') as String?;
@@ -632,12 +633,12 @@ class MediaModel extends _MediaModel
     return <String, dynamic>{
       'mediaID': mediaID.toEJson(),
       'authorID': authorID.toEJson(),
+      'caseID': caseID.toEJson(),
       'fileType': fileType.toEJson(),
       'fileName': fileName.toEJson(),
       'fileUri': fileUri.toEJson(),
       'mediumUri': mediumUri.toEJson(),
       'thumbUri': thumbUri.toEJson(),
-      'caseID': caseID.toEJson(),
       'status': _status.toEJson(),
       'comment': comment.toEJson(),
       'removed': removed.toEJson(),
@@ -652,12 +653,12 @@ class MediaModel extends _MediaModel
       {
         'mediaID': EJsonValue mediaID,
         'authorID': EJsonValue authorID,
+        'caseID': EJsonValue caseID,
         'fileType': EJsonValue fileType,
         'fileName': EJsonValue fileName,
         'fileUri': EJsonValue fileUri,
         'mediumUri': EJsonValue mediumUri,
         'thumbUri': EJsonValue thumbUri,
-        'caseID': EJsonValue caseID,
         'status': EJsonValue _status,
         'comment': EJsonValue comment,
         'removed': EJsonValue removed,
@@ -667,12 +668,12 @@ class MediaModel extends _MediaModel
         MediaModel(
           fromEJson(mediaID),
           fromEJson(authorID),
+          caseID: fromEJson(caseID),
           fileType: fromEJson(fileType),
           fileName: fromEJson(fileName),
           fileUri: fromEJson(fileUri),
           mediumUri: fromEJson(mediumUri),
           thumbUri: fromEJson(thumbUri),
-          caseID: fromEJson(caseID),
           status: fromEJson(_status),
           comment: fromEJson(comment),
           removed: fromEJson(removed),
@@ -689,13 +690,12 @@ class MediaModel extends _MediaModel
     return SchemaObject(ObjectType.realmObject, MediaModel, 'MediaModel', [
       SchemaProperty('mediaID', RealmPropertyType.string, primaryKey: true),
       SchemaProperty('authorID', RealmPropertyType.string),
+      SchemaProperty('caseID', RealmPropertyType.string, optional: true),
       SchemaProperty('fileType', RealmPropertyType.string, optional: true),
       SchemaProperty('fileName', RealmPropertyType.string, optional: true),
       SchemaProperty('fileUri', RealmPropertyType.string, optional: true),
       SchemaProperty('mediumUri', RealmPropertyType.string, optional: true),
       SchemaProperty('thumbUri', RealmPropertyType.string, optional: true),
-      SchemaProperty('caseID', RealmPropertyType.string,
-          optional: true, indexType: RealmIndexType.regular),
       SchemaProperty('_status', RealmPropertyType.string,
           mapTo: 'status', optional: true),
       SchemaProperty('comment', RealmPropertyType.string,

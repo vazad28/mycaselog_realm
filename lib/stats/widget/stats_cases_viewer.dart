@@ -165,21 +165,21 @@ class _CaseTileDenseLayout extends StatelessWidget {
                     style: theme.textTheme.bodySmall,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
-                  )
+                  ),
                 ],
               ),
             ),
             TrailingInfo(
               caseModel: caseModel,
               style: theme.textTheme.bodySmall,
-            )
+            ),
           ],
         ),
         spacer,
         const Divider(
           indent: leftIndent,
           height: 1,
-        )
+        ),
       ],
     );
   }

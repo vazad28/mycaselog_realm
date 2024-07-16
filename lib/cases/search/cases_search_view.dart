@@ -262,7 +262,7 @@ class _SuggestionsView extends StatelessWidget {
 }
 
 class _CasesCountWidget extends ConsumerWidget {
-  const _CasesCountWidget({super.key});
+  const _CasesCountWidget();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

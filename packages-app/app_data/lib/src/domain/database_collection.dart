@@ -42,16 +42,20 @@ abstract class DatabaseCollection<T extends RealmObject> with LoggerMixin {
     put(id, model);
   }
 
+  K updateObject<K>(K Function() updateCallback) {
+    return realm.write<K>(updateCallback);
+  }
+
   /// get sinlge object
   T? getSingle(String primaryKey) => realm.find<T>(primaryKey);
 
   /// stream to listen for collection change
   Stream<List<T>> listenForChanges();
 
-  /// listenf or chnage item stream
-  Stream<RealmResultsChanges<T>> getSingleStream(String key, String value) {
-    return realm.query<T>('$key == \$0', [value]).changes;
-  }
+  // /// listenf or chnage item stream
+  // Stream<RealmResultsChanges<T>> getSingleStream(String key, String value) {
+  //   return realm.query<T>('$key == \$0', [value]).changes;
+  // }
 
   /// get all data of the collection
   RealmResults<T> getAll({int removed = 0}) =>
@@ -86,12 +90,12 @@ abstract class DatabaseCollection<T extends RealmObject> with LoggerMixin {
       });
 
   /// save the model
-  Future<void> update(String docID, Map<String, dynamic> obj) =>
-      withConverter.doc(docID).update(obj).then((_) {
-        logger.info('success update');
-      }).catchError((dynamic err) {
-        logger.severe(err.toString());
-      });
+  // Future<void> update(String docID, Map<String, dynamic> obj) =>
+  //     withConverter.doc(docID).update(obj).then((_) {
+  //       logger.info('success update');
+  //     }).catchError((dynamic err) {
+  //       logger.severe(err.toString());
+  //     });
 
   /// GET DATA BY TIMESTAMP. USED BY THE SYNC FUNCTIONS
   Future<int> syncByTimestamp(int? timestamp) async {

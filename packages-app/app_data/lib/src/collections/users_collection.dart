@@ -1,6 +1,6 @@
 part of '../database_service.dart';
 
-/// Implementation of [DatabaseCollection] with [UserCollection] collection
+/// Implementation of [DatabaseCollection] with  collection
 class UsersCollection extends DatabaseCollection<UserModel> {
   UsersCollection(
     super.user,

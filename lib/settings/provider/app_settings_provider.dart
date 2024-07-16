@@ -17,13 +17,13 @@ class AppSettings extends _$AppSettings with LoggerMixin {
     final sub = ref
         .watch(dbProvider)
         .settingsCollection
-        .getSingleStream('userID', userID)
+        .getSingle(userID)
+        ?.changes
         .listen((data) {
-      if (data.results.isEmpty) return;
-      state = SettingsModelX.fromJson(data.results.single.toJson());
+      state = SettingsModelX.fromJson(data.object.toJson());
     });
 
-    ref.onDispose(sub.cancel);
+    ref.onDispose(() => sub?.cancel());
 
     return SettingsModelX.zero(userID);
   }
@@ -32,7 +32,7 @@ class AppSettings extends _$AppSettings with LoggerMixin {
     //print('settingsModel.syncOnStart ${settingsModel.syncOnStart}');
     await ref.read(dbProvider).settingsCollection.put(
         ref.watch(authenticationUserProvider).id, settingsModel.toRealmObject(),
-        saveLocal: settingsModel.syncOnStart);
+        saveLocal: settingsModel.syncOnStart,);
   }
 
   void on(SettingsEvent event) {

@@ -151,14 +151,14 @@ class DialogService {
 
     return future.then((result) {
       timer?.cancel();
-      Navigator.of(_rootContext).pop();
+      if (_rootContext.mounted) Navigator.of(_rootContext).pop();
       return dialog.then((_) async {
         await Future<void>.delayed(const Duration(milliseconds: 300));
         return result;
       });
     }).catchError((Object err, st) {
-      Navigator.of(_rootContext).pop();
-      _rootContext.showInfoDialog(err.toString());
+      if (_rootContext.mounted) Navigator.of(_rootContext).pop();
+      if (_rootContext.mounted) _rootContext.showInfoDialog(err.toString());
       return Future<T>.error(err);
     });
   }

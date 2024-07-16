@@ -52,7 +52,7 @@ class AssistantsPage extends ConsumerWidget {
 }
 
 class _AssistantsView extends ConsumerWidget {
-  const _AssistantsView({super.key});
+  const _AssistantsView();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

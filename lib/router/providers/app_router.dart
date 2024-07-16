@@ -1,8 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../auth_flow/auth_flow.dart';
 import '../../core/app_vars.dart';
 import '../routes/routes.dart';
 import '../views/page_not_found.dart';
@@ -28,34 +26,35 @@ class MycaselogRouter extends _$MycaselogRouter {
 
     return router;
   }
-
-  FutureOr<String?> _redirector(BuildContext context, GoRouterState state) {
-    // Here we need to read the context `context.read()` and
-    //decide what to do with its new values. we don't want to
-    // trigger any new rebuild through `context.watch`
-    final authFlowState = ref.read(authFlowNotifierProvider);
-
-    // final isAuthorizing = state.matchedLocation == AuthFlowRoute.path;
-
-    final isAuthorized = authFlowState.isAuthorized;
-
-    // // Go to /auth_flow if the user is not final authorized
-    // if (!isAuthorized && !isAuthorizing) {
-    //   //print('!isAuthorized && !isAuthorizing');
-    //   return AuthFlowRoute.path;
-    // }
-
-    // // Go to /cases in root tabs if the user is signed in and tries to go to /signin.
-    // else if (isAuthorized && isAuthorizing) {
-    //   //print('isAuthorized && isAuthorizing');
-    //   return CasesRoute.path;
-    // }
-
-    if (isAuthorized) return CasesRoute.path;
-    // no redirect
-    return null;
-  }
 }
+
+//   FutureOr<String?> _redirector(BuildContext context, GoRouterState state) {
+//     // Here we need to read the context `context.read()` and
+//     //decide what to do with its new values. we don't want to
+//     // trigger any new rebuild through `context.watch`
+//     final authFlowState = ref.read(authFlowNotifierProvider);
+
+//     // final isAuthorizing = state.matchedLocation == AuthFlowRoute.path;
+
+//     final isAuthorized = authFlowState.isAuthorized;
+
+//     // // Go to /auth_flow if the user is not final authorized
+//     // if (!isAuthorized && !isAuthorizing) {
+//     //   //print('!isAuthorized && !isAuthorizing');
+//     //   return AuthFlowRoute.path;
+//     // }
+
+//     // // Go to /cases in root tabs if the user is signed in and tries to go to /signin.
+//     // else if (isAuthorized && isAuthorizing) {
+//     //   //print('isAuthorized && isAuthorizing');
+//     //   return CasesRoute.path;
+//     // }
+
+//     if (isAuthorized) return CasesRoute.path;
+//     // no redirect
+//     return null;
+//   }
+// }
 
 // @Riverpod(keepAlive: true)
 // GoRouter appRouter(AppRouterRef ref) {

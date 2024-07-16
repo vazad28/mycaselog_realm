@@ -2,27 +2,38 @@ import 'dart:io';
 
 import 'package:app_l10n/app_l10n.dart';
 import 'package:app_models/app_models.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:media_manager/media_manager.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../media_uploader/provider/media_uploader_provider.dart';
 import '../providers/providers.dart';
-import '../services/services.dart';
 
 mixin MediaMixin {
   /// delete case media
   Future<void> deleteMedia(
     WidgetRef ref,
-    MediaModel model,
-  ) {
-    return ref.watch(dbProvider).casesCollection.putMedia(model, delete: true);
+    MediaModel mediaModel,
+  ) async {
+    try {
+      /// delete media from storage
+      await ref.watch(dbProvider).storageCollection.deleteMedia(mediaModel);
+    } on FirebaseException catch (error) {
+      debugPrint(error.toString());
+    } finally {
+      /// delete from firestore because we need to make sure the error deleting
+      /// files does not compromise this part
+      await ref
+          .watch(dbProvider)
+          .casesCollection
+          .putMedia(mediaModel, delete: true);
+    }
   }
 
   /// delete case media
   Future<void> shareMedia(WidgetRef ref, MediaModel mediaModel,
-      {String? title}) async {
+      {String? title,}) async {
     final File file =
         await AppCacheManager.instance.getSingleFile(mediaModel.mediumUri!);
     final xFile = XFile(file.path);
@@ -35,10 +46,9 @@ mixin MediaMixin {
 
   /// shareMedia List
   Future<void> shareMediaList(
-    WidgetRef ref,
-    List<MediaModel> mediaModels,
-    String caseID,
-  ) async {
+    WidgetRef ref, {
+    required List<MediaModel> mediaModels,
+  }) async {
     final mediaFiles = await Future.wait(
       mediaModels.map((e) {
         return AppCacheManager.instance.getSingleFile(e.mediumUri!);
@@ -50,19 +60,5 @@ mixin MediaMixin {
       subject: S.current.mediaShareSubjectLine,
       text: 'Share media',
     );
-  }
-
-  /// Add timeline image
-  void addTimelinePhoto(WidgetRef ref, String caseID, ImageSource source) {
-    MediaManager.imagePickerService
-        .pickImage(source: source)
-        .then((imageXFile) {
-      ref.read(mediaUploader).uploadImage(
-            imageFile: imageXFile,
-            caseID: caseID,
-          );
-    }).catchError((err) {
-      ref.read(dialogServiceProvider).showSnackBar('Failed to add image');
-    });
   }
 }

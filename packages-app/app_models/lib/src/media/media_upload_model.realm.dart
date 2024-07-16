@@ -12,26 +12,26 @@ class MediaUploadModel extends _MediaUploadModel
   static var _defaultsSet = false;
 
   MediaUploadModel(
-    String mediaID,
-    String caseID, {
+    String mediaID, {
+    String? caseID,
     String fileUri = '',
-    String? mediumUri,
-    String? thumbUri,
-    double uoloadProgress = 0,
+    String? medium,
+    String? thumb,
+    double uploadProgress = 0,
     String? status,
   }) {
     if (!_defaultsSet) {
       _defaultsSet = RealmObjectBase.setDefaults<MediaUploadModel>({
         'fileUri': '',
-        'uoloadProgress': 0,
+        'uploadProgress': 0,
       });
     }
     RealmObjectBase.set(this, 'mediaID', mediaID);
     RealmObjectBase.set(this, 'caseID', caseID);
     RealmObjectBase.set(this, 'fileUri', fileUri);
-    RealmObjectBase.set(this, 'mediumUri', mediumUri);
-    RealmObjectBase.set(this, 'thumbUri', thumbUri);
-    RealmObjectBase.set(this, 'uoloadProgress', uoloadProgress);
+    RealmObjectBase.set(this, 'medium', medium);
+    RealmObjectBase.set(this, 'thumb', thumb);
+    RealmObjectBase.set(this, 'uploadProgress', uploadProgress);
     RealmObjectBase.set(this, 'status', status);
   }
 
@@ -43,9 +43,9 @@ class MediaUploadModel extends _MediaUploadModel
   set mediaID(String value) => RealmObjectBase.set(this, 'mediaID', value);
 
   @override
-  String get caseID => RealmObjectBase.get<String>(this, 'caseID') as String;
+  String? get caseID => RealmObjectBase.get<String>(this, 'caseID') as String?;
   @override
-  set caseID(String value) => RealmObjectBase.set(this, 'caseID', value);
+  set caseID(String? value) => RealmObjectBase.set(this, 'caseID', value);
 
   @override
   String get fileUri => RealmObjectBase.get<String>(this, 'fileUri') as String;
@@ -53,23 +53,21 @@ class MediaUploadModel extends _MediaUploadModel
   set fileUri(String value) => RealmObjectBase.set(this, 'fileUri', value);
 
   @override
-  String? get mediumUri =>
-      RealmObjectBase.get<String>(this, 'mediumUri') as String?;
+  String? get medium => RealmObjectBase.get<String>(this, 'medium') as String?;
   @override
-  set mediumUri(String? value) => RealmObjectBase.set(this, 'mediumUri', value);
+  set medium(String? value) => RealmObjectBase.set(this, 'medium', value);
 
   @override
-  String? get thumbUri =>
-      RealmObjectBase.get<String>(this, 'thumbUri') as String?;
+  String? get thumb => RealmObjectBase.get<String>(this, 'thumb') as String?;
   @override
-  set thumbUri(String? value) => RealmObjectBase.set(this, 'thumbUri', value);
+  set thumb(String? value) => RealmObjectBase.set(this, 'thumb', value);
 
   @override
-  double get uoloadProgress =>
-      RealmObjectBase.get<double>(this, 'uoloadProgress') as double;
+  double get uploadProgress =>
+      RealmObjectBase.get<double>(this, 'uploadProgress') as double;
   @override
-  set uoloadProgress(double value) =>
-      RealmObjectBase.set(this, 'uoloadProgress', value);
+  set uploadProgress(double value) =>
+      RealmObjectBase.set(this, 'uploadProgress', value);
 
   @override
   String? get _status => RealmObjectBase.get<String>(this, 'status') as String?;
@@ -94,9 +92,9 @@ class MediaUploadModel extends _MediaUploadModel
       'mediaID': mediaID.toEJson(),
       'caseID': caseID.toEJson(),
       'fileUri': fileUri.toEJson(),
-      'mediumUri': mediumUri.toEJson(),
-      'thumbUri': thumbUri.toEJson(),
-      'uoloadProgress': uoloadProgress.toEJson(),
+      'medium': medium.toEJson(),
+      'thumb': thumb.toEJson(),
+      'uploadProgress': uploadProgress.toEJson(),
       'status': _status.toEJson(),
     };
   }
@@ -108,18 +106,18 @@ class MediaUploadModel extends _MediaUploadModel
         'mediaID': EJsonValue mediaID,
         'caseID': EJsonValue caseID,
         'fileUri': EJsonValue fileUri,
-        'mediumUri': EJsonValue mediumUri,
-        'thumbUri': EJsonValue thumbUri,
-        'uoloadProgress': EJsonValue uoloadProgress,
+        'medium': EJsonValue medium,
+        'thumb': EJsonValue thumb,
+        'uploadProgress': EJsonValue uploadProgress,
         'status': EJsonValue _status,
       } =>
         MediaUploadModel(
           fromEJson(mediaID),
-          fromEJson(caseID),
+          caseID: fromEJson(caseID),
           fileUri: fromEJson(fileUri),
-          mediumUri: fromEJson(mediumUri),
-          thumbUri: fromEJson(thumbUri),
-          uoloadProgress: fromEJson(uoloadProgress),
+          medium: fromEJson(medium),
+          thumb: fromEJson(thumb),
+          uploadProgress: fromEJson(uploadProgress),
           status: fromEJson(_status),
         ),
       _ => raiseInvalidEJson(ejson),
@@ -132,11 +130,11 @@ class MediaUploadModel extends _MediaUploadModel
     return SchemaObject(
         ObjectType.realmObject, MediaUploadModel, 'MediaUploadModel', [
       SchemaProperty('mediaID', RealmPropertyType.string, primaryKey: true),
-      SchemaProperty('caseID', RealmPropertyType.string),
+      SchemaProperty('caseID', RealmPropertyType.string, optional: true),
       SchemaProperty('fileUri', RealmPropertyType.string),
-      SchemaProperty('mediumUri', RealmPropertyType.string, optional: true),
-      SchemaProperty('thumbUri', RealmPropertyType.string, optional: true),
-      SchemaProperty('uoloadProgress', RealmPropertyType.double),
+      SchemaProperty('medium', RealmPropertyType.string, optional: true),
+      SchemaProperty('thumb', RealmPropertyType.string, optional: true),
+      SchemaProperty('uploadProgress', RealmPropertyType.double),
       SchemaProperty('_status', RealmPropertyType.string,
           mapTo: 'status', optional: true),
     ]);

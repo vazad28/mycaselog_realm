@@ -92,12 +92,11 @@ mixin UserProfileStateMixin {
 /// provider for user mini stats
 // @riverpod
 UserStatsModel userMiniStats(UserMiniStatsRef ref) {
-// final casesCount = ref.watch(dbProvider).casesCollection.getCount();
-// final mediaCount = ref.watch(dbProvider).mediaCollection.getCount();
-// final notesCount = ref.watch(dbProvider).timelineNotesCollection.getCount();
   final caseMediaNoteCount =
       ref.watch(dbProvider).casesCollection.caseMediaNoteCount();
+
   if (caseMediaNoteCount == null) return UserStatsModel();
+
   return UserStatsModel(
     cases: caseMediaNoteCount[DbCollection.cases] ?? 0,
     media: caseMediaNoteCount[DbCollection.media] ?? 0,
@@ -114,13 +113,13 @@ class UserProfileNotifier extends _$UserProfileNotifier with LoggerMixin {
     final sub = ref
         .watch(dbProvider)
         .usersCollection
-        .getSingleStream('userID', userID)
+        .getSingle(userID)
+        ?.changes
         .listen((data) {
-      if (data.results.isEmpty) return;
-      state = UserModelX.fromJson(data.results.single.toJson());
+      state = UserModelX.fromJson(data.object.toJson());
     });
 
-    ref.onDispose(sub.cancel);
+    ref.onDispose(() => sub?.cancel());
 
     return UserModelX.zero(userID: userID);
   }

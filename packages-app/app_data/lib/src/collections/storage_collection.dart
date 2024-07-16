@@ -62,4 +62,17 @@ class StorageCollection with LoggerMixin {
         .child(mediaModel.caseID ?? userID)
         .child('thumb_${mediaModel.fileName}');
   }
+
+  Future<void> deleteMedia(MediaModel mediaModel) {
+    final futures = <Future>[
+      if (mediaModel.thumbUri?.isEmpty ?? false)
+        getThumbRef(mediaModel).delete(),
+      if (mediaModel.mediumUri?.isEmpty ?? false)
+        getThumbRef(mediaModel).delete(),
+      if (mediaModel.mediumUri?.isEmpty ?? false)
+        getOriginalRef(mediaModel).delete(),
+    ];
+
+    return futures.wait;
+  }
 }

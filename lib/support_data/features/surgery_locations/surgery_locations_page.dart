@@ -47,7 +47,7 @@ class SurgeryLocationsPage extends ConsumerWidget {
             icon: const Icon(Icons.add),
             onPressed: () {
               AddSurgeryLocationRoute(SurgeryLocationModelX.zero(),
-                      newRecord: true)
+                      newRecord: true,)
                   .push<SurgeryLocationModel>(context);
             },
           ),
@@ -59,7 +59,7 @@ class SurgeryLocationsPage extends ConsumerWidget {
 }
 
 class _SurgeryLocationsView extends ConsumerWidget {
-  const _SurgeryLocationsView({super.key});
+  const _SurgeryLocationsView();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -12,7 +12,7 @@ class MediaGalleryPage extends ConsumerWidget with MediaMixin {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final notifier = ref.watch(mediaGalleryNotifierProvider.notifier);
+    ref.watch(mediaGalleryNotifierProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(

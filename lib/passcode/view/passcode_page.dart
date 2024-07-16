@@ -54,7 +54,6 @@ class _PasscodeErrorView extends StatelessWidget {
   const _PasscodeErrorView({
     required this.message,
     required this.onRetry,
-    super.key,
   });
   final String message;
   final VoidCallback onRetry;

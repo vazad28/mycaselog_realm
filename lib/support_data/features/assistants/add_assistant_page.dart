@@ -53,7 +53,7 @@ class _AddAssistantPageState extends ConsumerState<AddAssistantPage> {
               /// update with basic data
               final assistantModelJson = {
                 ...widget.assistantModel.toJson(),
-                ...formGroup.value
+                ...formGroup.value,
               };
               final model = AssistantModelX.fromJson(assistantModelJson);
               ref
@@ -90,7 +90,6 @@ class _AddAssistantPageForm extends ConsumerWidget {
     required this.formGroup,
     required this.submitButton,
     required this.title,
-    super.key,
   });
   final FormGroup formGroup;
   final Widget submitButton;

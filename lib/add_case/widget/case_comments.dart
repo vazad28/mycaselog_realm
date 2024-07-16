@@ -24,7 +24,7 @@ class _CaseCommentsState extends State<CaseComments> {
   void _deleteComment() {
     context.showConfirmDialog(S.of(context).areYouSure).then((value) {
       if (!value) return;
-      if (context.mounted) Navigator.of(context).pop('');
+      if (mounted) Navigator.of(context).pop('');
     });
   }
 

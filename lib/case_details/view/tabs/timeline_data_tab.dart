@@ -1,4 +1,3 @@
-import 'package:app_models/app_models.dart';
 import 'package:app_ui/app_ui.dart';
 
 import 'package:flutter/material.dart';

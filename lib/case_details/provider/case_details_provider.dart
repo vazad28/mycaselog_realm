@@ -22,18 +22,17 @@ class CaseModelSeeder extends _$CaseModelSeeder {
     final caseID = ref.watch(caseIDSeeder);
 
     if (caseID == null) return null;
-    ;
 
     final sub = ref
         .watch(dbProvider)
         .casesCollection
-        .getSingleStream('caseID', caseID)
+        .getSingle(caseID)
+        ?.changes
         .listen((data) {
-      if (data.results.isEmpty) return;
-      state = data.results.single;
+      state = data.object;
     });
 
-    ref.onDispose(sub.cancel);
+    ref.onDispose(() => sub?.cancel());
 
     return null;
   }
@@ -44,18 +43,6 @@ class CaseDetailsNotifier extends _$CaseDetailsNotifier {
   @override
   AsyncValue<CaseModel> build() {
     final caseModel = ref.watch(caseModelSeederProvider);
-    // final caseID = ref.watch(caseDetailsSeederProvider);
-
-    // if (caseID == null) throw UnimplementedError();
-
-    // ref
-    //     .watch(dbProvider)
-    //     .casesCollection
-    //     .getSingleStream('caseID', caseID)
-    //     .listen((data) {
-    //   final model = CaseModelX.fromJson(data.results.single.toJson());
-    //   state = AsyncValue.data(model);
-    // });
     if (caseModel != null) return AsyncValue.data(caseModel);
 
     return const AsyncValue.loading();
@@ -64,7 +51,7 @@ class CaseDetailsNotifier extends _$CaseDetailsNotifier {
 
 @riverpod
 AsyncValue<TemplateModel?> caseDetailsTemplateModel(
-    CaseDetailsTemplateModelRef ref) {
+    CaseDetailsTemplateModelRef ref,) {
   final caseModelAsync = ref.watch(caseDetailsNotifierProvider);
 
   final caseModel = caseModelAsync.value;

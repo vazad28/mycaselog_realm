@@ -18,6 +18,7 @@ Configuration realmConfig(RealmConfigRef ref, String userID) {
       AssistantModel.schema,
       CaseModel.schema,
       //CaseMediaModel.schema,
+      MediaUploadModel.schema,
       MediaModel.schema,
       NoteModel.schema,
       PatientModel.schema,
@@ -44,7 +45,9 @@ Realm realm(RealmRef ref) {
 
   final realm = Realm(config);
 
-  print('CREATING REALM INSTANCE');
+  if (kDebugMode) {
+    print('CREATING REALM INSTANCE');
+  }
   return realm;
 }
 
@@ -60,14 +63,4 @@ class Db extends _$Db {
       sharedPrefs: ref.read(sharedPrefsProvider),
     );
   }
-
-  // CasesCollection get casesCollection => state.casesCollection;
-  // MediaCollection get mediaCollection => state.mediaCollection;
-  // NotesCollection get notesCollection => state.notesCollection;
-  // SettingsCollection get settingsCollection => state.settingsCollection;
-  // SupportDataCollection get supportDataCollection =>
-  //     state.supportDataCollection;
-  // TemplatesCollection get templatesCollection => state.templatesCollection;
-  // TimelineNotesCollection get timelineNotesCollection =>
-  //     state.timelineNotesCollection;
 }

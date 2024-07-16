@@ -22,10 +22,9 @@ class SupportDataSettingsSection extends ConsumerWidget {
           subTitle: S.of(context).mySurgeryAssistants,
           leading: const Icon(Icons.assistant),
           trailing: SettingsTrailing(
-            text: (supportDataAsync.assistants
-                        .where((e) => e.removed == 0)
-                        .length ??
-                    0)
+            text: supportDataAsync.assistants
+                .where((e) => e.removed == 0)
+                .length
                 .toString()
                 .padRight(padCount),
             icon: const Icon(Icons.navigate_next),
@@ -39,10 +38,9 @@ class SupportDataSettingsSection extends ConsumerWidget {
           subTitle: S.of(context).surgeryLocationSubTitle,
           leading: const Icon(Icons.map),
           trailing: SettingsTrailing(
-            text: (supportDataAsync.surgeryLocations
-                        .where((e) => e.removed == 0)
-                        .length ??
-                    0)
+            text: supportDataAsync.surgeryLocations
+                .where((e) => e.removed == 0)
+                .length
                 .toString()
                 .padRight(padCount),
             icon: const Icon(Icons.navigate_next),
@@ -56,7 +54,7 @@ class SupportDataSettingsSection extends ConsumerWidget {
           subTitle: 'List of anesthesia blocks',
           leading: const Icon(Icons.personal_injury),
           trailing: SettingsTrailing(
-            text: (supportDataAsync.anesthesiaBlocks.length ?? 0)
+            text: supportDataAsync.anesthesiaBlocks.length
                 .toString()
                 .padRight(padCount),
             icon: const Icon(Icons.navigate_next),

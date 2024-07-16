@@ -91,14 +91,30 @@ class _CaseTimelineItemHeaderState extends ConsumerState<CaseTimelineItemHeader>
 
       switch (headerAction.action) {
         case TimelineActionEnum.addCameraPhoto:
-          addTimelinePhoto(ref, timelineItemModel.caseID, ImageSource.camera);
+          addTimelinePhoto(
+            ref,
+            caseID: timelineItemModel.caseID,
+            source: ImageSource.camera,
+            timestamp: timelineItemModel.eventTimestamp,
+          );
         case TimelineActionEnum.addGalleryPhoto:
-          addTimelinePhoto(ref, timelineItemModel.caseID, ImageSource.gallery);
+          addTimelinePhoto(
+            ref,
+            caseID: timelineItemModel.caseID,
+            source: ImageSource.gallery,
+            timestamp: timelineItemModel.eventTimestamp,
+          );
         case TimelineActionEnum.addNote:
-          addTimelineNote(ref, timelineItemModel.caseID);
+          addTimelineNote(
+            ref,
+            caseID: timelineItemModel.caseID,
+            timestamp: timelineItemModel.eventTimestamp,
+          );
         case TimelineActionEnum.shareMedia:
           shareMediaList(
-              ref, timelineItemModel.mediaList, timelineItemModel.caseID);
+            ref,
+            mediaModels: timelineItemModel.mediaList,
+          );
         case TimelineActionEnum.changeTimelineDate:
           changeTimelineEventDate(ref, timelineItemModel);
       }

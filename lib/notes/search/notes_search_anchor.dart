@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/providers/providers.dart';
 import '../../core/services/services.dart';
 import '../notes.dart';
 

@@ -61,7 +61,7 @@ class _AddSurgeryLocationPageState
               /// update with basic data
               final surgeryLocationModelJson = {
                 ...widget.surgeryLocationModel.toJson(),
-                ...formGroup.value
+                ...formGroup.value,
               };
               final model =
                   SurgeryLocationModelX.fromJson(surgeryLocationModelJson);
@@ -99,7 +99,6 @@ class _AddSurgeryLocationPageForm extends ConsumerWidget {
     required this.formGroup,
     required this.submitButton,
     required this.title,
-    super.key,
   });
   final FormGroup formGroup;
   final Widget submitButton;

@@ -1,5 +1,10 @@
+import 'package:app_annotations/app_annotations.dart';
+import 'package:app_extensions/app_extensions.dart';
 import 'package:app_models/app_models.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:media_manager/media_manager.dart';
 import 'package:misc_packages/misc_packages.dart';
 
 import '../../case_timeline/case_timeline.dart';
@@ -25,15 +30,21 @@ mixin TimelineMixin {
         );
     final createdAt = (dateTimePicked ?? DateTime.now()).millisecondsSinceEpoch;
 
-    final updatedModel =
-        ref.watch(dbProvider).updateRealmObject<TimelineNoteModel>(() {
+    final updatedModel = ref
+        .watch(dbProvider)
+        .casesCollection
+        .updateObject<TimelineNoteModel>(() {
       return model..createdAt = createdAt;
     });
 
     await ref.watch(dbProvider).casesCollection.putNote(updatedModel);
   }
 
-  Future<void> addTimelineNote(WidgetRef ref, String caseID) async {
+  Future<void> addTimelineNote(
+    WidgetRef ref, {
+    required String caseID,
+    required int timestamp,
+  }) async {
     await ref
         .watch(dialogServiceProvider)
         .rootContext
@@ -42,7 +53,7 @@ mixin TimelineMixin {
             timelineNoteModel: TimelineNoteModelX.zero(
               caseID: caseID,
               authorID: ref.read(authenticationUserProvider).id,
-            ),
+            )..createdAt = timestamp,
           ),
         )
         .then((note) {
@@ -70,24 +81,43 @@ mixin TimelineMixin {
     if (timelineItemModel.mediaList.isEmpty &&
         timelineItemModel.noteList.isEmpty) return;
 
-    /// change all media dates
-    final updatedMediaModels = timelineItemModel.mediaList.map((e) {
-      return ref.watch(dbProvider).updateRealmObject<MediaModel>(() {
-        return e..createdAt = dateTimePicked.millisecondsSinceEpoch;
-      });
-    });
-
-    final updatedNoteModels = timelineItemModel.noteList.map((e) {
-      return ref.watch(dbProvider).updateRealmObject<TimelineNoteModel>(() {
-        return e..createdAt = dateTimePicked.millisecondsSinceEpoch;
-      });
-    });
-
     await ref.watch(dbProvider).casesCollection.updateTimelineData(
           timelineItemModel.caseID,
           timelineItemModel.mediaList,
           timelineItemModel.noteList,
           dateTimePicked.millisecondsSinceEpoch,
         );
+  }
+
+  /// Add timeline image
+  void addTimelinePhoto(
+    WidgetRef ref, {
+    required String caseID,
+    required ImageSource source,
+    required int timestamp,
+  }) {
+    MediaManager.imagePickerService
+        .pickImage(source: source)
+        .then((imageXFile) {
+      if (imageXFile == null) throw Exception('No image picked');
+
+      final mediaID = ModelUtils.uniqueID;
+      final mediaModel = MediaModel(
+        mediaID,
+        caseID,
+        fileType: MediaType.image.name,
+        caseID: caseID,
+        fileUri: imageXFile.path,
+        createdAt: timestamp,
+        timestamp: ModelUtils.getTimestamp,
+        fileName: imageXFile.name.changeFileName(mediaID), //-> extension method
+      );
+
+      /// add image to database
+      ref.read(dbProvider).casesCollection.putMedia(mediaModel);
+    }).catchError((dynamic err) {
+      debugPrint(err.toString());
+      ref.read(dialogServiceProvider).showSnackBar('Failed to add image');
+    });
   }
 }

@@ -290,13 +290,13 @@ class _MediaModel {
   @PrimaryKey()
   late String mediaID;
   late String authorID;
+  late String? caseID = 'unknown';
   late String? fileType;
   late String? fileName;
   late String? fileUri;
   late String? mediumUri;
   late String? thumbUri;
-  @Indexed()
-  late String? caseID;
+
   @MapTo('status')
   late String? _status;
   @Ignored()

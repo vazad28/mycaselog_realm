@@ -34,7 +34,7 @@ class TemplatesPage extends ConsumerWidget {
             },
             addSharedTemplate: () {
               _showSpecialitySelectionSheet(context).then((speciality) {
-                if (speciality != null) {
+                if (speciality != null && context.mounted) {
                   SharedTemplatesRoute(speciality).push<void>(context);
                 }
               });

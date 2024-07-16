@@ -52,10 +52,10 @@ class _SharedTemplatePageState extends ConsumerState<SharedTemplatePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          sharedTemplateModel.speciality.titleCase ?? S.of(context).noTitle,
+          sharedTemplateModel.speciality.titleCase,
         ),
       ),
-      body: sharedTemplateModel.fields == null
+      body: sharedTemplateModel.fields.isEmpty
           ? Center(
               child: Text(S.of(context).noTemplateFields),
             )

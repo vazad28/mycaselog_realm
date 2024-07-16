@@ -8,11 +8,11 @@ part 'media_upload_model.realm.dart';
 class _MediaUploadModel {
   @PrimaryKey()
   late String mediaID;
-  late String caseID;
+  late String? caseID;
   late String fileUri = '';
-  late String? mediumUri;
-  late String? thumbUri;
-  late double uoloadProgress = 0;
+  late String? medium;
+  late String? thumb;
+  late double uploadProgress = 0;
 
   @MapTo('status')
   late String? _status;
