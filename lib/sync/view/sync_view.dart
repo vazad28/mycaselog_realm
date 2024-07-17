@@ -45,6 +45,10 @@ class SyncView extends StatelessWidget {
         //   DbCollection.notes,
         // ), // timeline notes
         // _divider,
+        // const _TableToSync<Conversation>(
+        //   DbCollection.conversation,
+        // ), // timeline notes
+        // _divider,
         const _TableToSync<SupportDataModel>(
           DbCollection.supportData,
         ), // support data

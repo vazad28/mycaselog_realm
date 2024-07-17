@@ -4,6 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../media_gallery/media_gallery.dart';
 import '../../../router/router.dart';
 
 /// ////////////////////////////////////////////////////////////////////
@@ -12,17 +13,17 @@ import '../../../router/router.dart';
 
 class MediaPreviewTile extends ConsumerWidget {
   const MediaPreviewTile({
-    required this.hybridCaseModel,
+    required this.caseModel,
     required this.leftPadding,
     super.key,
   });
 
   final double leftPadding;
-  final HybridCaseModel hybridCaseModel;
+  final CaseModel caseModel;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    if (hybridCaseModel.mediaModels.isEmpty) {
+    if (caseModel.medias.isEmpty) {
       return const SizedBox.shrink();
     }
 
@@ -34,14 +35,14 @@ class MediaPreviewTile extends ConsumerWidget {
     return SizedBox(
       height: height,
       child: ListView(
-        key: ValueKey(hybridCaseModel.mediaModels),
+        key: ValueKey(caseModel.medias),
         scrollDirection: Axis.horizontal,
         padding: EdgeInsets.only(top: AppSpacing.sm, left: leftPadding),
         shrinkWrap: true,
-        children: hybridCaseModel.mediaModels
+        children: caseModel.medias
             .mapIndexed(
               (index, e) => _MediaPreviewTile(
-                mediaModels: hybridCaseModel.mediaModels,
+                mediaModels: caseModel.medias,
                 index: index,
                 routeObserver: routeObserver,
               ),
@@ -57,17 +58,20 @@ class _MediaPreviewTile extends StatelessWidget {
     required this.mediaModels,
     required this.index,
     required this.routeObserver,
-    //required this.mediaRepository,
   });
 
   final List<MediaModel> mediaModels;
   final int index;
   final RouteObserver<ModalRoute<void>>? routeObserver;
-  //final MediaRepository mediaRepository;
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(width: 90, child: Placeholder());
+    return SizedBox(
+        width: 56,
+        child: Thumbnail(
+          mediaModel: mediaModels[index],
+        ));
+    //return const SizedBox(width: 90, child: Placeholder());
     // return OpenContainer<MediaModel>(
     //   closedElevation: 0,
     //   tappable: false,

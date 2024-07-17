@@ -31,12 +31,6 @@ _CaseModel _$CaseModelFromJson(Map<String, dynamic> json) => _CaseModel()
       : _PatientModel.fromJson(json['patientModel'] as Map<String, dynamic>)
   ..fieldsData = (json['fieldsData'] as List<dynamic>)
       .map((e) => $TemplateFieldModel.fromJson(e as Map<String, dynamic>))
-      .toList()
-  ..medias = (json['medias'] as List<dynamic>)
-      .map((e) => _MediaModel.fromJson(e as Map<String, dynamic>))
-      .toList()
-  ..notes = (json['notes'] as List<dynamic>)
-      .map((e) => $TimelineNoteModel.fromJson(e as Map<String, dynamic>))
       .toList();
 
 Map<String, dynamic> _$CaseModelToJson(_CaseModel instance) =>
@@ -61,8 +55,6 @@ Map<String, dynamic> _$CaseModelToJson(_CaseModel instance) =>
       'timestamp': instance.timestamp,
       'patientModel': instance.patientModel?.toJson(),
       'fieldsData': instance.fieldsData.map((e) => e.toJson()).toList(),
-      'medias': instance.medias.map((e) => e.toJson()).toList(),
-      'notes': instance.notes.map((e) => e.toJson()).toList(),
     };
 
 _PatientModel _$PatientModelFromJson(Map<String, dynamic> json) =>
@@ -111,7 +103,7 @@ Map<String, dynamic> _$DecryptedPatientModelToJson(
 _MediaModel _$MediaModelFromJson(Map<String, dynamic> json) => _MediaModel()
   ..mediaID = json['mediaID'] as String
   ..authorID = json['authorID'] as String
-  ..caseID = json['caseID'] as String?
+  ..caseID = json['caseID'] as String
   ..fileType = json['fileType'] as String?
   ..fileName = json['fileName'] as String?
   ..fileUri = json['fileUri'] as String?
@@ -149,3 +141,22 @@ const _$MediaStatusEnumMap = {
   MediaStatus.success: 'success',
   MediaStatus.uploading: 'uploading',
 };
+
+_TimelineNoteModel _$TimelineNoteModelFromJson(Map<String, dynamic> json) =>
+    _TimelineNoteModel()
+      ..noteID = json['noteID'] as String
+      ..authorID = json['authorID'] as String
+      ..caseID = json['caseID'] as String
+      ..note = json['note'] as String?
+      ..createdAt = (json['createdAt'] as num).toInt()
+      ..timestamp = (json['timestamp'] as num).toInt();
+
+Map<String, dynamic> _$TimelineNoteModelToJson(_TimelineNoteModel instance) =>
+    <String, dynamic>{
+      'noteID': instance.noteID,
+      'authorID': instance.authorID,
+      'caseID': instance.caseID,
+      'note': instance.note,
+      'createdAt': instance.createdAt,
+      'timestamp': instance.timestamp,
+    };

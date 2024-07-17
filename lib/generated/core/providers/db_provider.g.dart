@@ -6,7 +6,7 @@ part of '../../../core/providers/db_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$realmConfigHash() => r'6f5fee839077d74912b7cb7fe59c5d3dfe4fafa4';
+String _$realmConfigHash() => r'3fedfde2d8032ebef5df8c7c0e218ee55a525520';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -208,7 +208,7 @@ class _RealmConfigProviderElement
   String get userID => (origin as RealmConfigProvider).userID;
 }
 
-String _$realmHash() => r'1e01cf00adc3eaa69b4670df369e04ca8fc2217f';
+String _$realmHash() => r'fc3cce0878dddb6522745286557ef10082a892ad';
 
 /// Realm  provider
 ///

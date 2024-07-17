@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app_models/app_models.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger_client/logger_client.dart';
 import 'package:realm/realm.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -37,8 +38,26 @@ class Cases extends _$Cases with LoggerMixin {
   }
 
   Future<void> pullToRefresh() async {}
-
-  // List<MediaModel> getCaseMedia(String caseID) {
-  //   return ref.read(dbProvider).mediaCollection.getCaseMedia(caseID).toList();
-  // }
 }
+
+// final casesNotifierProvider = StateProvider<CasesState>((ref) {
+//   return CasesState(ref);
+// });
+
+// class CasesState extends StateNotifier<Iterable<Conversation>> {
+//   CasesState(Ref ref) : super([]) {
+//     _listenToChanges(ref);
+//   }
+
+//   void _listenToChanges(Ref ref) {
+//     final results = ref.read(dbProvider).conversationCollection.getAll();
+//     results.changes.listen((changes) {
+//       // Update state based on changes
+//       state = changes.results;
+//     });
+//   }
+// }
+
+// final casesStreamProvider = StreamProvider<Iterable<Conversation>>((ref) {
+//   return ref.watch(casesNotifierProvider).stream;
+// });

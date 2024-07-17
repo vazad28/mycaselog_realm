@@ -18,3 +18,4 @@ export 'src/templates/template_model.dart';
 export 'src/timeline_item/timeline_item_model.dart';
 export 'src/timeline_notes/timeline_note_model.dart';
 export 'src/user/user_model.dart';
+export 'src/conversation/conversation.dart';

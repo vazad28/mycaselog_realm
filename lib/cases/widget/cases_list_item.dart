@@ -11,12 +11,12 @@ import '../cases.dart';
 
 class CasesListItem extends StatelessWidget {
   const CasesListItem({
-    required this.hybridCaseModel,
+    required this.caseModel,
     required this.caseTileStyle,
     super.key,
   });
 
-  final HybridCaseModel hybridCaseModel;
+  final CaseModel caseModel;
   final int caseTileStyle;
 
   @override
@@ -27,37 +27,31 @@ class CasesListItem extends StatelessWidget {
       openColor: context.colorScheme.surface,
       closedElevation: 0,
       openBuilder: (context, action) {
-        return CaseDetailsPage(caseID: hybridCaseModel.caseModel.caseID);
+        return CaseDetailsPage(caseID: caseModel.caseID);
       },
       tappable: false,
       closedBuilder: (context, action) {
         switch (caseTileStyle) {
           case 0:
             return HybridCaseCardTile(
-              hybridCaseModel: hybridCaseModel,
+              caseModel: caseModel,
               onTap: action,
-              onDoubleTap: () =>
-                  _onDoubleTap(context, hybridCaseModel.caseModel),
-              onLongPress: () =>
-                  _onLongPress(context, hybridCaseModel.caseModel),
+              onDoubleTap: () => _onDoubleTap(context, caseModel),
+              onLongPress: () => _onLongPress(context, caseModel),
             );
           case 1:
             return HybridCaseCard(
-              hybridCaseModel: hybridCaseModel,
+              caseModel: caseModel,
               onTap: action,
-              onDoubleTap: () =>
-                  _onDoubleTap(context, hybridCaseModel.caseModel),
-              onLongPress: () =>
-                  _onLongPress(context, hybridCaseModel.caseModel),
+              onDoubleTap: () => _onDoubleTap(context, caseModel),
+              onLongPress: () => _onLongPress(context, caseModel),
             );
           default:
             return HybridCaseTile(
-              hybridCaseModel: hybridCaseModel,
+              caseModel: caseModel,
               onTap: action,
-              onDoubleTap: () =>
-                  _onDoubleTap(context, hybridCaseModel.caseModel),
-              onLongPress: () =>
-                  () => _onLongPress(context, hybridCaseModel.caseModel),
+              onDoubleTap: () => _onDoubleTap(context, caseModel),
+              onLongPress: () => () => _onLongPress(context, caseModel),
             );
         }
       },

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../medias/medias.dart';
+import '../../media/media.dart';
 import '../utils/route_animations.dart';
 
 part '../../generated/router/routes/media_routes.g.dart';
@@ -21,6 +21,6 @@ class MediaRoute extends GoRouteData {
   Page buildPage(BuildContext context, GoRouterState state) =>
       FadeTransitionPage(
         key: state.pageKey,
-        child: const MediasPage(),
+        child: const MediaPage(),
       );
 }

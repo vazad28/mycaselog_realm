@@ -24,7 +24,7 @@ final caseDetailsTemplateModelProvider =
 
 typedef CaseDetailsTemplateModelRef
     = AutoDisposeProviderRef<AsyncValue<TemplateModel?>>;
-String _$caseModelSeederHash() => r'4cb7b987adb6fde26b91f6cfab230565115dc37d';
+String _$caseModelSeederHash() => r'b6ae9ae3bca3e98800e30c34078c1679f4b90324';
 
 /// See also [CaseModelSeeder].
 @ProviderFor(CaseModelSeeder)

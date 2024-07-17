@@ -26,7 +26,9 @@ class FtsSearchService {
     if (T == CaseModel) {
       return caseModels as List<T>;
     } else if (T == MediaModel) {
-      return caseModels.map((e) => e.medias.isEmpty).toList() as List<T>;
+      throw Exception('Search model type not defined');
+      //return caseModels.fold(<T>[], (prev, element) => element.medias);
+      //return caseModels.map((e) => e.medias.isEmpty).toList() as List<T>;
     } else {
       throw Exception('Search model type not defined');
     }

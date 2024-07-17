@@ -6,4 +6,5 @@ enum DbCollection {
   templates,
   supportData,
   settings,
+  conversation
 }

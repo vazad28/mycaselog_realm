@@ -59,11 +59,17 @@ class ImageUploadController extends UploadController
       final imageFile = XFile(mediaModel.fileUri!);
 
       final thumbnailFile = await _resizeImage(
-          imageFile, mediaModel.fileName!, ResizeType.thumbnail,);
+        imageFile,
+        mediaModel.fileName!,
+        ResizeType.thumbnail,
+      );
       if (thumbnailFile == null) throw Exception('Thumb not found');
 
       final mediumFile = await _resizeImage(
-          imageFile, mediaModel.fileName!, ResizeType.medium,);
+        imageFile,
+        mediaModel.fileName!,
+        ResizeType.medium,
+      );
       if (mediumFile == null) throw Exception('Medium not found');
 
       /// refs
@@ -144,7 +150,7 @@ class ImageUploadController extends UploadController
       _onFailure(MediaStatus.failed, err.toString());
     } finally {
       await sub?.cancel();
-      logger.fine('startUpload reached  finally');
+      logger.fine('Upload reached  finally');
       _removeUploadController();
     }
   }
@@ -181,7 +187,10 @@ class ImageUploadController extends UploadController
   }
 
   Future<XFile?> _resizeImage(
-      XFile imageFile, String fileName, ResizeType type,) async {
+    XFile imageFile,
+    String fileName,
+    ResizeType type,
+  ) async {
     final tempDir = await getTemporaryDirectory();
     final tempPath = tempDir.path;
     final targetPath = type == ResizeType.thumbnail
@@ -208,6 +217,12 @@ class ImageUploadController extends UploadController
   }
 
   void _onSuccess(String thumbUri, String mediumUri, String? fullUri) {
+    mediaUploadRepository.onUploadSucces(
+      mediaModel,
+      thumbUri: thumbUri,
+      mediumUri: mediumUri,
+      fullUri: fullUri,
+    );
     _mediaStatus = MediaStatus.success;
     notifyListeners();
   }

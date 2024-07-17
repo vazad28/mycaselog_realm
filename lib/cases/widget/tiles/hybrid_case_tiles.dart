@@ -14,14 +14,14 @@ import '../../cases.dart';
 /// ////////////////////////////////////////////////////////////////////
 class HybridCaseTile extends StatelessWidget {
   const HybridCaseTile({
-    required this.hybridCaseModel,
+    required this.caseModel,
     required this.onTap,
     super.key,
     this.onDoubleTap,
     this.onLongPress,
   });
 
-  final HybridCaseModel hybridCaseModel;
+  final CaseModel caseModel;
   final VoidCallback? onDoubleTap;
   final VoidCallback? onLongPress;
   final VoidCallback onTap;
@@ -29,7 +29,7 @@ class HybridCaseTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
-      key: Key('HybridCaseTileCompact-${hybridCaseModel.caseModel.caseID}'),
+      key: Key('HybridCaseTileCompact-${caseModel.caseID}'),
       builder: (context, constraints) {
         return ConstrainedBox(
           constraints: BoxConstraints(maxHeight: constraints.maxHeight),
@@ -38,7 +38,7 @@ class HybridCaseTile extends StatelessWidget {
             onLongPress: onLongPress,
             onDoubleTap: onDoubleTap,
             child: _CaseTileCompactLayout(
-              hybridCaseModel: hybridCaseModel,
+              caseModel: caseModel,
             ),
           ),
         );
@@ -48,15 +48,13 @@ class HybridCaseTile extends StatelessWidget {
 }
 
 class _CaseTileCompactLayout extends StatelessWidget {
-  const _CaseTileCompactLayout({required this.hybridCaseModel});
+  const _CaseTileCompactLayout({required this.caseModel});
 
-  final HybridCaseModel hybridCaseModel;
+  final CaseModel caseModel;
 
   @override
   Widget build(BuildContext context) {
     const leftIndent = 72.0;
-    final caseModel = hybridCaseModel.caseModel;
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,10 +83,10 @@ class _CaseTileCompactLayout extends StatelessWidget {
             ),
           ],
         ),
-        if (hybridCaseModel.mediaModels.isNotEmpty) ...[
+        if (caseModel.medias.isNotEmpty) ...[
           Flexible(
             child: MediaPreviewTile(
-              hybridCaseModel: hybridCaseModel,
+              caseModel: caseModel,
               leftPadding: leftIndent,
             ),
           ),
@@ -110,7 +108,7 @@ class _CaseTileCompactLayout extends StatelessWidget {
 /// ////////////////////////////////////////////////////////////////////
 class HybridCaseCard extends StatelessWidget {
   const HybridCaseCard({
-    required this.hybridCaseModel,
+    required this.caseModel,
     required this.onTap,
     super.key,
     this.onDoubleTap,
@@ -119,7 +117,7 @@ class HybridCaseCard extends StatelessWidget {
   });
 
   final bool dense;
-  final HybridCaseModel hybridCaseModel;
+  final CaseModel caseModel;
   final VoidCallback? onDoubleTap;
   final VoidCallback? onLongPress;
   final VoidCallback onTap;
@@ -137,8 +135,7 @@ class HybridCaseCard extends StatelessWidget {
         onLongPress: onLongPress,
         child: MaterialCard.outlined(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-          child:
-              _HybridCaseCard(hybridCaseModel: hybridCaseModel, dense: dense),
+          child: _HybridCaseCard(caseModel: caseModel, dense: dense),
         ),
       ),
     );
@@ -147,16 +144,15 @@ class HybridCaseCard extends StatelessWidget {
 
 class _HybridCaseCard extends StatelessWidget {
   const _HybridCaseCard({
-    required this.hybridCaseModel,
+    required this.caseModel,
     this.dense = false,
   });
 
   final bool dense;
-  final HybridCaseModel hybridCaseModel;
+  final CaseModel caseModel;
 
   @override
   Widget build(BuildContext context) {
-    final caseModel = hybridCaseModel.caseModel;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -170,12 +166,12 @@ class _HybridCaseCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   CaseInfoBar(
-                    caseModel: hybridCaseModel.caseModel,
+                    caseModel: caseModel,
                   ),
                   const CaseTileSpacer(),
                   DiagnosisTile(caseModel: caseModel),
                   const CaseTileSpacer(),
-                  SurgeryTile(caseModel: hybridCaseModel.caseModel),
+                  SurgeryTile(caseModel: caseModel),
                 ],
               ),
             ),
@@ -184,7 +180,7 @@ class _HybridCaseCard extends StatelessWidget {
         ...[
           Flexible(
             child: MediaPreviewTile(
-              hybridCaseModel: hybridCaseModel,
+              caseModel: caseModel,
               leftPadding: 16,
             ),
           ),
@@ -200,7 +196,7 @@ class _HybridCaseCard extends StatelessWidget {
 /// ////////////////////////////////////////////////////////////////////
 class HybridCaseCardTile extends StatelessWidget {
   const HybridCaseCardTile({
-    required this.hybridCaseModel,
+    required this.caseModel,
     required this.onTap,
     super.key,
     this.onDoubleTap,
@@ -209,7 +205,7 @@ class HybridCaseCardTile extends StatelessWidget {
   });
 
   final bool dense;
-  final HybridCaseModel hybridCaseModel;
+  final CaseModel caseModel;
   final VoidCallback? onDoubleTap;
   final VoidCallback? onLongPress;
   final VoidCallback onTap;
@@ -220,24 +216,22 @@ class HybridCaseCardTile extends StatelessWidget {
       onTap: onTap,
       onDoubleTap: onDoubleTap,
       onLongPress: onLongPress,
-      child:
-          _HybridCaseCardTile(hybridCaseModel: hybridCaseModel, dense: dense),
+      child: _HybridCaseCardTile(caseModel: caseModel, dense: dense),
     );
   }
 }
 
 class _HybridCaseCardTile extends StatelessWidget {
   const _HybridCaseCardTile({
-    required this.hybridCaseModel,
+    required this.caseModel,
     this.dense = false,
   });
 
   final bool dense;
-  final HybridCaseModel hybridCaseModel;
+  final CaseModel caseModel;
 
   @override
   Widget build(BuildContext context) {
-    final caseModel = hybridCaseModel.caseModel;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -253,12 +247,12 @@ class _HybridCaseCardTile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   CaseInfoBar(
-                    caseModel: hybridCaseModel.caseModel,
+                    caseModel: caseModel,
                   ),
                   const CaseTileSpacer(),
                   DiagnosisTile(caseModel: caseModel),
                   const CaseTileSpacer(),
-                  SurgeryTile(caseModel: hybridCaseModel.caseModel),
+                  SurgeryTile(caseModel: caseModel),
                 ],
               ),
             ),
@@ -267,7 +261,7 @@ class _HybridCaseCardTile extends StatelessWidget {
         ),
         Flexible(
           child: MediaPreviewTile(
-            hybridCaseModel: hybridCaseModel,
+            caseModel: caseModel,
             leftPadding: AppSpacing.lg,
           ),
         ),

@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:app_annotations/app_annotations.dart';
 import 'package:app_models/app_models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -88,22 +87,6 @@ mixin UserProfileStateMixin {
 /// ////////////////////////////////////////////////////////////////////
 /// Main Providers
 /// ////////////////////////////////////////////////////////////////////
-
-/// provider for user mini stats
-// @riverpod
-UserStatsModel userMiniStats(UserMiniStatsRef ref) {
-  final caseMediaNoteCount =
-      ref.watch(dbProvider).casesCollection.caseMediaNoteCount();
-
-  if (caseMediaNoteCount == null) return UserStatsModel();
-
-  return UserStatsModel(
-    cases: caseMediaNoteCount[DbCollection.cases] ?? 0,
-    media: caseMediaNoteCount[DbCollection.media] ?? 0,
-    notes: caseMediaNoteCount[DbCollection.notes] ?? 0,
-  );
-}
-
 @riverpod
 class UserProfileNotifier extends _$UserProfileNotifier with LoggerMixin {
   String get userID => ref.watch(authenticationUserProvider).id;

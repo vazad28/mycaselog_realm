@@ -1,5 +1,6 @@
 import 'package:app_models/app_models.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:logger_client/logger_client.dart';
 import 'package:media_manager/media_manager.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -11,7 +12,7 @@ final imageUploadRepositoryProvider =
     Provider<ImageUploadRepository>(ImageUploadRepository.new);
 
 /// provider class
-class ImageUploadRepository implements MediaUploadRepository {
+class ImageUploadRepository with LoggerMixin implements MediaUploadRepository {
   ImageUploadRepository(this.ref);
 
   final ProviderRef<ImageUploadRepository> ref;
@@ -38,7 +39,7 @@ class ImageUploadRepository implements MediaUploadRepository {
   @override
   void onUploadFailure(MediaModel mediaModel, MediaStatus mediaStatus) {
     final updatedMediaModel =
-        ref.read(dbProvider).casesCollection.updateObject<MediaModel>(() {
+        ref.read(dbProvider).mediaCollection.writeInRealm(() {
       return mediaModel..status = mediaStatus;
     });
 
@@ -47,21 +48,30 @@ class ImageUploadRepository implements MediaUploadRepository {
 
   @override
   void onUploadSucces(
-    MediaModel mediaModel,
+    MediaModel mediaModel, {
     String? thumbUri,
     String? mediumUri,
     String? fullUri,
-  ) {
+  }) async {
+    logger.fine('reached onUploadSucces $thumbUri');
+
     ///  update the database
     final updatedMediaModel =
-        ref.read(dbProvider).casesCollection.updateObject<MediaModel>(() {
+        ref.read(dbProvider).mediaCollection.writeInRealm(() {
       return mediaModel
         ..fileUri = fullUri
         ..mediumUri = mediumUri
         ..thumbUri = thumbUri
-        ..status = MediaStatus.success;
+        ..status = MediaStatus.success
+        ..timestamp = ModelUtils.getTimestamp;
     });
 
-    ref.read(dbProvider).casesCollection.putMedia(updatedMediaModel);
+    /// Add media to media collection  on firebase
+    await ref
+        .read(dbProvider)
+        .mediaCollection
+        .put(mediaModel.mediaID, updatedMediaModel);
+
+    await ref.read(dbProvider).casesCollection.putMedia(updatedMediaModel);
   }
 }

@@ -1,13 +1,8 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:app_annotations/app_annotations.dart';
 import 'package:app_extensions/app_extensions.dart';
 import 'package:app_models/app_models.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:realm/realm.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,6 +10,7 @@ import 'collections/storage_collection.dart';
 import 'domain/database_collection.dart';
 
 part 'collections/cases_collection.dart';
+//part 'collections/conversation_collection.dart';
 part 'collections/media_collection.dart';
 part 'collections/notes_collection.dart';
 part 'collections/settings_collection.dart';
@@ -32,6 +28,8 @@ class DatabaseService {
         //_realm = realm,
         _storageCollection = StorageCollection(userID),
         _casesCollection = CasesCollection(userID, realm, sharedPrefs),
+        // _conversationCollection =
+        //     ConversationCollection(userID, realm, sharedPrefs),
         _mediaCollection = MediaCollection(userID, realm, sharedPrefs),
         _notesCollection = NotesCollection(userID, realm, sharedPrefs),
         _usersCollection = UsersCollection(userID, realm, sharedPrefs),
@@ -64,6 +62,7 @@ class DatabaseService {
   late final SettingsCollection _settingsCollection;
   //late final TimelineNotesCollection _timelineNotesCollection;
   late final TemplatesCollection _templatesCollection;
+  //late final ConversationCollection _conversationCollection;
 
   /// Firebase storage
   StorageCollection get storageCollection => _storageCollection;
@@ -92,4 +91,5 @@ class DatabaseService {
 
   /// Templates Collection  getter
   TemplatesCollection get templatesCollection => _templatesCollection;
+  //ConversationCollection get conversationCollection => _conversationCollection;
 }

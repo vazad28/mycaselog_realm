@@ -36,15 +36,15 @@ enum BasicDataModelProps {
   cpt;
 }
 
-class HybridCaseModel {
-  HybridCaseModel({
-    required this.caseModel,
-    required this.mediaModels,
-  });
+// class HybridCaseModel {
+//   HybridCaseModel({
+//     required this.caseModel,
+//     required this.mediaModels,
+//   });
 
-  final CaseModel caseModel;
-  final List<MediaModel> mediaModels;
-}
+//   final CaseModel caseModel;
+//   final List<MediaModel> mediaModels;
+// }
 
 @RealmModel()
 @JsonSerializable(explicitToJson: true)
@@ -75,13 +75,12 @@ class _CaseModel {
   late int timestamp = 0;
   late _PatientModel? patientModel;
   late List<$TemplateFieldModel> fieldsData = [];
-  late List<_MediaModel> medias = [];
-  late List<$TimelineNoteModel> notes = [];
 
-  //@JsonKey(includeFromJson: false, includeToJson: false)
-  //@Ignored()
-  // One-to-many relationship that the backlink is created for  in media Model.
-  //late List<_MediaModel> mediaModels;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  late List<_MediaModel> medias = [];
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  late List<_TimelineNoteModel> notes = [];
 
   CaseModel toRealmObject() {
     return CaseModel(
@@ -107,17 +106,31 @@ class _CaseModel {
       fieldsData: fieldsData
           .map((e) => TemplateFieldModelX.fromJson(e.toJson()))
           .toList(),
-      medias: medias.map((e) => MediaModelX.fromJson(e.toJson())).toList(),
-      notes: notes.map((e) => TimelineNoteModelX.fromJson(e.toJson())).toList(),
+      medias: medias.map((e) => MediaModel._fromEJson(e.toEJson())).toList(),
+      notes:
+          notes.map((e) => TimelineNoteModel._fromEJson(e.toEJson())).toList(),
     );
   }
+
+  Map<String, dynamic> toJson() => _$CaseModelToJson(this);
+
+  ///create surgery date split field
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  String get surgeryD =>
+      DateFormat('dd').format(DateTime.fromMillisecondsSinceEpoch(surgeryDate));
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  String get surgeryM => DateFormat('MMM')
+      .format(DateTime.fromMillisecondsSinceEpoch(surgeryDate));
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  String get surgeryY => DateFormat('yyyy')
+      .format(DateTime.fromMillisecondsSinceEpoch(surgeryDate));
 }
 
 extension CaseModelX on CaseModel {
   static CaseModel fromJson(Map<String, dynamic> json) =>
       _$CaseModelFromJson(json).toRealmObject();
-
-  Map<String, dynamic> toJson() => _$CaseModelToJson(this);
 
   static CaseModel zero() {
     final timestamp = ModelUtils.getTimestamp;
@@ -134,19 +147,6 @@ extension CaseModelX on CaseModel {
 
     return caseModel;
   }
-
-  ///create surgery date split field
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  String get surgeryD =>
-      DateFormat('dd').format(DateTime.fromMillisecondsSinceEpoch(surgeryDate));
-
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  String get surgeryM => DateFormat('MMM')
-      .format(DateTime.fromMillisecondsSinceEpoch(surgeryDate));
-
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  String get surgeryY => DateFormat('yyyy')
-      .format(DateTime.fromMillisecondsSinceEpoch(surgeryDate));
 }
 
 /// ////////////////////////////////////////////////////////////////////
@@ -205,8 +205,6 @@ class _PatientModel {
 extension PatientModelX on PatientModel {
   static PatientModel fromJson(Map<String, dynamic> json) =>
       _$PatientModelFromJson(json).toRealmObject();
-
-  Map<String, dynamic> toJson() => _$PatientModelToJson(this);
 
   static PatientModel zero() {
     final patientModel = PatientModel();
@@ -274,15 +272,15 @@ enum MediaStatus {
   uploading,
 }
 
-class HybridMediaModel {
-  HybridMediaModel({
-    required this.caseModel,
-    required this.mediaModel,
-  });
+// class HybridMediaModel {
+//   HybridMediaModel({
+//     required this.caseModel,
+//     required this.mediaModel,
+//   });
 
-  final CaseModel? caseModel;
-  final MediaModel mediaModel;
-}
+//   final CaseModel? caseModel;
+//   final MediaModel mediaModel;
+// }
 
 @RealmModel()
 @JsonSerializable(explicitToJson: true)
@@ -290,7 +288,7 @@ class _MediaModel {
   @PrimaryKey()
   late String mediaID;
   late String authorID;
-  late String? caseID = 'unknown';
+  String caseID = 'unknown';
   late String? fileType;
   late String? fileName;
   late String? fileUri;
@@ -310,14 +308,13 @@ class _MediaModel {
   @Indexed(RealmIndexType.fullText)
   late String? comment;
   @Indexed()
-  late int removed = 0;
-  late int createdAt = 0;
-  late int timestamp = 0;
+  int removed = 0;
+  int createdAt = 0;
+  int timestamp = 0;
 
-  // Backlink field. Links back to the `tasks` property in the `odel` model.
-  // @JsonKey(includeFromJson: false, includeToJson: false)
-  // @Backlink(#mediaModels)
-  // late Iterable<_CaseModel> linkedCaseModel;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @Backlink(#medias)
+  late Iterable<_CaseModel> linkedCaseModel;
 
   MediaModel toRealmObject() {
     return MediaModel(
@@ -337,8 +334,8 @@ class _MediaModel {
     );
   }
 
-  static MediaModel fromJson(Map<String, dynamic> json) =>
-      MediaModelX.fromJson(json);
+  // static MediaModel fromJson(Map<String, dynamic> json) =>
+  //     _$MediaModelFromJson(json).toRealmObject();
 
   Map<String, dynamic> toJson() => _$MediaModelToJson(this);
 }
@@ -346,8 +343,6 @@ class _MediaModel {
 extension MediaModelX on MediaModel {
   static MediaModel fromJson(Map<String, dynamic> json) =>
       _$MediaModelFromJson(json).toRealmObject();
-
-  Map<String, dynamic> toJson() => _$MediaModelToJson(this);
 
   static MediaModel zero(String authorID) {
     final timestamp = ModelUtils.getTimestamp;
@@ -360,5 +355,97 @@ extension MediaModelX on MediaModel {
     );
 
     return mediaModel;
+  }
+}
+
+// @RealmModel()
+// @JsonSerializable(explicitToJson: true)
+// class _Conversation {
+//   @PrimaryKey()
+//   late String id;
+//   late String? title;
+//   late String? description;
+//   late DateTime? createdAt;
+//   @JsonKey(includeFromJson: false, includeToJson: false)
+//   //List<_Participant> participants = [];
+//   @JsonKey(includeFromJson: false, includeToJson: false)
+//   List<_TimelineNoteModel> notes = [];
+//   List<_MediaModel> mediaModels = [];
+//   int timestamp = 0;
+//   int removed = 0;
+
+//   Map<String, dynamic> toJson() => _$ConversationToJson(this);
+
+//   Conversation toRealmObject() {
+//     return Conversation(id,
+//         createdAt: DateTime.now(),
+//         title: title,
+//         description: description,
+//         mediaModels: mediaModels.map((e) => MediaModel._fromEJson(e.toEJson())),
+//         // participants:
+//         //     participants.map((e) => Participant._fromEJson(e.toEJson())),
+//         // messages: messages.map((e) => Message._fromEJson(e.toEJson())),
+//         removed: removed,
+//         timestamp: timestamp);
+//   }
+// }
+
+// extension ConversationX on Conversation {
+//   static Conversation fromJson(Map<String, dynamic> json) =>
+//       _$ConversationFromJson(json).toRealmObject();
+// }
+
+// ----- Timeline note -----
+@RealmModel()
+@JsonSerializable(explicitToJson: true)
+class _TimelineNoteModel {
+  @PrimaryKey()
+  late String noteID;
+  late String authorID = 'unknown';
+  late String caseID = 'unknown';
+  @Indexed(RealmIndexType.fullText)
+  late String? note;
+  @Indexed()
+  late int createdAt = 0;
+  late int timestamp = 0;
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @Backlink(#notes)
+  late Iterable<_CaseModel> linkedCaseModel;
+
+  TimelineNoteModel toRealmObject() {
+    return TimelineNoteModel(
+      noteID,
+      authorID: authorID,
+      caseID: caseID,
+      note: note,
+      createdAt: createdAt,
+      timestamp: timestamp,
+    );
+  }
+
+  // static TimelineNoteModel fromJson(Map<String, dynamic> json) =>
+  //     _$TimelineNoteModelFromJson(json).toRealmObject();
+
+  Map<String, dynamic> toJson() => _$TimelineNoteModelToJson(this);
+}
+
+extension TimelineNoteModelX on TimelineNoteModel {
+  static TimelineNoteModel fromJson(Map<String, dynamic> json) =>
+      _$TimelineNoteModelFromJson(json).toRealmObject();
+
+  static TimelineNoteModel zero({
+    required String caseID,
+    required String authorID,
+  }) {
+    final timestamp = ModelUtils.getTimestamp;
+
+    return TimelineNoteModel(
+      ModelUtils.uniqueID,
+      authorID: authorID,
+      caseID: caseID,
+      createdAt: timestamp,
+      timestamp: timestamp,
+    );
   }
 }

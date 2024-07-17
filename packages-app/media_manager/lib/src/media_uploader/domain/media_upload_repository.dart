@@ -12,11 +12,11 @@ abstract class MediaUploadRepository {
 
   /// on media upload success
   void onUploadSucces(
-    MediaModel mediaModel,
+    MediaModel mediaModel, {
     String? thumbUri,
     String? mediumUri,
     String? fullUri,
-  );
+  });
 
   /// on media upload failure
   void onUploadFailure(

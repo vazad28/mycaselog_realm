@@ -109,27 +109,25 @@ class CasesCollection extends DatabaseCollection<CaseModel> {
   }
 
   Future<void> putMedia(MediaModel mediaModel, {bool delete = false}) async {
-    final caseModel = realm.find<CaseModel>(mediaModel.caseID);
-    if (caseModel == null) return;
+    try {
+      final caseModel = realm.find<CaseModel>(mediaModel.caseID);
+      if (caseModel == null) return;
 
-    await realm.writeAsync(() {
-      if (delete) {
-        caseModel.medias.removeWhere((e) => e.mediaID == mediaModel.mediaID);
+      await realm.writeAsync(() {
+        if (delete) {
+          caseModel.medias.removeWhere((e) => e.mediaID == mediaModel.mediaID);
 
-        /// delete media from storage too
-      } else {
-        caseModel.medias.replaceOrAddComplex(
-          mediaModel,
-          (mediaModel) => mediaModel.mediaID,
-        );
-      }
-      // update(caseModel.caseID, {
-      //   'medias': caseModel.toJson()['medias'] ?? [],
-      //   'timestamp': ModelUtils.getTimestamp
-      // });
-    });
-
-    await put(caseModel.caseID, caseModel);
+          /// delete media from storage too
+        } else {
+          caseModel.medias.replaceOrAddComplex(
+            mediaModel,
+            (mediaModel) => mediaModel.mediaID,
+          );
+        }
+      });
+    } catch (err) {
+      logger.severe(err);
+    }
   }
 
   Future<void> putNote(
@@ -193,5 +191,12 @@ class CasesCollection extends DatabaseCollection<CaseModel> {
       logger.severe(err.toString());
       return null;
     }
+  }
+
+  /// ////////////////////////////////////////////////////////////////////
+  /// media
+  /// ////////////////////////////////////////////////////////////////////
+  Iterable<MediaModel> getAllMedia() {
+    return realm.query<CaseModel>('medias.@size > 0').expand((e) => e.medias);
   }
 }

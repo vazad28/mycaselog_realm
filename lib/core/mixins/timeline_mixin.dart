@@ -30,14 +30,15 @@ mixin TimelineMixin {
         );
     final createdAt = (dateTimePicked ?? DateTime.now()).millisecondsSinceEpoch;
 
-    final updatedModel = ref
-        .watch(dbProvider)
-        .casesCollection
-        .updateObject<TimelineNoteModel>(() {
-      return model..createdAt = createdAt;
-    });
+    ///TODO
+    // final updatedModel = ref
+    //     .watch(dbProvider)
+    //     .
+    //     .writeInRealm(() {
+    //   return model..createdAt = createdAt;
+    // });
 
-    await ref.watch(dbProvider).casesCollection.putNote(updatedModel);
+    // await ref.watch(dbProvider).casesCollection.putNote(updatedModel);
   }
 
   Future<void> addTimelineNote(

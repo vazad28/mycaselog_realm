@@ -42,8 +42,12 @@ abstract class DatabaseCollection<T extends RealmObject> with LoggerMixin {
     put(id, model);
   }
 
-  K updateObject<K>(K Function() updateCallback) {
-    return realm.write<K>(updateCallback);
+  T writeInRealm(T Function() updateCallback) {
+    return realm.write<T>(updateCallback);
+  }
+
+  Future<T> writeInRealmAsync(T Function() updateCallback) {
+    return realm.writeAsync<T>(updateCallback);
   }
 
   /// get sinlge object
@@ -51,11 +55,6 @@ abstract class DatabaseCollection<T extends RealmObject> with LoggerMixin {
 
   /// stream to listen for collection change
   Stream<List<T>> listenForChanges();
-
-  // /// listenf or chnage item stream
-  // Stream<RealmResultsChanges<T>> getSingleStream(String key, String value) {
-  //   return realm.query<T>('$key == \$0', [value]).changes;
-  // }
 
   /// get all data of the collection
   RealmResults<T> getAll({int removed = 0}) =>
@@ -75,10 +74,7 @@ abstract class DatabaseCollection<T extends RealmObject> with LoggerMixin {
 
   /// save the model
   Future<void> put(String docId, T model, {bool saveLocal = false}) =>
-      withConverter
-          .doc(docId)
-          .set((model as RealmObject).setTimestamp<T>())
-          .then((_) {
+      withConverter.doc(docId).set(model).then((_) {
         logger.info('success put');
         if (saveLocal) {
           realm.write(() {
@@ -115,6 +111,12 @@ abstract class DatabaseCollection<T extends RealmObject> with LoggerMixin {
       realm.addAll<T>(models, update: true);
     });
 
+    if (T == MediaModel) {
+      await _updateMediaBacklinks(models as List<MediaModel>);
+    } else if (T == TimelineNoteModel) {
+      await _updateTimelineNoteBacklinks(models as List<TimelineNoteModel>);
+    }
+
     /// set new lastSyncTimestamp for this collection
     setLastSyncTimestamp();
 
@@ -130,5 +132,49 @@ abstract class DatabaseCollection<T extends RealmObject> with LoggerMixin {
       _lastSyncTimestampKey,
       ModelUtils.getTimestamp,
     );
+  }
+
+  /// ////////////////////////////////////////////////////////////////////
+  /// Upldate backlink
+  /// ////////////////////////////////////////////////////////////////////
+  Future<void> _updateMediaBacklinks(List<MediaModel> mediaModels) async {
+    for (final mediaModel in mediaModels) {
+      await realm.writeAsync(() {
+        final caseModel = realm.find<CaseModel>(mediaModel.caseID);
+        if (caseModel == null) return;
+        // Update backlinks based on your model structure
+        final index = caseModel.medias
+            .indexWhere((item) => item.mediaID == mediaModel.mediaID);
+
+        if (index == -1) {
+          // Object not found, add it
+          caseModel.medias.add(mediaModel);
+        } else {
+          // Object found so we update
+          caseModel.medias[index] = mediaModel;
+        }
+      });
+    }
+  }
+
+  Future<void> _updateTimelineNoteBacklinks(
+      List<TimelineNoteModel> noteModels) async {
+    for (final noteModel in noteModels) {
+      await realm.writeAsync(() {
+        final caseModel = realm.find<CaseModel>(noteModel.caseID);
+        if (caseModel == null) return;
+        // Update backlinks based on your model structure
+        final index = caseModel.notes
+            .indexWhere((item) => item.noteID == noteModel.noteID);
+
+        if (index == -1) {
+          // Object not found, add it
+          caseModel.notes.add(noteModel);
+        } else {
+          // Object found so we update
+          caseModel.notes[index] = noteModel;
+        }
+      });
+    }
   }
 }

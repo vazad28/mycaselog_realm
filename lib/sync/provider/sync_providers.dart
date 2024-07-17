@@ -21,9 +21,9 @@ class SyncCollectionsMap extends _$SyncCollectionsMap {
 
     final collectionsMap = <DbCollection, DatabaseCollection>{
       DbCollection.cases: database.casesCollection,
-      //DbCollection.media: database.mediaCollection,
+      //DbCollection.conversation: database.conversationCollection,
       DbCollection.notes: database.notesCollection,
-      //DbCollection.timelineNotes: database.timelineNotesCollection,
+      DbCollection.media: database.mediaCollection,
       DbCollection.templates: database.templatesCollection,
       DbCollection.supportData: database.supportDataCollection,
       DbCollection.settings: database.settingsCollection,
