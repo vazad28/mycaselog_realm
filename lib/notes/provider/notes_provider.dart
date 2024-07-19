@@ -36,6 +36,6 @@ class NoteTileStyle extends _$NoteTileStyle {
 class Notes extends _$Notes {
   @override
   RealmResults<NoteModel> build() {
-    return ref.read(dbProvider).notesCollection.getAll();
+    return ref.read(collectionsProvider).notesCollection.getAll();
   }
 }

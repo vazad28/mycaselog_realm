@@ -1,7 +1,7 @@
 import 'package:app_models/app_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:realm_dart/src/results.dart';
+import 'package:realm/realm.dart';
 
 import '../cases.dart';
 
@@ -29,15 +29,6 @@ class CasesView extends ConsumerWidget {
           caseModel: caseModel,
           caseTileStyle: caseTileStyle,
         );
-        // return ListTile(
-        //   title: Text(caseModel.title ?? 'No title'),
-        //   onTap: () {
-        //     context.showInfoDialog(caseModel.mediaModels.toString());
-        //   },
-        //   onLongPress: () {
-        //     ref.read(dbProvider).conversationCollection.addMediaModel();
-        //   },
-        // );
       }),
     );
   }

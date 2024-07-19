@@ -7,7 +7,7 @@ part of '../../../case_details/provider/case_details_provider.dart';
 // **************************************************************************
 
 String _$caseDetailsTemplateModelHash() =>
-    r'2524628ffd70b012d8fb473015c14f0e5aad0acd';
+    r'5952d6f00af484cac8417378f968f47b4b7fdb38';
 
 /// See also [caseDetailsTemplateModel].
 @ProviderFor(caseDetailsTemplateModel)
@@ -24,7 +24,7 @@ final caseDetailsTemplateModelProvider =
 
 typedef CaseDetailsTemplateModelRef
     = AutoDisposeProviderRef<AsyncValue<TemplateModel?>>;
-String _$caseModelSeederHash() => r'b6ae9ae3bca3e98800e30c34078c1679f4b90324';
+String _$caseModelSeederHash() => r'3a6a19352246e8cc5f73796f647426df0b4dba4b';
 
 /// See also [CaseModelSeeder].
 @ProviderFor(CaseModelSeeder)

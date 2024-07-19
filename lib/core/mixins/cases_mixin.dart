@@ -14,7 +14,10 @@ mixin CasesMixin {
     try {
       /// delete media from storage
       for (final mediaModel in caseModel.medias) {
-        await ref.watch(dbProvider).storageCollection.deleteMedia(mediaModel);
+        await ref
+            .watch(collectionsProvider)
+            .storageCollection
+            .deleteMedia(mediaModel);
       }
     } on FirebaseException catch (error) {
       debugPrint(error.toString());
@@ -23,9 +26,9 @@ mixin CasesMixin {
       /// files does not compromise this part and also we can  not reference a file
       /// if the ref object is removed from tree if we delete caseModel itself first
       ref
-          .watch(dbProvider)
+          .watch(collectionsProvider)
           .casesCollection
-          .upsert(caseModel.caseID, () => caseModel..removed = 1);
+          .upsert(() => caseModel..removed = 1);
     }
   }
 }

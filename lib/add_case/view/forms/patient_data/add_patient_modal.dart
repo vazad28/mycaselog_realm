@@ -63,9 +63,6 @@ class _AddPatientModalController extends ConsumerState<AddPatientModal>
       DecryptedPatientDataModelProps.phone.name: FormControl<String>(
         value: decryptedPatientModel.phone,
       ),
-      DecryptedPatientDataModelProps.address.name: FormControl<String>(
-        value: decryptedPatientModel.address,
-      ),
     };
     return FormGroup(controls);
   }
@@ -177,18 +174,6 @@ class _PatientFormFields extends ConsumerWidget with AddCaseStateMixin {
             textInputAction: TextInputAction.next,
             decoration: context.inputDecorOutline(
               labelText: PatientDataModelProps.phone.name.titleCase,
-            ),
-          ),
-        ],
-        //---- if activable fields show address
-        if (activeFields.contains(ActivableAddCaseField.address)) ...[
-          VerticalSpacer.large,
-          ReactiveTextField<String>(
-            formControlName: PatientDataModelProps.address.name,
-            keyboardType: TextInputType.text,
-            textInputAction: TextInputAction.next,
-            decoration: context.inputDecorOutline(
-              labelText: PatientDataModelProps.address.name.titleCase,
             ),
           ),
         ],

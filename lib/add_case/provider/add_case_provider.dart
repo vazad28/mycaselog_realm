@@ -72,7 +72,7 @@ class AddCaseSeeder extends _$AddCaseSeeder {
     final templateModel = caseModel.templateID == null
         ? null
         : ref
-            .watch(dbProvider)
+            .watch(collectionsProvider)
             .templatesCollection
             .getSingle(caseModel.templateID!);
 
@@ -223,8 +223,7 @@ class AddCaseNotifier extends _$AddCaseNotifier with LoggerMixin {
   /// ---- DO the form submit  ---
   Future<void> _doSubmit(CaseModel modelToSubmit) async {
     try {
-      await ref.read(dbProvider).casesCollection.put(
-            modelToSubmit.caseID,
+      await ref.read(collectionsProvider).casesCollection.add(
             modelToSubmit..timestamp = ModelUtils.getTimestamp,
           );
 

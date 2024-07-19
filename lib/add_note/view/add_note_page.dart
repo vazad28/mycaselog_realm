@@ -267,9 +267,9 @@ class _AddNotePageState extends ConsumerState<AddNotePage> with LoggerMixin {
         ..note = _controller.document.toJsonString;
 
       await ref
-          .watch(dbProvider)
+          .watch(collectionsProvider)
           .notesCollection
-          .put(widget.noteModel.noteID, noteModelUnmanaged.toRealmObject());
+          .add(noteModelUnmanaged.toRealmObject());
 
       await Future<void>.delayed(Durations.medium4);
 

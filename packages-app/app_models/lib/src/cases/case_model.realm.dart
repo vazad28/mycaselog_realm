@@ -739,6 +739,7 @@ class TimelineNoteModel extends _TimelineNoteModel
     String? note,
     int createdAt = 0,
     int timestamp = 0,
+    int removed = 0,
   }) {
     if (!_defaultsSet) {
       _defaultsSet = RealmObjectBase.setDefaults<TimelineNoteModel>({

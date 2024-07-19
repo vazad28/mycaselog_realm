@@ -36,16 +36,6 @@ enum BasicDataModelProps {
   cpt;
 }
 
-// class HybridCaseModel {
-//   HybridCaseModel({
-//     required this.caseModel,
-//     required this.mediaModels,
-//   });
-
-//   final CaseModel caseModel;
-//   final List<MediaModel> mediaModels;
-// }
-
 @RealmModel()
 @JsonSerializable(explicitToJson: true)
 class _CaseModel {
@@ -75,10 +65,8 @@ class _CaseModel {
   late int timestamp = 0;
   late _PatientModel? patientModel;
   late List<$TemplateFieldModel> fieldsData = [];
-
   @JsonKey(includeFromJson: false, includeToJson: false)
   late List<_MediaModel> medias = [];
-
   @JsonKey(includeFromJson: false, includeToJson: false)
   late List<_TimelineNoteModel> notes = [];
 
@@ -401,13 +389,14 @@ extension MediaModelX on MediaModel {
 class _TimelineNoteModel {
   @PrimaryKey()
   late String noteID;
-  late String authorID = 'unknown';
-  late String caseID = 'unknown';
+  String authorID = 'unknown';
+  String caseID = 'unknown';
   @Indexed(RealmIndexType.fullText)
   late String? note;
   @Indexed()
-  late int createdAt = 0;
-  late int timestamp = 0;
+  int createdAt = 0;
+  int timestamp = 0;
+  int removed = 0;
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @Backlink(#notes)

@@ -13,18 +13,25 @@ import '../../core/providers/providers.dart';
 class Thumbnail extends ConsumerWidget with MediaMixin {
   const Thumbnail({
     required this.mediaModel,
+    this.fit,
     this.width = 120,
+    this.onTap,
+    this.onLongPress,
     super.key,
   });
 
   final MediaModel mediaModel;
   final double width;
+  final BoxFit? fit;
+  final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cachedImage = CachedImage(
       key: ValueKey(mediaModel),
       mediaModel: mediaModel,
+      fit: fit,
       width: 96,
     );
 
@@ -41,7 +48,8 @@ class Thumbnail extends ConsumerWidget with MediaMixin {
             if (mediaModel.status != MediaStatus.failed)
               MediaUploadOverlayWidget(
                 key: Key(
-                    '__media_upload_overlay_widget_${mediaModel.mediaID}__',),
+                  '__media_upload_overlay_widget_${mediaModel.mediaID}__',
+                ),
                 mediaModel: mediaModel,
                 width: width,
                 uploadController: MediaManager.getUploadController(

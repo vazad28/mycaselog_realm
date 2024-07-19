@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:app_annotations/app_annotations.dart';
-import 'package:app_data/app_data.dart';
+import 'package:app_repositories/app_repositories.dart';
 import 'package:logger_client/logger_client.dart';
 import 'package:realm/realm.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -16,17 +16,16 @@ part '../../generated/sync/provider/sync_providers.g.dart';
 @riverpod
 class SyncCollectionsMap extends _$SyncCollectionsMap {
   @override
-  Map<DbCollection, DatabaseCollection> build() {
-    final database = ref.watch(dbProvider);
+  Map<DbCollection, BaseCollection> build() {
+    final database = ref.watch(collectionsProvider);
 
-    final collectionsMap = <DbCollection, DatabaseCollection>{
+    final collectionsMap = <DbCollection, BaseCollection>{
       DbCollection.cases: database.casesCollection,
-      //DbCollection.conversation: database.conversationCollection,
-      DbCollection.notes: database.notesCollection,
+      //DbCollection.notes: database.notesCollection,
       DbCollection.media: database.mediaCollection,
-      DbCollection.templates: database.templatesCollection,
-      DbCollection.supportData: database.supportDataCollection,
-      DbCollection.settings: database.settingsCollection,
+      // DbCollection.templates: database.templatesCollection,
+      // DbCollection.supportData: database.supportDataCollection,
+      // DbCollection.settings: database.settingsCollection,
     };
 
     return collectionsMap;
@@ -35,7 +34,7 @@ class SyncCollectionsMap extends _$SyncCollectionsMap {
 
 @riverpod
 class CollectionSyncer extends _$CollectionSyncer {
-  DatabaseCollection<RealmObject>? _collection;
+  BaseCollection<RealmObject>? _collection;
 
   @override
   StateOf<int> build(DbCollection dbCollection) {
@@ -91,9 +90,6 @@ class FirestoreSync extends _$FirestoreSync with LoggerMixin {
   }
 
   void doSync() {
-    // final sub =
-    //     ref.watch(dbProvider).casesCollection.listenForChanges().listen((_) {});
-    // subs.putIfAbsent(DbCollection.cases.name, () => sub);
     final collectionsMap = ref.read(syncCollectionsMapProvider);
     for (final dbCollection in collectionsMap.keys) {
       if (dbCollection == DbCollection.media ||

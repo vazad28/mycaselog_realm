@@ -40,7 +40,7 @@ class StorageCollection with LoggerMixin {
     return FirebaseStorage.instance
         .ref()
         .child(userID)
-        .child(mediaModel.caseID ?? userID)
+        .child(mediaModel.caseID)
         .child(mediaModel.fileName!);
   }
 
@@ -51,7 +51,7 @@ class StorageCollection with LoggerMixin {
         .ref()
         .child(userID)
         .child('--originals')
-        .child(mediaModel.caseID ?? userID)
+        .child(mediaModel.caseID)
         .child(mediaModel.fileName!);
   }
 
@@ -59,7 +59,7 @@ class StorageCollection with LoggerMixin {
     return FirebaseStorage.instance
         .ref()
         .child(userID)
-        .child(mediaModel.caseID ?? userID)
+        .child(mediaModel.caseID)
         .child('thumb_${mediaModel.fileName}');
   }
 

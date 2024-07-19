@@ -67,9 +67,7 @@ Future<void> logout(LogoutRef ref) async {
   await Future<void>.delayed(const Duration(milliseconds: 1000));
   try {
     await ref.read(authenticationClientProvider).logOut();
-    ref
-      ..invalidate(dbProvider)
-      ..invalidate(mycaselogRouterProvider);
+    ref.invalidate(mycaselogRouterProvider);
   } catch (error, stackTrace) {
     Error.throwWithStackTrace(
       Exception('Logout failure'),

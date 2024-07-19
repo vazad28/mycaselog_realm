@@ -26,7 +26,7 @@ final addTemplateFormGroupProvider = AutoDisposeProvider<FormGroup>.internal(
 );
 
 typedef AddTemplateFormGroupRef = AutoDisposeProviderRef<FormGroup>;
-String _$addTemplateSeederHash() => r'619227ca9454cab983d2061b14482703d15f9157';
+String _$addTemplateSeederHash() => r'0fab16c85bab7078d7aa840f803e0f521b7b78c9';
 
 /// ////////////////////////////////////////////////////////////////////
 ///  seeder
@@ -47,7 +47,7 @@ final addTemplateSeederProvider =
 
 typedef _$AddTemplateSeeder = AutoDisposeNotifier<TemplateModel?>;
 String _$addTemplateNotifierHash() =>
-    r'28cd6c70d635924c842da53e6115632ed8be31fd';
+    r'7a601fc70732969977d3160c18c108850a595668';
 
 /// ////////////////////////////////////////////////////////////////////
 /// Main provider of the  feature

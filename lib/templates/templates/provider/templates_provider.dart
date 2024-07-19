@@ -7,24 +7,6 @@ import '../../../core/providers/providers.dart';
 import 'templates_event.dart';
 
 part '../../../generated/templates/templates/provider/templates_provider.g.dart';
-//part 'templates_mixin.dart';
-
-// @riverpod
-// class AllTemplates extends _$AllTemplates {
-//   @override
-//   List<TemplateModel> build() {
-//     final realm = ref.watch(realmProvider);
-//     final allTemplatesStream = realm.all<TemplateModel>();
-
-//     final sub = allTemplatesStream.changes.listen((data) {
-//       state = data.results.toList();
-//     });
-
-//     ref.onDispose(sub.cancel);
-
-//     return <TemplateModel>[];
-//   }
-// }
 
 /// ////////////////////////////////////////////////////////////////////
 /// Main Provider
@@ -39,25 +21,24 @@ class TemplatesList extends _$TemplatesList {
 
   @override
   List<TemplateModel> build() {
-    final sub = ref
-        .watch(dbProvider)
-        .templatesCollection
-        .getAll()
-        .changes
-        .listen((data) {
-      state =
-          data.results.map((e) => TemplateModelX.fromJson(e.toJson())).toList();
-    });
+    // final sub = ref
+    //     .watch(collectionsProvider)
+    //     .templatesCollection
+    //     .getAll()
+    //     .changes
+    //     .listen((data) {
+    //   state =
+    //       data.results.map((e) => TemplateModelX.fromJson(e.toJson())).toList();
+    // });
 
-    ref.onDispose(sub.cancel);
+    // ref.onDispose(sub.cancel);
 
     return <TemplateModel>[];
   }
 
   Future<void> _updateTemplate(TemplateModel templateModel) async {
-    await ref.watch(dbProvider).templatesCollection.put(
-          ref.watch(authenticationUserProvider).id,
-          templateModel.toRealmObject(),
+    await ref.watch(collectionsProvider).templatesCollection.add(
+          templateModel,
         );
   }
 

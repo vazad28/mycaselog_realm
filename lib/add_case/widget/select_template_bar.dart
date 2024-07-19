@@ -71,27 +71,29 @@ class _SelectTemplateBottomSheet extends ConsumerWidget
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final templatesLists = ref.watch(dbProvider).templatesCollection.getAll();
+    final templatesLists =
+        ref.watch(collectionsProvider).templatesCollection.getAll();
 
     return StreamBuilder(
-        stream: templatesLists.changes,
-        builder: (context, snapshot) {
-          final templates = snapshot.data?.results ?? <TemplateModel>[];
+      stream: templatesLists.changes,
+      builder: (context, snapshot) {
+        final templates = snapshot.data?.results ?? <TemplateModel>[];
 
-          return _TemplatesBottomSheet(
-            selectedTemplateID: currTemplate?.templateID,
-            templates: templates.where((e) => e.removed == 0).toList(),
-            onSelect: (templateModel) {
-              if (currTemplate == null ||
-                  currTemplate?.templateID != templateModel.templateID) {
-                /// call addCaseNotifier to set the current forms data into an
-                /// object before the new template models fields are rendered
-                onTemplateChange(ref, templateModel);
-                return;
-              }
-            },
-          );
-        },);
+        return _TemplatesBottomSheet(
+          selectedTemplateID: currTemplate?.templateID,
+          templates: templates.where((e) => e.removed == 0).toList(),
+          onSelect: (templateModel) {
+            if (currTemplate == null ||
+                currTemplate?.templateID != templateModel.templateID) {
+              /// call addCaseNotifier to set the current forms data into an
+              /// object before the new template models fields are rendered
+              onTemplateChange(ref, templateModel);
+              return;
+            }
+          },
+        );
+      },
+    );
 
     // return templatesListState.when(
     //   loading: () => const Loading(),

@@ -1,7 +1,7 @@
 import 'dart:math' as math show ln10, log, max, min, pow;
-import 'package:app_data/app_data.dart';
 import 'package:app_extensions/app_extensions.dart';
 import 'package:app_models/app_models.dart';
+import 'package:app_repositories/app_repositories.dart';
 import 'package:async_result/async_result.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -25,7 +25,8 @@ class StatsRepository {
 
   final StatsRepositoryRef ref;
 
-  CasesCollection get _casesCollection => ref.watch(dbProvider).casesCollection;
+  CasesCollection get _casesCollection =>
+      ref.watch(collectionsProvider).casesCollection;
 
   ///get full text search result ids
   Future<List<String>?> _getSearchIds(String searchTermProcessed) async {

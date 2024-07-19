@@ -42,14 +42,6 @@ abstract class DatabaseCollection<T extends RealmObject> with LoggerMixin {
     put(id, model);
   }
 
-  T writeInRealm(T Function() updateCallback) {
-    return realm.write<T>(updateCallback);
-  }
-
-  Future<T> writeInRealmAsync(T Function() updateCallback) {
-    return realm.writeAsync<T>(updateCallback);
-  }
-
   /// get sinlge object
   T? getSingle(String primaryKey) => realm.find<T>(primaryKey);
 
@@ -86,12 +78,12 @@ abstract class DatabaseCollection<T extends RealmObject> with LoggerMixin {
       });
 
   /// save the model
-  // Future<void> update(String docID, Map<String, dynamic> obj) =>
-  //     withConverter.doc(docID).update(obj).then((_) {
-  //       logger.info('success update');
-  //     }).catchError((dynamic err) {
-  //       logger.severe(err.toString());
-  //     });
+  Future<void> _update(String docID, Map<String, dynamic> obj) =>
+      withConverter.doc(docID).update(obj).then((_) {
+        logger.info('success update');
+      }).catchError((dynamic err) {
+        logger.severe(err.toString());
+      });
 
   /// GET DATA BY TIMESTAMP. USED BY THE SYNC FUNCTIONS
   Future<int> syncByTimestamp(int? timestamp) async {
@@ -111,11 +103,11 @@ abstract class DatabaseCollection<T extends RealmObject> with LoggerMixin {
       realm.addAll<T>(models, update: true);
     });
 
-    if (T == MediaModel) {
-      await _updateMediaBacklinks(models as List<MediaModel>);
-    } else if (T == TimelineNoteModel) {
-      await _updateTimelineNoteBacklinks(models as List<TimelineNoteModel>);
-    }
+    // if (T == MediaModel) {
+    //   await _updateMediaBacklinks(models as List<MediaModel>);
+    // } else if (T == TimelineNoteModel) {
+    //   await _updateTimelineNoteBacklinks(models as List<TimelineNoteModel>);
+    // }
 
     /// set new lastSyncTimestamp for this collection
     setLastSyncTimestamp();

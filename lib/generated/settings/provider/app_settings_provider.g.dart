@@ -6,7 +6,7 @@ part of '../../../settings/provider/app_settings_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$appSettingsHash() => r'c52504c0dc32f289e9c09c06a15ae244705699c2';
+String _$appSettingsHash() => r'40ad773c3e22d1511129f9b7f7218bdd4eabdfd0';
 
 /// See also [AppSettings].
 @ProviderFor(AppSettings)
@@ -21,7 +21,7 @@ final appSettingsProvider =
 );
 
 typedef _$AppSettings = AutoDisposeNotifier<SettingsModel>;
-String _$templatesCountHash() => r'4349cac1048a2a91b8a6b87ba8ec97f04b98ed1f';
+String _$templatesCountHash() => r'50104f3385dcf0772f25498b2c475890b94e4e30';
 
 /// See also [TemplatesCount].
 @ProviderFor(TemplatesCount)

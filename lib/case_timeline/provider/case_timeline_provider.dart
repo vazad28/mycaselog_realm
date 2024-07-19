@@ -19,7 +19,7 @@ class CaseTimelineNotifier extends _$CaseTimelineNotifier with LoggerMixin {
     }
 
     final sub = ref
-        .watch(dbProvider)
+        .watch(collectionsProvider)
         .casesCollection
         .getSingle(caseID)
         ?.changes
@@ -32,11 +32,12 @@ class CaseTimelineNotifier extends _$CaseTimelineNotifier with LoggerMixin {
     return const StateOf<List<TimelineItemModel>>.success([]);
   }
 
-  void _createTimelines(CaseModel caseModel,
-      // List<MediaModel> medias,
-      // List<TimelineNoteModel> notes,
-      // int surgeryDate,
-      ) {
+  void _createTimelines(
+    CaseModel caseModel,
+    // List<MediaModel> medias,
+    // List<TimelineNoteModel> notes,
+    // int surgeryDate,
+  ) {
     final timelineItems = <TimelineItemModel>[];
 
     // group media by date YMD

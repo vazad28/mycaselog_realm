@@ -76,10 +76,10 @@
 //   late _PatientModel? patientModel;
 //   late List<$TemplateFieldModel> fieldsData = [];
 
-//   @JsonKey(includeFromJson: false, includeToJson: false)
+//   //@JsonKey(includeFromJson: false, includeToJson: false)
 //   late List<_MediaModel> medias = [];
 
-//   @JsonKey(includeFromJson: false, includeToJson: false)
+//   //@JsonKey(includeFromJson: false, includeToJson: false)
 //   late List<_TimelineNoteModel> notes = [];
 
 //   CaseModel toRealmObject() {
@@ -140,6 +140,7 @@
 //       patientModel: PatientModelX.zero(),
 //       medias: [],
 //       notes: [],
+//       fieldsData: [],
 //       surgeryDate: timestamp,
 //       createdAt: timestamp,
 //       timestamp: timestamp,
@@ -163,7 +164,6 @@
 //   gender,
 //   mrn,
 //   phone,
-//   address,
 // }
 
 // /// Patient Data Model
@@ -180,7 +180,6 @@
 //   late String? gender;
 //   late String? mrn;
 //   late String? phone;
-//   late String? address;
 
 //   PatientModel toRealmObject() {
 //     return PatientModel(
@@ -192,7 +191,6 @@
 //       gender: gender,
 //       mrn: mrn,
 //       phone: phone,
-//       address: address,
 //     );
 //   }
 
@@ -223,18 +221,14 @@
 // class DecryptedPatientModel {
 //   // ignore: prefer_const_constructors_in_immutables
 //   DecryptedPatientModel({
-//     //required this.patientID,
 //     this.name,
 //     this.mrn,
-//     this.address,
 //     this.phone,
 //   });
 
 //   factory DecryptedPatientModel.fromJson(Map<String, Object?> json) =>
 //       _$DecryptedPatientModelFromJson(json);
 
-//   //final String patientID;
-//   final String? address;
 //   final String? mrn;
 //   final String? name;
 //   final String? phone;
@@ -243,14 +237,11 @@
 
 //   DecryptedPatientModel copyWith({
 //     String? patientID,
-//     String? address,
 //     String? mrn,
 //     String? name,
 //     String? phone,
 //   }) {
 //     return DecryptedPatientModel(
-//       //patientID: patientID ?? this.patientID,
-//       address: address ?? this.address,
 //       mrn: mrn ?? this.mrn,
 //       name: name ?? this.name,
 //       phone: phone ?? this.phone,
@@ -272,6 +263,11 @@
 //   uploading,
 // }
 
+// @RealmModel()
+// class _HybridMediaModel {
+//   late _CaseModel? caseModel;
+//   late _MediaModel? mediaModel;
+// }
 // // class HybridMediaModel {
 // //   HybridMediaModel({
 // //     required this.caseModel,
@@ -312,9 +308,9 @@
 //   int createdAt = 0;
 //   int timestamp = 0;
 
-//   @JsonKey(includeFromJson: false, includeToJson: false)
-//   @Backlink(#medias)
-//   late Iterable<_CaseModel> linkedCaseModel;
+//   // @JsonKey(includeFromJson: false, includeToJson: false)
+//   // @Backlink(#medias)
+//   // late Iterable<_CaseModel> linkedCaseModel;
 
 //   MediaModel toRealmObject() {
 //     return MediaModel(
@@ -334,8 +330,8 @@
 //     );
 //   }
 
-//   // static MediaModel fromJson(Map<String, dynamic> json) =>
-//   //     _$MediaModelFromJson(json).toRealmObject();
+//   static MediaModel fromJson(Map<String, dynamic> json) =>
+//       _$MediaModelFromJson(json).toRealmObject();
 
 //   Map<String, dynamic> toJson() => _$MediaModelToJson(this);
 // }
@@ -358,60 +354,23 @@
 //   }
 // }
 
-// // @RealmModel()
-// // @JsonSerializable(explicitToJson: true)
-// // class _Conversation {
-// //   @PrimaryKey()
-// //   late String id;
-// //   late String? title;
-// //   late String? description;
-// //   late DateTime? createdAt;
-// //   @JsonKey(includeFromJson: false, includeToJson: false)
-// //   //List<_Participant> participants = [];
-// //   @JsonKey(includeFromJson: false, includeToJson: false)
-// //   List<_TimelineNoteModel> notes = [];
-// //   List<_MediaModel> mediaModels = [];
-// //   int timestamp = 0;
-// //   int removed = 0;
-
-// //   Map<String, dynamic> toJson() => _$ConversationToJson(this);
-
-// //   Conversation toRealmObject() {
-// //     return Conversation(id,
-// //         createdAt: DateTime.now(),
-// //         title: title,
-// //         description: description,
-// //         mediaModels: mediaModels.map((e) => MediaModel._fromEJson(e.toEJson())),
-// //         // participants:
-// //         //     participants.map((e) => Participant._fromEJson(e.toEJson())),
-// //         // messages: messages.map((e) => Message._fromEJson(e.toEJson())),
-// //         removed: removed,
-// //         timestamp: timestamp);
-// //   }
-// // }
-
-// // extension ConversationX on Conversation {
-// //   static Conversation fromJson(Map<String, dynamic> json) =>
-// //       _$ConversationFromJson(json).toRealmObject();
-// // }
-
 // // ----- Timeline note -----
 // @RealmModel()
 // @JsonSerializable(explicitToJson: true)
 // class _TimelineNoteModel {
 //   @PrimaryKey()
 //   late String noteID;
-//   late String authorID = 'unknown';
-//   late String caseID = 'unknown';
+//   String authorID = 'unknown';
+//   String caseID = 'unknown';
 //   @Indexed(RealmIndexType.fullText)
 //   late String? note;
 //   @Indexed()
 //   late int createdAt = 0;
 //   late int timestamp = 0;
 
-//   @JsonKey(includeFromJson: false, includeToJson: false)
-//   @Backlink(#notes)
-//   late Iterable<_CaseModel> linkedCaseModel;
+//   // @JsonKey(includeFromJson: false, includeToJson: false)
+//   // @Backlink(#notes)
+//   // late Iterable<_CaseModel> linkedCaseModel;
 
 //   TimelineNoteModel toRealmObject() {
 //     return TimelineNoteModel(
@@ -424,8 +383,8 @@
 //     );
 //   }
 
-//   // static TimelineNoteModel fromJson(Map<String, dynamic> json) =>
-//   //     _$TimelineNoteModelFromJson(json).toRealmObject();
+//   static TimelineNoteModel fromJson(Map<String, dynamic> json) =>
+//       _$TimelineNoteModelFromJson(json).toRealmObject();
 
 //   Map<String, dynamic> toJson() => _$TimelineNoteModelToJson(this);
 // }

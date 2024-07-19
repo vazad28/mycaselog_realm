@@ -74,8 +74,10 @@ class AddTemplateSeeder extends _$AddTemplateSeeder {
 
   /// called by view with passed param caseID to load case model
   void seed(String templateID, String userSpeciality) {
-    final templateModel =
-        ref.watch(dbProvider).templatesCollection.getSingle(templateID);
+    final templateModel = ref
+        .watch(collectionsProvider)
+        .templatesCollection
+        .getSingle(templateID);
 
     final model = templateModel ?? TemplateModelX.zero()
       ..speciality = userSpeciality;
@@ -194,9 +196,9 @@ class AddTemplateNotifier extends _$AddTemplateNotifier with LoggerMixin {
   Future<void> _doSubmit(TemplateModel modelToSubmit) async {
     try {
       await ref
-          .read(dbProvider)
+          .read(collectionsProvider)
           .templatesCollection
-          .put(modelToSubmit.templateID, modelToSubmit);
+          .add(modelToSubmit);
       state = StateOf<TemplateModel>.success(modelToSubmit);
     } catch (err) {
       state = StateOf<TemplateModel>.failure(err.toAppFailure());

@@ -6,30 +6,10 @@ import * as admin from 'firebase-admin';
 admin.initializeApp()
 //.... await admin.auth().setCustomUserClaims(uid, { role }); 
 
-const generatePasscode = (): string => {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-#@%!&*';
-    let result = '';
-    const charactersLength = characters.length;
-    for (let i = 0; i < 16; i++) {
-        result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
-};
-
-function dateTimeStringToMillisecondsSinceEpoch(dateTimeString: string): number | null {
-    // Try parsing the string using Date.parse
-    const parsedDate = new Date(dateTimeString);
-
-    // Check if parsing was successful (returns NaN on failure)
-    if (isNaN(parsedDate.getTime())) {
-        return null; // Indicate parsing error
-    }
-
-    // Return milliseconds since epoch
-    return parsedDate.getTime();
-}
 
 
+
+/// Set use passcode on user create
 exports.setUserPasscode = functions.auth.user().onCreate(async (user) => {
     const passcode = generatePasscode();
 
@@ -48,6 +28,7 @@ exports.setUserPasscode = functions.auth.user().onCreate(async (user) => {
         mclPasscode: passcode
     });
 
+    /// *** SET USER PASSCODE to a particular string instead of randon string 
     // await admin.auth().setCustomUserClaims('m47m16xwCnTmQEjCce7iiU5DaGg2', {
     //     mclPasscode: 'mykutchu28'
     // });
@@ -85,38 +66,125 @@ exports.setUserPasscode = functions.auth.user().onCreate(async (user) => {
     await userDocument.set(data);
 });
 
-/// CREATE LAST SYNC TIME
-// Create a Cloud Function triggered by writes to the 'media' collection
-// exports.lastCasesTimestamp = functions.firestore
-//     .document('usersData/{userID}/cases/{docId}')
-//     .onWrite(async (change, context) => {
-//         /// get firestore instance
-//         const firestore = admin.firestore();
-//         const userID = context.params.userID;
-//         // Prepare a write to 'last_timestamps' collection
-//         const timestampRef = firestore.collection(`usersData/${userID}/last_timestamps`).doc('cases');
-//         const timestamp = admin.firestore.Timestamp.now().toMillis();
-//         const timestampData = { timestamp: timestamp };
+/// /////////////////////////////////////////////////////////////////////////
+/// CREATE LAST SYNC TIME  FUNCTION FOR COLLECTIONS
+/// ////////////////////////////////////////////////////////////////////////
 
-//         // Write the timestamp to 'last_timestamps' collection
-//         await timestampRef.set(timestampData);
+/// Last timestamp triggered by writes to the 'CASES' collection
+exports.lastCasesTimestamp = functions.firestore
+    .document('usersData/{userID}/cases/{docId}')
+    .onWrite(async (change, context) => {
+        /// get firestore instance
+        const firestore = admin.firestore();
+        const userID = context.params.userID;
+        // Prepare a write to 'last_timestamps' collection
+        const timestampRef = firestore.collection(`usersData/${userID}/last_timestamps`).doc('cases');
+        const timestamp = admin.firestore.Timestamp.now().toMillis();
+        const timestampData = { timestamp: timestamp };
 
-//         console.log('Timestamp written to last_timestamps collection:', timestamp);
-//     });
+        // Write the timestamp to 'last_timestamps' collection
+        await timestampRef.set(timestampData);
 
-// exports.lastCasesTimestamp = functions.firestore
-//     .document('usersData/{userID}/templates/{docId}')
-//     .onWrite(async (change, context) => {
-//         /// get firestore instance
-//         const firestore = admin.firestore();
-//         const userID = context.params.userID;
-//         // Prepare a write to 'last_timestamps' collection
-//         const timestampRef = firestore.collection(`usersData/${userID}/last_timestamps`).doc('templates');
-//         const timestamp = admin.firestore.Timestamp.now().toMillis();
-//         const timestampData = { timestamp: timestamp };
+        console.log('Timestamp written to last_timestamps collection:', timestamp);
+    });
 
-//         // Write the timestamp to 'last_timestamps' collection
-//         await timestampRef.set(timestampData);
+/// Last timestamp triggered by writes to the 'TEMPLATES' collection
+exports.lastTemplatesTimestamp = functions.firestore
+    .document('usersData/{userID}/templates/{docId}')
+    .onWrite(async (change, context) => {
+        /// get firestore instance
+        const firestore = admin.firestore();
+        const userID = context.params.userID;
+        // Prepare a write to 'last_timestamps' collection
+        const timestampRef = firestore.collection(`usersData/${userID}/last_timestamps`).doc('templates');
+        const timestamp = admin.firestore.Timestamp.now().toMillis();
+        const timestampData = { timestamp: timestamp };
 
-//         console.log('Timestamp written to last_timestamps collection:', timestamp);
-//     });
+        // Write the timestamp to 'last_timestamps' collection
+        await timestampRef.set(timestampData);
+
+        console.log('Timestamp written to last_timestamps collection:', timestamp);
+    });
+
+/// Last timestamp triggered by writes to the 'SUPPORT DATA' collection
+exports.lastSupportDataTimestamp = functions.firestore
+    .document('usersData/{userID}/supportData/{docId}')
+    .onWrite(async (change, context) => {
+        /// get firestore instance
+        const firestore = admin.firestore();
+        const userID = context.params.userID;
+        // Prepare a write to 'last_timestamps' collection
+        const timestampRef = firestore.collection(`usersData/${userID}/last_timestamps`).doc('supportData');
+        const timestamp = admin.firestore.Timestamp.now().toMillis();
+        const timestampData = { timestamp: timestamp };
+
+        // Write the timestamp to 'last_timestamps' collection
+        await timestampRef.set(timestampData);
+
+        console.log('Timestamp written to last_timestamps collection:', timestamp);
+    });
+
+/// Last timestamp triggered by writes to the 'NOTES' collection
+exports.lastNotesTimestamp = functions.firestore
+    .document('usersData/{userID}/notes/{docId}')
+    .onWrite(async (change, context) => {
+        /// get firestore instance
+        const firestore = admin.firestore();
+        const userID = context.params.userID;
+        // Prepare a write to 'last_timestamps' collection
+        const timestampRef = firestore.collection(`usersData/${userID}/last_timestamps`).doc('notes');
+        const timestamp = admin.firestore.Timestamp.now().toMillis();
+        const timestampData = { timestamp: timestamp };
+
+        // Write the timestamp to 'last_timestamps' collection
+        await timestampRef.set(timestampData);
+
+        console.log('Timestamp written to last_timestamps collection:', timestamp);
+    });
+
+/// Last timestamp triggered by writes to the 'TEMPLATES' collection
+exports.lastSettingsTimestamp = functions.firestore
+    .document('usersData/{userID}/settings/{docId}')
+    .onWrite(async (change, context) => {
+        /// get firestore instance
+        const firestore = admin.firestore();
+        const userID = context.params.userID;
+        // Prepare a write to 'last_timestamps' collection
+        const timestampRef = firestore.collection(`usersData/${userID}/last_timestamps`).doc('settings');
+        const timestamp = admin.firestore.Timestamp.now().toMillis();
+        const timestampData = { timestamp: timestamp };
+
+        // Write the timestamp to 'last_timestamps' collection
+        await timestampRef.set(timestampData);
+
+        console.log('Timestamp written to last_timestamps collection:', timestamp);
+    });
+
+/// /////////////////////////////////////////////////////////////////////////////
+/// Local Methods
+/// /////////////////////////////////////////////////////////////////////////////
+
+/// Generate randon string to use as passcode for encryption
+const generatePasscode = (): string => {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-#@%!&*';
+    let result = '';
+    const charactersLength = characters.length;
+    for (let i = 0; i < 16; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+};
+
+///  DateTime to timestamp
+function dateTimeStringToMillisecondsSinceEpoch(dateTimeString: string): number | null {
+    // Try parsing the string using Date.parse
+    const parsedDate = new Date(dateTimeString);
+
+    // Check if parsing was successful (returns NaN on failure)
+    if (isNaN(parsedDate.getTime())) {
+        return null; // Indicate parsing error
+    }
+
+    // Return milliseconds since epoch
+    return parsedDate.getTime();
+}

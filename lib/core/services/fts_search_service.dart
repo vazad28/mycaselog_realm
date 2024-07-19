@@ -1,6 +1,7 @@
 import 'package:app_models/app_models.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../providers/collections_providers.dart';
 import '../providers/providers.dart';
 
 part '../../generated/core/services/fts_search_service.g.dart';
@@ -17,7 +18,8 @@ class FtsSearchService {
 
   Future<List<T>> searchCaseMedia<T>(String searchTerm) async {
     // list of case IDs matching the search term
-    final caseModels = ref.watch(dbProvider).casesCollection.search(searchTerm);
+    final caseModels =
+        ref.watch(collectionsProvider).casesCollection.searchCases(searchTerm);
 
     // if list of IDs is empty return empty
     if (caseModels.isEmpty) return [];
@@ -37,7 +39,7 @@ class FtsSearchService {
 
     // if (T == MediaModel) {
     //   final mediaModels = ref
-    //       .watch(dbProvider)
+    //       .watch(collectionsProvider)
     //       .mediaCollection
     //       .getMediaModelsForCaseIds(caseIDs);
     //   return mediaModels as List<T>;
@@ -55,7 +57,7 @@ class FtsSearchService {
     //   final hybridMedia = <HybridMediaModel>[];
 
     //   final mediaModels = ref
-    //       .watch(dbProvider)
+    //       .watch(collectionsProvider)
     //       .mediaCollection
     //       .getMediaModelsForCaseIds(caseIDs);
 
@@ -76,7 +78,7 @@ class FtsSearchService {
 
   Future<List<NoteModel>> searchNotes(String searchTerm) async {
     // list of case IDs matching the search term
-    return ref.watch(dbProvider).notesCollection.search(searchTerm);
+    return ref.watch(collectionsProvider).notesCollection.search(searchTerm);
   }
 
   // String _processSearchTerm(String? searchTerm) {

@@ -1,4 +1,5 @@
 export './auth_providers.dart';
+export 'collections_providers.dart';
 export './db_provider.dart';
 export './media_upload_repository_provider.dart';
 export './startup_providers.dart';

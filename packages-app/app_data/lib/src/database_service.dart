@@ -25,7 +25,7 @@ class DatabaseService {
     required Realm realm,
     required SharedPreferences sharedPrefs,
   })  : _userID = userID,
-        //_realm = realm,
+        _realm = realm,
         _storageCollection = StorageCollection(userID),
         _casesCollection = CasesCollection(userID, realm, sharedPrefs),
         // _conversationCollection =
@@ -44,13 +44,13 @@ class DatabaseService {
   FirebaseStorage get firestoreStorage => FirebaseStorage.instance;
 
   late final String _userID;
-  //late final Realm _realm;
+  late final Realm _realm;
   String get userID => _userID;
 
   // ///  a generic method to allow write block for object updates
-  // T updateRealmObject<T>(T Function() writeCallback) {
-  //   return _realm.write(writeCallback);
-  // }
+  T updateRealmObject<T>(T Function() writeCallback) {
+    return _realm.write(writeCallback);
+  }
 
   /// Storage
   late final StorageCollection _storageCollection;

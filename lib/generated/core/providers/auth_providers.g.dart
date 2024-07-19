@@ -115,7 +115,7 @@ final userIDProvider = AutoDisposeProvider<String>.internal(
 );
 
 typedef UserIDRef = AutoDisposeProviderRef<String>;
-String _$logoutHash() => r'2c28a3960c7cb4642b57ed1aedd86774577ec0f7';
+String _$logoutHash() => r'31a01e405e1d310bdd1e9f52b6a8fb4024ff892c';
 
 /// See also [logout].
 @ProviderFor(logout)

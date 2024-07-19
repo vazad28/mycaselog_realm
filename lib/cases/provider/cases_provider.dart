@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:app_models/app_models.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger_client/logger_client.dart';
 import 'package:realm/realm.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -34,7 +33,7 @@ class Cases extends _$Cases with LoggerMixin {
 
   @override
   RealmResults<CaseModel> build() {
-    return ref.watch(dbProvider).casesCollection.getAll();
+    return ref.watch(collectionsProvider).casesCollection.getAll();
   }
 
   Future<void> pullToRefresh() async {}
@@ -50,7 +49,7 @@ class Cases extends _$Cases with LoggerMixin {
 //   }
 
 //   void _listenToChanges(Ref ref) {
-//     final results = ref.read(dbProvider).conversationCollection.getAll();
+//     final results = ref.read(collectionsProvider).conversationCollection.getAll();
 //     results.changes.listen((changes) {
 //       // Update state based on changes
 //       state = changes.results;

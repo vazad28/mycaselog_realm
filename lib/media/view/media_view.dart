@@ -3,17 +3,21 @@ import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:realm_dart/src/results.dart';
 
 import '../../media_gallery/media_gallery.dart';
 import '../media.dart';
 
 class MediaView extends ConsumerWidget with MediaEventMixin, MediaStateMixin {
-  const MediaView({Key? key}) : super(key: key);
+  const MediaView({
+    required this.mediaModels,
+    super.key,
+  });
+
+  final RealmResults<MediaModel> mediaModels;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final medias = ref.watch(mediaNotifierProvider);
-
     final mediaStyle = ref.watch(mediaTileStyleProvider);
 
     final screenWidth = MediaQuery.of(context).size.width;
@@ -35,9 +39,9 @@ class MediaView extends ConsumerWidget with MediaEventMixin, MediaStateMixin {
       crossAxisCount: crossAxisCount,
       mainAxisSpacing: AppSpacing.sm,
       crossAxisSpacing: AppSpacing.sm,
-      childCount: medias.length,
+      childCount: mediaModels.length,
       itemBuilder: (context, int index) {
-        final mediaModel = medias.elementAt(index);
+        final mediaModel = mediaModels[index];
         return Thumbnail(mediaModel: mediaModel);
       },
     );
@@ -58,7 +62,7 @@ class MediaView extends ConsumerWidget with MediaEventMixin, MediaStateMixin {
     //});
   }
 
-  List<MediaModel> combine(List<MediaModel> previousValue, CaseModel element) {
-    return element.medias;
-  }
+  // List<MediaModel> combine(List<MediaModel> previousValue, CaseModel element) {
+  //   return element.medias;
+  // }
 }

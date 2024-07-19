@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:app_models/app_models.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:collection/collection.dart';
@@ -66,33 +67,32 @@ class _MediaPreviewTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        width: 56,
-        child: Thumbnail(
-          mediaModel: mediaModels[index],
-        ));
+    // return SizedBox(
+    //     width: 56,
+    //     child: Thumbnail(
+    //       mediaModel: mediaModels[index],
+    //     ),);
     //return const SizedBox(width: 90, child: Placeholder());
-    // return OpenContainer<MediaModel>(
-    //   closedElevation: 0,
-    //   tappable: false,
-    //   closedColor: context.colorScheme.surface,
-    //   openColor: context.colorScheme.surface,
-    //   closedBuilder: (_, action) => Thumbnail.simple(
-    //     mediaModel: mediaModels[index],
-    //     mediaRepository: mediaRepository,
-    //     fit: BoxFit.cover,
-    //     onTap: () => action.call(),
-    //     onLongPress: () => {},
-    //   ),
-    //   openBuilder: (_, action) {
-    //     final mediaGalleryModel = MediaGalleryModel(
-    //       mediaModels: mediaModels,
-    //       index: index,
-    //       routeObserver: routeObserver,
-    //     );
-    //     return MediaGalleryPage(mediaGalleryModel: mediaGalleryModel);
-    //   },
-    //   onClosed: (_) => {},
-    // ).paddingOnly(right: 4);
+    return OpenContainer<MediaModel>(
+      closedElevation: 0,
+      tappable: false,
+      closedColor: context.colorScheme.surface,
+      openColor: context.colorScheme.surface,
+      closedBuilder: (_, action) => Thumbnail(
+        mediaModel: mediaModels[index],
+        fit: BoxFit.cover,
+        onTap: () => action.call(),
+        onLongPress: () => {},
+      ),
+      openBuilder: (_, action) {
+        final mediaGalleryModel = MediaGalleryModel(
+          mediaModels: mediaModels,
+          index: index,
+          routeObserver: routeObserver,
+        );
+        return MediaGalleryPage(mediaGalleryModel: mediaGalleryModel);
+      },
+      onClosed: (_) => {},
+    ).paddingOnly(right: 4);
   }
 }

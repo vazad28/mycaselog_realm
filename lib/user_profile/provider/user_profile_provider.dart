@@ -94,7 +94,7 @@ class UserProfileNotifier extends _$UserProfileNotifier with LoggerMixin {
   @override
   UserModel build() {
     final sub = ref
-        .watch(dbProvider)
+        .watch(collectionsProvider)
         .usersCollection
         .getSingle(userID)
         ?.changes
@@ -132,7 +132,7 @@ class UserProfileNotifier extends _$UserProfileNotifier with LoggerMixin {
   void _updateUserModel(UserModel userModel) {
     /// we are not saving data if the user is anonymous as can happen on logout
     if (userModel.userID.isEmpty) return;
-    ref.read(dbProvider).usersCollection.put(userID, userModel);
+    ref.read(collectionsProvider).usersCollection.add(userModel);
   }
 
   /// Upload user avatar photo
@@ -149,7 +149,7 @@ class UserProfileNotifier extends _$UserProfileNotifier with LoggerMixin {
     final file = File(localFile.path);
 
     await ref
-        .watch(dbProvider)
+        .watch(collectionsProvider)
         .storageCollection
         .uploadAvatar(file)
         .then((value) {

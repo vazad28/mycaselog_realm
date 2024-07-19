@@ -2,6 +2,8 @@ import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/providers/providers.dart';
+import '../../media_gallery/media_gallery.dart';
 import '../media.dart';
 
 class MediaPage extends ConsumerStatefulWidget {
@@ -38,12 +40,74 @@ class _MediaPageState extends ConsumerState<MediaPage> {
         ),
         slivers: const [
           MediaAppBar(),
-          SliverPadding(
-            padding: EdgeInsets.all(AppSpacing.sm),
-            sliver: MediaView(),
-          ),
+          _MediaBody(),
         ],
       ),
     );
   }
 }
+
+class _MediaBody extends ConsumerWidget {
+  const _MediaBody({
+    //required this.results,
+    super.key,
+  });
+
+  //final RealmResults<MediaModel> results;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final results = ref.watch(collectionsProvider).mediaCollection.getAll();
+
+    return SliverList.builder(
+      itemCount: results.length,
+      itemBuilder: (BuildContext context, int index) {
+        Thumbnail(
+          mediaModel: results[index],
+        );
+      },
+    );
+    //   results: repository.messages(channel),
+    //   itemBuilder: (context, item, animation) {
+    //     return MessageTile(message: item, animation: animation);
+    //   },
+    //   reverse: true,
+    //   controller: scrollController,
+    // )
+  }
+}
+
+// class _MediaBody extends ConsumerWidget {
+//   const _MediaBody({super.key});
+
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     final data = ref.watch(mediaNotifierProvider);
+
+//     return StreamBuilder<RealmResultsChanges<CaseModel>>(
+//       stream: data.changes,
+//       builder: (context, snapshot) {
+//         if (snapshot.hasData) {
+//           final models = snapshot.data!.results;
+//           // Rebuild your widget based on casesList
+//           return CustomScrollView(
+//             physics: const BouncingScrollPhysics(
+//               parent: AlwaysScrollableScrollPhysics(),
+//             ),
+//             slivers: [
+//               const MediaAppBar(),
+//               //const CasesSearchBar(),
+//               //MediaView(Models: models),
+//             ],
+//           );
+//         } else if (snapshot.hasError) {
+//           // Handle errors
+//           return Text('Error: ${snapshot.error}');
+//         } else {
+//           // Handle loading state
+//           return const CircularProgressIndicator();
+//         }
+//       },
+//     );
+//   }
+// }

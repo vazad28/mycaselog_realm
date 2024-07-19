@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app_models/app_models.dart';
 import 'package:logger_client/logger_client.dart';
 import 'package:realm/realm.dart';
@@ -38,15 +40,62 @@ class MediaTileStyle extends _$MediaTileStyle {
 /// Main Provider
 /// ////////////////////////////////////////////////////////////////////
 
+@Riverpod(keepAlive: true)
+class MediaStream extends _$MediaStream {
+  @override
+  Stream<Iterable<MediaModel>> build() async* {
+    final casesResult = ref.read(collectionsProvider).casesCollection.getAll();
+
+    final allCases = casesResult.changes;
+
+    final transformedStream = allCases.transform(
+      StreamTransformer<RealmResultsChanges<CaseModel>,
+          Iterable<MediaModel>>.fromHandlers(
+        handleData: (data, sink) {
+          if (data.results.isEmpty) return;
+
+          sink.add(data.results.expand((e) => e.medias));
+        },
+      ),
+    );
+
+    yield* transformedStream;
+  }
+}
+
 @riverpod
 class MediaNotifier extends _$MediaNotifier with LoggerMixin {
   @override
-  Iterable<MediaModel> build() {
-    return ref.watch(dbProvider).casesCollection.getAllMedia();
+  RealmResults<CaseModel> build() {
+    return ref.watch(collectionsProvider).casesCollection.getAll();
   }
 
+  // @override
+  // Iterable<HybridMediaModel> build() {
+  //   final cases = ref.watch(collectionsProvider).casesCollection.getAll();
+
+  //   final initialList = <HybridMediaModel>[];
+  //   return cases
+  //       .query('medias.@size > 0')
+  //       .fold<List<HybridMediaModel>>(initialList, (media, caseModel) {
+  //     final list = caseModel.medias.toList().expand(
+  //           (e) => media
+  //             ..add(HybridMediaModel(
+  //               caseModel: caseModel,
+  //               mediaModel: e,
+  //             )),
+  //         );
+  //     return list;
+  //   });
+  // }
+
   Future<void> pullToRefresh() async {
-    ref.watch(dbProvider).casesCollection.getAll().changes.listen((data) {
+    ref
+        .watch(collectionsProvider)
+        .casesCollection
+        .getAll()
+        .changes
+        .listen((data) {
       data.results.query('medias.@size > 0').expand((e) => e.medias);
     });
   }

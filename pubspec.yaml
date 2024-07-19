@@ -41,10 +41,12 @@ dependencies:
     path: packages-app/app_l10n
   app_models:
     path: packages-app/app_models
+  app_repositories:
+    path: packages-app/app_repositories
   app_ui:
     path: packages-app/app_ui
-  app_data:
-    path: packages-app/app_data
+  # app_data:
+  #   path: packages-app/app_data
   label_ocr:
     path: packages-app/label_ocr
   media_manager:
@@ -93,6 +95,7 @@ dependencies:
   flutter_quill: ^9.5.12
   path: ^1.9.0
   fl_chart: ^0.68.0
+  connectivity_plus: ^6.0.3
   
 dev_dependencies: 
   build_runner: ^2.4.11

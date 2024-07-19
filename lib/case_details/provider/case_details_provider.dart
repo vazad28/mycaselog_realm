@@ -24,7 +24,7 @@ class CaseModelSeeder extends _$CaseModelSeeder {
     if (caseID == null) return null;
 
     final sub = ref
-        .watch(dbProvider)
+        .watch(collectionsProvider)
         .casesCollection
         .getSingle(caseID)
         ?.changes
@@ -51,7 +51,8 @@ class CaseDetailsNotifier extends _$CaseDetailsNotifier {
 
 @riverpod
 AsyncValue<TemplateModel?> caseDetailsTemplateModel(
-    CaseDetailsTemplateModelRef ref,) {
+  CaseDetailsTemplateModelRef ref,
+) {
   final caseModelAsync = ref.watch(caseDetailsNotifierProvider);
 
   final caseModel = caseModelAsync.value;
@@ -59,7 +60,7 @@ AsyncValue<TemplateModel?> caseDetailsTemplateModel(
   if (caseModel.templateID == null) return const AsyncValue.data(null);
 
   final templateModel = ref
-      .watch(dbProvider)
+      .watch(collectionsProvider)
       .templatesCollection
       .getSingle(caseModel.templateID!);
 

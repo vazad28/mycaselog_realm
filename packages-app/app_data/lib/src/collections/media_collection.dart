@@ -46,4 +46,11 @@ class MediaCollection extends DatabaseCollection<MediaModel> {
       return documents;
     });
   }
+
+  Future<void> putMedia(MediaModel mediaModel, {bool delete = false}) async {
+    await realm.writeAsync(() {
+      realm.add(mediaModel, update: true);
+      put(mediaModel.mediaID, mediaModel);
+    });
+  }
 }

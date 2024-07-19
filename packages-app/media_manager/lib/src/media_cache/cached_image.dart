@@ -21,7 +21,7 @@ class CachedImage extends StatelessWidget {
   final double? height;
   final double? width;
   final ImageSize imageSize;
-  final BoxFit fit;
+  final BoxFit? fit;
 
   @override
   Widget build(BuildContext context) {

@@ -14,25 +14,25 @@ class AppSettings extends _$AppSettings with LoggerMixin {
   SettingsModel build() {
     final userID = ref.read(userIDProvider);
 
-    final sub = ref
-        .watch(dbProvider)
-        .settingsCollection
-        .getSingle(userID)
-        ?.changes
-        .listen((data) {
-      state = SettingsModelX.fromJson(data.object.toJson());
-    });
+    // final sub = ref
+    //     .watch(collectionsProvider)
+    //     .settingsCollection
+    //     .getSingle(userID)
+    //     ?.changes
+    //     .listen((data) {
+    //   state = SettingsModelX.fromJson(data.object.toJson());
+    // });
 
-    ref.onDispose(() => sub?.cancel());
+    // ref.onDispose(() => sub?.cancel());
 
     return SettingsModelX.zero(userID);
   }
 
   Future<void> _updateSettings(SettingsModel settingsModel) async {
     //print('settingsModel.syncOnStart ${settingsModel.syncOnStart}');
-    await ref.read(dbProvider).settingsCollection.put(
-        ref.watch(authenticationUserProvider).id, settingsModel.toRealmObject(),
-        saveLocal: settingsModel.syncOnStart,);
+    await ref.read(collectionsProvider).settingsCollection.add(
+          settingsModel,
+        );
   }
 
   void on(SettingsEvent event) {
@@ -65,7 +65,7 @@ class TemplatesCount extends _$TemplatesCount {
   @override
   int build() {
     final sub = ref
-        .watch(dbProvider)
+        .watch(collectionsProvider)
         .templatesCollection
         .getAll()
         .changes

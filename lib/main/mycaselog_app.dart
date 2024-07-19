@@ -46,9 +46,20 @@ class MycaselogApp extends ConsumerWidget {
       supportedLocales: S.delegate.supportedLocales,
     );
 
+    final app = ref.watch(realmDatabaseProvider).when(
+          error: buildErrorWidget,
+          loading: buildLoadingWidget,
+          data: (real) => materialApp,
+        );
+
     return PopScope(
       onPopInvokedWithResult: (bool didPop, result) => {},
-      child: TapOutsideUnfocus(child: materialApp),
+      child: TapOutsideUnfocus(child: app),
     );
   }
 }
+
+Widget buildErrorWidget(Object error, StackTrace? stackTrace) =>
+    ErrorWidget(error);
+
+Widget buildLoadingWidget() => const Center(child: Text('loading..'));

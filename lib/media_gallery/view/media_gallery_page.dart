@@ -5,10 +5,9 @@ import '../../core/mixins/mixins.dart';
 import '../media_gallery.dart';
 
 class MediaGalleryPage extends ConsumerWidget with MediaMixin {
-  const MediaGalleryPage({super.key});
+  const MediaGalleryPage({required this.mediaGalleryModel, super.key});
 
-  static Page<void> page() =>
-      const MaterialPage<void>(child: MediaGalleryPage());
+  final MediaGalleryModel mediaGalleryModel;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -13,14 +13,14 @@ class SharedTemplatesNotifier extends _$SharedTemplatesNotifier
     with LoggerMixin {
   @override
   List<SharedTemplateModel> build(String speciality) {
-    ref
-        .watch(dbProvider)
-        .templatesCollection
-        .getSharedTemplates(speciality)
-        .changes
-        .listen((data) {
-      state = data.results.toList();
-    });
+    // ref
+    //     .watch(collectionsProvider)
+    //     .templatesCollection
+    //     .getSharedTemplates(speciality)
+    //     .changes
+    //     .listen((data) {
+    //   state = data.results.toList();
+    // });
 
     return [];
   }

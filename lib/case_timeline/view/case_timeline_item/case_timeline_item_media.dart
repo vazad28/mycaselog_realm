@@ -81,6 +81,9 @@ class _CaseTimelineItemMedia extends StatelessWidget {
       closedBuilder: (_, action) {
         return Thumbnail(
           mediaModel: mediaModel,
+          width: width,
+          onTap: action,
+          //onLongPress: onLongPress,
         );
         // .simple(
         //   mediaModel: mediaModel,
@@ -89,14 +92,13 @@ class _CaseTimelineItemMedia extends StatelessWidget {
         //   onLongPress: onLongPress,
         // );
       },
-      openBuilder: (_, action) => const Placeholder(),
-      // MediaGalleryPage(
-      //   mediaGalleryModel: MediaGalleryModel(
-      //     mediaModels: mediaModels,
-      //     navigateOnTap: false,
-      //     index: index,
-      //   ),
-      // ),
+      openBuilder: (_, action) => MediaGalleryPage(
+        mediaGalleryModel: MediaGalleryModel(
+          mediaModels: mediaModels,
+          navigateOnTap: false,
+          index: index,
+        ),
+      ),
       onClosed: (removedMediaModels) {
         if (removedMediaModels == null) return;
         _onRemoved(context, removedMediaModels);

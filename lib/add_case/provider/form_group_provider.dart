@@ -26,7 +26,6 @@ class PatientDataFormGroup extends _$PatientDataFormGroup {
         DecryptedPatientModel(
           name: patientModel.name,
           mrn: patientModel.mrn,
-          address: patientModel.address,
           phone: patientModel.phone,
         ),
       ),

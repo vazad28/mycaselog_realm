@@ -196,7 +196,47 @@ class CasesCollection extends DatabaseCollection<CaseModel> {
   /// ////////////////////////////////////////////////////////////////////
   /// media
   /// ////////////////////////////////////////////////////////////////////
-  Iterable<MediaModel> getAllMedia() {
-    return realm.query<CaseModel>('medias.@size > 0').expand((e) => e.medias);
+  List<MediaModel> getAllMedia() {
+    // Alternatively, you can filter posts based on criteria
+    final realmResultsCaseModel = realm.all<CaseModel>();
+    // Create an empty list to store all media models
+    final allMedia = <MediaModel>[];
+
+    // Loop through each case and add its media to the list
+    for (final caseModel in realmResultsCaseModel) {
+      allMedia.addAll(caseModel.medias);
+    }
+
+    return allMedia;
   }
+  // RealmResults<MediaModel> getAllMedia() {
+  //   // Alternatively, you can filter posts based on criteria
+  //   final realmResultsCaseModel = realm.all<CaseModel>();
+
+  //   // Use fold to accumulate media from all posts
+  //   return realmResultsCaseModel
+  //       .query('medias.@size > 0').
+  // .fold(RealmList<MediaModel>([]), (media, caseModel) => caseModel.medias)
+  // .asResults();
+  //   final list = caseModel.medias.expand(
+  //     (e) => media
+  //       ..add(HybridMediaModel(
+  //         caseModel: caseModel,
+  //         mediaModel: e,
+  //       )),
+  //   );
+
+  //   return list;
+  //}).asResults();
+  // .fold<RealmResults<MediaModel>>(
+  //     <MediaModel>[], (media, post) => media..addAll(post.mediaModel));
+
+  // Use flatMap to get a Stream of Media objects from each Post's media list
+  //Stream<MediaModel> allMediaStream = realmResultsCaseModel.flatMap((post) => post.media);
+
+  // Use a flatMap to iterate through all posts and extract their media lists
+  // return realmResultsCaseModel.fold(()) flatMap((post) => post.media);
+  //   return realm.query<CaseModel>('medias.@size > 0').expand((e) => e.medias);
+  // }
+  //}
 }

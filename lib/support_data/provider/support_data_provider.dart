@@ -21,7 +21,7 @@ class SupportDataNotifier extends _$SupportDataNotifier with LoggerMixin {
     final userID = ref.watch(authenticationUserProvider).id;
 
     final sub = ref
-        .watch(dbProvider)
+        .watch(collectionsProvider)
         .supportDataCollection
         .getSingle(userID)
         ?.changes
@@ -36,9 +36,8 @@ class SupportDataNotifier extends _$SupportDataNotifier with LoggerMixin {
 
   Future<void> _updateSupportData() async {
     try {
-      await ref.watch(dbProvider).supportDataCollection.put(
-            ref.watch(authenticationUserProvider).id,
-            state.toRealmObject(),
+      await ref.watch(collectionsProvider).supportDataCollection.add(
+            state,
           );
     } catch (err) {
       ref.watch(dialogServiceProvider).showSnackBar(err.toString());

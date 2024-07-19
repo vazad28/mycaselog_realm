@@ -21,8 +21,7 @@ class _CasesPageState extends ConsumerState<CasesPage> {
 
   @override
   Widget build(BuildContext context) {
-    final data = ref.watch(casesProvider);
-    ;
+    final data = ref.watch(collectionsProvider).casesCollection.getAll();
 
     return Scaffold(
       key: const Key('__cases_screen_scaffold_key__'),
@@ -54,7 +53,7 @@ class _CasesPageState extends ConsumerState<CasesPage> {
             return Text('Error: ${snapshot.error}');
           } else {
             // Handle loading state
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           }
         },
       ),
@@ -75,7 +74,7 @@ class _CasesPageState extends ConsumerState<CasesPage> {
         key: const Key('__cases_screen_fab_key__'),
         title: S.of(context).addCase,
         onTap: () {
-          // ref.read(dbProvider).conversationCollection.addConversation(
+          // ref.read(collectionsProvider).conversationCollection.addConversation(
           //     title: "conversation ${ModelUtils.getTimestamp}");
           AddCaseRoute(CaseModelX.zero(), newRecord: true).push<void>(context);
         },

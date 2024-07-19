@@ -18,22 +18,28 @@ mixin MediaMixin {
   ) async {
     try {
       /// delete media from storage
-      await ref.watch(dbProvider).storageCollection.deleteMedia(mediaModel);
+      await ref
+          .watch(collectionsProvider)
+          .storageCollection
+          .deleteMedia(mediaModel);
     } on FirebaseException catch (error) {
       debugPrint(error.toString());
     } finally {
       /// delete from firestore because we need to make sure the error deleting
       /// files does not compromise this part
       await ref
-          .watch(dbProvider)
-          .casesCollection
-          .putMedia(mediaModel, delete: true);
+          .watch(collectionsProvider)
+          .mediaCollection
+          .upsert(() => mediaModel..removed = 1);
     }
   }
 
   /// delete case media
-  Future<void> shareMedia(WidgetRef ref, MediaModel mediaModel,
-      {String? title,}) async {
+  Future<void> shareMedia(
+    WidgetRef ref,
+    MediaModel mediaModel, {
+    String? title,
+  }) async {
     final File file =
         await AppCacheManager.instance.getSingleFile(mediaModel.mediumUri!);
     final xFile = XFile(file.path);
