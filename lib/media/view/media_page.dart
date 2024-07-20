@@ -2,8 +2,6 @@ import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/providers/providers.dart';
-import '../../media_gallery/media_gallery.dart';
 import '../media.dart';
 
 class MediaPage extends ConsumerStatefulWidget {
@@ -18,7 +16,7 @@ class _MediaPageState extends ConsumerState<MediaPage> {
 
   @override
   void dispose() {
-    Future<void>.delayed(Durations.long1)
+    Future<void>.delayed(Durations.short1)
         .then((_) => _scrollController.dispose());
     super.dispose();
   }
@@ -48,32 +46,21 @@ class _MediaPageState extends ConsumerState<MediaPage> {
 }
 
 class _MediaBody extends ConsumerWidget {
-  const _MediaBody({
-    //required this.results,
-    super.key,
-  });
-
-  //final RealmResults<MediaModel> results;
+  const _MediaBody();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final results = ref.watch(collectionsProvider).mediaCollection.getAll();
+    final stream = ref.watch(mediaStreamProvider);
 
-    return SliverList.builder(
-      itemCount: results.length,
-      itemBuilder: (BuildContext context, int index) {
-        Thumbnail(
-          mediaModel: results[index],
+    return stream.when(
+      data: (data) {
+        return MediaView(
+          mediaModels: data.results,
         );
       },
+      error: buildErrorSliver,
+      loading: buildLoadingSliver,
     );
-    //   results: repository.messages(channel),
-    //   itemBuilder: (context, item, animation) {
-    //     return MessageTile(message: item, animation: animation);
-    //   },
-    //   reverse: true,
-    //   controller: scrollController,
-    // )
   }
 }
 

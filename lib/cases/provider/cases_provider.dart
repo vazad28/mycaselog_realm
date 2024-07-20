@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:app_models/app_models.dart';
-import 'package:flutter/widgets.dart';
-import 'package:logger_client/logger_client.dart';
 import 'package:realm/realm.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -16,8 +14,7 @@ part '../../generated/cases/provider/cases_provider.g.dart';
 class CaseTileStyle extends _$CaseTileStyle {
   @override
   int build() {
-    final localStorage = ref.watch(localStorageProvider);
-    return localStorage.getCaseListTileStyle();
+    return ref.watch(localStorageProvider).getCaseListTileStyle();
   }
 
   // ignore: use_setters_to_change_properties
@@ -27,36 +24,7 @@ class CaseTileStyle extends _$CaseTileStyle {
   }
 }
 
-@riverpod
-class Cases extends _$Cases with LoggerMixin {
-  final scrollController = ScrollController();
-
-  @override
-  RealmResults<CaseModel> build() {
-    return ref.watch(collectionsProvider).casesCollection.getAll();
-  }
-
-  Future<void> pullToRefresh() async {}
+@Riverpod(keepAlive: true)
+Stream<RealmResultsChanges<CaseModel>> casesStream(CasesStreamRef ref) {
+  return ref.read(collectionsProvider).casesCollection.getAll().changes;
 }
-
-// final casesNotifierProvider = StateProvider<CasesState>((ref) {
-//   return CasesState(ref);
-// });
-
-// class CasesState extends StateNotifier<Iterable<Conversation>> {
-//   CasesState(Ref ref) : super([]) {
-//     _listenToChanges(ref);
-//   }
-
-//   void _listenToChanges(Ref ref) {
-//     final results = ref.read(collectionsProvider).conversationCollection.getAll();
-//     results.changes.listen((changes) {
-//       // Update state based on changes
-//       state = changes.results;
-//     });
-//   }
-// }
-
-// final casesStreamProvider = StreamProvider<Iterable<Conversation>>((ref) {
-//   return ref.watch(casesNotifierProvider).stream;
-// });

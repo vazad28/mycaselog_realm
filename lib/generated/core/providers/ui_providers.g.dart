@@ -1,28 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of '../../../../support_data/features/assistants/assistants_page.dart';
+part of '../../../core/providers/ui_providers.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$assistantsListHash() => r'e0f8855788727e908c9906be20bed2328f0cefbb';
+String _$activeFieldsListHash() => r'a6cdeabb87495c4af20a8b5dd5bd0070d79bd158';
 
-/// Provider to keep the state of Assistants
-///
-/// Copied from [assistantsList].
-@ProviderFor(assistantsList)
-final assistantsListProvider =
-    AutoDisposeProvider<List<AssistantModel>>.internal(
-  assistantsList,
-  name: r'assistantsListProvider',
+/// See also [activeFieldsList].
+@ProviderFor(activeFieldsList)
+final activeFieldsListProvider =
+    AutoDisposeProvider<List<ActivableCaseField>>.internal(
+  activeFieldsList,
+  name: r'activeFieldsListProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$assistantsListHash,
+      : _$activeFieldsListHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef AssistantsListRef = AutoDisposeProviderRef<List<AssistantModel>>;
+typedef ActiveFieldsListRef = AutoDisposeProviderRef<List<ActivableCaseField>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, inference_failure_on_uninitialized_variable, inference_failure_on_function_return_type, inference_failure_on_untyped_parameter, deprecated_member_use_from_same_package

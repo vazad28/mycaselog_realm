@@ -198,7 +198,7 @@ class AddTemplateNotifier extends _$AddTemplateNotifier with LoggerMixin {
       await ref
           .read(collectionsProvider)
           .templatesCollection
-          .add(modelToSubmit);
+          .add(modelToSubmit.templateID, modelToSubmit);
       state = StateOf<TemplateModel>.success(modelToSubmit);
     } catch (err) {
       state = StateOf<TemplateModel>.failure(err.toAppFailure());

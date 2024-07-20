@@ -1,13 +1,7 @@
 part of '../collections.dart';
 
-class TimelineNotesCollection extends FirestoreCollection<TimelineNoteModel>
-    implements BaseCollection<TimelineNoteModel> {
-  TimelineNotesCollection(RealmDatabase realmDatabase)
-      : _realm = realmDatabase.realm,
-        super(
-          realmDatabase.user.id,
-          realmDatabase.sharedPrefs,
-        );
+class TimelineNotesCollection extends BaseCollection<TimelineNoteModel> {
+  TimelineNotesCollection(super.realmDatabase) : _realm = realmDatabase.realm;
 
   final Realm _realm;
 
@@ -23,49 +17,33 @@ class TimelineNotesCollection extends FirestoreCollection<TimelineNoteModel>
             toFirestore: (model, _) => model.toJson(),
           );
 
+  @override
+  Stream<List<TimelineNoteModel>> listenForChanges() {
+    return stream.map((querySnapshot) {
+      final documents = querySnapshot.docChanges
+          .map((change) {
+            final model = TimelineNoteModelX.fromJson(change.doc.data()!);
+            _realm.write(
+              () => _realm.add<TimelineNoteModel>(model, update: true),
+            );
+            return model;
+          })
+          .whereType<TimelineNoteModel>()
+          .toList();
+
+      // set last update time
+      setLastSyncTimestamp();
+      return documents;
+    });
+  }
+
   /// ////////////////////////////////////////////////////////////////////
   /// Realm Methods
   /// ////////////////////////////////////////////////////////////////////
-
-  @override
-  Future<void> add(TimelineNoteModel object) {
-    // TODO: implement add
-    throw UnimplementedError();
-  }
-
-  @override
-  int count() {
-    // TODO: implement count
-    throw UnimplementedError();
-  }
-
-  @override
-  RealmResults<TimelineNoteModel> getAll() {
-    // TODO: implement getAll
-    throw UnimplementedError();
-  }
-
-  @override
-  TimelineNoteModel? getSingle(String primaryKey) {
-    // TODO: implement getSingle
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<TimelineNoteModel> upsert(
-      TimelineNoteModel Function() updateCallback) {
-    return _realm.writeAsync<TimelineNoteModel>(updateCallback);
-  }
-
-  @override
-  Future<int> syncByTimestamp(int timestamp) {
-    // TODO: implement syncByTimestamp
-    throw UnimplementedError();
-  }
-
-  @override
-  Stream<List<TimelineNoteModel>> listenForChanges() {
-    // TODO: implement listenForChanges
-    throw UnimplementedError();
+  /// Get notes for a case
+  RealmResults<TimelineNoteModel> getCaseNotes(String caseID) {
+    return _realm
+        .all<TimelineNoteModel>()
+        .query(r'caseID == $0 AND removed == $1', [caseID, 0]);
   }
 }

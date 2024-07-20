@@ -94,34 +94,3 @@ class AppStartupWidget extends ConsumerWidget {
     );
   }
 }
-
-// class _App extends StatelessWidget {
-//   const _App();
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return const _AppGateway(
-//       mycaselogApp: MycaselogApp(),
-//       mycaselogAuthApp: MycaselogAuthApp(),
-//     );
-//   }
-// }
-
-// class _AppGateway extends ConsumerWidget {
-//   const _AppGateway({
-//     required this.mycaselogApp,
-//     required this.mycaselogAuthApp,
-//   });
-
-//   final MycaselogApp mycaselogApp;
-//   final MycaselogAuthApp mycaselogAuthApp;
-
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) {
-//     final user = ref.watch(authenticationUserProvider);
-
-//     print('rendering _AppGateway');
-
-//     return user.isAnonymous ? mycaselogAuthApp : mycaselogApp;
-//   }
-// }

@@ -47,9 +47,10 @@ class ImageUploadRepository with LoggerMixin implements MediaUploadRepository {
 
   @override
   void onUploadFailure(MediaModel mediaModel, MediaStatus mediaStatus) {
-    ref.read(collectionsProvider).mediaCollection.upsert(() {
-      return mediaModel..status = mediaStatus;
-    });
+    ref
+        .read(collectionsProvider)
+        .mediaCollection
+        .upsert(mediaModel.mediaID, () => mediaModel..status = mediaStatus);
   }
 
   @override
@@ -62,21 +63,14 @@ class ImageUploadRepository with LoggerMixin implements MediaUploadRepository {
     logger.fine('reached onUploadSucces $thumbUri');
 
     ///  update the database
-    await ref.read(collectionsProvider).mediaCollection.upsert(() {
-      return mediaModel
-        ..fileUri = fullUri
-        ..mediumUri = mediumUri
-        ..thumbUri = thumbUri
-        ..status = MediaStatus.success
-        ..timestamp = ModelUtils.getTimestamp;
-    });
-
-    /// Add media to media collection  on firebase
-    // await ref
-    //     .read(collectionsProvider)
-    //     .mediaCollection
-    //     .put(mediaModel.mediaID, updatedMediaModel);
-
-    //await ref.read(mediaCollectionProvider).add(updatedMediaModel);
+    await ref.read(collectionsProvider).mediaCollection.upsert(
+          mediaModel.mediaID,
+          () => mediaModel
+            ..fileUri = fullUri
+            ..mediumUri = mediumUri
+            ..thumbUri = thumbUri
+            ..status = MediaStatus.success
+            ..timestamp = ModelUtils.getTimestamp,
+        );
   }
 }

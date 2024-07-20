@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:realm/realm.dart';
 
-import '../../core/providers/providers.dart';
+import '../../core/widgets/async_value_widget.dart';
 import '../../router/routes/routes.dart';
 import '../cases.dart';
 
@@ -20,9 +20,14 @@ class _CasesPageState extends ConsumerState<CasesPage> {
   final _scrollController = ScrollController();
 
   @override
-  Widget build(BuildContext context) {
-    final data = ref.watch(collectionsProvider).casesCollection.getAll();
+  void dispose() {
+    Future<void>.delayed(Durations.short1)
+        .then((_) => _scrollController.dispose());
+    super.dispose();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       key: const Key('__cases_screen_scaffold_key__'),
       backgroundColor: context.colorScheme.surface,
@@ -31,54 +36,53 @@ class _CasesPageState extends ConsumerState<CasesPage> {
         toolbarHeight: 0,
         surfaceTintColor: context.colorScheme.surfaceTint,
       ),
-      body: StreamBuilder<RealmResultsChanges<CaseModel>>(
-        stream: data.changes,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final caseModels = snapshot.data!.results;
-            // Rebuild your widget based on casesList
-            return CustomScrollView(
-              controller: _scrollController,
-              physics: const BouncingScrollPhysics(
-                parent: AlwaysScrollableScrollPhysics(),
-              ),
-              slivers: [
-                const CasesAppBar(),
-                const CasesSearchBar(),
-                CasesView(caseModels: caseModels),
-              ],
-            );
-          } else if (snapshot.hasError) {
-            // Handle errors
-            return Text('Error: ${snapshot.error}');
-          } else {
-            // Handle loading state
-            return const CircularProgressIndicator();
-          }
-        },
+      body: CustomScrollView(
+        controller: _scrollController,
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
+        slivers: const [
+          CasesAppBar(),
+          CasesSearchBar(),
+          _CasesView(key: Key('__cases_view_sub_key__')),
+        ],
       ),
-      // CustomScrollView(
-      //   controller: _scrollController,
-      //   physics: const BouncingScrollPhysics(
-      //     parent: AlwaysScrollableScrollPhysics(),
-      //   ),
-      //   slivers: const [
-      //     CasesAppBar(),
-      //     CasesSearchBar(),
-      //     CasesView(),
-      //   ],
-      // ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: ScrollReactiveFabButton(
         _scrollController,
         key: const Key('__cases_screen_fab_key__'),
         title: S.of(context).addCase,
         onTap: () {
-          // ref.read(collectionsProvider).conversationCollection.addConversation(
-          //     title: "conversation ${ModelUtils.getTimestamp}");
           AddCaseRoute(CaseModelX.zero(), newRecord: true).push<void>(context);
         },
       ),
     );
+  }
+}
+
+class _CasesView extends ConsumerWidget {
+  const _CasesView({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return AsyncValueSliverWidget<RealmResultsChanges<CaseModel>>(
+      key: key,
+      value: ref.watch(casesStreamProvider),
+      data: (data) {
+        return CasesView(
+          caseModels: data.results,
+        );
+      },
+    );
+
+    // return stream.when(
+    //   data: (data) {
+    //     return CasesView(
+    //       caseModels: data.results,
+    //     );
+    //   },
+    //   error: buildErrorSliver,
+    //   loading: buildLoadingSliver,
+    // );
   }
 }

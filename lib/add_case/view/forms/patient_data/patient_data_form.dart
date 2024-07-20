@@ -1,12 +1,12 @@
+import 'package:app_annotations/app_annotations.dart';
 import 'package:app_extensions/app_extensions.dart';
 import 'package:app_models/app_models.dart';
 import 'package:app_ui/app_ui.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-import '../../../../support_data/support_data.dart';
+import '../../../../core/providers/providers.dart';
 import '../../../provider/add_case_provider.dart';
 import 'patient_data_fields.dart';
 
@@ -15,7 +15,7 @@ class PatientDataForm extends ConsumerWidget with AddCaseStateMixin {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final activeFieldsList = watchActiveFields(ref);
+    final activeFieldsList = ref.watch(activeFieldsListProvider);
 
     final form = ref.watch(patientDataFormGroupProvider);
 
@@ -29,17 +29,17 @@ class PatientDataForm extends ConsumerWidget with AddCaseStateMixin {
       ),
 
       /// Gender field if in acrive fields
-      if (activeFieldsList.contains(ActivableAddCaseField.gender)) ...[
+      if (activeFieldsList.contains(ActivableCaseField.gender)) ...[
         const Expanded(child: PatientGenderField()),
       ],
 
       /// Year of birth field
-      if (activeFieldsList.contains(ActivableAddCaseField.yob)) ...[
+      if (activeFieldsList.contains(ActivableCaseField.yob)) ...[
         const Expanded(child: PatientYobField()),
       ],
 
       /// Gender field if in acrive fields
-      if (activeFieldsList.contains(ActivableAddCaseField.bmi)) ...[
+      if (activeFieldsList.contains(ActivableCaseField.bmi)) ...[
         const Expanded(child: PatientBmiField()),
       ],
     ];

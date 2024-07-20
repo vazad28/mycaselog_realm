@@ -41,19 +41,6 @@ mixin AddCaseStateMixin {
       ) ??
       <AssistantModel>[];
 
-  /// active fields list
-  List<ActivableAddCaseField> watchActiveFields(WidgetRef ref) {
-    final activeFields = ref
-        .watch(
-          supportDataNotifierProvider
-              .select((value) => value.activeBasicFields),
-        )
-        .map((name) => ActivableAddCaseField.values.byName(name))
-        .toList();
-    if (activeFields.isEmpty) return ActivableAddCaseField.values;
-    return activeFields;
-  }
-
   /// Encrypt patient Model
   String encryptDecryptedPatientModel(
     WidgetRef ref,

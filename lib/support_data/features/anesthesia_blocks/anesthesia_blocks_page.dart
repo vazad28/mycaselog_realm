@@ -4,26 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:misc_packages/misc_packages.dart';
 import 'package:recase/recase.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../support_data.dart';
 
-part '../../../generated/support_data/features/anesthesia_blocks/anesthesia_blocks_page.g.dart';
-
-@riverpod
-List<String> anesthesiaBlocksList(AnesthesiaBlocksListRef ref) {
-  return ref.watch(
-    supportDataNotifierProvider.select(
-      (value) => value.anesthesiaBlocks.toList(),
-    ),
-  );
-}
-
 class AnesthesiaBlocksPage extends ConsumerWidget {
   const AnesthesiaBlocksPage({super.key});
-
-  static Page<void> page() =>
-      const MaterialPage<void>(child: AnesthesiaBlocksPage());
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -44,7 +29,7 @@ class AnesthesiaBlocksPage extends ConsumerWidget {
                 if (value == null) return;
                 ref
                     .watch(supportDataNotifierProvider.notifier)
-                    .upsertAnesthesiaBlock(value);
+                    .upsertAnesthesiaBlocks([value], add: true);
               });
             },
           ),
@@ -60,7 +45,11 @@ class AnesthesiaBlocksView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final blocks = ref.watch(anesthesiaBlocksListProvider);
+    final blocks = ref.watch(
+      supportDataNotifierProvider.select(
+        (data) => data.anesthesiaBlocks,
+      ),
+    );
 
     if (blocks.isEmpty) {
       return const Center(
@@ -86,9 +75,10 @@ class AnesthesiaBlocksView extends ConsumerWidget {
         return DismissibleListTile(
           title: block,
           onDismissed: () {
+            blocks.remove(block);
             ref
                 .watch(supportDataNotifierProvider.notifier)
-                .upsertAnesthesiaBlock(block);
+                .upsertAnesthesiaBlocks(blocks);
           },
           onTap: () {
             context
@@ -97,14 +87,12 @@ class AnesthesiaBlocksView extends ConsumerWidget {
               value: block,
             )
                 .then(
-              (newItem) {
-                if (newItem == null || newItem.isEmpty) return;
+              (newBlock) {
+                if (newBlock == null || newBlock.isEmpty) return;
+                blocks[index] = newBlock;
                 ref
                     .watch(supportDataNotifierProvider.notifier)
-                    .upsertAnesthesiaBlock(newItem)
-                    .then((_) {
-                  if (context.mounted) Navigator.of(context).pop();
-                });
+                    .upsertAnesthesiaBlocks(blocks);
               },
             );
           },

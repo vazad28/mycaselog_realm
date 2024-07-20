@@ -11,7 +11,7 @@ class SupportDataSettingsSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final supportDataAsync = ref.watch(supportDataNotifierProvider);
+    final supportData = ref.watch(supportDataNotifierProvider);
     const padCount = 4;
 
     return Column(
@@ -22,11 +22,7 @@ class SupportDataSettingsSection extends ConsumerWidget {
           subTitle: S.of(context).mySurgeryAssistants,
           leading: const Icon(Icons.assistant),
           trailing: SettingsTrailing(
-            text: supportDataAsync.assistants
-                .where((e) => e.removed == 0)
-                .length
-                .toString()
-                .padRight(padCount),
+            text: supportData.assistants.length.toString().padRight(padCount),
             icon: const Icon(Icons.navigate_next),
           ),
           onTap: () {
@@ -38,9 +34,7 @@ class SupportDataSettingsSection extends ConsumerWidget {
           subTitle: S.of(context).surgeryLocationSubTitle,
           leading: const Icon(Icons.map),
           trailing: SettingsTrailing(
-            text: supportDataAsync.surgeryLocations
-                .where((e) => e.removed == 0)
-                .length
+            text: supportData.surgeryLocations.length
                 .toString()
                 .padRight(padCount),
             icon: const Icon(Icons.navigate_next),
@@ -54,7 +48,7 @@ class SupportDataSettingsSection extends ConsumerWidget {
           subTitle: 'List of anesthesia blocks',
           leading: const Icon(Icons.personal_injury),
           trailing: SettingsTrailing(
-            text: supportDataAsync.anesthesiaBlocks.length
+            text: supportData.anesthesiaBlocks.length
                 .toString()
                 .padRight(padCount),
             icon: const Icon(Icons.navigate_next),
@@ -68,7 +62,7 @@ class SupportDataSettingsSection extends ConsumerWidget {
         //   subTitle: 'Primary or referring physicians',
         //   leading: const Icon(Icons.medical_services),
         //   trailing: SettingsTrailing(
-        //     text: (supportDataAsync.pcps?.where((e) => e.removed == 0).length ??
+        //     text: (supportData.pcps?.where((e) => e.removed == 0).length ??
         //             0)
         //         .toString()
         //         .padRight(padCount),

@@ -5,6 +5,15 @@ import 'providers.dart';
 part '../../generated/core/providers/startup_providers.g.dart';
 
 @riverpod
+Future<void> appStartUp(AppStartUpRef ref) async {
+  /// Load realm database
+  await ref.watch(realmDatabaseProvider.future);
+
+  /// Load support data provider
+  //await ref.watch(supportDataProvider.future);
+}
+
+@riverpod
 class CurrentThemeMode extends _$CurrentThemeMode {
   final String themeModeKey = '__theme_mode_key__';
 

@@ -1,13 +1,7 @@
 part of '../collections.dart';
 
-class UserCollection extends FirestoreCollection<UserModel>
-    implements BaseCollection<UserModel> {
-  UserCollection(RealmDatabase realmDatabase)
-      : _realm = realmDatabase.realm,
-        super(
-          realmDatabase.user.id,
-          realmDatabase.sharedPrefs,
-        );
+class UserCollection extends BaseCollection<UserModel> {
+  UserCollection(super.realmDatabase) : _realm = realmDatabase.realm;
 
   final Realm _realm;
 
@@ -23,48 +17,26 @@ class UserCollection extends FirestoreCollection<UserModel>
             toFirestore: (model, _) => model.toJson(),
           );
 
+  @override
+  Stream<List<UserModel>> listenForChanges() {
+    return stream.map((querySnapshot) {
+      final documents = querySnapshot.docChanges
+          .map((change) {
+            final model = UserModelX.fromJson(change.doc.data()!);
+
+            _realm.write(() => _realm.add<UserModel>(model, update: true));
+            return model;
+          })
+          .whereType<UserModel>()
+          .toList();
+
+      // set last update time
+      setLastSyncTimestamp();
+      return documents;
+    });
+  }
+
   /// ////////////////////////////////////////////////////////////////////
   /// Realm Methods
   /// ////////////////////////////////////////////////////////////////////
-
-  @override
-  Future<void> add(UserModel object) {
-    // TODO: implement add
-    throw UnimplementedError();
-  }
-
-  @override
-  int count() {
-    // TODO: implement count
-    throw UnimplementedError();
-  }
-
-  @override
-  RealmResults<UserModel> getAll() {
-    // TODO: implement getAll
-    throw UnimplementedError();
-  }
-
-  @override
-  UserModel? getSingle(String primaryKey) {
-    // TODO: implement getSingle
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<UserModel> upsert(UserModel Function() updateCallback) {
-    return _realm.writeAsync<UserModel>(updateCallback);
-  }
-
-  @override
-  Future<int> syncByTimestamp(int timestamp) {
-    // TODO: implement syncByTimestamp
-    throw UnimplementedError();
-  }
-
-  @override
-  Stream<List<UserModel>> listenForChanges() {
-    // TODO: implement listenForChanges
-    throw UnimplementedError();
-  }
 }

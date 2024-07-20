@@ -1,13 +1,7 @@
 part of '../collections.dart';
 
-class SettingsCollection extends FirestoreCollection<SettingsModel>
-    implements BaseCollection<SettingsModel> {
-  SettingsCollection(RealmDatabase realmDatabase)
-      : _realm = realmDatabase.realm,
-        super(
-          realmDatabase.user.id,
-          realmDatabase.sharedPrefs,
-        );
+class SettingsCollection extends BaseCollection<SettingsModel> {
+  SettingsCollection(super.realmDatabase) : _realm = realmDatabase.realm;
 
   final Realm _realm;
 
@@ -23,48 +17,27 @@ class SettingsCollection extends FirestoreCollection<SettingsModel>
             toFirestore: (model, _) => model.toJson(),
           );
 
+  @override
+  Stream<List<SettingsModel>> listenForChanges() {
+    return stream.map((querySnapshot) {
+      final documents = querySnapshot.docChanges
+          .map((change) {
+            final model = SettingsModelX.fromJson(change.doc.data()!);
+            _realm.write(
+              () => _realm.add<SettingsModel>(model, update: true),
+            );
+            return model;
+          })
+          .whereType<SettingsModel>()
+          .toList();
+
+      // set last update time
+      setLastSyncTimestamp();
+      return documents;
+    });
+  }
+
   /// ////////////////////////////////////////////////////////////////////
   /// Realm Methods
   /// ////////////////////////////////////////////////////////////////////
-
-  @override
-  Future<void> add(SettingsModel object) {
-    // TODO: implement add
-    throw UnimplementedError();
-  }
-
-  @override
-  int count() {
-    // TODO: implement count
-    throw UnimplementedError();
-  }
-
-  @override
-  RealmResults<SettingsModel> getAll() {
-    // TODO: implement getAll
-    throw UnimplementedError();
-  }
-
-  @override
-  SettingsModel? getSingle(String primaryKey) {
-    // TODO: implement getSingle
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<SettingsModel> upsert(SettingsModel Function() updateCallback) {
-    return _realm.writeAsync<SettingsModel>(updateCallback);
-  }
-
-  @override
-  Future<int> syncByTimestamp(int timestamp) {
-    // TODO: implement syncByTimestamp
-    throw UnimplementedError();
-  }
-
-  @override
-  Stream<List<SettingsModel>> listenForChanges() {
-    // TODO: implement listenForChanges
-    throw UnimplementedError();
-  }
 }

@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../core/providers/providers.dart';
-import '../../support_data/support_data.dart';
 
 part '../../generated/case_details/provider/case_details_provider.g.dart';
 part 'case_details_mixins.dart';
@@ -13,15 +12,15 @@ part 'case_details_mixins.dart';
 /// ////////////////////////////////////////////////////////////////////
 
 ///  Case details seeder provider
-final caseIDSeeder = StateProvider.autoDispose<String?>((ref) => null);
+final caseIDProvider = StateProvider.autoDispose<String?>((ref) => null);
 
 @riverpod
-class CaseModelSeeder extends _$CaseModelSeeder {
+class CaseDetailsNotifier extends _$CaseDetailsNotifier {
   @override
-  CaseModel? build() {
-    final caseID = ref.watch(caseIDSeeder);
+  AsyncValue<CaseModel> build() {
+    final caseID = ref.watch(caseIDProvider);
 
-    if (caseID == null) return null;
+    if (caseID == null) return const AsyncValue.loading();
 
     final sub = ref
         .watch(collectionsProvider)
@@ -29,21 +28,10 @@ class CaseModelSeeder extends _$CaseModelSeeder {
         .getSingle(caseID)
         ?.changes
         .listen((data) {
-      state = data.object;
+      state = AsyncValue.data(data.object);
     });
 
     ref.onDispose(() => sub?.cancel());
-
-    return null;
-  }
-}
-
-@riverpod
-class CaseDetailsNotifier extends _$CaseDetailsNotifier {
-  @override
-  AsyncValue<CaseModel> build() {
-    final caseModel = ref.watch(caseModelSeederProvider);
-    if (caseModel != null) return AsyncValue.data(caseModel);
 
     return const AsyncValue.loading();
   }

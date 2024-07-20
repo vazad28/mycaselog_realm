@@ -224,6 +224,7 @@ class AddCaseNotifier extends _$AddCaseNotifier with LoggerMixin {
   Future<void> _doSubmit(CaseModel modelToSubmit) async {
     try {
       await ref.read(collectionsProvider).casesCollection.add(
+            modelToSubmit.caseID,
             modelToSubmit..timestamp = ModelUtils.getTimestamp,
           );
 

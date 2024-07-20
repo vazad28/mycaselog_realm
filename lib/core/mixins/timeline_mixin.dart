@@ -15,28 +15,28 @@ mixin TimelineMixin {
   /// Delete case timeline note
   Future<void> deleteTimelineNote(
     WidgetRef ref,
-    TimelineNoteModel model,
+    TimelineNoteModel timelineNoteModel,
   ) {
     return ref
         .watch(collectionsProvider)
         .timelineNotesCollection
-        .upsert(() => model..removed = 1);
+        .upsert(timelineNoteModel.noteID, () => timelineNoteModel..removed = 1);
   }
 
   /// Change timeline  note data
   Future<void> changeTimelineNoteDate(
     WidgetRef ref,
-    TimelineNoteModel model,
+    TimelineNoteModel timelineNoteModel,
   ) async {
     final dateTimePicked = await ref.read(dialogServiceProvider).openDatePicker(
           initialDate: DateTime.now(),
         );
     final createdAt = (dateTimePicked ?? DateTime.now()).millisecondsSinceEpoch;
 
-    await ref
-        .watch(collectionsProvider)
-        .timelineNotesCollection
-        .upsert(() => model..createdAt = createdAt);
+    await ref.watch(collectionsProvider).timelineNotesCollection.upsert(
+          timelineNoteModel.noteID,
+          () => timelineNoteModel..createdAt = createdAt,
+        );
   }
 
   Future<void> addTimelineNote(
@@ -59,7 +59,10 @@ mixin TimelineMixin {
       if (note == null) return;
 
       /// add to database
-      ref.watch(collectionsProvider).timelineNotesCollection.add(note);
+      ref
+          .watch(collectionsProvider)
+          .timelineNotesCollection
+          .add(note.noteID, note);
     });
   }
 
@@ -80,7 +83,7 @@ mixin TimelineMixin {
     if (timelineItemModel.mediaList.isEmpty &&
         timelineItemModel.noteList.isEmpty) return;
 
-    // await ref.watch(collectionsProvider).casesCollection.updateTimelineData(
+    // TODO await ref.watch(collectionsProvider).casesCollection.updateTimelineData(
     //       timelineItemModel.caseID,
     //       timelineItemModel.mediaList,
     //       timelineItemModel.noteList,
@@ -114,7 +117,10 @@ mixin TimelineMixin {
       );
 
       /// add image to database
-      ref.read(collectionsProvider).mediaCollection.add(mediaModel);
+      ref
+          .read(collectionsProvider)
+          .mediaCollection
+          .add(mediaModel.mediaID, mediaModel);
     }).catchError((dynamic err) {
       debugPrint(err.toString());
       ref.read(dialogServiceProvider).showSnackBar('Failed to add image');

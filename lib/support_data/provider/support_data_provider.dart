@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app_annotations/app_annotations.dart';
 import 'package:app_extensions/app_extensions.dart';
 import 'package:app_models/app_models.dart';
 import 'package:logger_client/logger_client.dart';
@@ -7,7 +8,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../core/providers/providers.dart';
 import '../../core/services/services.dart';
-import '../support_data.dart';
 
 part '../../generated/support_data/provider/support_data_provider.g.dart';
 
@@ -36,9 +36,11 @@ class SupportDataNotifier extends _$SupportDataNotifier with LoggerMixin {
 
   Future<void> _updateSupportData() async {
     try {
-      await ref.watch(collectionsProvider).supportDataCollection.add(
-            state,
-          );
+      final userID = ref.watch(authenticationUserProvider).id;
+      await ref
+          .watch(collectionsProvider)
+          .supportDataCollection
+          .add(userID, state..timestamp = ModelUtils.getTimestamp);
     } catch (err) {
       ref.watch(dialogServiceProvider).showSnackBar(err.toString());
     }
@@ -80,18 +82,6 @@ class SupportDataNotifier extends _$SupportDataNotifier with LoggerMixin {
   //   _updateSupportData(state.copyWith(pcps: [pcpModel]));
   // }
 
-  // ignore: unused_element
-  Future<void> upsertPutAnesthesiaBlock(String block) {
-    final blocks = List<String>.from(state.anesthesiaBlocks);
-    if (blocks.contains(block)) {
-      blocks.remove(block);
-    } else {
-      blocks.add(block);
-    }
-
-    return _updateSupportData();
-  }
-
   Future<void> upsertAssistant(AssistantModel assistantModel) {
     final assistants = List<AssistantModel>.from(state.assistants);
     final index = assistants.indexWhere(
@@ -109,14 +99,21 @@ class SupportDataNotifier extends _$SupportDataNotifier with LoggerMixin {
     return _updateSupportData();
   }
 
-  Future<void> upsertActivableFields(List<ActivableAddCaseField> fields) {
+  Future<void> upsertActivableCaseFields(List<ActivableCaseField>? fields) {
     state.activeBasicFields.clear();
-    state.activeBasicFields.addAll(fields.names);
+    if (fields != null) {
+      state.activeBasicFields.addAll(fields.names);
+    }
     return _updateSupportData();
   }
 
-  Future<void> upsertAnesthesiaBlock(String block) {
-    state.anesthesiaBlocks.replaceOrAdd(block);
+  Future<void> upsertAnesthesiaBlocks(List<String> blocks, {bool add = false}) {
+    if (add) {
+      state.anesthesiaBlocks.add(blocks.first);
+    } else {
+      state.anesthesiaBlocks.clear();
+      state.anesthesiaBlocks.addAll(blocks);
+    }
     return _updateSupportData();
   }
 }

@@ -1,11 +1,13 @@
 import 'package:app_l10n/app_l10n.dart';
 import 'package:app_ui/app_ui.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/app_vars.dart';
 import '../core/providers/providers.dart';
+import '../core/widgets/async_value_widget.dart';
 import '../router/providers/app_router.dart';
 import '../sync/provider/sync_providers.dart';
 
@@ -33,10 +35,17 @@ class MycaselogApp extends ConsumerWidget {
       theme: themeMode == 0
           ? brightness == Brightness.light
               ? theme.light()
-              : theme.dark()
+              : theme.dark().copyWith(
+                    cupertinoOverrideTheme: const CupertinoThemeData(
+                      textTheme: CupertinoTextThemeData(), // This is required
+                    ),
+                  )
           : themeMode == 1
               ? theme.light()
-              : theme.dark(),
+              : theme.dark().copyWith(
+                      cupertinoOverrideTheme: const CupertinoThemeData(
+                    textTheme: CupertinoTextThemeData(), // This is required
+                  )),
       localizationsDelegates: const [
         S.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -46,11 +55,11 @@ class MycaselogApp extends ConsumerWidget {
       supportedLocales: S.delegate.supportedLocales,
     );
 
-    final app = ref.watch(realmDatabaseProvider).when(
-          error: buildErrorWidget,
-          loading: buildLoadingWidget,
-          data: (real) => materialApp,
-        );
+    final app = AsyncValueWidget(
+      value: ref.watch(appStartUpProvider),
+      data: (_) => materialApp,
+      loading: const Text('loading'),
+    );
 
     return PopScope(
       onPopInvokedWithResult: (bool didPop, result) => {},
@@ -58,8 +67,3 @@ class MycaselogApp extends ConsumerWidget {
     );
   }
 }
-
-Widget buildErrorWidget(Object error, StackTrace? stackTrace) =>
-    ErrorWidget(error);
-
-Widget buildLoadingWidget() => const Center(child: Text('loading..'));

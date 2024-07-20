@@ -55,13 +55,14 @@ class _AddAssistantPageState extends ConsumerState<AddAssistantPage> {
                 ...widget.assistantModel.toJson(),
                 ...formGroup.value,
               };
-              final model = AssistantModelX.fromJson(assistantModelJson);
+              final assistantModel =
+                  AssistantModelX.fromJson(assistantModelJson);
+
               ref
                   .watch(supportDataNotifierProvider.notifier)
-                  .upsertAssistant(model)
-                  .then((_) {
-                if (context.mounted) Navigator.of(context).pop();
-              });
+                  .upsertAssistant(assistantModel);
+
+              if (context.mounted) Navigator.of(context).pop();
             },
             onCancel: () => Navigator.of(context).pop(),
           ),

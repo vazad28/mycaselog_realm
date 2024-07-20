@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/core.dart';
 import '../../core/services/services.dart';
 import '../provider/cases_provider.dart';
 import 'case_search_result_tile.dart';
@@ -266,17 +267,15 @@ class _CasesCountWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return StreamBuilder(
-      stream: ref.watch(casesProvider).changes,
-      builder: (_, snapshot) {
-        return Padding(
-          padding: const EdgeInsets.only(right: AppSpacing.sm),
-          child: Text(
-            (snapshot.data?.results.length ?? 0).toString(),
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-        );
-      },
+    return AsyncValueWidget(
+      value: ref.watch(casesStreamProvider),
+      data: (data) => Padding(
+        padding: const EdgeInsets.only(right: AppSpacing.sm),
+        child: Text(
+          data.results.length.toString(),
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+      ),
     );
   }
 }

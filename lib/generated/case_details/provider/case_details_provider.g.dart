@@ -24,24 +24,8 @@ final caseDetailsTemplateModelProvider =
 
 typedef CaseDetailsTemplateModelRef
     = AutoDisposeProviderRef<AsyncValue<TemplateModel?>>;
-String _$caseModelSeederHash() => r'3a6a19352246e8cc5f73796f647426df0b4dba4b';
-
-/// See also [CaseModelSeeder].
-@ProviderFor(CaseModelSeeder)
-final caseModelSeederProvider =
-    AutoDisposeNotifierProvider<CaseModelSeeder, CaseModel?>.internal(
-  CaseModelSeeder.new,
-  name: r'caseModelSeederProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$caseModelSeederHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$CaseModelSeeder = AutoDisposeNotifier<CaseModel?>;
 String _$caseDetailsNotifierHash() =>
-    r'd3fca0c1e274fdb3651990104da2e85063facd84';
+    r'42d420fd30c1c9fc56daa565324fc0999e293413';
 
 /// See also [CaseDetailsNotifier].
 @ProviderFor(CaseDetailsNotifier)

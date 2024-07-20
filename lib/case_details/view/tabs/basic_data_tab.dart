@@ -1,3 +1,4 @@
+import 'package:app_annotations/app_annotations.dart';
 import 'package:app_extensions/app_extensions.dart';
 import 'package:app_l10n/app_l10n.dart';
 import 'package:app_models/app_models.dart';
@@ -5,7 +6,7 @@ import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../support_data/support_data.dart';
+import '../../../core/providers/providers.dart';
 import '../../case_details.dart';
 
 class CaseDetailsBasicTab extends ConsumerWidget {
@@ -70,9 +71,14 @@ class _PatientDetailsWidget extends ConsumerWidget with CaseDetailsMixin {
   // ignore: non_constant_identifier_names
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final activeFieldsList = watchActivableFields(ref);
-
-    if (caseModel.patientModel == null) return const Text('NO patient data');
+    if (caseModel.patientModel == null) return const Text('No patient data');
+    final activeFieldsList = ref.watch(activeFieldsListProvider);
+    // return AsyncValueWidget(
+    //     value: activableCaseFieldAsync,
+    //     data: (activeFieldsList) {
+    // final activeFieldsList = changes.list
+    //     .map((name) => ActivableCaseField.values.byName(name))
+    //     .toList();
 
     final children = [
       Expanded(
@@ -81,7 +87,7 @@ class _PatientDetailsWidget extends ConsumerWidget with CaseDetailsMixin {
           value: caseModel.patientModel!.initials,
         ),
       ),
-      if (activeFieldsList.contains(ActivableAddCaseField.gender)) ...[
+      if (activeFieldsList.contains(ActivableCaseField.gender)) ...[
         Expanded(
           child: CaseDetailsField(
             label: S.of(context).gender,
@@ -89,7 +95,7 @@ class _PatientDetailsWidget extends ConsumerWidget with CaseDetailsMixin {
           ),
         ),
       ],
-      if (activeFieldsList.contains(ActivableAddCaseField.yob)) ...[
+      if (activeFieldsList.contains(ActivableCaseField.yob)) ...[
         Expanded(
           child: CaseDetailsField(
             label: S.of(context).birthYear,
@@ -97,7 +103,7 @@ class _PatientDetailsWidget extends ConsumerWidget with CaseDetailsMixin {
           ),
         ),
       ],
-      if (activeFieldsList.contains(ActivableAddCaseField.bmi)) ...[
+      if (activeFieldsList.contains(ActivableCaseField.bmi)) ...[
         Expanded(
           child: CaseDetailsField(
             label: S.of(context).bmi,
@@ -140,6 +146,7 @@ class _PatientDetailsWidget extends ConsumerWidget with CaseDetailsMixin {
 
     /// return builder
     return child;
+    //});
   }
 }
 
@@ -150,8 +157,10 @@ class _BasicCaseDataWidget extends ConsumerWidget with CaseDetailsMixin {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final activeFieldsList = watchActivableFields(ref);
-
+    final activeFieldsList = ref.watch(activeFieldsListProvider);
+    // return AsyncValueWidget(
+    //     value: activableCaseFieldAsync,
+    //     data: (activeFieldsList) {
     return Container(
       padding: const EdgeInsets.all(6),
       child: Column(
@@ -167,7 +176,7 @@ class _BasicCaseDataWidget extends ConsumerWidget with CaseDetailsMixin {
                   suffix: caseModel.surgeryDate.formatHM(),
                 ),
               ),
-              if (activeFieldsList.contains(ActivableAddCaseField.asa))
+              if (activeFieldsList.contains(ActivableCaseField.asa))
                 Flexible(
                   child: CaseDetailsField(
                     label: S.of(context).asa,
@@ -190,14 +199,14 @@ class _BasicCaseDataWidget extends ConsumerWidget with CaseDetailsMixin {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (activeFieldsList.contains(ActivableAddCaseField.asa))
+              if (activeFieldsList.contains(ActivableCaseField.asa))
                 Expanded(
                   child: CaseDetailsField(
                     label: S.of(context).surgerySide,
                     value: caseModel.side.toString(),
                   ),
                 ),
-              if (activeFieldsList.contains(ActivableAddCaseField.bmi))
+              if (activeFieldsList.contains(ActivableCaseField.bmi))
                 Expanded(
                   child: CaseDetailsField(
                     label: S.of(context).ebl,
@@ -207,13 +216,12 @@ class _BasicCaseDataWidget extends ConsumerWidget with CaseDetailsMixin {
             ],
           ),
 
-          if (activeFieldsList.contains(ActivableAddCaseField.location))
+          if (activeFieldsList.contains(ActivableCaseField.location))
             CaseDetailsField(
               label: S.of(context).location,
               value: caseModel.location,
             ),
 
-          // //AppStyles.verticalSpacer,
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -224,7 +232,7 @@ class _BasicCaseDataWidget extends ConsumerWidget with CaseDetailsMixin {
                 ),
               ),
               if (activeFieldsList
-                  .contains(ActivableAddCaseField.anesthesiaBlock)) ...[
+                  .contains(ActivableCaseField.anesthesiaBlock)) ...[
                 Expanded(
                   child: CaseDetailsField(
                     label: S.of(context).anesthesiaBlock,
@@ -234,7 +242,7 @@ class _BasicCaseDataWidget extends ConsumerWidget with CaseDetailsMixin {
               ],
             ],
           ),
-          if (activeFieldsList.contains(ActivableAddCaseField.assistants)) ...[
+          if (activeFieldsList.contains(ActivableCaseField.assistants)) ...[
             CaseDetailsField(
               label: S.of(context).assistants,
               value: caseModel.assistant.join(','),
@@ -247,7 +255,7 @@ class _BasicCaseDataWidget extends ConsumerWidget with CaseDetailsMixin {
           ),
 
           // /// PCP field
-          // if (activeFieldsList.contains(ActivableAddCaseField.pcp))
+          // if (activeFieldsList.contains(ActivableCaseField.pcp))
           //   CaseDetailsField(
           //     label: S.of(context).pcp,
           //     value: caseModel.pcpModel?.name ?? '-',
@@ -257,14 +265,14 @@ class _BasicCaseDataWidget extends ConsumerWidget with CaseDetailsMixin {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (activeFieldsList.contains(ActivableAddCaseField.icd))
+              if (activeFieldsList.contains(ActivableCaseField.icd))
                 Expanded(
                   child: CaseDetailsField(
                     label: S.of(context).icd10,
                     value: caseModel.icd ?? '-',
                   ),
                 ),
-              if (activeFieldsList.contains(ActivableAddCaseField.cpt))
+              if (activeFieldsList.contains(ActivableCaseField.cpt))
                 Expanded(
                   child: CaseDetailsField(
                     label: S.of(context).cpt,
@@ -277,5 +285,6 @@ class _BasicCaseDataWidget extends ConsumerWidget with CaseDetailsMixin {
         ],
       ),
     );
+    //});
   }
 }

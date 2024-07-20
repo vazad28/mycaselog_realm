@@ -7,7 +7,7 @@ part of '../../../case_timeline/provider/case_timeline_provider.dart';
 // **************************************************************************
 
 String _$caseTimelineNotifierHash() =>
-    r'be8d3e5f8cc31e5d85ce6e77199b30af112f1c77';
+    r'db891e01c319ccbefffb5ad1a8f405bcfde90fc8';
 
 /// See also [CaseTimelineNotifier].
 @ProviderFor(CaseTimelineNotifier)

@@ -1,13 +1,7 @@
 part of '../collections.dart';
 
-class MediaCollection extends FirestoreCollection<MediaModel>
-    implements BaseCollection<MediaModel> {
-  MediaCollection(RealmDatabase realmDatabase)
-      : _realm = realmDatabase.realm,
-        super(
-          realmDatabase.user.id,
-          realmDatabase.sharedPrefs,
-        );
+class MediaCollection extends BaseCollection<MediaModel> {
+  MediaCollection(super.realmDatabase) : _realm = realmDatabase.realm;
 
   final Realm _realm;
 
@@ -23,42 +17,24 @@ class MediaCollection extends FirestoreCollection<MediaModel>
             toFirestore: (model, _) => model.toJson(),
           );
 
-  /// ////////////////////////////////////////////////////////////////////
-  ///
-  /// ////////////////////////////////////////////////////////////////////
-
   @override
-  Future<void> add(MediaModel object) {
-    return _realm.writeAsync(() => _realm.add<MediaModel>(object));
-  }
+  Stream<List<MediaModel>> listenForChanges() {
+    return stream.map((querySnapshot) {
+      final documents = querySnapshot.docChanges
+          .map((change) {
+            final model = MediaModelX.fromJson(change.doc.data()!);
+            _realm.write(() => _realm.add<MediaModel>(model, update: true));
+            return model;
+          })
+          .whereType<MediaModel>()
+          .toList();
 
-  @override
-  Future<MediaModel> upsert(MediaModel Function() updateCallback) {
-    return _realm.writeAsync<MediaModel>(updateCallback);
-  }
-
-  @override
-  RealmResults<MediaModel> getAll() {
-    return _realm.query<MediaModel>('TRUEPREDICATE SORT(timestamp DESCENDING)');
-  }
-
-  @override
-  MediaModel? getSingle(String primaryKey) {
-    return _realm.find<MediaModel>(primaryKey);
+      // set last update time
+      setLastSyncTimestamp();
+      return documents;
+    });
   }
 
   @override
   int count() => _realm.all<MediaModel>().query(r'removed == $0', [0]).length;
-
-  @override
-  Future<int> syncByTimestamp(int timestamp) {
-    // TODO: implement syncByTimestamp
-    throw UnimplementedError();
-  }
-
-  @override
-  Stream<List<MediaModel>> listenForChanges() {
-    // TODO: implement listenForChanges
-    throw UnimplementedError();
-  }
 }

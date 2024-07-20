@@ -1,13 +1,7 @@
 part of '../collections.dart';
 
-class NotesCollection extends FirestoreCollection<NoteModel>
-    implements BaseCollection<NoteModel> {
-  NotesCollection(RealmDatabase realmDatabase)
-      : _realm = realmDatabase.realm,
-        super(
-          realmDatabase.user.id,
-          realmDatabase.sharedPrefs,
-        );
+class NotesCollection extends BaseCollection<NoteModel> {
+  NotesCollection(super.realmDatabase) : _realm = realmDatabase.realm;
 
   final Realm _realm;
 
@@ -23,38 +17,27 @@ class NotesCollection extends FirestoreCollection<NoteModel>
             toFirestore: (model, _) => model.toJson(),
           );
 
+  @override
+  Stream<List<NoteModel>> listenForChanges() {
+    return stream.map((querySnapshot) {
+      final documents = querySnapshot.docChanges
+          .map((change) {
+            final model = NoteModelX.fromJson(change.doc.data()!);
+            _realm.write(() => _realm.add<NoteModel>(model, update: true));
+            return model;
+          })
+          .whereType<NoteModel>()
+          .toList();
+
+      // set last update time
+      setLastSyncTimestamp();
+      return documents;
+    });
+  }
+
   /// ////////////////////////////////////////////////////////////////////
   /// Realm Methods
   /// ////////////////////////////////////////////////////////////////////
-
-  @override
-  Future<void> add(NoteModel object) {
-    // TODO: implement add
-    throw UnimplementedError();
-  }
-
-  @override
-  int count() {
-    // TODO: implement count
-    throw UnimplementedError();
-  }
-
-  @override
-  RealmResults<NoteModel> getAll() {
-    // TODO: implement getAll
-    throw UnimplementedError();
-  }
-
-  @override
-  NoteModel? getSingle(String primaryKey) {
-    // TODO: implement getSingle
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<NoteModel> upsert(NoteModel Function() updateCallback) {
-    return _realm.writeAsync<NoteModel>(updateCallback);
-  }
 
   List<NoteModel> search(String searchTerm) {
     final results = _realm.query<NoteModel>(
@@ -62,17 +45,5 @@ class NotesCollection extends FirestoreCollection<NoteModel>
       ['$searchTerm*'],
     );
     return results.toList();
-  }
-
-  @override
-  Future<int> syncByTimestamp(int timestamp) {
-    // TODO: implement syncByTimestamp
-    throw UnimplementedError();
-  }
-
-  @override
-  Stream<List<NoteModel>> listenForChanges() {
-    // TODO: implement listenForChanges
-    throw UnimplementedError();
   }
 }

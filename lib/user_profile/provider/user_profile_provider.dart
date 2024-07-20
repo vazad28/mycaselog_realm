@@ -132,7 +132,10 @@ class UserProfileNotifier extends _$UserProfileNotifier with LoggerMixin {
   void _updateUserModel(UserModel userModel) {
     /// we are not saving data if the user is anonymous as can happen on logout
     if (userModel.userID.isEmpty) return;
-    ref.read(collectionsProvider).usersCollection.add(userModel);
+    ref
+        .read(collectionsProvider)
+        .usersCollection
+        .add(userModel.userID, userModel);
   }
 
   /// Upload user avatar photo

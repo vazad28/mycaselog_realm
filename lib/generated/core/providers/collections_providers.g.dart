@@ -21,6 +21,20 @@ final realmDatabaseProvider = AutoDisposeFutureProvider<RealmDatabase>.internal(
 );
 
 typedef RealmDatabaseRef = AutoDisposeFutureProviderRef<RealmDatabase>;
+String _$realmHash() => r'178b3c13513aacc43fb99b7f37b515f5f509baa8';
+
+/// See also [realm].
+@ProviderFor(realm)
+final realmProvider = AutoDisposeProvider<Realm>.internal(
+  realm,
+  name: r'realmProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$realmHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef RealmRef = AutoDisposeProviderRef<Realm>;
 String _$collectionsHash() => r'bec1e22d75809ae00c140d7a5d3b9c04d845d123';
 
 /// See also [collections].

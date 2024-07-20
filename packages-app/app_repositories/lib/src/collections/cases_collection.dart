@@ -1,13 +1,7 @@
 part of '../collections.dart';
 
-class CasesCollection extends FirestoreCollection<CaseModel>
-    implements BaseCollection<CaseModel> {
-  CasesCollection(RealmDatabase realmDatabase)
-      : _realm = realmDatabase.realm,
-        super(
-          realmDatabase.user.id,
-          realmDatabase.sharedPrefs,
-        );
+class CasesCollection extends BaseCollection<CaseModel> {
+  CasesCollection(super.realmDatabase) : _realm = realmDatabase.realm;
 
   final Realm _realm;
 
@@ -24,46 +18,23 @@ class CasesCollection extends FirestoreCollection<CaseModel>
           );
 
   @override
-  Future<int> syncByTimestamp(int timestamp) async {
-    final models = await getByTimestamp(timestamp);
+  Stream<List<CaseModel>> listenForChanges() {
+    return stream.map((querySnapshot) {
+      final documents = querySnapshot.docChanges
+          .map((change) {
+            final model = CaseModelX.fromJson(change.doc.data()!);
+            //print('CasesCollection ${model.caseID} ${change.type}');
+            return _realm.write(
+              () => _realm.add<CaseModel>(model, update: true),
+            );
+          })
+          .whereType<CaseModel>()
+          .toList();
 
-    /// write all models to realm
-    await _realm.writeAsync(() {
-      _realm.addAll<CaseModel>(models, update: true);
+      // set last update time
+      setLastSyncTimestamp();
+      return documents;
     });
-
-    return models.length;
-  }
-
-  @override
-  listenForChanges() {
-    // TODO: implement listenForChanges
-    throw UnimplementedError();
-  }
-
-  /// ////////////////////////////////////////////////////////////////////
-  ///
-  /// ////////////////////////////////////////////////////////////////////
-
-  @override
-  Future<void> add(CaseModel object) {
-    return _realm.writeAsync(() => _realm.add<CaseModel>(object));
-  }
-
-  @override
-  Future<CaseModel> upsert(CaseModel Function() updateCallback) {
-    return _realm.writeAsync<CaseModel>(updateCallback);
-  }
-
-  @override
-  RealmResults<CaseModel> getAll() {
-    return _realm
-        .query<CaseModel>('TRUEPREDICATE SORT(surgeryDate DESCENDING)');
-  }
-
-  @override
-  CaseModel? getSingle(String primaryKey) {
-    return _realm.find<CaseModel>(primaryKey);
   }
 
   @override

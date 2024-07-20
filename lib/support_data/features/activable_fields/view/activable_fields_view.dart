@@ -5,7 +5,15 @@ class ActivableFieldsView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final activeFields = ref.watch(activableAddCaseFieldsProvider);
+    final activeFieldsList =
+        ref.watch(supportDataNotifierProvider.select((data) {
+      final list = data.activeBasicFields
+          .map((name) => ActivableCaseField.values.byName(name))
+          .toList();
+
+      if (list.isEmpty) return ActivableCaseField.values;
+      return list;
+    }));
 
     return ListView(
       shrinkWrap: true,
@@ -26,8 +34,8 @@ class ActivableFieldsView extends ConsumerWidget {
                 const SizedBox(width: 12),
                 Expanded(
                   child: ActivableBasicField(
-                    ActivableAddCaseField.gender,
-                    activeFields,
+                    ActivableCaseField.gender,
+                    activeFieldsList,
                   ),
                 ),
               ],
@@ -39,15 +47,15 @@ class ActivableFieldsView extends ConsumerWidget {
               children: [
                 Expanded(
                   child: ActivableBasicField(
-                    ActivableAddCaseField.yob,
-                    activeFields,
+                    ActivableCaseField.yob,
+                    activeFieldsList,
                   ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: ActivableBasicField(
-                    ActivableAddCaseField.bmi,
-                    activeFields,
+                    ActivableCaseField.bmi,
+                    activeFieldsList,
                   ),
                 ),
               ],
@@ -70,15 +78,15 @@ class ActivableFieldsView extends ConsumerWidget {
               children: [
                 Expanded(
                   child: ActivableBasicField(
-                    ActivableAddCaseField.side,
-                    activeFields,
+                    ActivableCaseField.side,
+                    activeFieldsList,
                   ),
                 ),
                 HorizontalSpacer.normal,
                 Expanded(
                   child: ActivableBasicField(
-                    ActivableAddCaseField.location,
-                    activeFields,
+                    ActivableCaseField.location,
+                    activeFieldsList,
                   ),
                 ),
               ],
@@ -89,15 +97,15 @@ class ActivableFieldsView extends ConsumerWidget {
               children: [
                 Expanded(
                   child: ActivableBasicField(
-                    ActivableAddCaseField.ebl,
-                    activeFields,
+                    ActivableCaseField.ebl,
+                    activeFieldsList,
                   ),
                 ),
                 HorizontalSpacer.normal,
                 Expanded(
                   child: ActivableBasicField(
-                    ActivableAddCaseField.asa,
-                    activeFields,
+                    ActivableCaseField.asa,
+                    activeFieldsList,
                   ),
                 ),
               ],
@@ -112,36 +120,36 @@ class ActivableFieldsView extends ConsumerWidget {
                 HorizontalSpacer.normal,
                 Expanded(
                   child: ActivableBasicField(
-                    ActivableAddCaseField.anesthesia,
-                    activeFields,
+                    ActivableCaseField.anesthesia,
+                    activeFieldsList,
                   ),
                 ),
               ],
             ),
             VerticalSpacer.normal,
             ActivableBasicField(
-              ActivableAddCaseField.assistants,
-              activeFields,
+              ActivableCaseField.assistants,
+              activeFieldsList,
             ),
             VerticalSpacer.normal,
             const NonActivableBsicDataField('comments'),
             VerticalSpacer.normal,
-            ActivableBasicField(ActivableAddCaseField.pcp, activeFields),
+            ActivableBasicField(ActivableCaseField.pcp, activeFieldsList),
             VerticalSpacer.normal,
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   child: ActivableBasicField(
-                    ActivableAddCaseField.icd,
-                    activeFields,
+                    ActivableCaseField.icd,
+                    activeFieldsList,
                   ),
                 ),
                 HorizontalSpacer.normal,
                 Expanded(
                   child: ActivableBasicField(
-                    ActivableAddCaseField.cpt,
-                    activeFields,
+                    ActivableCaseField.cpt,
+                    activeFieldsList,
                   ),
                 ),
               ],

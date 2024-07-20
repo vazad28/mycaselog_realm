@@ -13,21 +13,19 @@ part '../../generated/case_timeline/provider/case_timeline_provider.g.dart';
 class CaseTimelineNotifier extends _$CaseTimelineNotifier with LoggerMixin {
   @override
   StateOf<List<TimelineItemModel>> build() {
-    final caseID = ref.watch(caseIDSeeder);
+    final caseID = ref.watch(caseIDProvider);
     if (caseID == null) {
       return const StateOf<List<TimelineItemModel>>.init();
     }
 
-    final sub = ref
-        .watch(collectionsProvider)
-        .casesCollection
-        .getSingle(caseID)
-        ?.changes
-        .listen((data) {
-      _createTimelines(data.object);
-    });
+    final caseModel =
+        ref.watch(collectionsProvider).casesCollection.getSingle(caseID);
 
-    ref.onDispose(() => sub?.cancel());
+    if (caseModel == null) {
+      return const StateOf<List<TimelineItemModel>>.init();
+    }
+
+    _createTimelines(caseModel);
 
     return const StateOf<List<TimelineItemModel>>.success([]);
   }

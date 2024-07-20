@@ -51,7 +51,6 @@ Future<ProviderContainer> bootstrap(
 
   /// call read on these providers to self initialize them for app use
   return container;
-  //..read(authenticationUserProvider);
 }
 
 void registerErrorHandlers() {

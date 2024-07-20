@@ -43,23 +43,10 @@ class MediaTileStyle extends _$MediaTileStyle {
 @Riverpod(keepAlive: true)
 class MediaStream extends _$MediaStream {
   @override
-  Stream<Iterable<MediaModel>> build() async* {
-    final casesResult = ref.read(collectionsProvider).casesCollection.getAll();
+  Stream<RealmResultsChanges<MediaModel>> build() {
+    final results = ref.read(collectionsProvider).mediaCollection.getAll();
 
-    final allCases = casesResult.changes;
-
-    final transformedStream = allCases.transform(
-      StreamTransformer<RealmResultsChanges<CaseModel>,
-          Iterable<MediaModel>>.fromHandlers(
-        handleData: (data, sink) {
-          if (data.results.isEmpty) return;
-
-          sink.add(data.results.expand((e) => e.medias));
-        },
-      ),
-    );
-
-    yield* transformedStream;
+    return results.changes;
   }
 }
 

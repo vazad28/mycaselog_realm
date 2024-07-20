@@ -12,25 +12,25 @@ part '../../generated/settings/provider/app_settings_provider.g.dart';
 class AppSettings extends _$AppSettings with LoggerMixin {
   @override
   SettingsModel build() {
-    final userID = ref.read(userIDProvider);
+    final userID = ref.watch(userIDProvider);
 
-    // final sub = ref
-    //     .watch(collectionsProvider)
-    //     .settingsCollection
-    //     .getSingle(userID)
-    //     ?.changes
-    //     .listen((data) {
-    //   state = SettingsModelX.fromJson(data.object.toJson());
-    // });
+    final sub = ref
+        .watch(collectionsProvider)
+        .settingsCollection
+        .getSingle(userID)
+        ?.changes
+        .listen((data) {
+      state = SettingsModelX.fromJson(data.object.toJson());
+    });
 
-    // ref.onDispose(() => sub?.cancel());
+    ref.onDispose(() => sub?.cancel());
 
     return SettingsModelX.zero(userID);
   }
 
   Future<void> _updateSettings(SettingsModel settingsModel) async {
-    //print('settingsModel.syncOnStart ${settingsModel.syncOnStart}');
     await ref.read(collectionsProvider).settingsCollection.add(
+          ref.watch(userIDProvider),
           settingsModel,
         );
   }

@@ -30,7 +30,7 @@ mixin MediaMixin {
       await ref
           .watch(collectionsProvider)
           .mediaCollection
-          .upsert(() => mediaModel..removed = 1);
+          .upsert(mediaModel.mediaID, () => mediaModel..removed = 1);
     }
   }
 

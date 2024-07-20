@@ -26,9 +26,6 @@ class DismissibleListTile extends StatelessWidget {
     BuildContext context,
     DismissDirection direction,
   ) {
-    // return context.showConfirmDialog(
-    //   'Do you want to delete this item?',
-    // );
     return showAdaptiveDialog<bool>(
       context: context,
       builder: (_) {
@@ -69,7 +66,26 @@ class DismissibleListTile extends StatelessWidget {
       ),
       direction: DismissDirection.endToStart,
       confirmDismiss: (DismissDirection direction) =>
-          _confirmDelete(context, direction),
+          Future<bool?>.sync(() => true),
+      // _confirmDelete(context, direction),
+      //     showAdaptiveDialog<bool>(
+      //   context: context,
+      //   builder: (_) {
+      //     return AlertDialog.adaptive(
+      //       content: const Text('Are you sure?'),
+      //       actions: <Widget>[
+      //         TextButton(
+      //           onPressed: () => false,
+      //           child: const Text('Cancel'),
+      //         ),
+      //         TextButton(
+      //           onPressed: () => true,
+      //           child: const Text('OK'),
+      //         ),
+      //       ],
+      //     );
+      //   },
+      // ),
       onDismissed: (direction) => onDismissed.call(),
       child: ListTile(
         title: Text(title),

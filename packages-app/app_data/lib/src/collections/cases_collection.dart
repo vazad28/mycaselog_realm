@@ -119,10 +119,10 @@ class CasesCollection extends DatabaseCollection<CaseModel> {
 
           /// delete media from storage too
         } else {
-          caseModel.medias.replaceOrAddComplex(
-            mediaModel,
-            (mediaModel) => mediaModel.mediaID,
-          );
+          // caseModel.medias.replaceOrAddComplex(
+          //   mediaModel,
+          //   (mediaModel) => mediaModel.mediaID,
+          // );
         }
       });
     } catch (err) {
@@ -142,10 +142,10 @@ class CasesCollection extends DatabaseCollection<CaseModel> {
         caseModel.notes
             .removeWhere((e) => e.noteID == timelineNoteModel.noteID);
       } else {
-        caseModel.notes.replaceOrAddComplex(
-          timelineNoteModel,
-          (timelineNoteModel) => timelineNoteModel.noteID,
-        );
+        // caseModel.notes.replaceOrAddComplex(
+        //   timelineNoteModel,
+        //   (timelineNoteModel) => timelineNoteModel.noteID,
+        // );
       }
       // update(caseModel.caseID, {
       //   'notes': caseModel.notes.map((e) => e.toJson()).toList(),
@@ -168,11 +168,11 @@ class CasesCollection extends DatabaseCollection<CaseModel> {
       final updatedNotesList = noteList.map((e) => e..createdAt = timestamp);
 
       for (final media in updatedMediaList) {
-        caseModel.medias.replaceOrAddComplex(media, (media) => media.mediaID);
+        //caseModel.medias.replaceOrAddComplex(media, (media) => media.mediaID);
       }
 
       for (final note in updatedNotesList) {
-        caseModel.notes.replaceOrAddComplex(note, (note) => note.noteID);
+        //caseModel.notes.replaceOrAddComplex(note, (note) => note.noteID);
       }
     });
 

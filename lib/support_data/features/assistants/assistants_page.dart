@@ -4,25 +4,22 @@ import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recase/recase.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../router/routes/routes.dart';
 import '../../support_data.dart';
 
-part '../../../generated/support_data/features/assistants/assistants_page.g.dart';
+// /// Provider to keep the state of Assistants
+// @riverpod
+// List<AssistantModel> assistantsList(AssistantsListRef ref) {
+//   final assistants = ref.watch(
+//     supportDataNotifierProvider.select(
+//       (value) =>
+//           value.assistants.where((element) => element.removed == 0).toList(),
+//     ),
+//   );
 
-/// Provider to keep the state of Assistants
-@riverpod
-List<AssistantModel> assistantsList(AssistantsListRef ref) {
-  final assistants = ref.watch(
-    supportDataNotifierProvider.select(
-      (value) =>
-          value.assistants.where((element) => element.removed == 0).toList(),
-    ),
-  );
-
-  return assistants;
-}
+//   return assistants;
+// }
 
 class AssistantsPage extends ConsumerWidget {
   const AssistantsPage({super.key});
@@ -57,7 +54,9 @@ class _AssistantsView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     /// Use watch so that the filter function can update the view
-    final assistants = ref.watch(assistantsListProvider);
+    final assistants = ref.watch(
+      supportDataNotifierProvider.select((data) => data.assistants),
+    );
 
     if (assistants.isEmpty) {
       return const Center(

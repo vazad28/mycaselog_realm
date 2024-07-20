@@ -1,3 +1,4 @@
+import 'package:app_annotations/app_annotations.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,8 +9,8 @@ import '../../../support_data.dart';
 class ActivableBasicField extends ConsumerWidget {
   const ActivableBasicField(this.field, this.activeFields, {super.key});
 
-  final List<ActivableAddCaseField> activeFields;
-  final ActivableAddCaseField field;
+  final List<ActivableCaseField> activeFields;
+  final ActivableCaseField field;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -18,7 +19,7 @@ class ActivableBasicField extends ConsumerWidget {
 
     return InkWell(
       onTap: () {
-        final fields = List<ActivableAddCaseField>.from(activeFields);
+        final fields = List<ActivableCaseField>.from(activeFields);
         if (fields.contains(field)) {
           fields.remove(field);
         } else {
@@ -26,7 +27,7 @@ class ActivableBasicField extends ConsumerWidget {
         }
         ref
             .watch(supportDataNotifierProvider.notifier)
-            .upsertActivableFields(fields);
+            .upsertActivableCaseFields(fields);
       },
       child: InputDecorator(
         decoration: InputDecoration(

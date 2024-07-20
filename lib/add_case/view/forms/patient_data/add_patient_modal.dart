@@ -1,7 +1,7 @@
+import 'package:app_annotations/app_annotations.dart';
 import 'package:app_l10n/app_l10n.dart';
 import 'package:app_models/app_models.dart';
 import 'package:app_ui/app_ui.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -9,7 +9,7 @@ import 'package:logger_client/logger_client.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:recase/recase.dart';
 
-import '../../../../support_data/support_data.dart';
+import '../../../../core/providers/providers.dart';
 import '../../../provider/add_case_provider.dart';
 
 /// AddPatientModal ROOT Widget
@@ -134,7 +134,7 @@ class _PatientFormFields extends ConsumerWidget with AddCaseStateMixin {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final activeFields = watchActiveFields(ref);
+    final activeFieldsList = ref.watch(activeFieldsListProvider);
 
     /// name field
     final Widget nameInputField = ReactiveTextField<String>(
@@ -166,7 +166,7 @@ class _PatientFormFields extends ConsumerWidget with AddCaseStateMixin {
         //--  MRN input field
         mrnInputField,
         //--- if activable field show phone
-        if (activeFields.contains(ActivableAddCaseField.phone)) ...[
+        if (activeFieldsList.contains(ActivableCaseField.phone)) ...[
           VerticalSpacer.large,
           ReactiveTextField<String>(
             formControlName: PatientDataModelProps.phone.name,

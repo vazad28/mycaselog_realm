@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:app_extensions/app_extensions.dart';
-import 'package:app_ui/app_ui.dart';
+import 'package:app_models/app_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger_client/logger_client.dart';
 import 'package:misc_packages/misc_packages.dart';
 
-//import '../../case_pdf/case_pdf.dart';
+import '../../core/widgets/async_value_widget.dart';
 import '../../router/router.dart';
 import '../../settings/settings.dart';
 import '../case_details.dart';
@@ -60,7 +60,7 @@ class _CaseDetailsPageState extends ConsumerState<CaseDetailsPage>
 
     /// Seed the provider
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.watch(caseIDSeeder.notifier).update((_) => widget.caseID);
+      ref.watch(caseIDProvider.notifier).update((_) => widget.caseID);
     });
 
     if (_activeTab == 2) {
@@ -75,27 +75,29 @@ class _CaseDetailsPageState extends ConsumerState<CaseDetailsPage>
   @override
   Widget build(BuildContext context) {
     final scaffold = Scaffold(
-      body: NestedScrollView(
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return <Widget>[
-            SliverOverlapAbsorber(
-              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-              sliver: CaseDetailsAppBar(
-                tabController: _tabController,
-                innerBoxIsScrolled: innerBoxIsScrolled,
-                onMoreMenuTap: _onCaseDetailsMoreMenuTap,
-              ),
+        body: NestedScrollView(
+      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+        return <Widget>[
+          SliverOverlapAbsorber(
+            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+            sliver: CaseDetailsAppBar(
+              tabController: _tabController,
+              innerBoxIsScrolled: innerBoxIsScrolled,
+              onMoreMenuTap: _onCaseDetailsMoreMenuTap,
             ),
-          ];
+          ),
+        ];
+      },
+      body: AsyncValueWidget<CaseModel>(
+        value: ref.watch(caseDetailsNotifierProvider),
+        data: (data) {
+          return CaseDetailsView(
+            tabController: _tabController,
+            onTap: _openAddCase,
+          );
         },
-        body: ref.watch(caseIDSeeder) == null
-            ? const Loading()
-            : CaseDetailsView(
-                tabController: _tabController,
-                onTap: _openAddCase,
-              ),
       ),
-    );
+    ));
 
     return PopScope(
       child: scaffold,

@@ -1,7 +1,9 @@
+import 'package:app_annotations/app_annotations.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:misc_packages/misc_packages.dart';
+
 import '../../../support_data.dart';
 
 part './activable_fields_view.dart';
@@ -27,7 +29,11 @@ class ActivableFieldsPage extends ConsumerWidget {
                     title: 'Reset',
                   )
                   .then(
-                    (res) => res ? _resetActivableFields(ref) : null,
+                    (res) => res
+                        ? ref
+                            .watch(supportDataNotifierProvider.notifier)
+                            .upsertActivableCaseFields(null)
+                        : null,
                   );
             },
             icon: const Icon(Icons.redo),
@@ -36,11 +42,5 @@ class ActivableFieldsPage extends ConsumerWidget {
       ),
       body: const ActivableFieldsView(),
     );
-  }
-
-  void _resetActivableFields(WidgetRef ref) {
-    ref
-        .watch(supportDataNotifierProvider.notifier)
-        .upsertActivableFields(ActivableAddCaseField.values);
   }
 }

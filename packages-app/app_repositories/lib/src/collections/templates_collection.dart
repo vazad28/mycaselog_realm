@@ -1,17 +1,10 @@
 part of '../collections.dart';
 
-class TemplatesCollection extends FirestoreCollection<TemplateModel>
-    implements BaseCollection<TemplateModel> {
-  TemplatesCollection(RealmDatabase realmDatabase)
-      : _realm = realmDatabase.realm,
-        super(
-          realmDatabase.user.id,
-          realmDatabase.sharedPrefs,
-        );
+class TemplatesCollection extends BaseCollection<TemplateModel> {
+  TemplatesCollection(super.realmDatabase) : _realm = realmDatabase.realm;
 
   final Realm _realm;
 
-  /// Firestore Methods
   @override
   String get path => '$root/$userID/${DbCollection.templates.name}';
 
@@ -23,48 +16,31 @@ class TemplatesCollection extends FirestoreCollection<TemplateModel>
             toFirestore: (model, _) => model.toJson(),
           );
 
+  @override
+  Stream<List<TemplateModel>> listenForChanges() {
+    return stream.map((querySnapshot) {
+      final documents = querySnapshot.docChanges
+          .map((change) {
+            final model = TemplateModelX.fromJson(change.doc.data()!);
+
+            _realm.write(() => _realm.add<TemplateModel>(model, update: true));
+            return model;
+          })
+          .whereType<TemplateModel>()
+          .toList();
+
+      // set last update time
+      setLastSyncTimestamp();
+      return documents;
+    });
+  }
+
   /// ////////////////////////////////////////////////////////////////////
   /// Realm Methods
   /// ////////////////////////////////////////////////////////////////////
-  ///
-  @override
-  Future<void> add(TemplateModel object) {
-    // TODO: implement add
-    throw UnimplementedError();
-  }
-
-  @override
-  int count() {
-    // TODO: implement count
-    throw UnimplementedError();
-  }
-
-  @override
-  RealmResults<TemplateModel> getAll() {
-    // TODO: implement getAll
-    throw UnimplementedError();
-  }
-
-  @override
-  TemplateModel? getSingle(String primaryKey) {
-    // TODO: implement getSingle
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<TemplateModel> upsert(TemplateModel Function() updateCallback) {
-    return _realm.writeAsync<TemplateModel>(updateCallback);
-  }
-
-  @override
-  Future<int> syncByTimestamp(int timestamp) {
-    // TODO: implement syncByTimestamp
-    throw UnimplementedError();
-  }
-
-  @override
-  Stream<List<TemplateModel>> listenForChanges() {
-    // TODO: implement listenForChanges
-    throw UnimplementedError();
+  RealmResults<SharedTemplateModel> getSharedTemplates(String speciality) {
+    return _realm
+        .all<SharedTemplateModel>()
+        .query(r'speciality  ==  $0', [speciality]);
   }
 }

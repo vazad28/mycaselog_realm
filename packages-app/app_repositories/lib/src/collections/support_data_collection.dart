@@ -1,19 +1,12 @@
 part of '../collections.dart';
 
-class SupportDataCollection extends FirestoreCollection<SupportDataModel>
-    implements BaseCollection<SupportDataModel> {
-  SupportDataCollection(RealmDatabase realmDatabase)
-      : _realm = realmDatabase.realm,
-        super(
-          realmDatabase.user.id,
-          realmDatabase.sharedPrefs,
-        );
+class SupportDataCollection extends BaseCollection<SupportDataModel> {
+  SupportDataCollection(super.realmDatabase) : _realm = realmDatabase.realm;
 
   final Realm _realm;
 
-  /// Firestore Methods
   @override
-  String get path => 'notess/$userID/data';
+  String get path => '$root/$userID/${DbCollection.supportData.name}';
 
   @override
   CollectionReference<SupportDataModel> get withConverter =>
@@ -23,48 +16,30 @@ class SupportDataCollection extends FirestoreCollection<SupportDataModel>
             toFirestore: (model, _) => model.toJson(),
           );
 
+  @override
+  Stream<List<SupportDataModel>> listenForChanges() {
+    return stream.map((querySnapshot) {
+      final documents = querySnapshot.docChanges
+          .map((change) {
+            final model = SupportDataModelX.fromJson(change.doc.data()!);
+            _realm.write(
+              () => _realm.add<SupportDataModel>(model, update: true),
+            );
+            return model;
+          })
+          .whereType<SupportDataModel>()
+          .toList();
+
+      // set last update time
+      setLastSyncTimestamp();
+      return documents;
+    });
+  }
+
   /// ////////////////////////////////////////////////////////////////////
   /// Realm Methods
   /// ////////////////////////////////////////////////////////////////////
-
-  @override
-  Future<void> add(SupportDataModel object) {
-    // TODO: implement add
-    throw UnimplementedError();
-  }
-
-  @override
-  int count() {
-    // TODO: implement count
-    throw UnimplementedError();
-  }
-
-  @override
-  RealmResults<SupportDataModel> getAll() {
-    // TODO: implement getAll
-    throw UnimplementedError();
-  }
-
-  @override
-  SupportDataModel? getSingle(String primaryKey) {
-    // TODO: implement getSingle
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<SupportDataModel> upsert(SupportDataModel Function() updateCallback) {
-    return _realm.writeAsync<SupportDataModel>(updateCallback);
-  }
-
-  @override
-  Future<int> syncByTimestamp(int timestamp) {
-    // TODO: implement syncByTimestamp
-    throw UnimplementedError();
-  }
-
-  @override
-  Stream<List<SupportDataModel>> listenForChanges() {
-    // TODO: implement listenForChanges
-    throw UnimplementedError();
+  SupportDataModel getSupportData() {
+    return _realm.findOrAdd(userID, SupportDataModelX.zero);
   }
 }

@@ -27,7 +27,7 @@ final mediaTileStyleProvider =
 );
 
 typedef _$MediaTileStyle = AutoDisposeNotifier<MediaGridStyleEnum>;
-String _$mediaStreamHash() => r'e56f0f248c72ccbd4b49460fec653e60102c21f7';
+String _$mediaStreamHash() => r'916219d12b0fc0bb7962826e230ed12a6d752134';
 
 /// ////////////////////////////////////////////////////////////////////
 /// Main Provider
@@ -35,8 +35,8 @@ String _$mediaStreamHash() => r'e56f0f248c72ccbd4b49460fec653e60102c21f7';
 ///
 /// Copied from [MediaStream].
 @ProviderFor(MediaStream)
-final mediaStreamProvider =
-    StreamNotifierProvider<MediaStream, Iterable<MediaModel>>.internal(
+final mediaStreamProvider = StreamNotifierProvider<MediaStream,
+    RealmResultsChanges<MediaModel>>.internal(
   MediaStream.new,
   name: r'mediaStreamProvider',
   debugGetCreateSourceHash:
@@ -45,7 +45,7 @@ final mediaStreamProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$MediaStream = StreamNotifier<Iterable<MediaModel>>;
+typedef _$MediaStream = StreamNotifier<RealmResultsChanges<MediaModel>>;
 String _$mediaNotifierHash() => r'f3d2b321ad536f92a2044b880ebcfe595ee36e3e';
 
 /// See also [MediaNotifier].

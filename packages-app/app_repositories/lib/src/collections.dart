@@ -1,17 +1,13 @@
 import 'dart:io';
 
 import 'package:app_annotations/app_annotations.dart';
-import 'package:app_extensions/app_extensions.dart';
 import 'package:app_models/app_models.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:logger_client/logger_client.dart';
 import 'package:realm/realm.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../app_repositories.dart';
-import 'domain/base_collection.dart';
-import 'domain/firestore_collection.dart';
 
 part 'collections/cases_collection.dart';
 part 'collections/media_collection.dart';

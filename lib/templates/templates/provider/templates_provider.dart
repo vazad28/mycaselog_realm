@@ -21,23 +21,24 @@ class TemplatesList extends _$TemplatesList {
 
   @override
   List<TemplateModel> build() {
-    // final sub = ref
-    //     .watch(collectionsProvider)
-    //     .templatesCollection
-    //     .getAll()
-    //     .changes
-    //     .listen((data) {
-    //   state =
-    //       data.results.map((e) => TemplateModelX.fromJson(e.toJson())).toList();
-    // });
+    final sub = ref
+        .watch(collectionsProvider)
+        .templatesCollection
+        .getAll()
+        .changes
+        .listen((data) {
+      state =
+          data.results.map((e) => TemplateModelX.fromJson(e.toJson())).toList();
+    });
 
-    // ref.onDispose(sub.cancel);
+    ref.onDispose(sub.cancel);
 
     return <TemplateModel>[];
   }
 
   Future<void> _updateTemplate(TemplateModel templateModel) async {
     await ref.watch(collectionsProvider).templatesCollection.add(
+          ref.watch(userIDProvider),
           templateModel,
         );
   }

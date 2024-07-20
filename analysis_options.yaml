@@ -10,6 +10,7 @@ linter:
     flutter_style_todos: false
     use_setters_to_change_properties: false
     lines_longer_than_80_chars: false
+    curly_braces_in_flow_control_structures: true
 
 analyzer:
   errors:

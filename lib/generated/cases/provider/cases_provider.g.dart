@@ -6,7 +6,22 @@ part of '../../../cases/provider/cases_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$caseTileStyleHash() => r'd137223612d5115f0cf2dce39356eb824b8e614f';
+String _$casesStreamHash() => r'b27d293f69e34c5483e8d9b36bf330d355a32d8b';
+
+/// See also [casesStream].
+@ProviderFor(casesStream)
+final casesStreamProvider =
+    StreamProvider<RealmResultsChanges<CaseModel>>.internal(
+  casesStream,
+  name: r'casesStreamProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$casesStreamHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef CasesStreamRef = StreamProviderRef<RealmResultsChanges<CaseModel>>;
+String _$caseTileStyleHash() => r'3b18bf56a3581bcaff4cc27f4763ccd9eec16ebd';
 
 /// case tile style provider
 ///
@@ -24,20 +39,5 @@ final caseTileStyleProvider =
 );
 
 typedef _$CaseTileStyle = AutoDisposeNotifier<int>;
-String _$casesHash() => r'8f1add54ceedb4080ce1dc222a4054314d7ba134';
-
-/// See also [Cases].
-@ProviderFor(Cases)
-final casesProvider =
-    AutoDisposeNotifierProvider<Cases, RealmResults<CaseModel>>.internal(
-  Cases.new,
-  name: r'casesProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$casesHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$Cases = AutoDisposeNotifier<RealmResults<CaseModel>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, inference_failure_on_uninitialized_variable, inference_failure_on_function_return_type, inference_failure_on_untyped_parameter, deprecated_member_use_from_same_package

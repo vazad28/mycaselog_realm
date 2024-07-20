@@ -7,17 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:realm/realm.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Disposable {
-  final _disposers = <Future<void> Function()>[];
-
-  Future<void> dispose() async {
-    for (final disposer in _disposers) {
-      await disposer();
-    }
-  }
-
-  void onDispose(Future<void> Function() disposer) => _disposers.add(disposer);
-}
+import 'disposable.dart';
 
 class RealmDatabase extends Disposable {
   RealmDatabase._(this._realm, this._user, this._sharedPrefs) {
@@ -70,14 +60,6 @@ class RealmDatabase extends Disposable {
   }
 }
 
-/// ////////////////////////////////////////////////////////////////////
-/// EXTENSIONS
-/// ////////////////////////////////////////////////////////////////////
-
-extension on StreamSubscription {
-  void cancelOnDisposeOf(Disposable disposable) => disposable.onDispose(cancel);
-}
-
 extension<T> on Stream<T> {
   StreamSubscription<void> asyncListen(
     Future<void> Function(T) onData, {
@@ -93,4 +75,28 @@ extension RealmEx on Realm {
 
   T findOrAdd<T extends RealmObject, I>(I id, T Function(I id) factory) =>
       write(() => find(id) ?? add(factory(id)));
+}
+
+extension<T extends RealmObject> on T {
+  T? get nullIfInvalid => isValid ? this : null;
+}
+
+/// Adds or updates an object in the list based on its ID.
+///
+/// - [object]: The object to add or update.
+/// - [idGetter]: A function that retrieves the ID from an object in the list.
+/// - [updateFn]: An optional function to modify the existing object before update (in-place).
+
+extension ObjectListX<T extends RealmObject> on RealmList<T> {
+  void replaceOrAddComplex(T object, String Function(T) idGetter) {
+    final index = indexWhere((item) => idGetter(item) == idGetter(object));
+    if (index == -1) {
+      // Object not found, add it
+      add(object);
+    } else {
+      final obj = this[index];
+      remove(obj);
+      insert(index, object);
+    }
+  }
 }

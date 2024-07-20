@@ -25,10 +25,10 @@ mixin CasesMixin {
       /// delete from firestore because we need to make sure the error deleting
       /// files does not compromise this part and also we can  not reference a file
       /// if the ref object is removed from tree if we delete caseModel itself first
-      ref
+      await ref
           .watch(collectionsProvider)
           .casesCollection
-          .upsert(() => caseModel..removed = 1);
+          .upsert(caseModel.caseID, () => caseModel..removed = 1);
     }
   }
 }
