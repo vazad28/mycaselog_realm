@@ -4,36 +4,12 @@ import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recase/recase.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../router/routes/routes.dart';
 import '../../support_data.dart';
 
-part '../../../generated/support_data/features/surgery_locations/surgery_locations_page.g.dart';
-
-/// ////////////////////////////////////////////////////////////////////
-/// Providers
-/// ////////////////////////////////////////////////////////////////////
-
-/// Provider to keep the state of SurgeryLocations
-@riverpod
-List<SurgeryLocationModel> surgeryLocationsList(SurgeryLocationsListRef ref) {
-  final surgeryLocations = ref.watch(
-    supportDataNotifierProvider.select(
-      (value) => value.surgeryLocations
-          .where((element) => element.removed == 0)
-          .toList(),
-    ),
-  );
-
-  return surgeryLocations;
-}
-
 class SurgeryLocationsPage extends ConsumerWidget {
   const SurgeryLocationsPage({super.key});
-
-  static Page<void> page() =>
-      const MaterialPage<void>(child: SurgeryLocationsPage());
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -46,9 +22,7 @@ class SurgeryLocationsPage extends ConsumerWidget {
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () {
-              AddSurgeryLocationRoute(SurgeryLocationModelX.zero(),
-                      newRecord: true,)
-                  .push<SurgeryLocationModel>(context);
+              AddSurgeryLocationRoute().push<SurgeryLocationModel>(context);
             },
           ),
         ],
@@ -64,7 +38,11 @@ class _SurgeryLocationsView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     /// Use watch so that the filter function can update the view
-    final surgeryLocations = ref.watch(surgeryLocationsListProvider);
+    final surgeryLocations = ref.watch(
+      supportDataNotifierProvider.select(
+        (value) => value.surgeryLocations.toList(),
+      ),
+    );
 
     if (surgeryLocations.isEmpty) {
       return const Center(
@@ -93,10 +71,11 @@ class _SurgeryLocationsView extends ConsumerWidget {
           onDismissed: () {
             ref
                 .watch(supportDataNotifierProvider.notifier)
-                .upsertSurgeryLocation(surgeryLocation..removed = 1);
+                .upsertSurgeryLocation(surgeryLocation, remove: true);
           },
-          onTap: () => AddSurgeryLocationRoute(surgeryLocation)
-              .push<SurgeryLocationModel>(context),
+          onTap: () =>
+              AddSurgeryLocationRoute(locationID: surgeryLocation.locationID)
+                  .push<SurgeryLocationModel>(context),
         );
       },
     );

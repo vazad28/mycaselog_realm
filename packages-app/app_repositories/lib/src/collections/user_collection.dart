@@ -1,7 +1,10 @@
 part of '../collections.dart';
 
 class UserCollection extends BaseCollection<UserModel> {
-  UserCollection(super.realmDatabase) : _realm = realmDatabase.realm;
+  UserCollection(super.realmDatabase) : _realm = realmDatabase.realm {
+    print('creating instance of UserCollection');
+    listenForChanges().listen((_) {}).cancelOnDisposeOf(this);
+  }
 
   final Realm _realm;
 

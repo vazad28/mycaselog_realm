@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recase/recase.dart';
 
+import '../../../core/core.dart';
 import '../../../core/providers/providers.dart';
-import '../../provider/app_settings_provider.dart';
+import '../../provider/settings_mixin.dart';
+import '../../provider/settings_provider.dart';
 import '../../provider/settings_event.dart';
 
 part './tiles/theme_mode_tile.dart';

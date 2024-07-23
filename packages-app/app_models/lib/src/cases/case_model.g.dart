@@ -59,6 +59,7 @@ Map<String, dynamic> _$CaseModelToJson(_CaseModel instance) =>
 
 _PatientModel _$PatientModelFromJson(Map<String, dynamic> json) =>
     _PatientModel()
+      ..patientID = json['patientID'] as String
       ..crypt = json['crypt'] as String?
       ..initials = json['initials'] as String?
       ..name = json['name'] as String?
@@ -71,6 +72,7 @@ _PatientModel _$PatientModelFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$PatientModelToJson(_PatientModel instance) =>
     <String, dynamic>{
+      'patientID': instance.patientID,
       'crypt': instance.crypt,
       'initials': instance.initials,
       'name': instance.name,
@@ -85,6 +87,7 @@ Map<String, dynamic> _$PatientModelToJson(_PatientModel instance) =>
 DecryptedPatientModel _$DecryptedPatientModelFromJson(
         Map<String, dynamic> json) =>
     DecryptedPatientModel(
+      patientID: json['patientID'] as String,
       name: json['name'] as String?,
       mrn: json['mrn'] as String?,
       address: json['address'] as String?,
@@ -94,6 +97,7 @@ DecryptedPatientModel _$DecryptedPatientModelFromJson(
 Map<String, dynamic> _$DecryptedPatientModelToJson(
         DecryptedPatientModel instance) =>
     <String, dynamic>{
+      'patientID': instance.patientID,
       'address': instance.address,
       'mrn': instance.mrn,
       'name': instance.name,
@@ -149,7 +153,8 @@ _TimelineNoteModel _$TimelineNoteModelFromJson(Map<String, dynamic> json) =>
       ..caseID = json['caseID'] as String
       ..note = json['note'] as String?
       ..createdAt = (json['createdAt'] as num).toInt()
-      ..timestamp = (json['timestamp'] as num).toInt();
+      ..timestamp = (json['timestamp'] as num).toInt()
+      ..removed = (json['removed'] as num).toInt();
 
 Map<String, dynamic> _$TimelineNoteModelToJson(_TimelineNoteModel instance) =>
     <String, dynamic>{
@@ -159,4 +164,5 @@ Map<String, dynamic> _$TimelineNoteModelToJson(_TimelineNoteModel instance) =>
       'note': instance.note,
       'createdAt': instance.createdAt,
       'timestamp': instance.timestamp,
+      'removed': instance.removed,
     };

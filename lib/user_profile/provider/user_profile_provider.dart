@@ -95,7 +95,7 @@ class UserProfileNotifier extends _$UserProfileNotifier with LoggerMixin {
   UserModel build() {
     final sub = ref
         .watch(collectionsProvider)
-        .usersCollection
+        .userCollection
         .getSingle(userID)
         ?.changes
         .listen((data) {
@@ -134,7 +134,7 @@ class UserProfileNotifier extends _$UserProfileNotifier with LoggerMixin {
     if (userModel.userID.isEmpty) return;
     ref
         .read(collectionsProvider)
-        .usersCollection
+        .userCollection
         .add(userModel.userID, userModel);
   }
 

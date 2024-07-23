@@ -1,46 +1,46 @@
 part of '../general_section.dart';
 
-class CaseTNavigateToTile extends ConsumerWidget {
-  const CaseTNavigateToTile({super.key});
+class CaseNavigateToTile extends ConsumerWidget with SettingsMixin {
+  const CaseNavigateToTile({super.key});
+
+  static List<RadioSelectOption<CaseDetailsTabsEnum>> items = [
+    RadioSelectOption(
+      title: CaseDetailsTabsEnum.basic.name.titleCase,
+      subTitle: Text('Basic case data tab'.hardcoded),
+      value: CaseDetailsTabsEnum.basic,
+    ),
+    RadioSelectOption(
+      title: CaseDetailsTabsEnum.template.name.titleCase,
+      subTitle: Text('Template case data tab'.hardcoded),
+      value: CaseDetailsTabsEnum.template,
+    ),
+    RadioSelectOption(
+      title: CaseDetailsTabsEnum.timeline.name.titleCase,
+      subTitle: Text('Case timeline data tab'.hardcoded),
+      value: CaseDetailsTabsEnum.timeline,
+    ),
+    RadioSelectOption(
+      title: CaseDetailsTabsEnum.dynamic.name.titleCase,
+      subTitle: Text('Last case details tab used'.hardcoded),
+      value: CaseDetailsTabsEnum.dynamic,
+    ),
+  ];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(
-      appSettingsProvider.select((value) => value.caseTileNavigate),
+    final caseTileNavigate = ref.watch(
+      settingsProvider.select((value) => value.caseTileNavigate),
     );
 
-    final caseTileNavigateTo = state == 0
+    final caseTileNavigateTo = caseTileNavigate == 0
         ? CaseDetailsTabsEnum.basic
-        : CaseDetailsTabsEnum.values[state];
+        : CaseDetailsTabsEnum.values[caseTileNavigate];
 
     return SettingsTile(
       leading: const Icon(Icons.menu_open_sharp),
       title: S.of(context).surgeryDetailLandingTab.titleCase,
       subTitle: caseTileNavigateTo.name.titleCase,
       onTap: () {
-        final items = [
-          RadioSelectOption(
-            title: CaseDetailsTabsEnum.basic.name.titleCase,
-            subTitle: Text('Basic case data tab'.hardcoded),
-            value: CaseDetailsTabsEnum.basic,
-          ),
-          RadioSelectOption(
-            title: CaseDetailsTabsEnum.template.name.titleCase,
-            subTitle: Text('Template case data tab'.hardcoded),
-            value: CaseDetailsTabsEnum.template,
-          ),
-          RadioSelectOption(
-            title: CaseDetailsTabsEnum.timeline.name.titleCase,
-            subTitle: Text('Case timeline data tab'.hardcoded),
-            value: CaseDetailsTabsEnum.timeline,
-          ),
-          RadioSelectOption(
-            title: CaseDetailsTabsEnum.dynamic.name.titleCase,
-            subTitle: Text('Last case details tab used'.hardcoded),
-            value: CaseDetailsTabsEnum.dynamic,
-          ),
-        ];
-
         context
             .openRadioSelectModal(
           rootContext: AppVars.rootContext,
@@ -53,9 +53,8 @@ class CaseTNavigateToTile extends ConsumerWidget {
             .then((radioSelectItem) {
           if (radioSelectItem == null) return;
 
-          ref
-              .watch(appSettingsProvider.notifier)
-              .on(SettingsEvent.updateCaseTileNavigate(radioSelectItem.index));
+          updateSettings(
+              ref, getSettings(ref)..caseTileNavigate = radioSelectItem.index);
         });
       },
     );

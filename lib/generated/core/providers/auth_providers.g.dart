@@ -101,20 +101,6 @@ final authenticationUserProvider = Provider<AuthenticationUser>.internal(
 );
 
 typedef AuthenticationUserRef = ProviderRef<AuthenticationUser>;
-String _$userIDHash() => r'e8d61e6d3bf3479b61307f5b74b90c17dbda4fdc';
-
-/// See also [userID].
-@ProviderFor(userID)
-final userIDProvider = AutoDisposeProvider<String>.internal(
-  userID,
-  name: r'userIDProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$userIDHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef UserIDRef = AutoDisposeProviderRef<String>;
 String _$logoutHash() => r'31a01e405e1d310bdd1e9f52b6a8fb4024ff892c';
 
 /// See also [logout].

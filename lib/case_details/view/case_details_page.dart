@@ -43,7 +43,7 @@ class _CaseDetailsPageState extends ConsumerState<CaseDetailsPage>
   void initState() {
     /// active tab based on router or settings
     _activeTab =
-        widget.activeTab ?? ref.read(appSettingsProvider).caseTileNavigate;
+        widget.activeTab ?? ref.read(settingsProvider).caseTileNavigate;
 
     if (_activeTab > 2) _activeTab = 0;
 
@@ -113,7 +113,7 @@ class _CaseDetailsPageState extends ConsumerState<CaseDetailsPage>
 
   Future<void> _openAddCase(int index) {
     final currentCaseModel = watchCaseDetailsModel(ref).requireValue;
-    return AddCaseRoute(currentCaseModel, tabIndex: index)
+    return AddCaseRoute(caseID: currentCaseModel.caseID, tabIndex: index)
         .push<String?>(context);
   }
 

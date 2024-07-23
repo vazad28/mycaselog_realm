@@ -66,13 +66,47 @@ void registerErrorHandlers() {
     return true;
   };
   // * Show some error UI when any widget in the app fails to build
-  ErrorWidget.builder = (FlutterErrorDetails details) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.red,
-        title: const Text('An error occurred'),
-      ),
-      body: Center(child: Text(details.toString())),
-    );
+  ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
+    return CustomError(errorDetails: errorDetails);
+
+    // return Scaffold(
+    //   appBar: AppBar(
+    //     backgroundColor: Colors.red,
+    //     title: const Text('An error occurred'),
+    //   ),
+    //   body: Center(child: Text(details.toString())),
+    // );
   };
+}
+
+class CustomError extends StatelessWidget {
+  const CustomError({
+    required this.errorDetails,
+    super.key,
+    this.page,
+  });
+
+  final FlutterErrorDetails errorDetails;
+  final Widget? page;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+        child: Center(
+      child: Card(
+        color: Colors.red,
+        margin: EdgeInsets.zero,
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: Text(
+            "Something is not right here.\nStack trace: ${errorDetails.stack?.toString() ?? '(no stack trace stored in error)'}",
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+    ));
+  }
 }

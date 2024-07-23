@@ -1,35 +1,27 @@
-part of 'templates_provider.dart';
+import 'package:app_models/app_models.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-// mixin TemplatesEventMixin {
-//   void onTemplateTap(WidgetRef ref, TemplatesEvent e) {
-//     final notifier = ref.watch(templatesNotifierProvider.notifier);
-//     e.map(
-//       deactivateTemplate: (v) =>
-//           notifier.on(TemplatesEvent.deactivateTemplate(v.templateModel)),
-//       deleteTemplate: (v) =>
-//           notifier.on(TemplatesEvent.deleteTemplate(v.templateModel)),
-//       reactivateTemplate: (v) =>
-//           notifier.on(TemplatesEvent.reactivateTemplate(v.templateModel)),
-//       shareTemplate: (v) =>
-//           notifier.on(TemplatesEvent.shareTemplate(v.templateModel)),
-//       unShareTemplate: (v) =>
-//           notifier.on(TemplatesEvent.unShareTemplate(v.templateModel)),
-//     );
-//   }
+import '../../../core/core.dart';
 
-//   void showHideActiveTemplate(WidgetRef ref) =>
-//       ref.watch(showActiveTemplatesProvider.notifier).update((cb) => !cb);
-// }
+enum TemplateEvent { deactivate, delete, reactivate, share, unShare }
 
-// mixin TemplatesStateMixin {
-//   StateOf<List<TemplateModel>> stateOfTemplates(WidgetRef ref) =>
-//       ref.watch(templatesNotifierProvider);
-
-//   bool showActiveTemplatesOnly(WidgetRef ref) =>
-//       ref.watch(showActiveTemplatesProvider);
-
-//   /// scroll controller for list view
-//   ScrollController templatesListScrollController(WidgetRef ref) => ref
-//       .watch(templatesNotifierProvider.notifier)
-//       .templatesListScrollController;
-// }
+mixin TemplateMixin {
+  Future<void> updateTemplate(
+    WidgetRef ref,
+    TemplateModel templateModel,
+    TemplateEvent event,
+  ) {
+    return ref.watch(collectionsProvider).templatesCollection.upsert(
+      templateModel.templateID,
+      () {
+        return switch (event) {
+          TemplateEvent.share => templateModel..shared = true,
+          TemplateEvent.deactivate => templateModel..removed = 2,
+          TemplateEvent.delete => templateModel..removed = 1,
+          TemplateEvent.reactivate => templateModel..removed = 0,
+          TemplateEvent.unShare => templateModel..shared = false,
+        };
+      },
+    );
+  }
+}

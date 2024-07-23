@@ -2,11 +2,13 @@ import 'dart:async';
 
 import 'package:app_models/app_models.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:logger_client/logger_client.dart';
 import 'package:realm/realm.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'disposable.dart';
+import 'live_sync.dart';
 import 'realm_database.dart';
 
 /// Abstract class defining [BaseCollection] structure
@@ -15,25 +17,20 @@ abstract class BaseCollection<T extends RealmObject> extends Disposable
   BaseCollection(RealmDatabase realmDatabase)
       : _realm = realmDatabase.realm,
         userID = realmDatabase.user.id,
-        sharedPrefs = realmDatabase.sharedPrefs;
-  //        {
-  //   final startTimestamp = DateTime.now().millisecondsSinceEpoch;
+        sharedPrefs = realmDatabase.sharedPrefs {
+    // try to reconnect on any network change, to wake up as early as possible
+    Connectivity().onConnectivityChanged.listen((results) {
+      if (results.contains(ConnectivityResult.mobile) ||
+          results.contains(ConnectivityResult.wifi)) {
+        isOffline = false;
+      } else {
+        isOffline = true;
+      }
+    }).cancelOnDisposeOf(this);
 
-  //   realmDatabase.realm
-  //       .query<T>(r'timestamp > $0', [startTimestamp])
-  //       .changes
-  //       .listen((changes) {
-  //         if (changes.results.isNotEmpty) print("$T Collection updated!");
-  //         // // Handle changes here
-  //         // print("Collection updated!");
-
-  //         // // Access specific changes
-  //         // print("Inserted: ${changes.inserted}");
-  //         // print("Modified: ${changes.modified}");
-  //         // print("Deleted: ${changes.deleted}");
-  //       })
-  //       .cancelOnDisposeOf(this);
-  // }
+    /// create  stream to listen for firebase changes
+    createCollectionStream();
+  }
 
   final Realm _realm;
   final String userID;
@@ -46,6 +43,9 @@ abstract class BaseCollection<T extends RealmObject> extends Disposable
   /// Last sync time in local storage
   final String _lastSyncTimestampKey = '${T}_lastSyncTimestampKey';
   String get lastSyncTimestampKey => _lastSyncTimestampKey;
+
+  bool isOffline = false;
+  bool liveSyncActive = true;
 
   /// ////////////////////////////////////////////////////////////////////
   /// FIRESTORE Methods
@@ -70,18 +70,27 @@ abstract class BaseCollection<T extends RealmObject> extends Disposable
   Stream<List<T>> listenForChanges();
 
   /// save the model
-  Future<void> putInFirestore(String docId, T model) =>
-      withConverter.doc(docId).set(model).then((_) {
+  Future<void> putInFirestore(String docId, T model) {
+    if (isOffline) {
+      return _realm.writeAsync(() {
+        _realm.add<T>(model, update: true);
+        withConverter.doc(docId).set(model);
+      });
+    } else {
+      return withConverter.doc(docId).set(model).then((_) {
         logger.info('success put');
       }).catchError((dynamic err) {
         logger.severe(err.toString());
       });
+    }
+  }
 
   /// create collection stream
   void createCollectionStream({int? lastSyncTimestamp}) {
+    //print('created stream for type $T');
     final timestamp = (lastSyncTimestamp ?? getLastSyncTimestamp) - 5000;
     _stream = collectionRef
-        .where('timestamp', isGreaterThan: timestamp < 0 ? 0 : timestamp)
+        .where('timestamp', isGreaterThan: timestamp <= 0 ? 0 : timestamp)
         .snapshots();
   }
 
@@ -113,11 +122,12 @@ abstract class BaseCollection<T extends RealmObject> extends Disposable
   /// REALM methods
   /// ////////////////////////////////////////////////////////////////////
 
-  Future<void> add(String primaryKey, T object) {
-    return _realm.writeAsync(() {
-      _realm.add<T>(object, update: true);
-      unawaited(putInFirestore(primaryKey, object));
-    });
+  Future<void> add(String primaryKey, T object) async {
+    await putInFirestore(primaryKey, object);
+    // return _realm.writeAsync(() {
+    //   _realm.add<T>(object, update: true);
+    //   unawaited(putInFirestore(primaryKey, object));
+    // });
   }
 
   Future<T> upsert(String primaryKey, T Function() updateCallback) async {

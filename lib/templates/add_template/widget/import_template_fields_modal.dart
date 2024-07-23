@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recase/recase.dart';
 
+import '../../../core/core.dart';
 import '../../index.dart';
 
 class ImportTemplateFieldsModal extends ConsumerWidget {
@@ -40,29 +41,32 @@ class _ImportTemplateFieldsModal extends ConsumerWidget
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final templateModels = ref.watch(templatesListProvider);
+    return AsyncValueWidget(
+        value: ref.watch(templatesStreamProvider),
+        data: (templateModels) {
+          if (templateModels.isEmpty) {
+            return Loading(text: context.l10n.noUserTemplates);
+          }
 
-    if (templateModels.isEmpty) {
-      return Loading(text: context.l10n.noUserTemplates);
-    }
+          return ListView.separated(
+            itemCount: templateModels.length,
+            padding: const EdgeInsets.all(4),
+            separatorBuilder: (_, index) =>
+                const Divider(height: 1, indent: 16),
+            itemBuilder: (_, index) {
+              final templateModel = templateModels.elementAt(index);
 
-    return ListView.separated(
-      itemCount: templateModels.length,
-      padding: const EdgeInsets.all(4),
-      separatorBuilder: (_, index) => const Divider(height: 1, indent: 16),
-      itemBuilder: (_, index) {
-        final templateModel = templateModels[index];
-
-        return MaterialCard.outlined(
-          onTap: () {
-            Navigator.pop(context, templateModels[index]);
-          },
-          child: MaterialCardTile(
-            title: templateModel.title?.titleCase ?? context.l10n.noTitle,
-            subTitle: templateModel.desc ?? context.l10n.noDescription,
-          ),
-        ).paddingAll(8);
-      },
-    );
+              return MaterialCard.outlined(
+                onTap: () {
+                  Navigator.pop(context, templateModel);
+                },
+                child: MaterialCardTile(
+                  title: templateModel.title?.titleCase ?? context.l10n.noTitle,
+                  subTitle: templateModel.desc ?? context.l10n.noDescription,
+                ),
+              ).paddingAll(8);
+            },
+          );
+        });
   }
 }

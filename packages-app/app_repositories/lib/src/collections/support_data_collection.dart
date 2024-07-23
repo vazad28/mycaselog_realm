@@ -1,7 +1,11 @@
 part of '../collections.dart';
 
 class SupportDataCollection extends BaseCollection<SupportDataModel> {
-  SupportDataCollection(super.realmDatabase) : _realm = realmDatabase.realm;
+  SupportDataCollection(super.realmDatabase) : _realm = realmDatabase.realm {
+    final supportData = getSupportData();
+    // must load support data from server to prevent empty write
+    if (supportData.timestamp == 0) syncByTimestamp(0);
+  }
 
   final Realm _realm;
 

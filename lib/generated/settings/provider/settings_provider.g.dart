@@ -1,26 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of '../../../settings/provider/app_settings_provider.dart';
+part of '../../../settings/provider/settings_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$appSettingsHash() => r'40ad773c3e22d1511129f9b7f7218bdd4eabdfd0';
+String _$settingsHash() => r'9e851f4d7e796a71fa8f80b754f54d61480641b8';
 
-/// See also [AppSettings].
-@ProviderFor(AppSettings)
-final appSettingsProvider =
-    AutoDisposeNotifierProvider<AppSettings, SettingsModel>.internal(
-  AppSettings.new,
-  name: r'appSettingsProvider',
+/// See also [Settings].
+@ProviderFor(Settings)
+final settingsProvider =
+    AutoDisposeNotifierProvider<Settings, SettingsModel>.internal(
+  Settings.new,
+  name: r'settingsProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$appSettingsHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$settingsHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$AppSettings = AutoDisposeNotifier<SettingsModel>;
+typedef _$Settings = AutoDisposeNotifier<SettingsModel>;
 String _$templatesCountHash() => r'50104f3385dcf0772f25498b2c475890b94e4e30';
 
 /// See also [TemplatesCount].

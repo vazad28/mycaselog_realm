@@ -13,15 +13,17 @@ import '../add_case.dart';
 /// AddCasePage ROOT Widget
 class AddCasePage extends ConsumerStatefulWidget {
   const AddCasePage({
-    required this.caseModel,
-    required this.newRecord,
+    //required this.caseModel,
+    //required this.newRecord,
+    required this.caseID,
     super.key,
     this.tabIndex = 0,
   });
 
   final int tabIndex;
-  final bool newRecord;
-  final CaseModel caseModel;
+  final String caseID;
+  // final bool newRecord;
+  // final CaseModel caseModel;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -45,9 +47,7 @@ class _AddCasePageController extends ConsumerState<AddCasePage>
 
     /// Seed the case provider
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      ref
-          .watch(addCaseSeederProvider.notifier)
-          .seed(widget.caseModel, newRecord: widget.newRecord);
+      ref.watch(addCaseSeederProvider.notifier).seed(widget.caseID);
 
       Future<void>.delayed(const Duration(milliseconds: 300)).then((value) {
         if (widget.tabIndex > 0) _tabController.animateTo(widget.tabIndex);
@@ -65,7 +65,7 @@ class _AddCasePageController extends ConsumerState<AddCasePage>
 
         /// we send the caseModel caseID to reload the caseModel on caseDetails
         /// screeen on pop and update the view with new values
-        Navigator.of(context).pop(widget.caseModel.caseID);
+        Navigator.of(context).pop();
         return;
       }
 
@@ -87,7 +87,7 @@ class _AddCasePageController extends ConsumerState<AddCasePage>
         backgroundColor: context.colorScheme.primaryContainer,
         foregroundColor: context.colorScheme.onPrimaryContainer,
         title: Text(
-          widget.newRecord ? 'Add Case' : 'Edit Case',
+          widget.caseID == 'new' ? 'Add Case' : 'Edit Case',
         ),
         actions: const [
           _SubmitButton(),

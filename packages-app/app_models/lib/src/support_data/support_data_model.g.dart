@@ -39,10 +39,7 @@ _AssistantModel _$AssistantModelFromJson(Map<String, dynamic> json) =>
       ..assistantID = json['assistantID'] as String
       ..name = json['name'] as String?
       ..phone = json['phone'] as String?
-      ..photoUrl = json['photoUrl'] as String?
-      ..removed = (json['removed'] as num?)?.toInt()
-      ..createdAt = (json['createdAt'] as num?)?.toInt()
-      ..timestamp = (json['timestamp'] as num?)?.toInt();
+      ..photoUrl = json['photoUrl'] as String?;
 
 Map<String, dynamic> _$AssistantModelToJson(_AssistantModel instance) =>
     <String, dynamic>{
@@ -50,9 +47,6 @@ Map<String, dynamic> _$AssistantModelToJson(_AssistantModel instance) =>
       'name': instance.name,
       'phone': instance.phone,
       'photoUrl': instance.photoUrl,
-      'removed': instance.removed,
-      'createdAt': instance.createdAt,
-      'timestamp': instance.timestamp,
     };
 
 _SurgeryLocationModel _$SurgeryLocationModelFromJson(
@@ -61,10 +55,7 @@ _SurgeryLocationModel _$SurgeryLocationModelFromJson(
       ..locationID = json['locationID'] as String
       ..name = json['name'] as String?
       ..phone = json['phone'] as String?
-      ..address = json['address'] as String?
-      ..removed = (json['removed'] as num?)?.toInt()
-      ..createdAt = (json['createdAt'] as num?)?.toInt()
-      ..timestamp = (json['timestamp'] as num?)?.toInt();
+      ..address = json['address'] as String?;
 
 Map<String, dynamic> _$SurgeryLocationModelToJson(
         _SurgeryLocationModel instance) =>
@@ -73,7 +64,4 @@ Map<String, dynamic> _$SurgeryLocationModelToJson(
       'name': instance.name,
       'phone': instance.phone,
       'address': instance.address,
-      'removed': instance.removed,
-      'createdAt': instance.createdAt,
-      'timestamp': instance.timestamp,
     };

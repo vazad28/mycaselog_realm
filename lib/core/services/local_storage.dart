@@ -85,15 +85,15 @@ class LocalStorage {
       _persistentStorage.writeInt(StorageKeys.caseTileNavigate, value);
 
   /// app settings
-  void setAppSettings(Map<String, dynamic> value) {
-    _persistentStorage.writeString(StorageKeys.appSettings, json.encode(value));
+  void setSettings(Map<String, dynamic> value) {
+    _persistentStorage.writeString(StorageKeys.settings, json.encode(value));
   }
 
-  Map<String, dynamic>? getAppSettings() {
-    final appSettingsString =
-        _persistentStorage.readJson(StorageKeys.appSettings, {});
+  Map<String, dynamic>? getSettings() {
+    final settingsString =
+        _persistentStorage.readJson(StorageKeys.settings, {});
 
-    if (appSettingsString.isNotEmpty) return appSettingsString;
+    if (settingsString.isNotEmpty) return settingsString;
 
     return null;
   }

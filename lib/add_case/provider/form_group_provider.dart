@@ -24,6 +24,7 @@ class PatientDataFormGroup extends _$PatientDataFormGroup {
     final encryptedEither = ref.read(
       encryptPatientModelProvider(
         DecryptedPatientModel(
+          patientID: patientModel.patientID,
           name: patientModel.name,
           mrn: patientModel.mrn,
           phone: patientModel.phone,
@@ -47,8 +48,8 @@ class PatientDataFormGroup extends _$PatientDataFormGroup {
   FormGroup _createFormGroup(PatientModel patientModel) {
     final controls = <String, AbstractControl<Object?>>{
       // Patient  model id (required for realm to create model from json)
-      // PatientDataModelProps.patientID.name:
-      //     FormControl<String>(value: patientModel.patientID),
+      PatientDataModelProps.patientID.name:
+          FormControl<String>(value: patientModel.patientID),
       // ----- Crypt -----
       PatientDataModelProps.crypt.name:
           FormControl<String>(value: patientModel.crypt),

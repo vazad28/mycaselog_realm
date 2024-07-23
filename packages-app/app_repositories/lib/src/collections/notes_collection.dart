@@ -23,7 +23,9 @@ class NotesCollection extends BaseCollection<NoteModel> {
       final documents = querySnapshot.docChanges
           .map((change) {
             final model = NoteModelX.fromJson(change.doc.data()!);
-            _realm.write(() => _realm.add<NoteModel>(model, update: true));
+            _realm.write(() {
+              _realm.add<NoteModel>(model, update: true);
+            });
             return model;
           })
           .whereType<NoteModel>()

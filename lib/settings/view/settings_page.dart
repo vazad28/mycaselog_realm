@@ -6,8 +6,6 @@ import '../settings.dart';
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});
 
-  static Page<void> page() => const MaterialPage<void>(child: SettingsPage());
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return CustomScrollView(

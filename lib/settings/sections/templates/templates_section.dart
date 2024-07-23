@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recase/recase.dart';
 
 import '../../../router/routes/settings_routes.dart';
-import '../../provider/app_settings_provider.dart';
+import '../../provider/settings_provider.dart';
 
 class TemplatesSettingsSection extends StatelessWidget {
   const TemplatesSettingsSection({super.key});

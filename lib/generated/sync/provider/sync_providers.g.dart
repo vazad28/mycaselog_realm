@@ -7,7 +7,7 @@ part of '../../../sync/provider/sync_providers.dart';
 // **************************************************************************
 
 String _$syncCollectionsMapHash() =>
-    r'80564031886826921cd66ceb7849e9cc2dbd90d6';
+    r'41b4cdae2fb583f635271bdc90c5a2ac4223b61e';
 
 /// See also [SyncCollectionsMap].
 @ProviderFor(SyncCollectionsMap)
@@ -24,7 +24,7 @@ final syncCollectionsMapProvider = AutoDisposeNotifierProvider<
 
 typedef _$SyncCollectionsMap
     = AutoDisposeNotifier<Map<DbCollection, BaseCollection>>;
-String _$collectionSyncerHash() => r'7cda1421f1c21ff4e0c80be911f590d5ab8fbbfd';
+String _$collectionSyncerHash() => r'8abcfc34fe428bf84639e5981b8fdb61397b3f2e';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -56,13 +56,22 @@ abstract class _$CollectionSyncer
   );
 }
 
-/// See also [CollectionSyncer].
+/// A family provider to fire sync on each collection with
+/// status updates
+///
+/// Copied from [CollectionSyncer].
 @ProviderFor(CollectionSyncer)
 const collectionSyncerProvider = CollectionSyncerFamily();
 
-/// See also [CollectionSyncer].
+/// A family provider to fire sync on each collection with
+/// status updates
+///
+/// Copied from [CollectionSyncer].
 class CollectionSyncerFamily extends Family {
-  /// See also [CollectionSyncer].
+  /// A family provider to fire sync on each collection with
+  /// status updates
+  ///
+  /// Copied from [CollectionSyncer].
   const CollectionSyncerFamily();
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -79,7 +88,10 @@ class CollectionSyncerFamily extends Family {
   @override
   String? get name => r'collectionSyncerProvider';
 
-  /// See also [CollectionSyncer].
+  /// A family provider to fire sync on each collection with
+  /// status updates
+  ///
+  /// Copied from [CollectionSyncer].
   CollectionSyncerProvider call(
     DbCollection dbCollection,
   ) {
@@ -120,10 +132,16 @@ class _$CollectionSyncerFamilyOverride implements FamilyOverride {
   }
 }
 
-/// See also [CollectionSyncer].
+/// A family provider to fire sync on each collection with
+/// status updates
+///
+/// Copied from [CollectionSyncer].
 class CollectionSyncerProvider
     extends AutoDisposeNotifierProviderImpl<CollectionSyncer, StateOf<int>> {
-  /// See also [CollectionSyncer].
+  /// A family provider to fire sync on each collection with
+  /// status updates
+  ///
+  /// Copied from [CollectionSyncer].
   CollectionSyncerProvider(
     DbCollection dbCollection,
   ) : this._internal(
@@ -232,21 +250,21 @@ class _CollectionSyncerProviderElement
       (origin as CollectionSyncerProvider).dbCollection;
 }
 
-String _$firestoreSyncHash() => r'e20a5dca036b779e7fb10ac45e92a693846d2efc';
+String _$firestoreLiveSyncHash() => r'bc0377b5db428bbe7780d528c3a315d24c81ca08';
 
-/// See also [FirestoreSync].
-@ProviderFor(FirestoreSync)
-final firestoreSyncProvider =
-    AutoDisposeNotifierProvider<FirestoreSync, void>.internal(
-  FirestoreSync.new,
-  name: r'firestoreSyncProvider',
+/// See also [FirestoreLiveSync].
+@ProviderFor(FirestoreLiveSync)
+final firestoreLiveSyncProvider =
+    AutoDisposeNotifierProvider<FirestoreLiveSync, void>.internal(
+  FirestoreLiveSync.new,
+  name: r'firestoreLiveSyncProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$firestoreSyncHash,
+      : _$firestoreLiveSyncHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$FirestoreSync = AutoDisposeNotifier<void>;
+typedef _$FirestoreLiveSync = AutoDisposeNotifier<void>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, inference_failure_on_uninitialized_variable, inference_failure_on_function_return_type, inference_failure_on_untyped_parameter, deprecated_member_use_from_same_package

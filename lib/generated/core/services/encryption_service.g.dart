@@ -6,7 +6,7 @@ part of '../../../core/services/encryption_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$encryptionServiceHash() => r'f68a95b45f2eec15167c44e99627d993c6d01bdf';
+String _$encryptionServiceHash() => r'0c5fd2269e1674f3d31925f7c8c09d46091bd984';
 
 /// Encryption service provider
 ///

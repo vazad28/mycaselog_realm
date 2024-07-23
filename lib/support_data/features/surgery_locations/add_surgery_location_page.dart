@@ -10,13 +10,11 @@ import '../../support_data.dart';
 
 class AddSurgeryLocationPage extends ConsumerStatefulWidget {
   const AddSurgeryLocationPage({
-    required this.surgeryLocationModel,
+    required this.locationID,
     super.key,
-    this.newRecord = false,
   });
 
-  final bool newRecord;
-  final SurgeryLocationModel surgeryLocationModel;
+  final String locationID;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -26,22 +24,29 @@ class AddSurgeryLocationPage extends ConsumerStatefulWidget {
 class _AddSurgeryLocationPageState
     extends ConsumerState<AddSurgeryLocationPage> {
   late FormGroup formGroup;
+  late SurgeryLocationModel surgeryLocationModel;
 
   @override
   void initState() {
     super.initState();
 
+    surgeryLocationModel = ref
+        .read(supportDataNotifierProvider)
+        .surgeryLocations
+        .firstWhere((e) => e.locationID == widget.locationID,
+            orElse: SurgeryLocationModelX.zero);
+
     formGroup = FormGroup({
       SurgeryLocationProps.name.name: FormControl<String>(
-        value: widget.surgeryLocationModel.name,
+        value: surgeryLocationModel.name,
         validators: [Validators.required, Validators.minLength(3)],
       ),
       SurgeryLocationProps.phone.name: FormControl<String>(
-        value: widget.surgeryLocationModel.phone,
+        value: surgeryLocationModel.phone,
         validators: [],
       ),
       SurgeryLocationProps.address.name: FormControl<String>(
-        value: widget.surgeryLocationModel.address,
+        value: surgeryLocationModel.address,
         validators: [],
       ),
     });
@@ -53,14 +58,14 @@ class _AddSurgeryLocationPageState
       body: Center(
         child: _AddSurgeryLocationPageForm(
           formGroup: formGroup,
-          title: widget.newRecord
+          title: widget.locationID == 'new'
               ? 'Add Surgery Location'
               : 'Edit Surgery Location',
           submitButton: FormSubmitButtonBar(
             onSubmit: () {
               /// update with basic data
               final surgeryLocationModelJson = {
-                ...widget.surgeryLocationModel.toJson(),
+                ...surgeryLocationModel.toJson(),
                 ...formGroup.value,
               };
               final model =

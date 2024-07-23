@@ -33,7 +33,7 @@ class _SharedTemplateModel {
   late String? desc;
   late String? type = 'surgery';
   late List<$TemplateFieldModel> fields = [];
-  late bool? shared = true;
+  late bool shared = true;
   late String? displayName;
   late int useCount = 0;
   late int? createdAt = 0;
@@ -61,10 +61,11 @@ class _SharedTemplateModel {
 }
 
 extension SharedTemplateModelX on SharedTemplateModel {
-  static SharedTemplateModel zero() {
+  static SharedTemplateModel zero(String speciality) {
     final timestamp = ModelUtils.getTimestamp;
     final templateModel = SharedTemplateModel(
       ModelUtils.uniqueID,
+      speciality: speciality,
       createdAt: timestamp,
       timestamp: timestamp,
     );

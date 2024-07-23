@@ -3,7 +3,7 @@ abstract class StorageKeys {
   static const lastSyncTimePrefix = '__last_sync_time_prefix__';
   static const lastFtsUpdateTime = '__last_fts_update_time__';
   static const themeSettings = '__theme_settings__';
-  static const appSettings = '__app_settings__';
+  static const settings = '__app_settings__';
   static const caseTileNavigate = '__case_tile_navigate__';
   static const onboardedStatus = '__onboarded_tatus__';
   static const dbUpgradeVersion = '__db_upgrade_version__';

@@ -23,7 +23,7 @@ class UserMiniStatsWidget extends ConsumerWidget {
 
     final userMiniStatsData = UserStatsModel(
       cases: ref.watch(collectionsProvider).casesCollection.count(),
-      media: ref.watch(collectionsProvider).mediaCollection.count(),
+      //media: ref.watch(collectionsProvider).mediaCollection.count(),
       notes: ref.watch(collectionsProvider).notesCollection.count(),
     );
 

@@ -17,7 +17,7 @@ _SharedTemplateModel _$SharedTemplateModelFromJson(Map<String, dynamic> json) =>
       ..fields = (json['fields'] as List<dynamic>)
           .map((e) => $TemplateFieldModel.fromJson(e as Map<String, dynamic>))
           .toList()
-      ..shared = json['shared'] as bool?
+      ..shared = json['shared'] as bool
       ..displayName = json['displayName'] as String?
       ..useCount = (json['useCount'] as num).toInt()
       ..createdAt = (json['createdAt'] as num?)?.toInt()

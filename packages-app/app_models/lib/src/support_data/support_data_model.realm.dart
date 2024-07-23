@@ -153,31 +153,16 @@ class SupportDataModel extends _SupportDataModel
 
 class AssistantModel extends _AssistantModel
     with RealmEntity, RealmObjectBase, RealmObject {
-  static var _defaultsSet = false;
-
   AssistantModel(
     String assistantID, {
     String? name,
     String? phone,
     String? photoUrl,
-    int? removed = 0,
-    int? createdAt = 0,
-    int? timestamp = 0,
   }) {
-    if (!_defaultsSet) {
-      _defaultsSet = RealmObjectBase.setDefaults<AssistantModel>({
-        'removed': 0,
-        'createdAt': 0,
-        'timestamp': 0,
-      });
-    }
     RealmObjectBase.set(this, 'assistantID', assistantID);
     RealmObjectBase.set(this, 'name', name);
     RealmObjectBase.set(this, 'phone', phone);
     RealmObjectBase.set(this, 'photoUrl', photoUrl);
-    RealmObjectBase.set(this, 'removed', removed);
-    RealmObjectBase.set(this, 'createdAt', createdAt);
-    RealmObjectBase.set(this, 'timestamp', timestamp);
   }
 
   AssistantModel._();
@@ -206,21 +191,6 @@ class AssistantModel extends _AssistantModel
   set photoUrl(String? value) => RealmObjectBase.set(this, 'photoUrl', value);
 
   @override
-  int? get removed => RealmObjectBase.get<int>(this, 'removed') as int?;
-  @override
-  set removed(int? value) => RealmObjectBase.set(this, 'removed', value);
-
-  @override
-  int? get createdAt => RealmObjectBase.get<int>(this, 'createdAt') as int?;
-  @override
-  set createdAt(int? value) => RealmObjectBase.set(this, 'createdAt', value);
-
-  @override
-  int? get timestamp => RealmObjectBase.get<int>(this, 'timestamp') as int?;
-  @override
-  set timestamp(int? value) => RealmObjectBase.set(this, 'timestamp', value);
-
-  @override
   Stream<RealmObjectChanges<AssistantModel>> get changes =>
       RealmObjectBase.getChanges<AssistantModel>(this);
 
@@ -238,9 +208,6 @@ class AssistantModel extends _AssistantModel
       'name': name.toEJson(),
       'phone': phone.toEJson(),
       'photoUrl': photoUrl.toEJson(),
-      'removed': removed.toEJson(),
-      'createdAt': createdAt.toEJson(),
-      'timestamp': timestamp.toEJson(),
     };
   }
 
@@ -252,18 +219,12 @@ class AssistantModel extends _AssistantModel
         'name': EJsonValue name,
         'phone': EJsonValue phone,
         'photoUrl': EJsonValue photoUrl,
-        'removed': EJsonValue removed,
-        'createdAt': EJsonValue createdAt,
-        'timestamp': EJsonValue timestamp,
       } =>
         AssistantModel(
           fromEJson(assistantID),
           name: fromEJson(name),
           phone: fromEJson(phone),
           photoUrl: fromEJson(photoUrl),
-          removed: fromEJson(removed),
-          createdAt: fromEJson(createdAt),
-          timestamp: fromEJson(timestamp),
         ),
       _ => raiseInvalidEJson(ejson),
     };
@@ -278,9 +239,6 @@ class AssistantModel extends _AssistantModel
       SchemaProperty('name', RealmPropertyType.string, optional: true),
       SchemaProperty('phone', RealmPropertyType.string, optional: true),
       SchemaProperty('photoUrl', RealmPropertyType.string, optional: true),
-      SchemaProperty('removed', RealmPropertyType.int, optional: true),
-      SchemaProperty('createdAt', RealmPropertyType.int, optional: true),
-      SchemaProperty('timestamp', RealmPropertyType.int, optional: true),
     ]);
   }();
 
@@ -290,31 +248,16 @@ class AssistantModel extends _AssistantModel
 
 class SurgeryLocationModel extends _SurgeryLocationModel
     with RealmEntity, RealmObjectBase, RealmObject {
-  static var _defaultsSet = false;
-
   SurgeryLocationModel(
     String locationID, {
     String? name,
     String? phone,
     String? address,
-    int? removed = 0,
-    int? createdAt = 0,
-    int? timestamp = 0,
   }) {
-    if (!_defaultsSet) {
-      _defaultsSet = RealmObjectBase.setDefaults<SurgeryLocationModel>({
-        'removed': 0,
-        'createdAt': 0,
-        'timestamp': 0,
-      });
-    }
     RealmObjectBase.set(this, 'locationID', locationID);
     RealmObjectBase.set(this, 'name', name);
     RealmObjectBase.set(this, 'phone', phone);
     RealmObjectBase.set(this, 'address', address);
-    RealmObjectBase.set(this, 'removed', removed);
-    RealmObjectBase.set(this, 'createdAt', createdAt);
-    RealmObjectBase.set(this, 'timestamp', timestamp);
   }
 
   SurgeryLocationModel._();
@@ -343,21 +286,6 @@ class SurgeryLocationModel extends _SurgeryLocationModel
   set address(String? value) => RealmObjectBase.set(this, 'address', value);
 
   @override
-  int? get removed => RealmObjectBase.get<int>(this, 'removed') as int?;
-  @override
-  set removed(int? value) => RealmObjectBase.set(this, 'removed', value);
-
-  @override
-  int? get createdAt => RealmObjectBase.get<int>(this, 'createdAt') as int?;
-  @override
-  set createdAt(int? value) => RealmObjectBase.set(this, 'createdAt', value);
-
-  @override
-  int? get timestamp => RealmObjectBase.get<int>(this, 'timestamp') as int?;
-  @override
-  set timestamp(int? value) => RealmObjectBase.set(this, 'timestamp', value);
-
-  @override
   Stream<RealmObjectChanges<SurgeryLocationModel>> get changes =>
       RealmObjectBase.getChanges<SurgeryLocationModel>(this);
 
@@ -376,9 +304,6 @@ class SurgeryLocationModel extends _SurgeryLocationModel
       'name': name.toEJson(),
       'phone': phone.toEJson(),
       'address': address.toEJson(),
-      'removed': removed.toEJson(),
-      'createdAt': createdAt.toEJson(),
-      'timestamp': timestamp.toEJson(),
     };
   }
 
@@ -390,18 +315,12 @@ class SurgeryLocationModel extends _SurgeryLocationModel
         'name': EJsonValue name,
         'phone': EJsonValue phone,
         'address': EJsonValue address,
-        'removed': EJsonValue removed,
-        'createdAt': EJsonValue createdAt,
-        'timestamp': EJsonValue timestamp,
       } =>
         SurgeryLocationModel(
           fromEJson(locationID),
           name: fromEJson(name),
           phone: fromEJson(phone),
           address: fromEJson(address),
-          removed: fromEJson(removed),
-          createdAt: fromEJson(createdAt),
-          timestamp: fromEJson(timestamp),
         ),
       _ => raiseInvalidEJson(ejson),
     };
@@ -416,9 +335,6 @@ class SurgeryLocationModel extends _SurgeryLocationModel
       SchemaProperty('name', RealmPropertyType.string, optional: true),
       SchemaProperty('phone', RealmPropertyType.string, optional: true),
       SchemaProperty('address', RealmPropertyType.string, optional: true),
-      SchemaProperty('removed', RealmPropertyType.int, optional: true),
-      SchemaProperty('createdAt', RealmPropertyType.int, optional: true),
-      SchemaProperty('timestamp', RealmPropertyType.int, optional: true),
     ]);
   }();
 

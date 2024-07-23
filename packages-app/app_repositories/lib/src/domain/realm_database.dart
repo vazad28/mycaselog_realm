@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:app_models/app_models.dart';
 import 'package:authentication_client/authentication_client.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:realm/realm.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,13 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'disposable.dart';
 
 class RealmDatabase extends Disposable {
-  RealmDatabase._(this._realm, this._user, this._sharedPrefs) {
-    // try to reconnect on any network change, to wake up as early as possible
-    Connectivity()
-        .onConnectivityChanged
-        .listen((_) => {})
-        .cancelOnDisposeOf(this);
-  }
+  RealmDatabase._(this._realm, this._user, this._sharedPrefs);
 
   final Realm _realm;
   final AuthenticationUser _user;
@@ -58,6 +51,9 @@ class RealmDatabase extends Disposable {
     );
     return Realm(config);
   }
+
+  /// check if the auto sync is on
+  static void checkAutoSync() {}
 }
 
 extension<T> on Stream<T> {

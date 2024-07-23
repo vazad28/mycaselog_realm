@@ -19,7 +19,7 @@ class SharedTemplateModel extends _SharedTemplateModel
     String? desc,
     String? type = 'surgery',
     Iterable<TemplateFieldModel> fields = const [],
-    bool? shared = true,
+    bool shared = true,
     String? displayName,
     int useCount = 0,
     int? createdAt = 0,
@@ -98,9 +98,9 @@ class SharedTemplateModel extends _SharedTemplateModel
       throw RealmUnsupportedSetError();
 
   @override
-  bool? get shared => RealmObjectBase.get<bool>(this, 'shared') as bool?;
+  bool get shared => RealmObjectBase.get<bool>(this, 'shared') as bool;
   @override
-  set shared(bool? value) => RealmObjectBase.set(this, 'shared', value);
+  set shared(bool value) => RealmObjectBase.set(this, 'shared', value);
 
   @override
   String? get displayName =>
@@ -211,7 +211,7 @@ class SharedTemplateModel extends _SharedTemplateModel
       SchemaProperty('fields', RealmPropertyType.object,
           linkTarget: 'TemplateFieldModel',
           collectionType: RealmCollectionType.list),
-      SchemaProperty('shared', RealmPropertyType.bool, optional: true),
+      SchemaProperty('shared', RealmPropertyType.bool),
       SchemaProperty('displayName', RealmPropertyType.string, optional: true),
       SchemaProperty('useCount', RealmPropertyType.int),
       SchemaProperty('createdAt', RealmPropertyType.int, optional: true),

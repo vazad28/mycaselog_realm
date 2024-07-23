@@ -44,7 +44,7 @@ class PatientNameField extends ConsumerWidget with AddCaseStateMixin {
 
         /// check local auth if not debug mode
         if (buildMode == BuildMode.release &&
-            ref.read(appSettingsProvider).localAuthEnabled) {
+            ref.read(settingsProvider).localAuthEnabled) {
           final authenticated =
               await ref.read(dialogServiceProvider).localAuth();
           if (!authenticated) return;

@@ -22,7 +22,7 @@ class NoteItem extends ConsumerWidget {
       openColor: context.colorScheme.surface,
       closedElevation: 0,
       openBuilder: (context, action) {
-        return AddNotePage(noteModel: noteModel);
+        return AddNotePage(noteID: noteModel.noteID);
       },
       //tappable: true,
       closedBuilder: (context, action) {

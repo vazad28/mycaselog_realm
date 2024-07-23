@@ -350,7 +350,8 @@ class PatientModel extends _PatientModel
     with RealmEntity, RealmObjectBase, RealmObject {
   static var _defaultsSet = false;
 
-  PatientModel({
+  PatientModel(
+    String patientID, {
     String? crypt,
     String? initials,
     String? name,
@@ -366,6 +367,7 @@ class PatientModel extends _PatientModel
         'bmi': 0,
       });
     }
+    RealmObjectBase.set(this, 'patientID', patientID);
     RealmObjectBase.set(this, 'crypt', crypt);
     RealmObjectBase.set(this, 'initials', initials);
     RealmObjectBase.set(this, 'name', name);
@@ -378,6 +380,12 @@ class PatientModel extends _PatientModel
   }
 
   PatientModel._();
+
+  @override
+  String get patientID =>
+      RealmObjectBase.get<String>(this, 'patientID') as String;
+  @override
+  set patientID(String value) => RealmObjectBase.set(this, 'patientID', value);
 
   @override
   String? get crypt => RealmObjectBase.get<String>(this, 'crypt') as String?;
@@ -440,6 +448,7 @@ class PatientModel extends _PatientModel
 
   EJsonValue toEJson() {
     return <String, dynamic>{
+      'patientID': patientID.toEJson(),
       'crypt': crypt.toEJson(),
       'initials': initials.toEJson(),
       'name': name.toEJson(),
@@ -456,6 +465,7 @@ class PatientModel extends _PatientModel
   static PatientModel _fromEJson(EJsonValue ejson) {
     return switch (ejson) {
       {
+        'patientID': EJsonValue patientID,
         'crypt': EJsonValue crypt,
         'initials': EJsonValue initials,
         'name': EJsonValue name,
@@ -467,6 +477,7 @@ class PatientModel extends _PatientModel
         'address': EJsonValue address,
       } =>
         PatientModel(
+          fromEJson(patientID),
           crypt: fromEJson(crypt),
           initials: fromEJson(initials),
           name: fromEJson(name),
@@ -485,6 +496,7 @@ class PatientModel extends _PatientModel
     RealmObjectBase.registerFactory(PatientModel._);
     register(_toEJson, _fromEJson);
     return SchemaObject(ObjectType.realmObject, PatientModel, 'PatientModel', [
+      SchemaProperty('patientID', RealmPropertyType.string, primaryKey: true),
       SchemaProperty('crypt', RealmPropertyType.string, optional: true),
       SchemaProperty('initials', RealmPropertyType.string,
           optional: true, indexType: RealmIndexType.fullText),
@@ -747,6 +759,7 @@ class TimelineNoteModel extends _TimelineNoteModel
         'caseID': 'unknown',
         'createdAt': 0,
         'timestamp': 0,
+        'removed': 0,
       });
     }
     RealmObjectBase.set(this, 'noteID', noteID);
@@ -755,6 +768,7 @@ class TimelineNoteModel extends _TimelineNoteModel
     RealmObjectBase.set(this, 'note', note);
     RealmObjectBase.set(this, 'createdAt', createdAt);
     RealmObjectBase.set(this, 'timestamp', timestamp);
+    RealmObjectBase.set(this, 'removed', removed);
   }
 
   TimelineNoteModel._();
@@ -791,6 +805,11 @@ class TimelineNoteModel extends _TimelineNoteModel
   set timestamp(int value) => RealmObjectBase.set(this, 'timestamp', value);
 
   @override
+  int get removed => RealmObjectBase.get<int>(this, 'removed') as int;
+  @override
+  set removed(int value) => RealmObjectBase.set(this, 'removed', value);
+
+  @override
   RealmResults<CaseModel> get linkedCaseModel {
     if (!isManaged) {
       throw RealmError('Using backlinks is only possible for managed objects.');
@@ -824,6 +843,7 @@ class TimelineNoteModel extends _TimelineNoteModel
       'note': note.toEJson(),
       'createdAt': createdAt.toEJson(),
       'timestamp': timestamp.toEJson(),
+      'removed': removed.toEJson(),
     };
   }
 
@@ -837,6 +857,7 @@ class TimelineNoteModel extends _TimelineNoteModel
         'note': EJsonValue note,
         'createdAt': EJsonValue createdAt,
         'timestamp': EJsonValue timestamp,
+        'removed': EJsonValue removed,
       } =>
         TimelineNoteModel(
           fromEJson(noteID),
@@ -845,6 +866,7 @@ class TimelineNoteModel extends _TimelineNoteModel
           note: fromEJson(note),
           createdAt: fromEJson(createdAt),
           timestamp: fromEJson(timestamp),
+          removed: fromEJson(removed),
         ),
       _ => raiseInvalidEJson(ejson),
     };
@@ -863,6 +885,7 @@ class TimelineNoteModel extends _TimelineNoteModel
       SchemaProperty('createdAt', RealmPropertyType.int,
           indexType: RealmIndexType.regular),
       SchemaProperty('timestamp', RealmPropertyType.int),
+      SchemaProperty('removed', RealmPropertyType.int),
       SchemaProperty('linkedCaseModel', RealmPropertyType.linkingObjects,
           linkOriginProperty: 'notes',
           collectionType: RealmCollectionType.list,

@@ -7,7 +7,7 @@ part of '../../../user_profile/provider/user_profile_provider.dart';
 // **************************************************************************
 
 String _$userProfileNotifierHash() =>
-    r'254d2c158e839d9dccf9b27f6c74cff9f4ca25ec';
+    r'41d65de84013e20ccedb1b935731df65fa066111';
 
 /// ////////////////////////////////////////////////////////////////////
 /// Main Providers

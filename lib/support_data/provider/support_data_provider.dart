@@ -47,14 +47,18 @@ class SupportDataNotifier extends _$SupportDataNotifier with LoggerMixin {
   }
 
   /// On suregry location model update
-  Future<void> upsertSurgeryLocation(SurgeryLocationModel surgeryLocation) {
+  Future<void> upsertSurgeryLocation(SurgeryLocationModel surgeryLocation,
+      {bool remove = false}) {
     final surgeryLocations = List<SurgeryLocationModel>.from(
       state.surgeryLocations,
     );
     final index = surgeryLocations.indexWhere(
       (element) => element.locationID == surgeryLocation.locationID,
     );
-    if (index == -1) {
+
+    if (remove) {
+      surgeryLocations.removeAt(index);
+    } else if (index == -1) {
       surgeryLocations.add(surgeryLocation);
     } else {
       surgeryLocations[index] = surgeryLocation;
@@ -65,30 +69,16 @@ class SupportDataNotifier extends _$SupportDataNotifier with LoggerMixin {
     return _updateSupportData();
   }
 
-  // ignore: unused_element
-  // void _onPutPcp(PcpModel pcpModel) {
-  //   final pcps = List<PcpModel>.from(state.pcps ?? <PcpModel>[]);
-  //   final index = pcps.indexWhere((element) => element.pcpID == pcpModel.pcpID);
-  //   if (index == -1) {
-  //     pcps.add(pcpModel);
-  //   } else {
-  //     if (pcpModel.removed == 1) {
-  //       pcps.removeAt(index);
-  //     } else {
-  //       pcps[index] = pcpModel;
-  //     }
-  //   }
-
-  //   _updateSupportData(state.copyWith(pcps: [pcpModel]));
-  // }
-
-  Future<void> upsertAssistant(AssistantModel assistantModel) {
+  Future<void> upsertAssistant(AssistantModel assistantModel,
+      {bool remove = false}) {
     final assistants = List<AssistantModel>.from(state.assistants);
     final index = assistants.indexWhere(
       (element) => element.assistantID == assistantModel.assistantID,
     );
 
-    if (index == -1) {
+    if (remove) {
+      assistants.removeAt(index);
+    } else if (index == -1) {
       assistants.add(assistantModel);
     } else {
       assistants[index] = assistantModel;

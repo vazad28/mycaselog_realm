@@ -57,10 +57,10 @@ AuthenticationUser authenticationUser(AuthenticationUserRef ref) {
   );
 }
 
-@riverpod
-String userID(UserIDRef ref) {
-  return ref.watch(authenticationUserProvider).id;
-}
+// @riverpod
+// String userID(UserIDRef ref) {
+//   return ref.watch(authenticationUserProvider).id;
+// }
 
 @riverpod
 Future<void> logout(LogoutRef ref) async {

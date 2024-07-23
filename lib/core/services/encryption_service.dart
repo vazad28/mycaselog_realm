@@ -9,7 +9,7 @@ part '../../generated/core/services/encryption_service.g.dart';
 /// Encryption service provider
 @riverpod
 EncryptionService encryptionService(EncryptionServiceRef ref) {
-  final userID = ref.read(userIDProvider);
+  final userID = ref.watch(authenticationUserProvider).id;
   final passcode = ref.watch(passcodeProvider); //watch it
 
   return EncryptionService(

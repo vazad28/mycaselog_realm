@@ -1,4 +1,3 @@
-import 'package:app_models/app_models.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -49,9 +48,9 @@ part '../../generated/router/routes/settings_routes.g.dart';
         TypedGoRoute<SharedTemplatesRoute>(
           path: SharedTemplatesRoute.path,
           routes: [
-            TypedGoRoute<SharedTemplateRoute>(
-              path: SharedTemplateRoute.path,
-            ),
+            // TypedGoRoute<SharedTemplateRoute>(
+            //   path: SharedTemplateRoute.path,
+            // ),
           ],
         ),
       ],
@@ -121,18 +120,14 @@ class AssistantsRoute extends GoRouteData {
 }
 
 class AddAssistantRoute extends GoRouteData {
-  AddAssistantRoute(this.$extra, {this.newRecord = false})
-      : assistantID = $extra.assistantID;
+  AddAssistantRoute({this.assistantID = 'new'});
   static const name = 'add_assistant';
   static const path = ':assistantID';
-
-  final AssistantModel $extra;
   final String assistantID;
-  final bool newRecord;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      AddAssistantPage(assistantModel: $extra, newRecord: newRecord);
+      AddAssistantPage(assistantID: assistantID);
 }
 
 class SurgeryLocationsRoute extends GoRouteData {
@@ -146,21 +141,17 @@ class SurgeryLocationsRoute extends GoRouteData {
 }
 
 class AddSurgeryLocationRoute extends GoRouteData {
-  AddSurgeryLocationRoute(this.$extra, {this.newRecord = false})
-      : locationID = $extra.locationID;
+  AddSurgeryLocationRoute({this.locationID = 'new'});
 
   static const name = 'add_surgery_location';
   static const path = ':locationID';
 
-  final SurgeryLocationModel $extra;
   final String locationID;
-  final bool newRecord;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       AddSurgeryLocationPage(
-        surgeryLocationModel: $extra,
-        newRecord: newRecord,
+        locationID: locationID,
       );
 }
 
@@ -206,19 +197,16 @@ class SharedTemplatesRoute extends GoRouteData {
 }
 
 /// Speciality shared template route
-class SharedTemplateRoute extends GoRouteData {
-  SharedTemplateRoute(this.$extra)
-      : templateID = $extra.templateID,
-        speciality = $extra.speciality;
+// class SharedTemplateRoute extends GoRouteData {
+//   SharedTemplateRoute({required this.speciality, this.templateID = 'new'});
 
-  static const name = 'shared_template/:templateID';
-  static const path = name;
+//   static const name = 'shared_template/:templateID';
+//   static const path = name;
 
-  final SharedTemplateModel $extra;
-  final String templateID;
-  final String speciality;
+//   final String templateID;
+//   final String speciality;
 
-  @override
-  Widget build(BuildContext context, GoRouterState state) =>
-      SharedTemplatePage($extra);
-}
+//   @override
+//   Widget build(BuildContext context, GoRouterState state) =>
+//       SharedTemplatePage(templateID: templateID, speciality: speciality);
+// }

@@ -2,7 +2,6 @@ import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/failures/app_failures.dart';
 import '../case_timeline.dart';
 
 class CaseTimelinePage extends ConsumerWidget {
@@ -13,13 +12,22 @@ class CaseTimelinePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final timelineItemsState = ref.watch(caseTimelineNotifierProvider);
+    final timelineItemsAsync = ref.watch(caseTimelineNotifierProvider);
 
-    return timelineItemsState.maybeWhen(
-      init: () => const LoadingSliver(child: SizedBox.shrink()),
-      success: (data) => CaseTimelineView(timelineItems: data),
-      failure: (failure) => LoadingSliver(text: failure.toLocalizedString()),
-      orElse: () => const LoadingSliver(),
+    //print(timelineItemsAsync.requireValue);
+
+    // return AsyncValueSliverWidget(
+    //   value: timelineItemsAsync,
+    //   data: (data) {
+    //     return CaseTimelineView(timelineItems: data);
+    //   },
+    // );
+
+    return timelineItemsAsync.when(
+      //init: () => const LoadingSliver(child: SizedBox.shrink()),
+      data: (data) => CaseTimelineView(timelineItems: data),
+      error: (failure, st) => LoadingSliver(text: failure.toString()),
+      loading: () => const LoadingSliver(),
     );
   }
 }

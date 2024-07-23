@@ -64,48 +64,20 @@ extension $CaseDetailsRouteExtension on CaseDetailsRoute {
 
 extension $AddCaseRouteExtension on AddCaseRoute {
   static AddCaseRoute _fromState(GoRouterState state) => AddCaseRoute(
+        caseID: state.pathParameters['caseID']! ?? 'new',
         tabIndex: int.parse(state.pathParameters['tabIndex']!) ?? 0,
-        newRecord: _$convertMapValue(
-                'new-record', state.uri.queryParameters, _$boolConverter) ??
-            false,
-        state.extra as CaseModel,
       );
 
   String get location => GoRouteData.$location(
         '/cases/case/${Uri.encodeComponent(caseID)}/${Uri.encodeComponent(tabIndex.toString())}',
-        queryParams: {
-          if (newRecord != false) 'new-record': newRecord.toString(),
-        },
       );
 
-  void go(BuildContext context) => context.go(location, extra: $extra);
+  void go(BuildContext context) => context.go(location);
 
-  Future<T?> push<T>(BuildContext context) =>
-      context.push<T>(location, extra: $extra);
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
   void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location, extra: $extra);
+      context.pushReplacement(location);
 
-  void replace(BuildContext context) =>
-      context.replace(location, extra: $extra);
-}
-
-T? _$convertMapValue<T>(
-  String key,
-  Map<String, String> map,
-  T Function(String) converter,
-) {
-  final value = map[key];
-  return value == null ? null : converter(value);
-}
-
-bool _$boolConverter(String value) {
-  switch (value) {
-    case 'true':
-      return true;
-    case 'false':
-      return false;
-    default:
-      throw UnsupportedError('Cannot convert "$value" into a bool.');
-  }
+  void replace(BuildContext context) => context.replace(location);
 }

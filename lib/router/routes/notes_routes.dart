@@ -1,4 +1,3 @@
-import 'package:app_models/app_models.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -30,17 +29,13 @@ class NotesRoute extends GoRouteData {
 }
 
 class AddNoteRoute extends GoRouteData {
-  AddNoteRoute(this.$extra, {this.newRecord = false}) : noteID = $extra.noteID;
+  AddNoteRoute({this.noteID = 'new'});
   static const name = 'add_note';
   static const path = 'note/:noteID';
-
-  final NoteModel $extra;
   final String noteID;
-  final bool newRecord;
 
   @override
   Widget build(BuildContext context, GoRouterState state) => AddNotePage(
-        noteModel: $extra,
-        newRecord: newRecord,
+        noteID: noteID,
       );
 }

@@ -19,7 +19,7 @@ class ImageUploadRepository with LoggerMixin implements MediaUploadRepository {
 
   @override
   bool get uploadFullSizePhoto =>
-      ref.read(appSettingsProvider).uploadFullSizePhoto;
+      ref.read(settingsProvider).uploadFullSizePhoto;
 
   @override
   Reference getMediumRef(MediaModel mediaModel) {

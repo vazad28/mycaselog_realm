@@ -1,5 +1,4 @@
 import 'package:app_annotations/app_annotations.dart';
-import 'package:app_extensions/app_extensions.dart';
 import 'package:app_models/app_models.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';

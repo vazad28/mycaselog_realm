@@ -5,25 +5,50 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recase/recase.dart';
 
+import '../../../core/core.dart';
 import '../../../router/routes/routes.dart';
 import '../templates.dart';
 
-class TemplatesPage extends ConsumerWidget {
+class TemplatesPage extends ConsumerStatefulWidget {
   const TemplatesPage({super.key});
 
-  static Page<void> page() => const MaterialPage<void>(child: TemplatesPage());
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _TemplatesPageState();
+}
+
+class _TemplatesPageState extends ConsumerState<TemplatesPage> {
+  final _scrollController = ScrollController();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  void dispose() {
+    /// to prevent error - scroll controlled used after disposed
+    Future<void>.delayed(Durations.short1)
+        .then((_) => _scrollController.dispose());
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(S.of(context).templates),
         bottom: const TemplatesBottomAppBar(),
       ),
-      body: const TemplatesView(),
+      body: AsyncValueWidget(
+          value: ref.watch(templatesStreamProvider),
+          data: (templateModels) {
+            return ListView.builder(
+              controller: _scrollController,
+              padding: const EdgeInsets.all(AppSpacing.md),
+              itemCount: templateModels.length,
+              itemBuilder: (_, index) => TemplatesListTile(
+                templateModel: templateModels.elementAt(index),
+              ).paddingOnly(bottom: AppSpacing.md),
+            );
+          }),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: ScrollReactiveFabButton(
-        ref.watch(templatesListProvider.notifier).scrollController,
+        _scrollController,
         key: const Key('__add_template_fab_button_key__'),
         title: S.of(context).addTemplate.titleCase,
         onTap: () => context.openModalBottomSheet<void>(

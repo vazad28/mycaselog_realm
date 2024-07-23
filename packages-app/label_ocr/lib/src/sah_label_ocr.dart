@@ -182,7 +182,7 @@ class _SahLabelOcrState<T> extends State<SahLabelOcr>
   }
 
   void _ocrToDecryptedPatientModel(RecognizedText recognizedText) {
-    final decryptedPatientModel = DecryptedPatientModel(
+    final decryptedPatientModel = DecryptedPatientModel.zero().copyWith(
       name: extractName(recognizedText),
       mrn: extractMrn(recognizedText.text),
     );

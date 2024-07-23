@@ -1,9 +1,13 @@
 part of '../collections.dart';
 
+/// class SettingsCollection {
 class SettingsCollection extends BaseCollection<SettingsModel> {
-  SettingsCollection(super.realmDatabase) : _realm = realmDatabase.realm;
+  SettingsCollection(super.realmDatabase)
+      : _realm = realmDatabase.realm,
+        _userID = realmDatabase.user.id;
 
   final Realm _realm;
+  final String _userID;
 
   /// Firestore Methods
   @override
@@ -40,4 +44,13 @@ class SettingsCollection extends BaseCollection<SettingsModel> {
   /// ////////////////////////////////////////////////////////////////////
   /// Realm Methods
   /// ////////////////////////////////////////////////////////////////////
+  SettingsModel getSettings() {
+    return _realm.find<SettingsModel>(_userID) ?? SettingsModelX.zero(_userID);
+  }
+
+  Future<void> saveSettings(SettingsModel object) {
+    return _realm.writeAsync(() {
+      _realm.add<SettingsModel>(object, update: true);
+    });
+  }
 }

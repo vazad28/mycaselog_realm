@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recase/recase.dart';
 
 import '../../../router/router.dart';
+import '../provider/templates_mixin.dart';
 import '../templates.dart';
 
 /// ////////////////////////////////////////////////////////////////////
@@ -15,7 +16,7 @@ import '../templates.dart';
 /// We pass an instance of the model and not voidCallback as we need
 /// tap and long press to call for different methods on ViewModel
 /// ////////////////////////////////////////////////////////////////////
-class TemplatesListTile extends ConsumerWidget {
+class TemplatesListTile extends ConsumerWidget with TemplateMixin {
   const TemplatesListTile({
     required this.templateModel,
     super.key,
@@ -49,7 +50,6 @@ class TemplatesListTile extends ConsumerWidget {
   }
 
   List<Widget> _menuOptionInactiveTemplates(BuildContext ctx, WidgetRef ref) {
-    final notifier = ref.watch(templatesListProvider.notifier);
     return [
       ListTile(
         title: const Text('Re-activate Template'),
@@ -59,7 +59,7 @@ class TemplatesListTile extends ConsumerWidget {
         ),
         onTap: () {
           Navigator.of(ctx).pop();
-          notifier.on(TemplatesEvent.reactivateTemplate(templateModel));
+          updateTemplate(ref, templateModel, TemplateEvent.reactivate);
         },
       ),
       const Divider(indent: 64),
@@ -72,7 +72,7 @@ class TemplatesListTile extends ConsumerWidget {
         subtitle: const Text('Deleting a template can not be undone'),
         onTap: () {
           Navigator.of(ctx).pop();
-          notifier.on(TemplatesEvent.deleteTemplate(templateModel));
+          updateTemplate(ref, templateModel, TemplateEvent.delete);
         },
       ),
     ];
@@ -82,7 +82,6 @@ class TemplatesListTile extends ConsumerWidget {
     BuildContext ctx,
     WidgetRef ref,
   ) {
-    final notifier = ref.watch(templatesListProvider.notifier);
     return [
       if (templateModel.shared == false)
         ListTile(
@@ -91,7 +90,7 @@ class TemplatesListTile extends ConsumerWidget {
           subtitle: const Text('Share template with other users of the app'),
           onTap: () {
             Navigator.of(ctx).pop();
-            notifier.on(TemplatesEvent.shareTemplate(templateModel));
+            updateTemplate(ref, templateModel, TemplateEvent.share);
           },
         ),
       // ignore: use_if_null_to_convert_nulls_to_bools
@@ -103,7 +102,7 @@ class TemplatesListTile extends ConsumerWidget {
               const Text('Remove this template from shared templates list'),
           onTap: () {
             Navigator.of(ctx).pop();
-            notifier.on(TemplatesEvent.unShareTemplate(templateModel));
+            updateTemplate(ref, templateModel, TemplateEvent.unShare);
           },
         ),
       const Divider(indent: 64),
@@ -115,7 +114,7 @@ class TemplatesListTile extends ConsumerWidget {
         ),
         onTap: () {
           Navigator.of(ctx).pop();
-          notifier.on(TemplatesEvent.deactivateTemplate(templateModel));
+          updateTemplate(ref, templateModel, TemplateEvent.deactivate);
         },
       ),
     ];

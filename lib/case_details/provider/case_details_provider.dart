@@ -20,7 +20,7 @@ class CaseDetailsNotifier extends _$CaseDetailsNotifier {
   AsyncValue<CaseModel> build() {
     final caseID = ref.watch(caseIDProvider);
 
-    if (caseID == null) return const AsyncValue.loading();
+    if (caseID == null) return const AsyncLoading();
 
     final sub = ref
         .watch(collectionsProvider)
@@ -28,12 +28,12 @@ class CaseDetailsNotifier extends _$CaseDetailsNotifier {
         .getSingle(caseID)
         ?.changes
         .listen((data) {
-      state = AsyncValue.data(data.object);
+      state = AsyncData(data.object);
     });
 
     ref.onDispose(() => sub?.cancel());
 
-    return const AsyncValue.loading();
+    return const AsyncLoading();
   }
 }
 

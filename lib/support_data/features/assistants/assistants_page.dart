@@ -8,23 +8,8 @@ import 'package:recase/recase.dart';
 import '../../../router/routes/routes.dart';
 import '../../support_data.dart';
 
-// /// Provider to keep the state of Assistants
-// @riverpod
-// List<AssistantModel> assistantsList(AssistantsListRef ref) {
-//   final assistants = ref.watch(
-//     supportDataNotifierProvider.select(
-//       (value) =>
-//           value.assistants.where((element) => element.removed == 0).toList(),
-//     ),
-//   );
-
-//   return assistants;
-// }
-
 class AssistantsPage extends ConsumerWidget {
   const AssistantsPage({super.key});
-
-  static Page<void> page() => const MaterialPage<void>(child: AssistantsPage());
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -37,8 +22,7 @@ class AssistantsPage extends ConsumerWidget {
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () {
-              AddAssistantRoute(AssistantModelX.zero(), newRecord: true)
-                  .push<AssistantModel>(context);
+              AddAssistantRoute().push<AssistantModel>(context);
             },
           ),
         ],
@@ -85,10 +69,11 @@ class _AssistantsView extends ConsumerWidget {
           onDismissed: () {
             ref
                 .watch(supportDataNotifierProvider.notifier)
-                .upsertAssistant(assistantModel..removed = 1);
+                .upsertAssistant(assistantModel, remove: true);
           },
           onTap: () =>
-              AddAssistantRoute(assistantModel).push<AssistantModel>(context),
+              AddAssistantRoute(assistantID: assistantModel.assistantID)
+                  .push<AssistantModel>(context),
         );
       },
     );

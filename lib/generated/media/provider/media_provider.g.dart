@@ -6,38 +6,13 @@ part of '../../../media/provider/media_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$mediaTileStyleHash() => r'd76425304c33efc147e2ad898c2c8e6a272257ed';
+String _$mediaStreamHash() => r'7ec835218b00c5ef8b5bb8577aa114844ed592aa';
 
-/// ////////////////////////////////////////////////////////////////////
-/// Main Provider
-/// ////////////////////////////////////////////////////////////////////
-/// media tile style provider
-///
-/// Copied from [MediaTileStyle].
-@ProviderFor(MediaTileStyle)
-final mediaTileStyleProvider =
-    AutoDisposeNotifierProvider<MediaTileStyle, MediaGridStyleEnum>.internal(
-  MediaTileStyle.new,
-  name: r'mediaTileStyleProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$mediaTileStyleHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$MediaTileStyle = AutoDisposeNotifier<MediaGridStyleEnum>;
-String _$mediaStreamHash() => r'916219d12b0fc0bb7962826e230ed12a6d752134';
-
-/// ////////////////////////////////////////////////////////////////////
-/// Main Provider
-/// ////////////////////////////////////////////////////////////////////
-///
-/// Copied from [MediaStream].
-@ProviderFor(MediaStream)
-final mediaStreamProvider = StreamNotifierProvider<MediaStream,
-    RealmResultsChanges<MediaModel>>.internal(
-  MediaStream.new,
+/// See also [mediaStream].
+@ProviderFor(mediaStream)
+final mediaStreamProvider =
+    StreamProvider<RealmResultsChanges<MediaModel>>.internal(
+  mediaStream,
   name: r'mediaStreamProvider',
   debugGetCreateSourceHash:
       const bool.fromEnvironment('dart.vm.product') ? null : _$mediaStreamHash,
@@ -45,22 +20,23 @@ final mediaStreamProvider = StreamNotifierProvider<MediaStream,
   allTransitiveDependencies: null,
 );
 
-typedef _$MediaStream = StreamNotifier<RealmResultsChanges<MediaModel>>;
-String _$mediaNotifierHash() => r'f3d2b321ad536f92a2044b880ebcfe595ee36e3e';
+typedef MediaStreamRef = StreamProviderRef<RealmResultsChanges<MediaModel>>;
+String _$mediaGridTileStyleHash() =>
+    r'706b8a50e2a3f55b4ea41a7e0fcadc4029105621';
 
-/// See also [MediaNotifier].
-@ProviderFor(MediaNotifier)
-final mediaNotifierProvider = AutoDisposeNotifierProvider<MediaNotifier,
-    RealmResults<CaseModel>>.internal(
-  MediaNotifier.new,
-  name: r'mediaNotifierProvider',
+/// See also [MediaGridTileStyle].
+@ProviderFor(MediaGridTileStyle)
+final mediaGridTileStyleProvider =
+    AutoDisposeNotifierProvider<MediaGridTileStyle, int>.internal(
+  MediaGridTileStyle.new,
+  name: r'mediaGridTileStyleProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$mediaNotifierHash,
+      : _$mediaGridTileStyleHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$MediaNotifier = AutoDisposeNotifier<RealmResults<CaseModel>>;
+typedef _$MediaGridTileStyle = AutoDisposeNotifier<int>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, inference_failure_on_uninitialized_variable, inference_failure_on_function_return_type, inference_failure_on_untyped_parameter, deprecated_member_use_from_same_package

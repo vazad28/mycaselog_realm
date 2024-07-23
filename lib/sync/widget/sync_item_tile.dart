@@ -40,19 +40,6 @@ class SyncItemTile<T> extends ConsumerWidget {
                     ref
                         .watch(collectionSyncerProvider(dbCollection).notifier)
                         .syncCollection(timestamp);
-
-                    // final collectionToSync =
-                    //     ref.read(syncCollectionsMapProvider)[dbCollection];
-
-                    // if (collectionToSync == null) return;
-
-                    // ref
-                    //     .watch(syncResultProvider(dbCollection).notifier)
-                    //     .showLoading();
-
-                    // ref
-                    //     .read(collectionSyncProvider(collectionToSync).notifier)
-                    //     .resetSyncCollection(dbCollection, timestamp);
                   },
                 );
               },

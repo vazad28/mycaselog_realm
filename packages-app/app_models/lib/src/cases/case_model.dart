@@ -159,6 +159,8 @@ enum PatientDataModelProps {
 @RealmModel()
 @JsonSerializable(explicitToJson: true)
 class _PatientModel {
+  @PrimaryKey()
+  late String patientID;
   late String? crypt;
   @Indexed(RealmIndexType.fullText)
   late String? initials;
@@ -172,6 +174,7 @@ class _PatientModel {
 
   PatientModel toRealmObject() {
     return PatientModel(
+      patientID,
       crypt: crypt,
       initials: initials,
       name: name,
@@ -195,9 +198,7 @@ extension PatientModelX on PatientModel {
       _$PatientModelFromJson(json).toRealmObject();
 
   static PatientModel zero() {
-    final patientModel = PatientModel();
-
-    return patientModel;
+    return PatientModel(ModelUtils.uniqueID);
   }
 }
 
@@ -211,17 +212,21 @@ enum DecryptedPatientDataModelProps { address, mrn, name, phone }
 class DecryptedPatientModel {
   // ignore: prefer_const_constructors_in_immutables
   DecryptedPatientModel({
-    //required this.patientID,
+    required this.patientID,
     this.name,
     this.mrn,
     this.address,
     this.phone,
   });
 
+  factory DecryptedPatientModel.zero() {
+    return DecryptedPatientModel(patientID: ModelUtils.uniqueID);
+  }
+
   factory DecryptedPatientModel.fromJson(Map<String, Object?> json) =>
       _$DecryptedPatientModelFromJson(json);
 
-  //final String patientID;
+  final String patientID;
   final String? address;
   final String? mrn;
   final String? name;
@@ -237,7 +242,7 @@ class DecryptedPatientModel {
     String? phone,
   }) {
     return DecryptedPatientModel(
-      //patientID: patientID ?? this.patientID,
+      patientID: patientID ?? this.patientID,
       address: address ?? this.address,
       mrn: mrn ?? this.mrn,
       name: name ?? this.name,
@@ -410,6 +415,7 @@ class _TimelineNoteModel {
       note: note,
       createdAt: createdAt,
       timestamp: timestamp,
+      removed: removed,
     );
   }
 
@@ -438,3 +444,33 @@ extension TimelineNoteModelX on TimelineNoteModel {
     );
   }
 }
+
+
+/// ////////////////////////////////////////////////////////////////////
+/// TRIGGERS
+/// ////////////////////////////////////////////////////////////////////
+// Define a trigger on the Media class
+// @RealmTrigger(classes: [Media])
+// class MediaTrigger extends RealmTrigger {
+//   @override
+//   Future<void> onInsert(Realm realm, Object model) async {
+//     // Cast the model to Media object
+//     final media = model as Media;
+
+//     // Check if a Cases object is already associated
+//     if (media.caseObject == null) {
+//       // Need to associate with an existing Cases object or create a new one
+//       // (Logic for finding or creating the Cases object goes here)
+//     }
+//   }
+
+//   @override
+//   Future<void> onUpdate(Realm realm, Object model) async {
+//     // Similar logic to onInsert for updates, update the backlink if needed
+//   }
+
+//   @override
+//   Future<void> onDelete(Realm realm, Object model) async {
+//     // Remove the backlink from the Cases object when the media is deleted
+//   }
+// }

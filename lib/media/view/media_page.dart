@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../media.dart';
+import '../search/media_search_bar.dart';
 
 class MediaPage extends ConsumerStatefulWidget {
   const MediaPage({super.key});
@@ -38,6 +39,7 @@ class _MediaPageState extends ConsumerState<MediaPage> {
         ),
         slivers: const [
           MediaAppBar(),
+          MediaSearchBar(),
           _MediaBody(),
         ],
       ),
@@ -63,38 +65,3 @@ class _MediaBody extends ConsumerWidget {
     );
   }
 }
-
-// class _MediaBody extends ConsumerWidget {
-//   const _MediaBody({super.key});
-
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) {
-//     final data = ref.watch(mediaNotifierProvider);
-
-//     return StreamBuilder<RealmResultsChanges<CaseModel>>(
-//       stream: data.changes,
-//       builder: (context, snapshot) {
-//         if (snapshot.hasData) {
-//           final models = snapshot.data!.results;
-//           // Rebuild your widget based on casesList
-//           return CustomScrollView(
-//             physics: const BouncingScrollPhysics(
-//               parent: AlwaysScrollableScrollPhysics(),
-//             ),
-//             slivers: [
-//               const MediaAppBar(),
-//               //const CasesSearchBar(),
-//               //MediaView(Models: models),
-//             ],
-//           );
-//         } else if (snapshot.hasError) {
-//           // Handle errors
-//           return Text('Error: ${snapshot.error}');
-//         } else {
-//           // Handle loading state
-//           return const CircularProgressIndicator();
-//         }
-//       },
-//     );
-//   }
-// }

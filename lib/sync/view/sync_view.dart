@@ -29,34 +29,30 @@ class SyncView extends StatelessWidget {
           DbCollection.cases,
         ), //cases
         _divider,
-        // const _TableToSync<MediaModel>(
-        //   DbCollection.media,
-        // ), //media
-        // _divider,
+        const _TableToSync<MediaModel>(
+          DbCollection.media,
+        ), //media
+        _divider,
         const _TableToSync<TemplateModel>(
           DbCollection.templates,
         ), // templates
         _divider,
-        // const _TableToSync<TimelineNoteModel>(
-        //   DbCollection.timelineNotes,
-        // ), // timeline notes
-        // _divider,
+        const _TableToSync<TimelineNoteModel>(
+          DbCollection.timelineNotes,
+        ), // timeline notes
+        _divider,
         const _TableToSync<NoteModel>(
           DbCollection.notes,
         ), // timeline notes
         _divider,
-        // const _TableToSync<Conversation>(
-        //   DbCollection.conversation,
-        // ), // timeline notes
-        // _divider,
         const _TableToSync<SupportDataModel>(
           DbCollection.supportData,
         ), // support data
         _divider,
-        const _TableToSync<SettingsModel>(
-          DbCollection.settings,
-        ), // timeline notes
-        _divider,
+        // const _TableToSync<SettingsModel>(
+        //   DbCollection.settings,
+        // ), // settings notes
+        // _divider,
         const SizedBox(height: AppSpacing.xlg),
         const Center(child: SyncDoneButton()),
       ],

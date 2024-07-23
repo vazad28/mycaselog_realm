@@ -68,7 +68,11 @@ class AddCaseSeeder extends _$AddCaseSeeder {
   late final Map<String, dynamic> originalModelJson;
 
   /// called by view with passed param caseID to load case model
-  Future<void> seed(CaseModel caseModel, {bool newRecord = false}) async {
+  Future<void> seed(String caseID) async {
+    final caseModel =
+        ref.watch(collectionsProvider).casesCollection.getSingle(caseID) ??
+            CaseModelX.zero();
+
     final templateModel = caseModel.templateID == null
         ? null
         : ref
@@ -83,7 +87,7 @@ class AddCaseSeeder extends _$AddCaseSeeder {
     final defaultSurgeryLocation =
         ref.read(localStorageProvider).getDefaultSurgeryLocation;
 
-    if (newRecord) {
+    if (caseID == 'new') {
       caseModel.location =
           defaultSurgeryLocation.isEmpty ? null : defaultSurgeryLocation;
     }

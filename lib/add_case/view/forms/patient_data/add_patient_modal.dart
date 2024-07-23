@@ -37,7 +37,7 @@ class _AddPatientModalController extends ConsumerState<AddPatientModal>
   @override
   void initState() {
     decryptedPatientModel =
-        widget.decryptedPatientModel ?? DecryptedPatientModel();
+        widget.decryptedPatientModel ?? DecryptedPatientModel.zero();
 
     form = createFormGroup();
 

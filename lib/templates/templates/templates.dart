@@ -1,4 +1,3 @@
-export './provider/templates_event.dart';
 export './provider/templates_provider.dart';
 export './view/templates_page.dart';
 export './view/templates_view.dart';

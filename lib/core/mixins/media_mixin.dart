@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:media_manager/media_manager.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../core.dart';
 import '../providers/providers.dart';
 
 mixin MediaMixin {
@@ -66,5 +67,17 @@ mixin MediaMixin {
       subject: S.current.mediaShareSubjectLine,
       text: 'Share media',
     );
+  }
+
+  Future<void> pullDownToRefreshMediaBacklinks(WidgetRef ref) async {
+    try {
+      return ref
+          .watch(collectionsProvider)
+          .mediaCollection
+          .refreshMediaBacklinks();
+    } catch (err) {
+      ref.watch(dialogServiceProvider).showSnackBar('Refresh failed');
+      return;
+    }
   }
 }

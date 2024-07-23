@@ -3,7 +3,7 @@ import 'package:logger_client/logger_client.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:state_of/state_of.dart';
 
-import '../../../core/providers/providers.dart';
+import '../../../core/core.dart';
 import '../../index.dart';
 
 part '../../../generated/templates/shared_templates/provider/shared_templates_provider.g.dart';
@@ -12,17 +12,11 @@ part '../../../generated/templates/shared_templates/provider/shared_templates_pr
 class SharedTemplatesNotifier extends _$SharedTemplatesNotifier
     with LoggerMixin {
   @override
-  List<SharedTemplateModel> build(String speciality) {
-    // ref
-    //     .watch(collectionsProvider)
-    //     .templatesCollection
-    //     .getSharedTemplates(speciality)
-    //     .changes
-    //     .listen((data) {
-    //   state = data.results.toList();
-    // });
-
-    return [];
+  Future<List<SharedTemplateModel>> build(String speciality) {
+    return ref
+        .watch(collectionsProvider)
+        .templatesCollection
+        .getSharedTemplates(speciality);
   }
 
   /// Import a template

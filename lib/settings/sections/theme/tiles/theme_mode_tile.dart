@@ -1,6 +1,6 @@
 part of '../theme_section.dart';
 
-class ThemeModeSettingTile extends ConsumerWidget {
+class ThemeModeSettingTile extends ConsumerWidget with SettingsMixin {
   const ThemeModeSettingTile({super.key});
 
   @override
@@ -15,9 +15,8 @@ class ThemeModeSettingTile extends ConsumerWidget {
         underline: const SizedBox.shrink(),
         onChanged: (value) {
           if (value == null) return;
-          ref
-              .watch(appSettingsProvider.notifier)
-              .on(SettingsEvent.updateThemeMode(value));
+          final themeModeIndex = ThemeMode.values.indexOf(value);
+          updateSettings(ref, getSettings(ref)..themeMode = themeModeIndex);
         },
         items: [
           DropdownMenuItem(

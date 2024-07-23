@@ -7,26 +7,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../media_gallery/media_gallery.dart';
+import '../../../router/providers/router_observers.dart';
 import '../../core/core.dart';
-import '../provider/cases_provider.dart';
-import 'case_search_result_tile.dart';
+import '../media.dart';
+import '../provider/extension.dart';
 
-enum CasesSearchBarStyle { icon, bar }
+enum MediaSearchBarStyle { icon, bar }
 
-class CasesSearchView extends ConsumerStatefulWidget {
-  const CasesSearchView({required this.anchorStyle, super.key});
+class MediaSearchView extends ConsumerStatefulWidget {
+  const MediaSearchView({required this.anchorStyle, super.key});
 
-  final CasesSearchBarStyle anchorStyle;
+  final MediaSearchBarStyle anchorStyle;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
-      _CasesSearchViewState();
+      _MediaSearchViewState();
 }
 
-class _CasesSearchViewState extends ConsumerState<CasesSearchView> {
+class _MediaSearchViewState extends ConsumerState<MediaSearchView> {
   final _focusNode = FocusScopeNode();
   var _searchHistory = <String>[];
-  var _results = <CaseModel>[];
+  var _results = <MediaModel>[];
 
   bool _showResults = false;
 
@@ -81,15 +83,41 @@ class _CasesSearchViewState extends ConsumerState<CasesSearchView> {
   }
 
   Iterable<Widget> getResultsWidgets() {
-    return _results.map(
-      (caseModel) => CasesSearchResultTile(caseModel: caseModel),
-    );
+    final gridPair = context.gridPair(0);
+
+    return _results
+        .map(
+          (mediaModel) => OpenContainer<MediaModel>(
+            tappable: false,
+            closedColor: context.colorScheme.surfaceContainerLow,
+            openColor: context.colorScheme.surface,
+            closedBuilder: (_, action) => Thumbnail(
+              mediaModel: mediaModel,
+              width: gridPair.second,
+              // mediaRepository: ref.read(mediaRepositoryProvider),
+              // mediaUploadRepository: ref.read(mediaUploadRepositoryProvider),
+              onTap: action,
+            ),
+            openBuilder: (_, action) {
+              return MediaGalleryPage(
+                mediaGalleryModel: MediaGalleryModel(
+                  mediaModels: _results,
+                  index: _results.indexOf(mediaModel),
+                  routeObserver:
+                      ref.read(shellRoutesObserversProvider).mediaRouteObserver,
+                ),
+              );
+            },
+            onClosed: (_) => {},
+          ),
+        )
+        .toList();
   }
 
   Future<void> handleSelection(String selectedText) async {
-    final caseModels = await ref
+    final mediaModels = await ref
         .read(ftsSearchServiceProvider)
-        .searchCaseMedia<CaseModel>(selectedText);
+        .searchCaseMedia<MediaModel>(selectedText);
 
     setState(() {
       try {
@@ -104,7 +132,7 @@ class _CasesSearchViewState extends ConsumerState<CasesSearchView> {
         ref
             .read(localStorageProvider)
             .setCaseMediaRecentSearches(_searchHistory);
-        _results = caseModels;
+        _results = mediaModels;
         _showResults = true;
 
         searchController.value = TextEditingValue(text: selectedText);
@@ -122,7 +150,7 @@ class _CasesSearchViewState extends ConsumerState<CasesSearchView> {
     final child = SearchAnchor(
       searchController: searchController,
       textInputAction: TextInputAction.search,
-      viewHintText: 'Search cases',
+      viewHintText: 'Search media',
       viewLeading: BackButton(
         onPressed: () {
           Navigator.of(context).pop();
@@ -131,7 +159,7 @@ class _CasesSearchViewState extends ConsumerState<CasesSearchView> {
         },
       ),
       builder: (BuildContext context, SearchController controller) {
-        return widget.anchorStyle == CasesSearchBarStyle.bar
+        return widget.anchorStyle == MediaSearchBarStyle.bar
             ? SearchBar(
                 controller: controller,
                 focusNode: _focusNode,
@@ -143,9 +171,9 @@ class _CasesSearchViewState extends ConsumerState<CasesSearchView> {
                   controller.openView();
                 },
                 leading: const Icon(Icons.search),
-                hintText: 'Search cases',
+                hintText: 'Search media',
                 trailing: const [
-                  _CasesCountWidget(),
+                  _MediaCountWidget(),
                 ],
               )
             : IconButton(
@@ -207,13 +235,23 @@ class _CasesSearchViewState extends ConsumerState<CasesSearchView> {
 class _ResultsView extends StatelessWidget {
   const _ResultsView(this.searchResultWidgets);
   final Iterable<Widget> searchResultWidgets;
+
   @override
   Widget build(BuildContext context) {
-    final results = ListView.builder(
-      padding: EdgeInsets.zero,
-      itemBuilder: (context, index) => searchResultWidgets.elementAt(index),
-      //separatorBuilder: (context, index) => const Divider(),
+    final gridPair = context.gridPair(0);
+    final crossAxisCount = gridPair.first;
+
+    final results = GridView.builder(
+      padding: const EdgeInsets.all(AppSpacing.xs),
       itemCount: searchResultWidgets.length,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: crossAxisCount,
+        mainAxisSpacing: AppSpacing.xs,
+        crossAxisSpacing: AppSpacing.xs,
+      ),
+      itemBuilder: (_, index) {
+        return searchResultWidgets.elementAt(index);
+      },
     );
 
     final resultsCount = SizedBox(
@@ -261,13 +299,13 @@ class _SuggestionsView extends StatelessWidget {
   }
 }
 
-class _CasesCountWidget extends ConsumerWidget {
-  const _CasesCountWidget();
+class _MediaCountWidget extends ConsumerWidget {
+  const _MediaCountWidget();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AsyncValueWidget(
-      value: ref.watch(casesStreamProvider),
+      value: ref.watch(mediaStreamProvider),
       data: (data) => Padding(
         padding: const EdgeInsets.only(right: AppSpacing.sm),
         child: Text(

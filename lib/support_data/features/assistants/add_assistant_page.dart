@@ -10,13 +10,11 @@ import '../../support_data.dart';
 
 class AddAssistantPage extends ConsumerStatefulWidget {
   const AddAssistantPage({
-    required this.assistantModel,
+    required this.assistantID,
     super.key,
-    this.newRecord = false,
   });
 
-  final bool newRecord;
-  final AssistantModel assistantModel;
+  final String assistantID;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -25,18 +23,25 @@ class AddAssistantPage extends ConsumerStatefulWidget {
 
 class _AddAssistantPageState extends ConsumerState<AddAssistantPage> {
   late FormGroup formGroup;
+  late AssistantModel assistantModel;
 
   @override
   void initState() {
     super.initState();
 
+    assistantModel =
+        ref.read(supportDataNotifierProvider).assistants.firstWhere(
+              (e) => e.assistantID == widget.assistantID,
+              orElse: AssistantModelX.zero,
+            );
+
     formGroup = FormGroup({
       AssistantModelProps.name.name: FormControl<String>(
-        value: widget.assistantModel.name,
+        value: assistantModel.name,
         validators: [Validators.required, Validators.minLength(4)],
       ),
       AssistantModelProps.phone.name: FormControl<String>(
-        value: widget.assistantModel.phone,
+        value: assistantModel.phone,
       ),
     });
   }
@@ -47,20 +52,19 @@ class _AddAssistantPageState extends ConsumerState<AddAssistantPage> {
       body: Center(
         child: _AddAssistantPageForm(
           formGroup: formGroup,
-          title: widget.newRecord ? 'Add Assistant' : 'Edit Assistant',
+          title:
+              widget.assistantID == ' new' ? 'Add Assistant' : 'Edit Assistant',
           submitButton: FormSubmitButtonBar(
             onSubmit: () {
               /// update with basic data
               final assistantModelJson = {
-                ...widget.assistantModel.toJson(),
+                ...assistantModel.toJson(),
                 ...formGroup.value,
               };
-              final assistantModel =
-                  AssistantModelX.fromJson(assistantModelJson);
 
-              ref
-                  .watch(supportDataNotifierProvider.notifier)
-                  .upsertAssistant(assistantModel);
+              ref.watch(supportDataNotifierProvider.notifier).upsertAssistant(
+                    AssistantModelX.fromJson(assistantModelJson),
+                  );
 
               if (context.mounted) Navigator.of(context).pop();
             },

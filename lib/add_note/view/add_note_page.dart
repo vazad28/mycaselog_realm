@@ -20,12 +20,12 @@ final FontsLoader loader = FontsLoader();
 
 class AddNotePage extends ConsumerStatefulWidget {
   const AddNotePage({
-    required this.noteModel,
+    required this.noteID,
     this.newRecord = false,
     super.key,
   });
 
-  final NoteModel noteModel;
+  final String noteID;
   final bool newRecord;
 
   @override
@@ -42,15 +42,13 @@ class _AddNotePageState extends ConsumerState<AddNotePage> with LoggerMixin {
   final bool _canPop = false;
   bool _editorHasFocus = false;
 
+  bool _documentLoaded = false;
+  late NoteModel _noteModel;
+
   @override
   void initState() {
     super.initState();
-    _controller.document = widget.noteModel.quillDocument;
-    if (widget.noteModel.title != null) {
-      _titleFieldController.value =
-          TextEditingValue(text: widget.noteModel.title!);
-    }
-
+    _loadDocument();
     _editorFocusNode.addListener(() {
       if (_editorHasFocus != _editorFocusNode.hasFocus) {
         setState(() {
@@ -176,41 +174,43 @@ class _AddNotePageState extends ConsumerState<AddNotePage> with LoggerMixin {
           controller: _controller,
         ),
       ),
-      body: Column(
-        children: [
-          TextFormField(
-            controller: _titleFieldController,
-            maxLines: null,
-            style: context.textTheme.titleLarge?.copyWith(
-              color: context.colorScheme.onSurfaceVariant,
-            ),
-            //onSubmitted: (control) => control.value?.trim(),
-            textCapitalization: TextCapitalization.words,
-            keyboardType: TextInputType.text,
-            decoration: const InputDecoration(
-              border: InputBorder.none,
-              enabledBorder: InputBorder.none,
-              hintText: 'Title of your note',
-              floatingLabelBehavior: FloatingLabelBehavior.auto,
-            ),
-            onTapOutside: (_) => primaryFocus?.unfocus(),
-          ),
-          Builder(
-            builder: (context) {
-              return Expanded(
-                child: MyQuillEditor(
-                  configurations: QuillEditorConfigurations(
-                    sharedConfigurations: _sharedConfigurations,
-                    controller: _controller,
+      body: !_documentLoaded
+          ? const Loading()
+          : Column(
+              children: [
+                TextFormField(
+                  controller: _titleFieldController,
+                  maxLines: null,
+                  style: context.textTheme.titleLarge?.copyWith(
+                    color: context.colorScheme.onSurfaceVariant,
                   ),
-                  scrollController: _editorScrollController,
-                  focusNode: _editorFocusNode,
+                  //onSubmitted: (control) => control.value?.trim(),
+                  textCapitalization: TextCapitalization.words,
+                  keyboardType: TextInputType.text,
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    hintText: 'Title of your note',
+                    floatingLabelBehavior: FloatingLabelBehavior.auto,
+                  ),
+                  onTapOutside: (_) => primaryFocus?.unfocus(),
                 ),
-              );
-            },
-          ),
-        ],
-      ),
+                Builder(
+                  builder: (context) {
+                    return Expanded(
+                      child: MyQuillEditor(
+                        configurations: QuillEditorConfigurations(
+                          sharedConfigurations: _sharedConfigurations,
+                          controller: _controller,
+                        ),
+                        scrollController: _editorScrollController,
+                        focusNode: _editorFocusNode,
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
     );
 
     return FormPopScopeWrapper(
@@ -241,15 +241,14 @@ class _AddNotePageState extends ConsumerState<AddNotePage> with LoggerMixin {
       return true;
     }
 
-    if (_titleFieldController.text != widget.noteModel.title) return false;
+    if (_titleFieldController.text != _noteModel.title) return false;
 
-    if (widget.noteModel.note != null) {
-      final noteEqual =
-          _controller.document.toJsonString == widget.noteModel.note;
+    if (_noteModel.note != null) {
+      final noteEqual = _controller.document.toJsonString == _noteModel.note;
       return noteEqual;
     }
 
-    if (widget.noteModel.note == null) {
+    if (_noteModel.note == null) {
       return _controller.document.toPlainText().trim().isEmpty;
     }
 
@@ -261,7 +260,7 @@ class _AddNotePageState extends ConsumerState<AddNotePage> with LoggerMixin {
     try {
       final authorID = ref.read(authenticationUserProvider).id;
 
-      final noteModelUnmanaged = NoteModelX.fromJson(widget.noteModel.toJson())
+      final noteModelUnmanaged = NoteModelX.fromJson(_noteModel.toJson())
         ..authorID = authorID
         ..title = _titleFieldController.text
         ..note = _controller.document.toJsonString;
@@ -269,7 +268,7 @@ class _AddNotePageState extends ConsumerState<AddNotePage> with LoggerMixin {
       await ref
           .watch(collectionsProvider)
           .notesCollection
-          .add(widget.noteModel.noteID, noteModelUnmanaged.toRealmObject());
+          .add(_noteModel.noteID, noteModelUnmanaged.toRealmObject());
 
       await Future<void>.delayed(Durations.medium4);
 
@@ -279,5 +278,24 @@ class _AddNotePageState extends ConsumerState<AddNotePage> with LoggerMixin {
     } catch (err) {
       logger.severe(err);
     }
+  }
+
+  void _loadDocument() {
+    _noteModel = ref
+            .watch(collectionsProvider)
+            .notesCollection
+            .getSingle(widget.noteID) ??
+        NoteModelX.zero();
+    _controller.document = _noteModel.quillDocument;
+
+    if (_noteModel.title != null) {
+      _titleFieldController.value = TextEditingValue(text: _noteModel.title!);
+    }
+
+    Future<void>.delayed(Durations.short1).then((_) {
+      setState(() {
+        _documentLoaded = true;
+      });
+    });
   }
 }

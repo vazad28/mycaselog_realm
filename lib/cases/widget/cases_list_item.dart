@@ -62,7 +62,7 @@ class CasesListItem extends StatelessWidget {
     BuildContext context,
     CaseModel caseModel,
   ) {
-    return AddCaseRoute(caseModel).push<void>(context);
+    return AddCaseRoute(caseID: caseModel.caseID).push<void>(context);
   }
 
   FutureOr _onLongPress(

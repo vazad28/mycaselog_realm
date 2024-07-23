@@ -9,7 +9,6 @@ import 'package:state_of/state_of.dart';
 
 import '../../core/failures/app_failures.dart';
 import '../../core/providers/providers.dart';
-import '../../settings/settings.dart';
 
 part '../../generated/sync/provider/sync_providers.g.dart';
 
@@ -21,17 +20,19 @@ class SyncCollectionsMap extends _$SyncCollectionsMap {
 
     final collectionsMap = <DbCollection, BaseCollection>{
       DbCollection.cases: database.casesCollection,
-      //DbCollection.notes: database.notesCollection,
+      DbCollection.notes: database.notesCollection,
       DbCollection.media: database.mediaCollection,
-      // DbCollection.templates: database.templatesCollection,
-      // DbCollection.supportData: database.supportDataCollection,
-      // DbCollection.settings: database.settingsCollection,
+      DbCollection.templates: database.templatesCollection,
+      DbCollection.supportData: database.supportDataCollection,
+      DbCollection.settings: database.settingsCollection,
     };
 
     return collectionsMap;
   }
 }
 
+/// A family provider to fire sync on each collection with
+/// status updates
 @riverpod
 class CollectionSyncer extends _$CollectionSyncer {
   BaseCollection<RealmObject>? _collection;
@@ -52,6 +53,7 @@ class CollectionSyncer extends _$CollectionSyncer {
       return;
     }
 
+    state = const StateOf<int>.loading();
     _collection?.syncByTimestamp(timestamp).then((count) {
       state = StateOf<int>.success(count);
     }).catchError((Object? err) {
@@ -61,48 +63,70 @@ class CollectionSyncer extends _$CollectionSyncer {
 }
 
 @riverpod
-class FirestoreSync extends _$FirestoreSync with LoggerMixin {
+class FirestoreLiveSync extends _$FirestoreLiveSync with LoggerMixin {
   Map<String, StreamSubscription> subs = {};
+
+  bool _syncIsOn = false;
 
   @override
   void build() {
-    ref.onDispose(() {
-      for (final sub in subs.values) {
-        sub.cancel();
-      }
+    // ref.listen(settingsProvider.select((data) => data.syncOnStart),
+    //     (prev, next) {
+    //   if (prev == next) return;
+    //   if (next) startFirebaseListeners();
+    // });
 
+    // ignore: cascade_invocations
+    ref.onDispose(() {
+      // ignore: curly_braces_in_flow_control_structures
+      for (final sub in subs.values) sub.cancel();
       subs.clear();
+      logger.fine('FirestoreLiveSync is disposing');
     });
 
-    final syncOnStart =
-        ref.watch(appSettingsProvider.select((data) => data.syncOnStart));
+    return;
+  }
 
-    logger.fine('syncOnStart $syncOnStart');
+  //Future<void> initializeFirestoreSync() => Future<void>.sync(() => {});
 
-    if (!syncOnStart) return;
+  void startFirebaseListeners() {
+    if (_syncIsOn) {
+      logger.fine('sync listeners are on');
+      return;
+    }
+    _syncIsOn = true;
+    try {
+      final collectionsMap = ref.read(syncCollectionsMapProvider);
+      for (final dbCollection in collectionsMap.keys) {
+        if (dbCollection == DbCollection.media ||
+            dbCollection == DbCollection.timelineNotes) continue;
 
-    if (subs.isNotEmpty) {
-      //<- need this check to prevent loop
-      ref.invalidateSelf();
-    } else {
-      doSync();
+        final collectionsMap = ref.read(syncCollectionsMapProvider);
+        final collection = collectionsMap[dbCollection];
+        if (collection == null) continue;
+
+        // ignore: cancel_subscriptions
+        final sub = collection.listenForChanges().listen((_) {});
+
+        subs.putIfAbsent(dbCollection.name, () => sub);
+      }
+      _syncIsOn = false;
+    } catch (err) {
+      logger.severe('sync listeners error $err');
+      _syncIsOn = false;
     }
   }
 
-  void doSync() {
-    final collectionsMap = ref.read(syncCollectionsMapProvider);
-    for (final dbCollection in collectionsMap.keys) {
-      if (dbCollection == DbCollection.media ||
-          dbCollection == DbCollection.timelineNotes) continue;
+  void stopFirebaseListeners() {
+    // ignore: curly_braces_in_flow_control_structures
+    for (final sub in subs.values) sub.cancel();
+    subs.clear();
+  }
 
-      final collectionsMap = ref.watch(syncCollectionsMapProvider);
-      final collection = collectionsMap[dbCollection];
-      if (collection == null) continue;
-
-      // ignore: cancel_subscriptions
-      final sub = collection.listenForChanges().listen((_) {});
-
-      subs.putIfAbsent(dbCollection.name, () => sub);
-    }
+  void loadFirebaseListenerOnStart() {
+    Future<void>.delayed(const Duration(milliseconds: 1000)).then((_) {
+      logger.fine('calling sync provider');
+      //startFirebaseListeners();
+    });
   }
 }

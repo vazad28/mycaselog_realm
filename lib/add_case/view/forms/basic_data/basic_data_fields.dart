@@ -174,7 +174,6 @@ class SurgeryLocationField extends ConsumerWidget with AddCaseStateMixin {
     final options = watchSurgeryLocations(ref);
 
     final items = options
-        .where((element) => element.removed == 0)
         .map(
           (e) => RadioSelectOption<String>(
             title: e.name?.titleCase ?? S.of(context).noTitle,
@@ -250,7 +249,6 @@ class AssistantsField extends ConsumerWidget with AddCaseStateMixin {
     final options = watchAssistantModels(ref);
 
     final items = options
-        .where((element) => element.removed == 0)
         .map(
           (e) => RadioSelectOption<String>(
             title: e.name?.titleCase ?? S.of(context).noTitle,

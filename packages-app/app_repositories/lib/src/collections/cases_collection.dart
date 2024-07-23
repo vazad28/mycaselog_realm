@@ -1,7 +1,20 @@
 part of '../collections.dart';
 
 class CasesCollection extends BaseCollection<CaseModel> {
-  CasesCollection(super.realmDatabase) : _realm = realmDatabase.realm;
+  CasesCollection(super.realmDatabase) : _realm = realmDatabase.realm {
+    print('creating instance of casesCollection');
+
+    StreamSubscription? sub;
+    LiveSync().stream.listen((syncActive) {
+      if (syncActive) {
+        print('Firebase Sync is active');
+        sub = listenForChanges().listen((_) {}); //.cancelOnDisposeOf(this);
+      } else {
+        print('Firebase Sync is not active');
+        sub?.cancel();
+      }
+    });
+  }
 
   final Realm _realm;
 
@@ -110,4 +123,39 @@ class CasesCollection extends BaseCollection<CaseModel> {
     if (cases.isEmpty) return null;
     return cases.first.surgeryDate;
   }
+
+  // Future<void> addMedia(MediaModel updatedMediaModel,
+  //     {bool remove = false}) async {
+  //   final caseModel = _realm.find<CaseModel>(updatedMediaModel.caseID);
+  //   if (caseModel == null) return;
+  //   _realm.write(() {
+  //     if (remove) {
+  //       caseModel.medias.remove(updatedMediaModel);
+  //     } else {
+  //       caseModel.medias.add(updatedMediaModel);
+  //     }
+  //     putInFirestore(updatedMediaModel.caseID,
+  //         caseModel..timestamp = ModelUtils.getTimestamp);
+  //   });
+  // }
+
+  // Future<void> addNote(TimelineNoteModel noteModel,
+  //     {bool remove = false}) async {
+  //   final caseModel = _realm.find<CaseModel>(noteModel.caseID);
+  //   if (caseModel == null) return;
+  //   _realm.write(() {
+  //     if (remove) {
+  //       caseModel.notes.remove(noteModel);
+  //     } else {
+  //       caseModel.notes.add(noteModel);
+  //     }
+  //     putInFirestore(
+  //         noteModel.caseID, caseModel..timestamp = ModelUtils.getTimestamp);
+  //   });
+  // }
+
+  // /// todo
+  // void onMediaUploadFailure(MediaModel mediaModel, MediaStatus mediaStatus) {
+  //   logger.severe('Media upload failed');
+  // }
 }

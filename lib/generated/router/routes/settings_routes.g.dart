@@ -58,12 +58,6 @@ RouteBase get $settingsRoute => GoRouteData.$route(
             GoRouteData.$route(
               path: 'shared_templates/:speciality',
               factory: $SharedTemplatesRouteExtension._fromState,
-              routes: [
-                GoRouteData.$route(
-                  path: 'shared_template/:templateID',
-                  factory: $SharedTemplateRouteExtension._fromState,
-                ),
-              ],
             ),
           ],
         ),
@@ -162,29 +156,21 @@ extension $AssistantsRouteExtension on AssistantsRoute {
 
 extension $AddAssistantRouteExtension on AddAssistantRoute {
   static AddAssistantRoute _fromState(GoRouterState state) => AddAssistantRoute(
-        newRecord: _$convertMapValue(
-                'new-record', state.uri.queryParameters, _$boolConverter) ??
-            false,
-        state.extra as AssistantModel,
+        assistantID: state.pathParameters['assistantID']! ?? 'new',
       );
 
   String get location => GoRouteData.$location(
         '/settings/assistants/${Uri.encodeComponent(assistantID)}',
-        queryParams: {
-          if (newRecord != false) 'new-record': newRecord.toString(),
-        },
       );
 
-  void go(BuildContext context) => context.go(location, extra: $extra);
+  void go(BuildContext context) => context.go(location);
 
-  Future<T?> push<T>(BuildContext context) =>
-      context.push<T>(location, extra: $extra);
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
   void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location, extra: $extra);
+      context.pushReplacement(location);
 
-  void replace(BuildContext context) =>
-      context.replace(location, extra: $extra);
+  void replace(BuildContext context) => context.replace(location);
 }
 
 extension $SurgeryLocationsRouteExtension on SurgeryLocationsRoute {
@@ -208,29 +194,21 @@ extension $SurgeryLocationsRouteExtension on SurgeryLocationsRoute {
 extension $AddSurgeryLocationRouteExtension on AddSurgeryLocationRoute {
   static AddSurgeryLocationRoute _fromState(GoRouterState state) =>
       AddSurgeryLocationRoute(
-        newRecord: _$convertMapValue(
-                'new-record', state.uri.queryParameters, _$boolConverter) ??
-            false,
-        state.extra as SurgeryLocationModel,
+        locationID: state.pathParameters['locationID']! ?? 'new',
       );
 
   String get location => GoRouteData.$location(
         '/settings/surgery_locations/${Uri.encodeComponent(locationID)}',
-        queryParams: {
-          if (newRecord != false) 'new-record': newRecord.toString(),
-        },
       );
 
-  void go(BuildContext context) => context.go(location, extra: $extra);
+  void go(BuildContext context) => context.go(location);
 
-  Future<T?> push<T>(BuildContext context) =>
-      context.push<T>(location, extra: $extra);
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
   void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location, extra: $extra);
+      context.pushReplacement(location);
 
-  void replace(BuildContext context) =>
-      context.replace(location, extra: $extra);
+  void replace(BuildContext context) => context.replace(location);
 }
 
 extension $TemplatesRouteExtension on TemplatesRoute {
@@ -288,46 +266,4 @@ extension $SharedTemplatesRouteExtension on SharedTemplatesRoute {
       context.pushReplacement(location);
 
   void replace(BuildContext context) => context.replace(location);
-}
-
-extension $SharedTemplateRouteExtension on SharedTemplateRoute {
-  static SharedTemplateRoute _fromState(GoRouterState state) =>
-      SharedTemplateRoute(
-        state.extra as SharedTemplateModel,
-      );
-
-  String get location => GoRouteData.$location(
-        '/settings/templates/shared_templates/${Uri.encodeComponent(speciality)}/shared_template/${Uri.encodeComponent(templateID)}',
-      );
-
-  void go(BuildContext context) => context.go(location, extra: $extra);
-
-  Future<T?> push<T>(BuildContext context) =>
-      context.push<T>(location, extra: $extra);
-
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location, extra: $extra);
-
-  void replace(BuildContext context) =>
-      context.replace(location, extra: $extra);
-}
-
-T? _$convertMapValue<T>(
-  String key,
-  Map<String, String> map,
-  T Function(String) converter,
-) {
-  final value = map[key];
-  return value == null ? null : converter(value);
-}
-
-bool _$boolConverter(String value) {
-  switch (value) {
-    case 'true':
-      return true;
-    case 'false':
-      return false;
-    default:
-      throw UnsupportedError('Cannot convert "$value" into a bool.');
-  }
 }

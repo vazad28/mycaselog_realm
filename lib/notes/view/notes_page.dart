@@ -1,5 +1,4 @@
 import 'package:app_l10n/app_l10n.dart';
-import 'package:app_models/app_models.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -53,7 +52,7 @@ class _NotesPageState extends ConsumerState<NotesPage> {
         key: const Key('__notes_page_fab_key__'),
         title: S.of(context).addNote,
         onTap: () {
-          AddNoteRoute(NoteModelX.zero(), newRecord: true).push<void>(context);
+          AddNoteRoute().push<void>(context);
         },
       ),
     );

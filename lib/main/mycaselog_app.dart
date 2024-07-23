@@ -4,22 +4,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logger_client/logger_client.dart';
 
 import '../core/app_vars.dart';
 import '../core/providers/providers.dart';
 import '../core/widgets/async_value_widget.dart';
 import '../router/providers/app_router.dart';
-import '../sync/provider/sync_providers.dart';
 
-class MycaselogApp extends ConsumerWidget {
+class MycaselogApp extends ConsumerWidget with LoggerMixin {
   const MycaselogApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.listen(firestoreSyncProvider, (previous, next) {
-      debugPrint('firestoreSyncProvider provider created');
-    });
-
     final brightness = View.of(context).platformDispatcher.platformBrightness;
 
     // Use with Google Fonts package to use downloadable fonts
@@ -43,9 +39,10 @@ class MycaselogApp extends ConsumerWidget {
           : themeMode == 1
               ? theme.light()
               : theme.dark().copyWith(
-                      cupertinoOverrideTheme: const CupertinoThemeData(
-                    textTheme: CupertinoTextThemeData(), // This is required
-                  )),
+                    cupertinoOverrideTheme: const CupertinoThemeData(
+                      textTheme: CupertinoTextThemeData(), // This is required
+                    ),
+                  ),
       localizationsDelegates: const [
         S.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -57,7 +54,7 @@ class MycaselogApp extends ConsumerWidget {
 
     final app = AsyncValueWidget(
       value: ref.watch(appStartUpProvider),
-      data: (_) => materialApp,
+      data: (_) => _MycaselogApp(app: (context) => materialApp),
       loading: const Text('loading'),
     );
 
@@ -65,5 +62,22 @@ class MycaselogApp extends ConsumerWidget {
       onPopInvokedWithResult: (bool didPop, result) => {},
       child: TapOutsideUnfocus(child: app),
     );
+  }
+}
+
+class _MycaselogApp extends ConsumerWidget with LoggerMixin {
+  const _MycaselogApp({required this.app, super.key});
+
+  final WidgetBuilder app;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    /// Listen for settings provider to start or stop firebse sync
+    // ref.listen(firestoreLiveSyncProvider, (previous, next) {
+    //   logger.fine('settingsProvider listening for sync');
+    // });
+    //ref.watch(connectivityStatusProvider);
+
+    return app(context);
   }
 }
