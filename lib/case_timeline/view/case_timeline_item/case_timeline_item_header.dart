@@ -14,7 +14,7 @@ class CaseTimelineItemHeader extends ConsumerStatefulWidget {
 }
 
 class _CaseTimelineItemHeaderState extends ConsumerState<CaseTimelineItemHeader>
-    with TimelineMixin, MediaMixin {
+    with TimelineMixin, AppMixins {
   bool _isTodayTimeline = false;
 
   late final DateTime surgeryDateTimeMidNight;
@@ -111,7 +111,7 @@ class _CaseTimelineItemHeaderState extends ConsumerState<CaseTimelineItemHeader>
             timestamp: timelineItemModel.eventTimestamp,
           );
         case TimelineActionEnum.shareMedia:
-          shareMediaList(
+          shareMedia(
             ref,
             mediaModels: timelineItemModel.mediaList,
           );

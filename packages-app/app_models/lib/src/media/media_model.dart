@@ -63,7 +63,7 @@
 //   @Backlink(#mediaModels)
 //   late Iterable<$CaseModel> linkedCaseModel;
 
-//   MediaModel toRealmObject() {
+//   MediaModel toUnmanaged() {
 //     return MediaModel(
 //       mediaID,
 //       authorID,
@@ -89,7 +89,7 @@
 
 // extension MediaModelX on MediaModel {
 //   static MediaModel fromJson(Map<String, dynamic> json) =>
-//       _$$MediaModelFromJson(json).toRealmObject();
+//       _$$MediaModelFromJson(json).toUnmanaged();
 
 //   Map<String, dynamic> toJson() => _$$MediaModelToJson(this);
 

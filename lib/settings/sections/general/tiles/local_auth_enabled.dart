@@ -1,12 +1,12 @@
 part of '../general_section.dart';
 
-class LocalAuthEnabledTile extends ConsumerWidget with SettingsMixin {
+class LocalAuthEnabledTile extends ConsumerWidget {
   const LocalAuthEnabledTile({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final localAuthEnabled =
-        ref.watch(settingsProvider.select((value) => value.localAuthEnabled));
+    final localAuthEnabled = ref.watch(
+        settingsNotifierProvider.select((value) => value.localAuthEnabled));
 
     return SettingToggleTile(
       leading: const Icon(Icons.shield),
@@ -14,7 +14,9 @@ class LocalAuthEnabledTile extends ConsumerWidget with SettingsMixin {
       subTitle: S.of(context).localAuthSubTitle,
       switchValue: localAuthEnabled,
       onToggle: (value) {
-        updateSettings(ref, getSettings(ref)..biometricEnabled);
+        ref.watch(settingsNotifierProvider.notifier).updateSettings(
+              (e) => e..localAuthEnabled = value,
+            );
       },
     );
   }

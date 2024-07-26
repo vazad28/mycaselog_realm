@@ -3,7 +3,7 @@ part of '../collections.dart';
 class TimelineNotesCollection extends BaseCollection<TimelineNoteModel> {
   TimelineNotesCollection(super.realmDatabase) : _realm = realmDatabase.realm {
     print('creating instance of timeline note Collection');
-    listenForChanges().listen((_) {}).cancelOnDisposeOf(this);
+    //listenForChanges().listen((_) {}).cancelOnDisposeOf(this);
   }
 
   final Realm _realm;

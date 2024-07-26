@@ -6,8 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../provider/signin_provider.dart';
 import '../../provider/signin_state.dart';
 
-class GoogleSignInButton extends ConsumerWidget
-    with SigninEventMixin, SigninStateMixin {
+class GoogleSignInButton extends ConsumerWidget with SigninMixin {
   const GoogleSignInButton({super.key});
 
   @override

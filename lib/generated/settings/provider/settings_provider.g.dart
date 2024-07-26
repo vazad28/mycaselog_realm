@@ -6,24 +6,29 @@ part of '../../../settings/provider/settings_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$settingsHash() => r'9e851f4d7e796a71fa8f80b754f54d61480641b8';
+String _$settingsNotifierHash() => r'98c1accc941c89366bf0bbca6478c4a7010642c0';
 
-/// See also [Settings].
-@ProviderFor(Settings)
-final settingsProvider =
-    AutoDisposeNotifierProvider<Settings, SettingsModel>.internal(
-  Settings.new,
-  name: r'settingsProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$settingsHash,
+/// Use a Notifier provider so we can have access to the settings without async
+///
+/// Copied from [SettingsNotifier].
+@ProviderFor(SettingsNotifier)
+final settingsNotifierProvider =
+    NotifierProvider<SettingsNotifier, SettingsModel>.internal(
+  SettingsNotifier.new,
+  name: r'settingsNotifierProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$settingsNotifierHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$Settings = AutoDisposeNotifier<SettingsModel>;
-String _$templatesCountHash() => r'50104f3385dcf0772f25498b2c475890b94e4e30';
+typedef _$SettingsNotifier = Notifier<SettingsModel>;
+String _$templatesCountHash() => r'4349cac1048a2a91b8a6b87ba8ec97f04b98ed1f';
 
-/// See also [TemplatesCount].
+/// Template count provider
+///
+/// Copied from [TemplatesCount].
 @ProviderFor(TemplatesCount)
 final templatesCountProvider =
     AutoDisposeNotifierProvider<TemplatesCount, int>.internal(

@@ -7,8 +7,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger_client/logger_client.dart';
 import 'package:realm/realm.dart';
 
+import '../../core/app_mixins.dart';
 import '../../core/core.dart';
-import '../../core/widgets/async_value_widget.dart';
 import '../../router/routes/routes.dart';
 import '../cases.dart';
 
@@ -20,7 +20,7 @@ class CasesPage extends ConsumerStatefulWidget {
 }
 
 class _CasesPageState extends ConsumerState<CasesPage>
-    with MediaMixin, LoggerMixin {
+    with LoggerMixin, AppMixins {
   final _scrollController = ScrollController();
 
   @override
@@ -29,11 +29,6 @@ class _CasesPageState extends ConsumerState<CasesPage>
     Future<void>.delayed(Durations.short1)
         .then((_) => _scrollController.dispose());
     super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
   }
 
   @override
@@ -57,7 +52,7 @@ class _CasesPageState extends ConsumerState<CasesPage>
           CupertinoSliverRefreshControl(
             builder: customScrollViewRefreshIndicator,
             refreshTriggerPullDistance: AppConst.kRefreshTriggerPullDistance,
-            onRefresh: () => pullDownToRefreshMediaBacklinks(ref),
+            onRefresh: () => refreshMediaBacklinks(ref),
           ),
           const _CasesView(key: Key('__cases_view_sub_key__')),
         ],

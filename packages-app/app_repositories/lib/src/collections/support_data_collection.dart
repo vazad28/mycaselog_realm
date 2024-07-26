@@ -44,6 +44,7 @@ class SupportDataCollection extends BaseCollection<SupportDataModel> {
   /// Realm Methods
   /// ////////////////////////////////////////////////////////////////////
   SupportDataModel getSupportData() {
-    return _realm.findOrAdd(userID, SupportDataModelX.zero);
+    return _realm.find<SupportDataModel>(userID) ??
+        SupportDataModelX.zero(userID);
   }
 }

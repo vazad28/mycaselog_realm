@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/providers/providers.dart';
+import '../../core/app_providers.dart';
 import '../pages/verify_email_page.dart';
 import '../signin.dart';
 
@@ -15,8 +15,7 @@ part '../pages/email_signin_page.dart';
 part '../pages/forgot_password_page.dart';
 part '../pages/social_signin_page.dart';
 
-class SigninPage extends ConsumerWidget
-    with SigninEventMixin, SigninStateMixin {
+class SigninPage extends ConsumerWidget with SigninMixin {
   const SigninPage({super.key});
 
   static Page<void> page() => const MaterialPage<void>(child: SigninPage());

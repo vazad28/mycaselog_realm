@@ -1,12 +1,4 @@
-import 'dart:async';
-
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../services/services.dart';
-import 'providers.dart';
-
-part '../../generated/core/providers/startup_providers.g.dart';
+part of '../app_providers.dart';
 
 @riverpod
 Future<void> appStartUp(AppStartUpRef ref) async {
@@ -28,25 +20,5 @@ class CurrentThemeMode extends _$CurrentThemeMode {
   void setThemeMode(int themeModeIndex) {
     ref.watch(sharedPrefsProvider).setInt(themeModeKey, themeModeIndex);
     state = themeModeIndex;
-  }
-}
-
-@Riverpod(keepAlive: true)
-class ConnectivityStatus extends _$ConnectivityStatus {
-  @override
-  bool build() {
-    final sub = Connectivity().onConnectivityChanged.listen((results) {
-      final status = results.contains(ConnectivityResult.mobile) ||
-          results.contains(ConnectivityResult.wifi);
-      if (status == state) return;
-
-      ref
-          .watch(dialogServiceProvider)
-          .showSnackBar(status ? 'Network connected' : 'No network connection');
-    });
-
-    ref.onDispose(() => sub.cancel);
-
-    return true;
   }
 }

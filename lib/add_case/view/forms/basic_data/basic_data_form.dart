@@ -4,18 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-import '../../../../core/providers/providers.dart';
+import '../../../../core/app_mixins.dart';
 import '../../../provider/add_case_provider.dart';
 import 'basic_data_fields.dart';
 
-class BasicDataForm extends ConsumerWidget with AddCaseStateMixin {
+class BasicDataForm extends ConsumerWidget with AddCaseStateMixin, AppMixins {
   const BasicDataForm({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final form = ref.watch(basicDataFormGroupProvider);
 
-    final activeFieldsList = ref.watch(activeFieldsListProvider);
+    final activeFieldsList = watchActiveFieldsList(ref);
 
     return ReactiveForm(
       formGroup: form,

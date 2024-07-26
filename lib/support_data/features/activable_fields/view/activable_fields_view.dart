@@ -1,19 +1,11 @@
 part of './activable_fields_page.dart';
 
-class ActivableFieldsView extends ConsumerWidget {
+class ActivableFieldsView extends ConsumerWidget with AppMixins {
   const ActivableFieldsView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final activeFieldsList =
-        ref.watch(supportDataNotifierProvider.select((data) {
-      final list = data.activeBasicFields
-          .map((name) => ActivableCaseField.values.byName(name))
-          .toList();
-
-      if (list.isEmpty) return ActivableCaseField.values;
-      return list;
-    }));
+    final activeFieldsList = watchActiveFieldsList(ref);
 
     return ListView(
       shrinkWrap: true,

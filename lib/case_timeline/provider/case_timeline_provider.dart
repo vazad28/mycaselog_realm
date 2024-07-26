@@ -1,29 +1,37 @@
+import 'package:app_annotations/app_annotations.dart';
 import 'package:app_extensions/app_extensions.dart';
 import 'package:app_models/app_models.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:logger_client/logger_client.dart';
+import 'package:media_manager/media_manager.dart';
+import 'package:misc_packages/misc_packages.dart';
 import 'package:realm/realm.dart';
+import 'package:recase/recase.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../case_details/case_details.dart';
-import '../../core/providers/providers.dart';
+import '../../core/app_providers.dart';
+import '../../core/app_services.dart';
+import '../case_timeline.dart';
+
+part './case_timeline_mixin.dart';
+part './case_timeline_actions.dart';
 
 part '../../generated/case_timeline/provider/case_timeline_provider.g.dart';
 
 @riverpod
 Stream<RealmResultsChanges<MediaModel>> casesDetailsMedia(
     CasesDetailsMediaRef ref, String caseID) {
-  return ref
-      .watch(collectionsProvider)
-      .mediaCollection
-      .getCaseMedia(caseID)
-      .changes;
+  return ref.watch(dbProvider).mediaCollection.getCaseMedia(caseID).changes;
 }
 
 @riverpod
 Stream<RealmResultsChanges<TimelineNoteModel>> casesDetailsNotes(
     CasesDetailsNotesRef ref, String caseID) {
   return ref
-      .watch(collectionsProvider)
+      .watch(dbProvider)
       .timelineNotesCollection
       .getCaseNotes(caseID)
       .changes;
@@ -37,8 +45,7 @@ class CaseTimelineNotifier extends _$CaseTimelineNotifier with LoggerMixin {
 
     if (caseID == null) return const AsyncData([]);
 
-    final caseModel =
-        ref.watch(collectionsProvider).casesCollection.getSingle(caseID);
+    final caseModel = ref.watch(dbProvider).casesCollection.getSingle(caseID);
 
     if (caseModel == null) return const AsyncData([]);
 

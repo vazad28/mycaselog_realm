@@ -1,10 +1,4 @@
-import 'package:async_result/async_result.dart';
-import 'package:encryption_client/encryption_client.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../providers/providers.dart';
-
-part '../../generated/core/services/encryption_service.g.dart';
+part of '../app_services.dart';
 
 /// Encryption service provider
 @riverpod

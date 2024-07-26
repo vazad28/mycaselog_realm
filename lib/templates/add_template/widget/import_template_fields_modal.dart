@@ -42,31 +42,31 @@ class _ImportTemplateFieldsModal extends ConsumerWidget
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AsyncValueWidget(
-        value: ref.watch(templatesStreamProvider),
-        data: (templateModels) {
-          if (templateModels.isEmpty) {
-            return Loading(text: context.l10n.noUserTemplates);
-          }
+      value: ref.watch(templatesNotifierProvider),
+      data: (templateModels) {
+        if (templateModels.isEmpty) {
+          return Loading(text: context.l10n.noUserTemplates);
+        }
 
-          return ListView.separated(
-            itemCount: templateModels.length,
-            padding: const EdgeInsets.all(4),
-            separatorBuilder: (_, index) =>
-                const Divider(height: 1, indent: 16),
-            itemBuilder: (_, index) {
-              final templateModel = templateModels.elementAt(index);
+        return ListView.separated(
+          itemCount: templateModels.length,
+          padding: const EdgeInsets.all(4),
+          separatorBuilder: (_, index) => const Divider(height: 1, indent: 16),
+          itemBuilder: (_, index) {
+            final templateModel = templateModels.elementAt(index);
 
-              return MaterialCard.outlined(
-                onTap: () {
-                  Navigator.pop(context, templateModel);
-                },
-                child: MaterialCardTile(
-                  title: templateModel.title?.titleCase ?? context.l10n.noTitle,
-                  subTitle: templateModel.desc ?? context.l10n.noDescription,
-                ),
-              ).paddingAll(8);
-            },
-          );
-        });
+            return MaterialCard.outlined(
+              onTap: () {
+                Navigator.pop(context, templateModel);
+              },
+              child: MaterialCardTile(
+                title: templateModel.title?.titleCase ?? context.l10n.noTitle,
+                subTitle: templateModel.desc ?? context.l10n.noDescription,
+              ),
+            ).paddingAll(8);
+          },
+        );
+      },
+    );
   }
 }

@@ -7,8 +7,8 @@ import 'package:image_picker/image_picker.dart' show ImagePicker, ImageSource;
 import 'package:logger_client/logger_client.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../core/providers/providers.dart';
-import '../../core/services/services.dart';
+import '../../core/app_providers.dart';
+import '../../core/app_services.dart';
 
 part '../../generated/user_profile/provider/user_profile_provider.freezed.dart';
 part '../../generated/user_profile/provider/user_profile_provider.g.dart';
@@ -94,7 +94,7 @@ class UserProfileNotifier extends _$UserProfileNotifier with LoggerMixin {
   @override
   UserModel build() {
     final sub = ref
-        .watch(collectionsProvider)
+        .watch(dbProvider)
         .userCollection
         .getSingle(userID)
         ?.changes
@@ -132,10 +132,7 @@ class UserProfileNotifier extends _$UserProfileNotifier with LoggerMixin {
   void _updateUserModel(UserModel userModel) {
     /// we are not saving data if the user is anonymous as can happen on logout
     if (userModel.userID.isEmpty) return;
-    ref
-        .read(collectionsProvider)
-        .userCollection
-        .add(userModel.userID, userModel);
+    ref.read(dbProvider).userCollection.add(userModel.userID, userModel);
   }
 
   /// Upload user avatar photo
@@ -152,7 +149,7 @@ class UserProfileNotifier extends _$UserProfileNotifier with LoggerMixin {
     final file = File(localFile.path);
 
     await ref
-        .watch(collectionsProvider)
+        .watch(dbProvider)
         .storageCollection
         .uploadAvatar(file)
         .then((value) {

@@ -1,4 +1,4 @@
-import 'package:app_models/src/cases/case_model.dart';
+import 'package:app_models/app_models.dart';
 
 import 'src/image_picker/s_image_picker.dart';
 import 'src/media_uploader/media_uploader.dart';
@@ -17,9 +17,11 @@ class MediaManager {
 
   static UploadController? getUploadController({
     required MediaModel mediaModel,
-    required MediaUploadRepository mediaUploadRepository,
+    required MediaUploadService mediaUploadService,
   }) {
     return imageUploadControllersList.getUploadController(
-        mediaModel, mediaUploadRepository,);
+      mediaModel,
+      mediaUploadService,
+    );
   }
 }

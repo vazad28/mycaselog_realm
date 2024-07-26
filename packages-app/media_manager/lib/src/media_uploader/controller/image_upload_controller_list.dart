@@ -25,10 +25,12 @@ class ImageUploadControllersList with LoggerMixin {
   }
 
   ImageUploadController addController(
-      MediaModel mediaModel, MediaUploadRepository mediaUploadRepository,) {
+    MediaModel mediaModel,
+    MediaUploadService mediaUploadService,
+  ) {
     final controller = ImageUploadController(
       mediaModel: mediaModel,
-      mediaUploadRepository: mediaUploadRepository,
+      mediaUploadService: mediaUploadService,
       onRemoveController: (String mediaID) {
         removeController(mediaID);
       },
@@ -42,7 +44,7 @@ class ImageUploadControllersList with LoggerMixin {
 
   UploadController? getUploadController(
     MediaModel mediaModel,
-    MediaUploadRepository mediaUploadRepository,
+    MediaUploadService mediaUploadService,
   ) {
     if (mediaModel.status == MediaStatus.success ||
         mediaModel.status == MediaStatus.cancelled) return null;
@@ -53,7 +55,7 @@ class ImageUploadControllersList with LoggerMixin {
     return entry?.value ??
         addController(
           mediaModel,
-          mediaUploadRepository,
+          mediaUploadService,
         );
   }
 }

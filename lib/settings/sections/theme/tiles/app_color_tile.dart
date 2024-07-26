@@ -6,7 +6,7 @@
 //   @override
 //   Widget build(BuildContext context, WidgetRef ref) {
 //     final seedColorHex =
-//         ref.watch(settingsProvider.select((value) => value.seedColorHex));
+//         ref.watch(settingsNotifierProvider.select((value) => value.seedColorHex));
 
 //     return SettingsTile(
 //       title: S.of(context).changeColor,
@@ -17,7 +17,7 @@
 //         onChanged: (color) {
 //           if (color != null) {
 //             ref
-//                 .watch(settingsProvider.notifier)
+//                 .watch(settingsNotifierProvider.notifier)
 //                 .on(SettingsEvent.updateThemeColor(color.toHex()));
 //           }
 //         },

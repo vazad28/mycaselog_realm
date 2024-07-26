@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../core/mixins/mixins.dart';
-import '../../core/services/dialog_service.dart';
+import '../../core/core.dart';
 import '../case_timeline.dart';
 
 class TimelineChatInput extends ConsumerStatefulWidget {

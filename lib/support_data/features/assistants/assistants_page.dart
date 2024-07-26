@@ -1,3 +1,4 @@
+import 'package:app_annotations/app_annotations.dart';
 import 'package:app_l10n/app_l10n.dart';
 import 'package:app_models/app_models.dart';
 import 'package:app_ui/app_ui.dart';
@@ -69,7 +70,7 @@ class _AssistantsView extends ConsumerWidget {
           onDismissed: () {
             ref
                 .watch(supportDataNotifierProvider.notifier)
-                .upsertAssistant(assistantModel, remove: true);
+                .upsertAssistant(assistantModel, CrudAction.remove);
           },
           onTap: () =>
               AddAssistantRoute(assistantID: assistantModel.assistantID)

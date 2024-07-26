@@ -14,7 +14,7 @@ class SharedTemplatesNotifier extends _$SharedTemplatesNotifier
   @override
   Future<List<SharedTemplateModel>> build(String speciality) {
     return ref
-        .watch(collectionsProvider)
+        .watch(dbProvider)
         .templatesCollection
         .getSharedTemplates(speciality);
   }

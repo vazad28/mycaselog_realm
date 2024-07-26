@@ -1,7 +1,7 @@
 import 'package:app_models/app_models.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-abstract class MediaUploadRepository {
+abstract class MediaUploadService {
   bool get uploadFullSizePhoto;
 
   Reference getThumbRef(MediaModel mediaModel);

@@ -10,7 +10,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger_client/logger_client.dart';
 
-import 'core/providers/providers.dart';
+import 'core/app_providers.dart';
 import 'firebase_options.dart';
 import 'main/bootstrap.dart';
 import 'main/mycaselog_app.dart';

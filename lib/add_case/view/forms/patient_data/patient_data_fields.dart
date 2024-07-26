@@ -9,7 +9,7 @@ import 'package:misc_packages/misc_packages.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:recase/recase.dart';
 
-import '../../../../core/services/services.dart';
+import '../../../../core/app_services.dart';
 import '../../../../settings/settings.dart';
 import '../../../provider/add_case_provider.dart';
 import 'add_patient_modal.dart';
@@ -44,7 +44,7 @@ class PatientNameField extends ConsumerWidget with AddCaseStateMixin {
 
         /// check local auth if not debug mode
         if (buildMode == BuildMode.release &&
-            ref.read(settingsProvider).localAuthEnabled) {
+            ref.read(settingsNotifierProvider).localAuthEnabled) {
           final authenticated =
               await ref.read(dialogServiceProvider).localAuth();
           if (!authenticated) return;

@@ -1,12 +1,12 @@
 part of '../general_section.dart';
 
-class SyncDataOnAppStartTile extends ConsumerWidget with SettingsMixin {
+class SyncDataOnAppStartTile extends ConsumerWidget {
   const SyncDataOnAppStartTile({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final syncOnStart =
-        ref.watch(settingsProvider.select((value) => value.syncOnStart));
+    final syncOnStart = ref
+        .watch(settingsNotifierProvider.select((value) => value.syncOnStart));
 
     return SettingToggleTile(
       leading: const Icon(Icons.sync_alt),
@@ -14,12 +14,9 @@ class SyncDataOnAppStartTile extends ConsumerWidget with SettingsMixin {
       subTitle: S.of(context).syncDataOnAppStartSubTitle,
       switchValue: syncOnStart,
       onToggle: (value) {
-        updateSettings(ref, getSettings(ref)..syncOnStart = value);
-
-        /// to see what this setting does go to Sync Feature
-        // ref
-        //     .watch(settingsProvider.notifier)
-        //     .on(SettingsEvent.updatesyncOnStart(value));
+        ref.watch(settingsNotifierProvider.notifier).updateSettings(
+              (e) => e..syncOnStart = value,
+            );
       },
     );
   }

@@ -2,7 +2,7 @@ import 'package:app_models/app_models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../core/providers/providers.dart';
+import '../../core/app_providers.dart';
 
 part '../../generated/case_details/provider/case_details_provider.g.dart';
 part 'case_details_mixins.dart';
@@ -23,7 +23,7 @@ class CaseDetailsNotifier extends _$CaseDetailsNotifier {
     if (caseID == null) return const AsyncLoading();
 
     final sub = ref
-        .watch(collectionsProvider)
+        .watch(dbProvider)
         .casesCollection
         .getSingle(caseID)
         ?.changes
@@ -48,7 +48,7 @@ AsyncValue<TemplateModel?> caseDetailsTemplateModel(
   if (caseModel.templateID == null) return const AsyncValue.data(null);
 
   final templateModel = ref
-      .watch(collectionsProvider)
+      .watch(dbProvider)
       .templatesCollection
       .getSingle(caseModel.templateID!);
 

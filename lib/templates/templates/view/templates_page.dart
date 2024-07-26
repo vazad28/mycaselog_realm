@@ -22,7 +22,7 @@ class _TemplatesPageState extends ConsumerState<TemplatesPage> {
   @override
   void dispose() {
     /// to prevent error - scroll controlled used after disposed
-    Future<void>.delayed(Durations.short1)
+    Future<void>.delayed(Durations.long1)
         .then((_) => _scrollController.dispose());
     super.dispose();
   }
@@ -35,17 +35,18 @@ class _TemplatesPageState extends ConsumerState<TemplatesPage> {
         bottom: const TemplatesBottomAppBar(),
       ),
       body: AsyncValueWidget(
-          value: ref.watch(templatesStreamProvider),
-          data: (templateModels) {
-            return ListView.builder(
-              controller: _scrollController,
-              padding: const EdgeInsets.all(AppSpacing.md),
-              itemCount: templateModels.length,
-              itemBuilder: (_, index) => TemplatesListTile(
-                templateModel: templateModels.elementAt(index),
-              ).paddingOnly(bottom: AppSpacing.md),
-            );
-          }),
+        value: ref.watch(templatesNotifierProvider),
+        data: (templateModels) {
+          return ListView.builder(
+            controller: _scrollController,
+            padding: const EdgeInsets.all(AppSpacing.md),
+            itemCount: templateModels.length,
+            itemBuilder: (_, index) => TemplatesListTile(
+              templateModel: templateModels.elementAt(index),
+            ).paddingOnly(bottom: AppSpacing.md),
+          );
+        },
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: ScrollReactiveFabButton(
         _scrollController,

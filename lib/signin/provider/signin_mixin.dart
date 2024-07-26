@@ -1,6 +1,8 @@
 part of './signin_provider.dart';
 
-mixin SigninEventMixin {
+mixin SigninMixin {
+  SigninState signInState(WidgetRef ref) => ref.watch(signinNotifierProvider);
+
   void signinWithApple(WidgetRef ref) => ref
       .watch(signinNotifierProvider.notifier)
       .on(const SigninEvent.signinAppleSubmitted());
@@ -16,8 +18,4 @@ mixin SigninEventMixin {
   void signinWithWithEmail(WidgetRef ref) => ref
       .watch(signinNotifierProvider.notifier)
       .on(const SigninEvent.signinWithEmailSubmitted());
-}
-
-mixin SigninStateMixin {
-  SigninState signInState(WidgetRef ref) => ref.watch(signinNotifierProvider);
 }

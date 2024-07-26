@@ -26,7 +26,7 @@ class _NoteModel {
   late int createdAt = 0;
   late int timestamp = 0;
 
-  NoteModel toRealmObject() {
+  NoteModel toUnmanaged() {
     return NoteModel(
       noteID,
       authorID: authorID,
@@ -50,7 +50,7 @@ extension NoteModelX on NoteModel {
   Map<String, dynamic> toJson() => _$NoteModelToJson(this);
 
   static NoteModel fromJson(Map<String, dynamic> json) {
-    return _$NoteModelFromJson(json).toRealmObject();
+    return _$NoteModelFromJson(json).toUnmanaged();
   }
 
   static NoteModel zero() {

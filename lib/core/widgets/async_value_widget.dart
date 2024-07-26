@@ -1,6 +1,4 @@
-// Generic AsyncValueWidget to work with values of type T
-import 'package:flutter/material.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+part of '../app_widgets.dart';
 
 class AsyncValueWidget<T> extends StatelessWidget {
   const AsyncValueWidget({

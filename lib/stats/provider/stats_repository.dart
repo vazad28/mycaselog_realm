@@ -6,8 +6,8 @@ import 'package:async_result/async_result.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../core/failures/app_failures.dart';
-import '../../core/providers/providers.dart';
-import '../../core/services/services.dart';
+import '../../core/app_providers.dart';
+import '../../core/app_services.dart';
 
 part '../../generated/stats/provider/stats_repository.g.dart';
 
@@ -25,8 +25,7 @@ class StatsRepository {
 
   final StatsRepositoryRef ref;
 
-  CasesCollection get _casesCollection =>
-      ref.watch(collectionsProvider).casesCollection;
+  CasesCollection get _casesCollection => ref.watch(dbProvider).casesCollection;
 
   ///get full text search result ids
   Future<List<String>?> _getSearchIds(String searchTermProcessed) async {

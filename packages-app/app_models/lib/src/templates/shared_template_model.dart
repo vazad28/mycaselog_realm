@@ -40,7 +40,7 @@ class _SharedTemplateModel {
   late int? timestamp = 0;
   late int? removed = 0;
 
-  SharedTemplateModel toRealmObject() {
+  SharedTemplateModel toUnmanaged() {
     return SharedTemplateModel(
       templateID,
       speciality: speciality,
@@ -74,7 +74,7 @@ extension SharedTemplateModelX on SharedTemplateModel {
   }
 
   static SharedTemplateModel fromJson(Map<String, dynamic> json) =>
-      _$SharedTemplateModelFromJson(json).toRealmObject();
+      _$SharedTemplateModelFromJson(json).toUnmanaged();
 
   Map<String, dynamic> toJson() => _$SharedTemplateModelToJson(this);
 }

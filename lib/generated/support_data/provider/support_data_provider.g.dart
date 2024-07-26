@@ -7,13 +7,9 @@ part of '../../../support_data/provider/support_data_provider.dart';
 // **************************************************************************
 
 String _$supportDataNotifierHash() =>
-    r'10c4b81496d2784053533ff5c47ceaea221a8e53';
+    r'4b32f86ee8cd810d3593c27cc8f5e59e84d796a9';
 
-/// ////////////////////////////////////////////////////////////////////
-/// Main providers
-/// ////////////////////////////////////////////////////////////////////
-///
-/// Copied from [SupportDataNotifier].
+/// See also [SupportDataNotifier].
 @ProviderFor(SupportDataNotifier)
 final supportDataNotifierProvider =
     AutoDisposeNotifierProvider<SupportDataNotifier, SupportDataModel>.internal(

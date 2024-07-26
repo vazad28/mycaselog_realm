@@ -11,8 +11,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:state_of/state_of.dart';
 
 import '../../core/failures/app_failures.dart';
-import '../../core/providers/providers.dart';
-import '../../core/services/services.dart';
+import '../../core/app_providers.dart';
+import '../../core/app_services.dart';
 import '../../router/router.dart';
 import '../../support_data/support_data.dart';
 
@@ -69,14 +69,13 @@ class AddCaseSeeder extends _$AddCaseSeeder {
 
   /// called by view with passed param caseID to load case model
   Future<void> seed(String caseID) async {
-    final caseModel =
-        ref.watch(collectionsProvider).casesCollection.getSingle(caseID) ??
-            CaseModelX.zero();
+    final caseModel = ref.watch(dbProvider).casesCollection.getSingle(caseID) ??
+        CaseModelX.zero();
 
     final templateModel = caseModel.templateID == null
         ? null
         : ref
-            .watch(collectionsProvider)
+            .watch(dbProvider)
             .templatesCollection
             .getSingle(caseModel.templateID!);
 
@@ -227,7 +226,7 @@ class AddCaseNotifier extends _$AddCaseNotifier with LoggerMixin {
   /// ---- DO the form submit  ---
   Future<void> _doSubmit(CaseModel modelToSubmit) async {
     try {
-      await ref.read(collectionsProvider).casesCollection.add(
+      await ref.read(dbProvider).casesCollection.add(
             modelToSubmit.caseID,
             modelToSubmit..timestamp = ModelUtils.getTimestamp,
           );

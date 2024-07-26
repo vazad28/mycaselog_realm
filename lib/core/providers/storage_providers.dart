@@ -1,8 +1,4 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:storage/storage.dart';
-
-part '../../generated/core/providers/storage_providers.g.dart';
+part of '../app_providers.dart';
 
 /// SharedPreferences provider
 @Riverpod(keepAlive: true)

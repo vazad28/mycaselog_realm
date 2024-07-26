@@ -27,11 +27,10 @@ class _SupportDataModel {
   late List<_SurgeryLocationModel> surgeryLocations = [];
   late int timestamp = 0;
 
-  SupportDataModel toRealmObject() {
+  SupportDataModel toUnmanaged() {
     return SupportDataModel(
       userID,
       assistants: assistants.map((e) => AssistantModel._fromEJson(e.toEJson())),
-      //X.fromJson(e.toJson())).toList(),
       activeBasicFields: activeBasicFields,
       anesthesiaBlocks: anesthesiaBlocks,
       surgeryLocations: surgeryLocations
@@ -57,7 +56,7 @@ extension SupportDataModelX on SupportDataModel {
   }
 
   static SupportDataModel fromJson(Map<String, dynamic> json) =>
-      _$SupportDataModelFromJson(json).toRealmObject();
+      _$SupportDataModelFromJson(json).toUnmanaged();
 }
 
 /// ////////////////////////////////////////////////////////////////////
@@ -86,7 +85,7 @@ class _AssistantModel {
 
   Map<String, dynamic> toJson() => _$AssistantModelToJson(this);
 
-  AssistantModel toRealmObject() {
+  AssistantModel toUnmanaged() {
     return AssistantModel(
       assistantID,
       name: name,
@@ -100,7 +99,7 @@ extension AssistantModelX on AssistantModel {
   static AssistantModel zero() => AssistantModel(ModelUtils.uniqueID);
 
   static AssistantModel fromJson(Map<String, dynamic> json) =>
-      _$AssistantModelFromJson(json).toRealmObject();
+      _$AssistantModelFromJson(json).toUnmanaged();
 
   //Map<String, dynamic> toJson() => _$AssistantModelToJson(this);
 }
@@ -130,7 +129,7 @@ class _SurgeryLocationModel {
 
   Map<String, dynamic> toJson() => _$SurgeryLocationModelToJson(this);
 
-  SurgeryLocationModel toRealmObject() {
+  SurgeryLocationModel toUnmanaged() {
     return SurgeryLocationModel(
       locationID,
       name: name,
@@ -145,5 +144,5 @@ extension SurgeryLocationModelX on SurgeryLocationModel {
       SurgeryLocationModel(ModelUtils.uniqueID);
 
   static SurgeryLocationModel fromJson(Map<String, dynamic> json) =>
-      _$SurgeryLocationModelFromJson(json).toRealmObject();
+      _$SurgeryLocationModelFromJson(json).toUnmanaged();
 }

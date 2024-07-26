@@ -1,6 +1,6 @@
 part of '../general_section.dart';
 
-class CaseNavigateToTile extends ConsumerWidget with SettingsMixin {
+class CaseNavigateToTile extends ConsumerWidget {
   const CaseNavigateToTile({super.key});
 
   static List<RadioSelectOption<CaseDetailsTabsEnum>> items = [
@@ -29,12 +29,10 @@ class CaseNavigateToTile extends ConsumerWidget with SettingsMixin {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final caseTileNavigate = ref.watch(
-      settingsProvider.select((value) => value.caseTileNavigate),
+      settingsNotifierProvider.select((value) => value.caseTileNavigate),
     );
 
-    final caseTileNavigateTo = caseTileNavigate == 0
-        ? CaseDetailsTabsEnum.basic
-        : CaseDetailsTabsEnum.values[caseTileNavigate];
+    final caseTileNavigateTo = CaseDetailsTabsEnum.values[caseTileNavigate];
 
     return SettingsTile(
       leading: const Icon(Icons.menu_open_sharp),
@@ -53,8 +51,9 @@ class CaseNavigateToTile extends ConsumerWidget with SettingsMixin {
             .then((radioSelectItem) {
           if (radioSelectItem == null) return;
 
-          updateSettings(
-              ref, getSettings(ref)..caseTileNavigate = radioSelectItem.index);
+          ref.watch(settingsNotifierProvider.notifier).updateSettings(
+                (e) => e..caseTileNavigate = radioSelectItem.index,
+              );
         });
       },
     );

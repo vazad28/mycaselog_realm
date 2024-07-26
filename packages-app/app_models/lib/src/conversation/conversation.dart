@@ -21,7 +21,7 @@
 
 //   Map<String, dynamic> toJson() => _$ConversationToJson(this);
 
-//   Conversation toRealmObject() {
+//   Conversation toUnmanaged() {
 //     return Conversation(id,
 //         createdAt: DateTime.now(),
 //         title: title,
@@ -36,7 +36,7 @@
 
 // extension ConversationX on Conversation {
 //   static Conversation fromJson(Map<String, dynamic> json) =>
-//       _$ConversationFromJson(json).toRealmObject();
+//       _$ConversationFromJson(json).toUnmanaged();
 // }
 
 // @RealmModel()
@@ -54,11 +54,11 @@
 //   late List<_Message> messages;
 
 //   static Participant fromJson(Map<String, dynamic> json) =>
-//       _$ParticipantFromJson(json).toRealmObject();
+//       _$ParticipantFromJson(json).toUnmanaged();
 
 //   Map<String, dynamic> toJson() => _$ParticipantToJson(this);
 
-//   Participant toRealmObject() {
+//   Participant toUnmanaged() {
 //     return Participant(id, name: name);
 //   }
 // }
@@ -79,18 +79,18 @@
 //   late Iterable<_Conversation> linkedConversation;
 
 //   static Message fromJson(Map<String, dynamic> json) =>
-//       _$MessageFromJson(json).toRealmObject();
+//       _$MessageFromJson(json).toUnmanaged();
 
 //   Map<String, dynamic> toJson() => _$MessageToJson(this);
 
-//   Message toRealmObject() {
+//   Message toUnmanaged() {
 //     return Message(id, content);
 //   }
 // }
 
 // // extension MessageX on Message {
 // //   static Message fromJson(Map<String, dynamic> json) =>
-// //       _$MessageFromJson(json).toRealmObject();
+// //       _$MessageFromJson(json).toUnmanaged();
 
 // //   Map<String, dynamic> toJson() => _$MessageToJson(this);
 // // }

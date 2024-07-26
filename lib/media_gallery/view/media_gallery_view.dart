@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/mixins/mixins.dart';
+import '../../core/app_mixins.dart';
 
-class MediaGalleryView extends ConsumerWidget with MediaMixin {
+class MediaGalleryView extends ConsumerWidget with AppMixins {
   const MediaGalleryView({super.key});
 
   @override

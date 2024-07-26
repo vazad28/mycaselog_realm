@@ -82,7 +82,7 @@
 //   //@JsonKey(includeFromJson: false, includeToJson: false)
 //   late List<_TimelineNoteModel> notes = [];
 
-//   CaseModel toRealmObject() {
+//   CaseModel toUnmanaged() {
 //     return CaseModel(
 //       caseID,
 //       surgeryDate: surgeryDate,
@@ -101,7 +101,7 @@
 //       surgery: surgery,
 //       templateID: templateID,
 //       removed: removed,
-//       patientModel: patientModel?.toRealmObject(),
+//       patientModel: patientModel?.toUnmanaged(),
 //       timestamp: timestamp,
 //       fieldsData: fieldsData
 //           .map((e) => TemplateFieldModelX.fromJson(e.toJson()))
@@ -130,7 +130,7 @@
 
 // extension CaseModelX on CaseModel {
 //   static CaseModel fromJson(Map<String, dynamic> json) =>
-//       _$CaseModelFromJson(json).toRealmObject();
+//       _$CaseModelFromJson(json).toUnmanaged();
 
 //   static CaseModel zero() {
 //     final timestamp = ModelUtils.getTimestamp;
@@ -181,7 +181,7 @@
 //   late String? mrn;
 //   late String? phone;
 
-//   PatientModel toRealmObject() {
+//   PatientModel toUnmanaged() {
 //     return PatientModel(
 //       crypt: crypt,
 //       initials: initials,
@@ -195,14 +195,14 @@
 //   }
 
 //   static PatientModel fromJson(Map<String, dynamic> json) =>
-//       _$PatientModelFromJson(json).toRealmObject();
+//       _$PatientModelFromJson(json).toUnmanaged();
 
 //   Map<String, dynamic> toJson() => _$PatientModelToJson(this);
 // }
 
 // extension PatientModelX on PatientModel {
 //   static PatientModel fromJson(Map<String, dynamic> json) =>
-//       _$PatientModelFromJson(json).toRealmObject();
+//       _$PatientModelFromJson(json).toUnmanaged();
 
 //   static PatientModel zero() {
 //     final patientModel = PatientModel();
@@ -312,7 +312,7 @@
 //   // @Backlink(#medias)
 //   // late Iterable<_CaseModel> linkedCaseModel;
 
-//   MediaModel toRealmObject() {
+//   MediaModel toUnmanaged() {
 //     return MediaModel(
 //       mediaID,
 //       authorID,
@@ -331,14 +331,14 @@
 //   }
 
 //   static MediaModel fromJson(Map<String, dynamic> json) =>
-//       _$MediaModelFromJson(json).toRealmObject();
+//       _$MediaModelFromJson(json).toUnmanaged();
 
 //   Map<String, dynamic> toJson() => _$MediaModelToJson(this);
 // }
 
 // extension MediaModelX on MediaModel {
 //   static MediaModel fromJson(Map<String, dynamic> json) =>
-//       _$MediaModelFromJson(json).toRealmObject();
+//       _$MediaModelFromJson(json).toUnmanaged();
 
 //   static MediaModel zero(String authorID) {
 //     final timestamp = ModelUtils.getTimestamp;
@@ -372,7 +372,7 @@
 //   // @Backlink(#notes)
 //   // late Iterable<_CaseModel> linkedCaseModel;
 
-//   TimelineNoteModel toRealmObject() {
+//   TimelineNoteModel toUnmanaged() {
 //     return TimelineNoteModel(
 //       noteID,
 //       authorID: authorID,
@@ -384,14 +384,14 @@
 //   }
 
 //   static TimelineNoteModel fromJson(Map<String, dynamic> json) =>
-//       _$TimelineNoteModelFromJson(json).toRealmObject();
+//       _$TimelineNoteModelFromJson(json).toUnmanaged();
 
 //   Map<String, dynamic> toJson() => _$TimelineNoteModelToJson(this);
 // }
 
 // extension TimelineNoteModelX on TimelineNoteModel {
 //   static TimelineNoteModel fromJson(Map<String, dynamic> json) =>
-//       _$TimelineNoteModelFromJson(json).toRealmObject();
+//       _$TimelineNoteModelFromJson(json).toUnmanaged();
 
 //   static TimelineNoteModel zero({
 //     required String caseID,

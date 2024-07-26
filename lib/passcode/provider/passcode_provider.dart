@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../core/providers/providers.dart';
+import '../../core/app_providers.dart';
 
 part '../../generated/passcode/provider/passcode_provider.g.dart';
 
@@ -9,7 +9,6 @@ part '../../generated/passcode/provider/passcode_provider.g.dart';
 /// Custom Claims the passcode is stored using this String as key
 const passcodeClaimsKey = 'mclPasscode';
 
-// https://codewithandrea.com/articles/robust-app-initialization-riverpod/
 @riverpod
 class PasscodeNotifier extends _$PasscodeNotifier {
   @override

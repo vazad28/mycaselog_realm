@@ -84,7 +84,7 @@ class $TemplateFieldModel {
   @Ignored()
   set fieldDataType(FieldDataType value) => _fieldDataType = value.name;
 
-  TemplateFieldModel toRealmObject() {
+  TemplateFieldModel toUnmanaged() {
     return TemplateFieldModel(
       fieldID,
       title: title,
@@ -116,7 +116,7 @@ extension TemplateFieldModelX on TemplateFieldModel {
   }
 
   static TemplateFieldModel fromJson(Map<String, dynamic> json) =>
-      _$$TemplateFieldModelFromJson(json).toRealmObject();
+      _$$TemplateFieldModelFromJson(json).toUnmanaged();
 
   Map<String, dynamic> toJson() => _$$TemplateFieldModelToJson(this);
 }

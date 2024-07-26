@@ -1,6 +1,4 @@
-import 'package:app_extensions/app_extensions.dart';
-import 'package:flutter/material.dart';
-import 'package:recase/recase.dart';
+part of './case_timeline_provider.dart';
 
 /// Timeline actions ENUM
 enum TimelineActionEnum {

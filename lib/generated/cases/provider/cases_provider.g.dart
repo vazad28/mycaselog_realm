@@ -6,9 +6,11 @@ part of '../../../cases/provider/cases_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$casesStreamHash() => r'b27d293f69e34c5483e8d9b36bf330d355a32d8b';
+String _$casesStreamHash() => r'4df46935cf74914fdb90c24c57c335a341b1db1a';
 
-/// See also [casesStream].
+/// Cases  stream  provider
+///
+/// Copied from [casesStream].
 @ProviderFor(casesStream)
 final casesStreamProvider =
     StreamProvider<RealmResultsChanges<CaseModel>>.internal(

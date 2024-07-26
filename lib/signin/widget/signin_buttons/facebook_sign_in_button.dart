@@ -6,8 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../provider/signin_provider.dart';
 import '../../provider/signin_state.dart';
 
-class FacebookSignInButton extends ConsumerWidget
-    with SigninEventMixin, SigninStateMixin {
+class FacebookSignInButton extends ConsumerWidget with SigninMixin {
   const FacebookSignInButton({super.key});
 
   @override

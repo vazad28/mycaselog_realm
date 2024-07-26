@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger_client/logger_client.dart';
 import 'package:misc_packages/misc_packages.dart';
 
-import '../../core/widgets/async_value_widget.dart';
+import '../../core/core.dart';
 import '../../router/router.dart';
 import '../../settings/settings.dart';
 import '../case_details.dart';
@@ -43,7 +43,7 @@ class _CaseDetailsPageState extends ConsumerState<CaseDetailsPage>
   void initState() {
     /// active tab based on router or settings
     _activeTab =
-        widget.activeTab ?? ref.read(settingsProvider).caseTileNavigate;
+        widget.activeTab ?? ref.read(settingsNotifierProvider).caseTileNavigate;
 
     if (_activeTab > 2) _activeTab = 0;
 

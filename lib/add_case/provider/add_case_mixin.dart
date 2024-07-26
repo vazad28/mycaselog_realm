@@ -3,6 +3,8 @@ part of 'add_case_provider.dart';
 /// ////////////////////////////////////////////////////////////////////
 /// Evenst and MIXINS
 /// ////////////////////////////////////////////////////////////////////
+///
+mixin AddCaseMixin {}
 mixin AddCaseEventMixin {
   void submit(WidgetRef ref) => ref
       .watch(addCaseNotifierProvider.notifier)

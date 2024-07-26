@@ -1,3 +1,4 @@
+import 'package:app_annotations/app_annotations.dart';
 import 'package:app_models/app_models.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
@@ -72,10 +73,9 @@ class _AddSurgeryLocationPageState
                   SurgeryLocationModelX.fromJson(surgeryLocationModelJson);
               ref
                   .watch(supportDataNotifierProvider.notifier)
-                  .upsertSurgeryLocation(model)
-                  .then((_) {
-                if (context.mounted) Navigator.of(context).pop();
-              });
+                  .upsertSurgeryLocation(model, CrudAction.add);
+
+              if (context.mounted) Navigator.of(context).pop();
             },
             onCancel: () => Navigator.of(context).pop(),
           ),

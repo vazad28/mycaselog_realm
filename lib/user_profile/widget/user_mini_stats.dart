@@ -4,7 +4,7 @@ import 'package:app_models/app_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/providers/providers.dart';
+import '../../core/app_providers.dart';
 
 /// User Mini widget
 class UserMiniStatsWidget extends ConsumerWidget {
@@ -14,7 +14,7 @@ class UserMiniStatsWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     //final userMiniStatsData = ref.watch(userMiniStatsProvider);
     // final caseMediaNoteCount =
-    //     ref.watch(collectionsProvider). caseMediaNoteCount();
+    //     ref.watch(dbProvider). caseMediaNoteCount();
     // if (caseMediaNoteCount == null) {
     //   return const SizedBox(
     //     child: Text('NO  stats data'),
@@ -22,9 +22,9 @@ class UserMiniStatsWidget extends ConsumerWidget {
     // }
 
     final userMiniStatsData = UserStatsModel(
-      cases: ref.watch(collectionsProvider).casesCollection.count(),
-      //media: ref.watch(collectionsProvider).mediaCollection.count(),
-      notes: ref.watch(collectionsProvider).notesCollection.count(),
+      cases: ref.watch(dbProvider).casesCollection.count(),
+      //media: ref.watch(dbProvider).mediaCollection.count(),
+      notes: ref.watch(dbProvider).notesCollection.count(),
     );
 
     return ConstrainedBox(

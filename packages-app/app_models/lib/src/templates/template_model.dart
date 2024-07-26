@@ -35,23 +35,24 @@ class _TemplateModel {
   late int? timestamp = 0;
   late int? removed = 0;
 
-  TemplateModel toRealmObject() {
-    return TemplateModel(templateID,
-        speciality: speciality,
-        title: title,
-        desc: desc,
-        type: type,
-        fields: fields
-            .map((e) => TemplateFieldModelX.fromJson(e.toJson()))
-            .toList(),
-        shared: shared,
-        createdAt: createdAt,
-        timestamp: timestamp,
-        removed: removed,);
+  TemplateModel toUnmanaged() {
+    return TemplateModel(
+      templateID,
+      speciality: speciality,
+      title: title,
+      desc: desc,
+      type: type,
+      fields:
+          fields.map((e) => TemplateFieldModelX.fromJson(e.toJson())).toList(),
+      shared: shared,
+      createdAt: createdAt,
+      timestamp: timestamp,
+      removed: removed,
+    );
   }
 
   static TemplateModel fromJson(Map<String, dynamic> json) =>
-      _$TemplateModelFromJson(json).toRealmObject();
+      _$TemplateModelFromJson(json).toUnmanaged();
 
   Map<String, dynamic> toJson() => _$TemplateModelToJson(this);
 }
@@ -69,7 +70,7 @@ extension TemplateModelX on TemplateModel {
   }
 
   static TemplateModel fromJson(Map<String, dynamic> json) =>
-      _$TemplateModelFromJson(json).toRealmObject();
+      _$TemplateModelFromJson(json).toUnmanaged();
 
   Map<String, dynamic> toJson() => _$TemplateModelToJson(this);
 }

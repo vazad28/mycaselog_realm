@@ -3,107 +3,84 @@ import 'dart:async';
 import 'package:app_annotations/app_annotations.dart';
 import 'package:app_extensions/app_extensions.dart';
 import 'package:app_models/app_models.dart';
-import 'package:logger_client/logger_client.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../core/providers/providers.dart';
-import '../../core/services/services.dart';
+import '../../core/app_providers.dart';
+import '../../core/app_services.dart';
 
 part '../../generated/support_data/provider/support_data_provider.g.dart';
 
-/// ////////////////////////////////////////////////////////////////////
-/// Main providers
-/// ////////////////////////////////////////////////////////////////////
 @riverpod
-class SupportDataNotifier extends _$SupportDataNotifier with LoggerMixin {
+class SupportDataNotifier extends _$SupportDataNotifier {
   @override
   SupportDataModel build() {
     final userID = ref.watch(authenticationUserProvider).id;
 
     final sub = ref
-        .watch(collectionsProvider)
+        .watch(dbProvider)
         .supportDataCollection
-        .getSingle(userID)
-        ?.changes
+        .getAll()
+        .changes
         .listen((data) {
-      state = SupportDataModelX.fromJson(data.object.toJson());
+      if (data.results.isNotEmpty) state = data.results.last.toUnmanaged();
     });
 
-    ref.onDispose(() => sub?.cancel());
+    ref.onDispose(sub.cancel);
 
     return SupportDataModelX.zero(userID);
   }
 
-  Future<void> _updateSupportData() async {
+  // Future<void> updateSupportData(
+  //     SupportDataModel Function(SupportDataModel) updateCallback) async {
+  //   //state = updateCallback.call(state);
+  // }
+
+  Future<void> _updateSupportData(SupportDataModel supportDataModel) async {
     try {
       final userID = ref.watch(authenticationUserProvider).id;
-      await ref
-          .watch(collectionsProvider)
-          .supportDataCollection
-          .add(userID, state..timestamp = ModelUtils.getTimestamp);
+      await ref.watch(dbProvider).supportDataCollection.add(
+            userID,
+            supportDataModel..timestamp = ModelUtils.getTimestamp,
+          );
     } catch (err) {
       ref.watch(dialogServiceProvider).showSnackBar(err.toString());
     }
   }
 
-  /// On suregry location model update
-  Future<void> upsertSurgeryLocation(SurgeryLocationModel surgeryLocation,
-      {bool remove = false}) {
-    final surgeryLocations = List<SurgeryLocationModel>.from(
-      state.surgeryLocations,
-    );
-    final index = surgeryLocations.indexWhere(
-      (element) => element.locationID == surgeryLocation.locationID,
-    );
-
-    if (remove) {
-      surgeryLocations.removeAt(index);
-    } else if (index == -1) {
-      surgeryLocations.add(surgeryLocation);
+  void upsertAnesthesiaBlock(String block, CrudAction action) {
+    if (action == CrudAction.remove) {
+      _updateSupportData(state..anesthesiaBlocks.remove(block));
     } else {
-      surgeryLocations[index] = surgeryLocation;
+      _updateSupportData(state..anesthesiaBlocks.replaceOrAdd(block));
     }
-
-    state.surgeryLocations.clear();
-    state.surgeryLocations.addAll(surgeryLocations);
-    return _updateSupportData();
   }
 
-  Future<void> upsertAssistant(AssistantModel assistantModel,
-      {bool remove = false}) {
-    final assistants = List<AssistantModel>.from(state.assistants);
-    final index = assistants.indexWhere(
-      (element) => element.assistantID == assistantModel.assistantID,
-    );
-
-    if (remove) {
-      assistants.removeAt(index);
-    } else if (index == -1) {
-      assistants.add(assistantModel);
-    } else {
-      assistants[index] = assistantModel;
-    }
-
-    state.assistants.clear();
-    state.assistants.addAll(assistants);
-    return _updateSupportData();
+  void upsertAssistant(AssistantModel model, CrudAction action) {
+    ref
+        .watch(crudProvider.notifier)
+        .crud<AssistantModel>(model, action)
+        .then((_) {
+      _updateSupportData(state);
+    });
   }
 
-  Future<void> upsertActivableCaseFields(List<ActivableCaseField>? fields) {
+  void upsertSurgeryLocation(SurgeryLocationModel model, CrudAction action) {
+    ref
+        .watch(crudProvider.notifier)
+        .crud<SurgeryLocationModel>(model, action)
+        .then((_) {
+      _updateSupportData(state);
+    });
+  }
+
+  void upsertActivableCaseFields(List<ActivableCaseField>? fields) {
+    if (fields == null) {
+      _updateSupportData(state..activeBasicFields.clear());
+      return;
+    }
     state.activeBasicFields.clear();
-    if (fields != null) {
-      state.activeBasicFields.addAll(fields.names);
-    }
-    return _updateSupportData();
-  }
-
-  Future<void> upsertAnesthesiaBlocks(List<String> blocks, {bool add = false}) {
-    if (add) {
-      state.anesthesiaBlocks.add(blocks.first);
-    } else {
-      state.anesthesiaBlocks.clear();
-      state.anesthesiaBlocks.addAll(blocks);
-    }
-    return _updateSupportData();
+    _updateSupportData(
+      state..activeBasicFields.addAll(fields.names.toRealmList),
+    );
   }
 }

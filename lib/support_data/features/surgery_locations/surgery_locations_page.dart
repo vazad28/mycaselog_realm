@@ -1,3 +1,4 @@
+import 'package:app_annotations/app_annotations.dart';
 import 'package:app_l10n/app_l10n.dart';
 import 'package:app_models/app_models.dart';
 import 'package:app_ui/app_ui.dart';
@@ -71,7 +72,7 @@ class _SurgeryLocationsView extends ConsumerWidget {
           onDismissed: () {
             ref
                 .watch(supportDataNotifierProvider.notifier)
-                .upsertSurgeryLocation(surgeryLocation, remove: true);
+                .upsertSurgeryLocation(surgeryLocation, CrudAction.remove);
           },
           onTap: () =>
               AddSurgeryLocationRoute(locationID: surgeryLocation.locationID)

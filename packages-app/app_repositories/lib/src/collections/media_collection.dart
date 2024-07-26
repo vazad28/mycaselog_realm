@@ -2,8 +2,8 @@ part of '../collections.dart';
 
 class MediaCollection extends BaseCollection<MediaModel> {
   MediaCollection(super.realmDatabase) : _realm = realmDatabase.realm {
-    print('creating instance of mediaCollection');
-    listenForChanges().listen((_) {}).cancelOnDisposeOf(this);
+    // print('creating instance of mediaCollection');
+    // listenForChanges().listen((_) {}).cancelOnDisposeOf(this);
   }
 
   final Realm _realm;

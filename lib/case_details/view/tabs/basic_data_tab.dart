@@ -6,7 +6,7 @@ import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/providers/providers.dart';
+import '../../../core/app_mixins.dart';
 import '../../case_details.dart';
 
 class CaseDetailsBasicTab extends ConsumerWidget {
@@ -61,7 +61,8 @@ class CaseDetailsBasicTab extends ConsumerWidget {
   }
 }
 
-class _PatientDetailsWidget extends ConsumerWidget with CaseDetailsMixin {
+class _PatientDetailsWidget extends ConsumerWidget
+    with CaseDetailsMixin, AppMixins {
   const _PatientDetailsWidget({
     required this.caseModel,
   });
@@ -72,13 +73,8 @@ class _PatientDetailsWidget extends ConsumerWidget with CaseDetailsMixin {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     if (caseModel.patientModel == null) return const Text('No patient data');
-    final activeFieldsList = ref.watch(activeFieldsListProvider);
-    // return AsyncValueWidget(
-    //     value: activableCaseFieldAsync,
-    //     data: (activeFieldsList) {
-    // final activeFieldsList = changes.list
-    //     .map((name) => ActivableCaseField.values.byName(name))
-    //     .toList();
+
+    final activeFieldsList = watchActiveFieldsList(ref);
 
     final children = [
       Expanded(
@@ -150,17 +146,16 @@ class _PatientDetailsWidget extends ConsumerWidget with CaseDetailsMixin {
   }
 }
 
-class _BasicCaseDataWidget extends ConsumerWidget with CaseDetailsMixin {
+class _BasicCaseDataWidget extends ConsumerWidget
+    with CaseDetailsMixin, AppMixins {
   const _BasicCaseDataWidget({required this.caseModel});
 
   final CaseModel caseModel;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final activeFieldsList = ref.watch(activeFieldsListProvider);
-    // return AsyncValueWidget(
-    //     value: activableCaseFieldAsync,
-    //     data: (activeFieldsList) {
+    final activeFieldsList = watchActiveFieldsList(ref);
+
     return Container(
       padding: const EdgeInsets.all(6),
       child: Column(

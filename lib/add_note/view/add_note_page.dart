@@ -7,8 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger_client/logger_client.dart';
 import 'package:printing/printing.dart';
 
-import '../../core/providers/providers.dart';
-import '../../core/services/form_submit.dart';
+import '../../core/core.dart';
 import '../../router/router.dart';
 import '../quill/my_quill_editor.dart';
 import '../widget/quill_toolbar_bottom.dart';
@@ -266,9 +265,9 @@ class _AddNotePageState extends ConsumerState<AddNotePage> with LoggerMixin {
         ..note = _controller.document.toJsonString;
 
       await ref
-          .watch(collectionsProvider)
+          .watch(dbProvider)
           .notesCollection
-          .add(_noteModel.noteID, noteModelUnmanaged.toRealmObject());
+          .add(_noteModel.noteID, noteModelUnmanaged.toUnmanaged());
 
       await Future<void>.delayed(Durations.medium4);
 
@@ -281,11 +280,9 @@ class _AddNotePageState extends ConsumerState<AddNotePage> with LoggerMixin {
   }
 
   void _loadDocument() {
-    _noteModel = ref
-            .watch(collectionsProvider)
-            .notesCollection
-            .getSingle(widget.noteID) ??
-        NoteModelX.zero();
+    _noteModel =
+        ref.watch(dbProvider).notesCollection.getSingle(widget.noteID) ??
+            NoteModelX.zero();
     _controller.document = _noteModel.quillDocument;
 
     if (_noteModel.title != null) {

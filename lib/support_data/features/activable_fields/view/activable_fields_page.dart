@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:misc_packages/misc_packages.dart';
 
+import '../../../../core/app_mixins.dart';
 import '../../../support_data.dart';
 
 part './activable_fields_view.dart';

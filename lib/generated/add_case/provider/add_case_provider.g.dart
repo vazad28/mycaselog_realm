@@ -449,7 +449,7 @@ final templatedDataFormGroupProvider = AutoDisposeProvider<FormGroup>.internal(
 );
 
 typedef TemplatedDataFormGroupRef = AutoDisposeProviderRef<FormGroup>;
-String _$addCaseSeederHash() => r'53565791ad31a0e8dc5b0599b985cd7046135cd7';
+String _$addCaseSeederHash() => r'ec0248b442d565a4882790ba8ba9718ff646b174';
 
 /// ////////////////////////////////////////////////////////////////////
 /// Seeder provider
@@ -469,7 +469,7 @@ final addCaseSeederProvider =
 );
 
 typedef _$AddCaseSeeder = AutoDisposeNotifier<AddCaseSeedModel?>;
-String _$addCaseNotifierHash() => r'3aa119d36bbea13316a369c04f2a5f309cf6a758';
+String _$addCaseNotifierHash() => r'e02461b6470ed05c4c05d02f7d14f718c6f4dfe6';
 
 /// ////////////////////////////////////////////////////////////////////
 /// Main provider of the  feature

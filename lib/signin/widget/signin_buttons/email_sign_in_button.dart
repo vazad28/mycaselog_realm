@@ -6,8 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../provider/signin_provider.dart';
 
-class EmailSignInButton extends ConsumerWidget
-    with SigninEventMixin, SigninStateMixin {
+class EmailSignInButton extends ConsumerWidget with SigninMixin {
   const EmailSignInButton({super.key});
 
   @override

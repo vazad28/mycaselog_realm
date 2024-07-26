@@ -1,11 +1,4 @@
-import 'dart:convert';
-
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:storage/storage.dart';
-
-import '../providers/storage_providers.dart';
-
-part '../../generated/core/services/local_storage.g.dart';
+part of '../app_services.dart';
 
 /// Riverpod provider to use the dialog service
 @riverpod

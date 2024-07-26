@@ -6,16 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-import '../../../../core/providers/providers.dart';
+import '../../../../core/app_mixins.dart';
 import '../../../provider/add_case_provider.dart';
 import 'patient_data_fields.dart';
 
-class PatientDataForm extends ConsumerWidget with AddCaseStateMixin {
+class PatientDataForm extends ConsumerWidget with AddCaseStateMixin, AppMixins {
   const PatientDataForm({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final activeFieldsList = ref.watch(activeFieldsListProvider);
+    final activeFieldsList = watchActiveFieldsList(ref);
 
     final form = ref.watch(patientDataFormGroupProvider);
 

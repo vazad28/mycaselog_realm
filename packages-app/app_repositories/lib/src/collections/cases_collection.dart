@@ -6,13 +6,16 @@ class CasesCollection extends BaseCollection<CaseModel> {
 
     StreamSubscription? sub;
     LiveSync().stream.listen((syncActive) {
+      print('LiveSync is active');
       if (syncActive) {
         print('Firebase Sync is active');
         sub = listenForChanges().listen((_) {}); //.cancelOnDisposeOf(this);
       } else {
         print('Firebase Sync is not active');
-        sub?.cancel();
+        sub?.pause();
       }
+    }, onError: (err) {
+      print('ERROR: ${err.toString()}');
     });
   }
 

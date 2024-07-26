@@ -1,3 +1,4 @@
+import 'package:app_annotations/app_annotations.dart';
 import 'package:app_models/app_models.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
@@ -63,8 +64,7 @@ class _AddAssistantPageState extends ConsumerState<AddAssistantPage> {
               };
 
               ref.watch(supportDataNotifierProvider.notifier).upsertAssistant(
-                    AssistantModelX.fromJson(assistantModelJson),
-                  );
+                  AssistantModelX.fromJson(assistantModelJson), CrudAction.add);
 
               if (context.mounted) Navigator.of(context).pop();
             },

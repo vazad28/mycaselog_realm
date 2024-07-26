@@ -12,7 +12,7 @@ import 'package:recase/recase.dart';
 import 'package:state_of/state_of.dart';
 
 import '../../../core/failures/app_failures.dart';
-import '../../../core/providers/providers.dart';
+import '../../../core/app_providers.dart';
 import '../../../router/routes/routes.dart';
 import '../add_template.dart';
 
@@ -98,8 +98,7 @@ class _AddTemplatePageController extends ConsumerState<AddTemplatePage>
 
   void _seedTemplate() {
     final userID = ref.read(authenticationUserProvider).id;
-    final userModel =
-        ref.read(collectionsProvider).userCollection.getSingle(userID);
+    final userModel = ref.read(dbProvider).userCollection.getSingle(userID);
 
     if (userModel?.speciality?.isEmpty ?? true) {
       _needUserSpeciality();

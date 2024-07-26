@@ -7,10 +7,10 @@ import 'package:media_manager/media_manager.dart';
 import 'package:misc_packages/misc_packages.dart';
 import 'package:recase/recase.dart';
 
-import '../../core/mixins/mixins.dart';
-import '../../core/providers/providers.dart';
+import '../../core/app_mixins.dart';
+import '../../core/app_services.dart';
 
-class Thumbnail extends ConsumerWidget with MediaMixin {
+class Thumbnail extends ConsumerWidget with AppMixins {
   const Thumbnail({
     required this.mediaModel,
     this.fit,
@@ -54,8 +54,7 @@ class Thumbnail extends ConsumerWidget with MediaMixin {
                 width: width,
                 uploadController: MediaManager.getUploadController(
                   mediaModel: mediaModel,
-                  mediaUploadRepository:
-                      ref.read(imageUploadRepositoryProvider),
+                  mediaUploadService: ref.read(imageUploadServiceProvider),
                 ),
               ),
           ],
@@ -86,7 +85,7 @@ class Thumbnail extends ConsumerWidget with MediaMixin {
               });
 
             case ThumbnailActionsEnum.shareMedia:
-              shareMedia(ref, mediaModel);
+              shareMedia(ref, mediaModels: [mediaModel]);
             default:
               break;
           }

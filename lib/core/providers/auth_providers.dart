@@ -1,12 +1,4 @@
-import 'package:authentication_client/authentication_client.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../../router/router.dart';
-import 'providers.dart';
-
-part '../../generated/core/providers/auth_providers.g.dart';
+part of '../app_providers.dart';
 
 /// Firebase Auth Instance for use all through the app
 @Riverpod(keepAlive: true)
@@ -57,17 +49,17 @@ AuthenticationUser authenticationUser(AuthenticationUserRef ref) {
   );
 }
 
-// @riverpod
-// String userID(UserIDRef ref) {
-//   return ref.watch(authenticationUserProvider).id;
-// }
+@riverpod
+String userID(UserIDRef ref) {
+  return ref.watch(authenticationUserProvider).id;
+}
 
 @riverpod
 Future<void> logout(LogoutRef ref) async {
   await Future<void>.delayed(const Duration(milliseconds: 1000));
   try {
     await ref.read(authenticationClientProvider).logOut();
-    ref.invalidate(mycaselogRouterProvider);
+    //ref.invalidate(mycaselogRouterProvider);
   } catch (error, stackTrace) {
     Error.throwWithStackTrace(
       Exception('Logout failure'),

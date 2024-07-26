@@ -4,7 +4,9 @@ part of '../collections.dart';
 class SettingsCollection extends BaseCollection<SettingsModel> {
   SettingsCollection(super.realmDatabase)
       : _realm = realmDatabase.realm,
-        _userID = realmDatabase.user.id;
+        _userID = realmDatabase.user.id {
+    print('creating instance of SettingsCollection');
+  }
 
   final Realm _realm;
   final String _userID;

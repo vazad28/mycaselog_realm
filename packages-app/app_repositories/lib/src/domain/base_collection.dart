@@ -29,7 +29,7 @@ abstract class BaseCollection<T extends RealmObject> extends Disposable
     }).cancelOnDisposeOf(this);
 
     /// create  stream to listen for firebase changes
-    createCollectionStream();
+    //createCollectionStream();
   }
 
   final Realm _realm;
@@ -123,18 +123,28 @@ abstract class BaseCollection<T extends RealmObject> extends Disposable
   /// ////////////////////////////////////////////////////////////////////
 
   Future<void> add(String primaryKey, T object) async {
-    await putInFirestore(primaryKey, object);
-    // return _realm.writeAsync(() {
-    //   _realm.add<T>(object, update: true);
-    //   unawaited(putInFirestore(primaryKey, object));
-    // });
+    //await putInFirestore(primaryKey, object);
+    return _realm.writeAsync(() {
+      _realm.add<T>(object, update: true);
+      //unawaited(putInFirestore(primaryKey, object));
+    });
   }
 
-  Future<T> upsert(String primaryKey, T Function() updateCallback) async {
-    final upsertedModel = await _realm.writeAsync<T>(updateCallback);
-    unawaited(putInFirestore(primaryKey, upsertedModel));
+  Future<T> upsert(String primaryKey, T Function() upsertCallback) async {
+    final upsertedModel = await _realm.writeAsync<T>(upsertCallback);
+    // unawaited(putInFirestore(primaryKey, upsertedModel));
     return upsertedModel;
   }
+
+  // Future<T> update(String primaryKey, T Function(T) upsertCallback) async {
+  //   final model = _realm.find<T>(primaryKey)!;
+  //   final upsertedModel = await _realm.writeAsync<T>(() {
+  //     final object = upsertCallback.call(model);
+  //     return _realm.add<T>(object, update: true);
+  //   });
+  //   // unawaited(putInFirestore(primaryKey, upsertedModel));
+  //   return upsertedModel;
+  // }
 
   RealmResults<T> getAll({String? orderBy, bool isDecenting = true}) {
     if (orderBy != null) {

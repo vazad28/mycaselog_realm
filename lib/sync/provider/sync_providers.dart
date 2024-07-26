@@ -8,7 +8,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:state_of/state_of.dart';
 
 import '../../core/failures/app_failures.dart';
-import '../../core/providers/providers.dart';
+import '../../core/app_providers.dart';
 
 part '../../generated/sync/provider/sync_providers.g.dart';
 
@@ -16,7 +16,7 @@ part '../../generated/sync/provider/sync_providers.g.dart';
 class SyncCollectionsMap extends _$SyncCollectionsMap {
   @override
   Map<DbCollection, BaseCollection> build() {
-    final database = ref.watch(collectionsProvider);
+    final database = ref.watch(dbProvider);
 
     final collectionsMap = <DbCollection, BaseCollection>{
       DbCollection.cases: database.casesCollection,
@@ -70,7 +70,7 @@ class FirestoreLiveSync extends _$FirestoreLiveSync with LoggerMixin {
 
   @override
   void build() {
-    // ref.listen(settingsProvider.select((data) => data.syncOnStart),
+    // ref.listen(settingsNotifierProvider.select((data) => data.syncOnStart),
     //     (prev, next) {
     //   if (prev == next) return;
     //   if (next) startFirebaseListeners();
@@ -98,17 +98,17 @@ class FirestoreLiveSync extends _$FirestoreLiveSync with LoggerMixin {
     try {
       final collectionsMap = ref.read(syncCollectionsMapProvider);
       for (final dbCollection in collectionsMap.keys) {
-        if (dbCollection == DbCollection.media ||
-            dbCollection == DbCollection.timelineNotes) continue;
+        // if (dbCollection == DbCollection.media ||
+        //     dbCollection == DbCollection.timelineNotes) continue;
 
         final collectionsMap = ref.read(syncCollectionsMapProvider);
         final collection = collectionsMap[dbCollection];
         if (collection == null) continue;
 
         // ignore: cancel_subscriptions
-        final sub = collection.listenForChanges().listen((_) {});
+        // final sub = collection.listenForChanges().listen((_) {});
 
-        subs.putIfAbsent(dbCollection.name, () => sub);
+        // subs.putIfAbsent(dbCollection.name, () => sub);
       }
       _syncIsOn = false;
     } catch (err) {
@@ -117,16 +117,16 @@ class FirestoreLiveSync extends _$FirestoreLiveSync with LoggerMixin {
     }
   }
 
-  void stopFirebaseListeners() {
-    // ignore: curly_braces_in_flow_control_structures
-    for (final sub in subs.values) sub.cancel();
-    subs.clear();
-  }
+  // void stopFirebaseListeners() {
+  //   // ignore: curly_braces_in_flow_control_structures
+  //   for (final sub in subs.values) sub.cancel();
+  //   subs.clear();
+  // }
 
-  void loadFirebaseListenerOnStart() {
-    Future<void>.delayed(const Duration(milliseconds: 1000)).then((_) {
-      logger.fine('calling sync provider');
-      //startFirebaseListeners();
-    });
-  }
+  // void loadFirebaseListenerOnStart() {
+  //   Future<void>.delayed(const Duration(milliseconds: 1000)).then((_) {
+  //     logger.fine('calling sync provider');
+  //     //startFirebaseListeners();
+  //   });
+  // }
 }

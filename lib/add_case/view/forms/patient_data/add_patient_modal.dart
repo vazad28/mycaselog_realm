@@ -9,7 +9,7 @@ import 'package:logger_client/logger_client.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:recase/recase.dart';
 
-import '../../../../core/providers/providers.dart';
+import '../../../../core/app_mixins.dart';
 import '../../../provider/add_case_provider.dart';
 
 /// AddPatientModal ROOT Widget
@@ -129,12 +129,13 @@ class _AddPatientModalView
 
 ///
 /// const widget for form fields
-class _PatientFormFields extends ConsumerWidget with AddCaseStateMixin {
+class _PatientFormFields extends ConsumerWidget
+    with AddCaseStateMixin, AppMixins {
   const _PatientFormFields({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final activeFieldsList = ref.watch(activeFieldsListProvider);
+    final activeFieldsList = watchActiveFieldsList(ref);
 
     /// name field
     final Widget nameInputField = ReactiveTextField<String>(

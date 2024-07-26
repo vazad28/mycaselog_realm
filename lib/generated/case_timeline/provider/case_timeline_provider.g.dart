@@ -6,7 +6,7 @@ part of '../../../case_timeline/provider/case_timeline_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$casesDetailsMediaHash() => r'3c91f68e02c2a077b114e76bce85eadf51333b7d';
+String _$casesDetailsMediaHash() => r'0bdeb10b6089c4c71599024b21260e1195b16bb9';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -205,7 +205,7 @@ class _CasesDetailsMediaProviderElement
   String get caseID => (origin as CasesDetailsMediaProvider).caseID;
 }
 
-String _$casesDetailsNotesHash() => r'c160042b8ad44c34f9891ba9033b0be5bad021a0';
+String _$casesDetailsNotesHash() => r'f14e0c30bcb64940f4f1c60c164397c950b40c95';
 
 /// See also [casesDetailsNotes].
 @ProviderFor(casesDetailsNotes)
@@ -387,7 +387,7 @@ class _CasesDetailsNotesProviderElement
 }
 
 String _$caseTimelineNotifierHash() =>
-    r'c7971ed99b845843fb1230cc840c852fbf1da7f9';
+    r'cc0b5bbdb42783d1c3327dac04f5e90b20425d34';
 
 /// See also [CaseTimelineNotifier].
 @ProviderFor(CaseTimelineNotifier)

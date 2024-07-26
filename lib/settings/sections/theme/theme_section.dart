@@ -4,14 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recase/recase.dart';
 
+import '../../../core/app_mixins.dart';
+import '../../../core/app_providers.dart';
 import '../../../core/core.dart';
-import '../../../core/providers/providers.dart';
-import '../../provider/settings_mixin.dart';
-import '../../provider/settings_provider.dart';
-import '../../provider/settings_event.dart';
+import '../../settings.dart';
 
 part './tiles/theme_mode_tile.dart';
-//part './tiles/app_color_tile.dart';
 
 class ThemeSettingsSection extends StatelessWidget {
   const ThemeSettingsSection({super.key});

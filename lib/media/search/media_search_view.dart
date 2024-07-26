@@ -95,7 +95,7 @@ class _MediaSearchViewState extends ConsumerState<MediaSearchView> {
               mediaModel: mediaModel,
               width: gridPair.second,
               // mediaRepository: ref.read(mediaRepositoryProvider),
-              // mediaUploadRepository: ref.read(mediaUploadRepositoryProvider),
+              // mediaUploadService: ref.read(mediaUploadServiceProvider),
               onTap: action,
             ),
             openBuilder: (_, action) {

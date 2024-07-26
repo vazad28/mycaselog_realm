@@ -3,7 +3,7 @@ part of '../collections.dart';
 class TemplatesCollection extends BaseCollection<TemplateModel> {
   TemplatesCollection(super.realmDatabase) : _realm = realmDatabase.realm {
     print('creating instance of TemplatesCollection');
-    listenForChanges().listen((_) {}).cancelOnDisposeOf(this);
+    //listenForChanges().listen((_) {}).cancelOnDisposeOf(this);
   }
 
   final Realm _realm;

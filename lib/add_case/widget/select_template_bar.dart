@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recase/recase.dart';
 
-import '../../core/providers/providers.dart';
+import '../../core/app_providers.dart';
 import '../../router/routes/routes.dart';
 import '../add_case.dart';
 
@@ -71,8 +71,7 @@ class _SelectTemplateBottomSheet extends ConsumerWidget
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final templatesLists =
-        ref.watch(collectionsProvider).templatesCollection.getAll();
+    final templatesLists = ref.watch(dbProvider).templatesCollection.getAll();
 
     return StreamBuilder(
       stream: templatesLists.changes,

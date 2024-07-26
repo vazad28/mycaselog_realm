@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/services/services.dart';
+import '../../core/app_services.dart';
 import '../notes.dart';
 
 enum NotesSearchBarStyle { icon, bar }

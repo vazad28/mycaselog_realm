@@ -19,7 +19,7 @@
 //   late int createdAt = 0;
 //   late int timestamp = 0;
 
-//   TimelineNoteModel toRealmObject() {
+//   TimelineNoteModel toUnmanaged() {
 //     return TimelineNoteModel(
 //       noteID,
 //       authorID: authorID,
@@ -38,7 +38,7 @@
 
 // extension TimelineNoteModelX on TimelineNoteModel {
 //   static TimelineNoteModel fromJson(Map<String, dynamic> json) =>
-//       _$$TimelineNoteModelFromJson(json).toRealmObject();
+//       _$$TimelineNoteModelFromJson(json).toUnmanaged();
 
 //   Map<String, dynamic> toJson() => _$$TimelineNoteModelToJson(this);
 

@@ -6,9 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger_client/logger_client.dart';
 
-import '../core/app_vars.dart';
-import '../core/providers/providers.dart';
-import '../core/widgets/async_value_widget.dart';
+import '../core/core.dart';
 import '../router/providers/app_router.dart';
 
 class MycaselogApp extends ConsumerWidget with LoggerMixin {
@@ -74,7 +72,7 @@ class _MycaselogApp extends ConsumerWidget with LoggerMixin {
   Widget build(BuildContext context, WidgetRef ref) {
     /// Listen for settings provider to start or stop firebse sync
     // ref.listen(firestoreLiveSyncProvider, (previous, next) {
-    //   logger.fine('settingsProvider listening for sync');
+    //   logger.fine('settingsNotifierProvider listening for sync');
     // });
     //ref.watch(connectivityStatusProvider);
 

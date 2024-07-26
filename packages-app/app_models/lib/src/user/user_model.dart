@@ -35,7 +35,7 @@ class _UserModel {
   set subscriptionPlan(SubscriptionPlan value) =>
       _subscriptionPlan = value.name;
 
-  UserModel toRealmObject() {
+  UserModel toUnmanaged() {
     return UserModel(
       userID,
       email: email,
@@ -54,7 +54,7 @@ class _UserModel {
 
 extension UserModelX on UserModel {
   static UserModel fromJson(Map<String, dynamic> json) =>
-      _$UserModelFromJson(json).toRealmObject();
+      _$UserModelFromJson(json).toUnmanaged();
 
   Map<String, dynamic> toJson() => _$UserModelToJson(this);
 

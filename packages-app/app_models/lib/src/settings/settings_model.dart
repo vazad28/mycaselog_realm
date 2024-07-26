@@ -24,7 +24,7 @@ class _SettingsModel {
   late String? fontFamily;
   late String seedColorHex = '0xfff44336';
 
-  SettingsModel toRealmObject() {
+  SettingsModel toUnmanaged() {
     return SettingsModel(
       userID,
       biometricEnabled: biometricEnabled,
@@ -45,7 +45,7 @@ class _SettingsModel {
 
 extension SettingsModelX on SettingsModel {
   static SettingsModel fromJson(Map<String, dynamic> json) =>
-      _$SettingsModelFromJson(json).toRealmObject();
+      _$SettingsModelFromJson(json).toUnmanaged();
 
   Map<String, dynamic> toJson() => _$SettingsModelToJson(this);
 

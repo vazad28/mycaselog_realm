@@ -19,13 +19,13 @@ class ImageUploadController extends UploadController
     with ChangeNotifier, LoggerMixin {
   ImageUploadController({
     required this.mediaModel,
-    required this.mediaUploadRepository,
+    required this.mediaUploadService,
     required this.onRemoveController,
     this.uploadFullSize = false,
   }) : _mediaStatus = mediaModel.status {
     if (mediaModel.status == MediaStatus.queued) startUpload();
   }
-  final MediaUploadRepository mediaUploadRepository;
+  final MediaUploadService mediaUploadService;
 
   final MediaModel mediaModel;
   final bool uploadFullSize;
@@ -73,18 +73,18 @@ class ImageUploadController extends UploadController
       if (mediumFile == null) throw Exception('Medium not found');
 
       /// refs
-      final thumbnailRef = mediaUploadRepository.getThumbRef(mediaModel);
+      final thumbnailRef = mediaUploadService.getThumbRef(mediaModel);
       final thumbFileData = await thumbnailFile.readAsBytes();
       final thumbnailTask = thumbnailRef.putData(thumbFileData);
 
-      final mediumRef = mediaUploadRepository.getMediumRef(mediaModel);
+      final mediumRef = mediaUploadService.getMediumRef(mediaModel);
       final mediumFileData = await mediumFile.readAsBytes();
       final mediumTask = mediumRef.putData(mediumFileData);
 
       final uploadTasks = <UploadTask>[thumbnailTask, mediumTask];
 
       if (uploadFullSize) {
-        final originalRef = mediaUploadRepository.getOriginalRef(mediaModel);
+        final originalRef = mediaUploadService.getOriginalRef(mediaModel);
         final originalTask = originalRef.putData(await imageFile.readAsBytes());
         uploadTasks.add(originalTask);
       }
@@ -211,13 +211,13 @@ class ImageUploadController extends UploadController
   }
 
   void _onFailure(MediaStatus mediaStatus, String? message) {
-    mediaUploadRepository.onUploadFailure(mediaModel, mediaStatus);
+    mediaUploadService.onUploadFailure(mediaModel, mediaStatus);
     _mediaStatus = mediaStatus;
     notifyListeners();
   }
 
   void _onSuccess(String thumbUri, String mediumUri, String? fullUri) {
-    mediaUploadRepository.onUploadSucces(
+    mediaUploadService.onUploadSucces(
       mediaModel,
       thumbUri: thumbUri,
       mediumUri: mediumUri,

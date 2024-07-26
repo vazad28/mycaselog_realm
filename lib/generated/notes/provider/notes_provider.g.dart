@@ -8,9 +8,6 @@ part of '../../../notes/provider/notes_provider.dart';
 
 String _$noteTileStyleHash() => r'd6025aed384d2c7ba794bfbd123acee97f370faa';
 
-/// ////////////////////////////////////////////////////////////////////
-/// Main Provider
-/// ////////////////////////////////////////////////////////////////////
 /// note tile style provider
 ///
 /// Copied from [NoteTileStyle].
@@ -27,7 +24,7 @@ final noteTileStyleProvider =
 );
 
 typedef _$NoteTileStyle = AutoDisposeNotifier<NoteTileStyleEnum>;
-String _$notesHash() => r'd98bf062f33de3ca896ff6d61d76772264e2288c';
+String _$notesHash() => r'26d3275aeff76e331343eeb192a52296da153a90';
 
 /// See also [Notes].
 @ProviderFor(Notes)

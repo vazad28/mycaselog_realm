@@ -7,7 +7,7 @@ part of '../../../sync/provider/sync_providers.dart';
 // **************************************************************************
 
 String _$syncCollectionsMapHash() =>
-    r'41b4cdae2fb583f635271bdc90c5a2ac4223b61e';
+    r'950cb16f5ee606c3de72b7853315ffe8fac65ed1';
 
 /// See also [SyncCollectionsMap].
 @ProviderFor(SyncCollectionsMap)
@@ -250,7 +250,7 @@ class _CollectionSyncerProviderElement
       (origin as CollectionSyncerProvider).dbCollection;
 }
 
-String _$firestoreLiveSyncHash() => r'bc0377b5db428bbe7780d528c3a315d24c81ca08';
+String _$firestoreLiveSyncHash() => r'1093e90802d9f8d204e9a3e7da9cc46d9eb2432e';
 
 /// See also [FirestoreLiveSync].
 @ProviderFor(FirestoreLiveSync)

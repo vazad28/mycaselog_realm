@@ -7,20 +7,16 @@ import 'package:misc_packages/misc_packages.dart';
 import 'package:recase/recase.dart';
 
 import '../../../core/app_vars.dart';
-import '../../../core/core.dart';
-import '../../provider/settings_event.dart';
-import '../../provider/settings_mixin.dart';
 import '../../settings.dart';
-
 part 'tiles/case_navigate_to_tile.dart';
 part 'tiles/local_auth_enabled.dart';
 part 'tiles/sync_on_app_start_tile.dart';
 
-class GeneralSettingsSection extends StatelessWidget {
+class GeneralSettingsSection extends ConsumerWidget {
   const GeneralSettingsSection({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return const Column(
       children: [
         VerticalSpacer.normal,

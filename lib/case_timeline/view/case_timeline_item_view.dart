@@ -9,7 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:misc_packages/misc_packages.dart';
 
-import '../../core/mixins/mixins.dart';
+import '../../core/app_mixins.dart';
 import '../../media_gallery/media_gallery.dart';
 import '../case_timeline.dart';
 

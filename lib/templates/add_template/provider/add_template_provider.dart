@@ -9,7 +9,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:state_of/state_of.dart';
 
 import '../../../core/failures/app_failures.dart';
-import '../../../core/providers/providers.dart';
+import '../../../core/app_providers.dart';
 import '../../../router/router.dart';
 import 'add_template_fields_provider.dart';
 
@@ -74,10 +74,8 @@ class AddTemplateSeeder extends _$AddTemplateSeeder {
 
   /// called by view with passed param caseID to load case model
   void seed(String templateID, String userSpeciality) {
-    final templateModel = ref
-        .watch(collectionsProvider)
-        .templatesCollection
-        .getSingle(templateID);
+    final templateModel =
+        ref.watch(dbProvider).templatesCollection.getSingle(templateID);
 
     final model = templateModel ?? TemplateModelX.zero()
       ..speciality = userSpeciality;
@@ -196,7 +194,7 @@ class AddTemplateNotifier extends _$AddTemplateNotifier with LoggerMixin {
   Future<void> _doSubmit(TemplateModel modelToSubmit) async {
     try {
       await ref
-          .read(collectionsProvider)
+          .read(dbProvider)
           .templatesCollection
           .add(modelToSubmit.templateID, modelToSubmit);
       state = StateOf<TemplateModel>.success(modelToSubmit);

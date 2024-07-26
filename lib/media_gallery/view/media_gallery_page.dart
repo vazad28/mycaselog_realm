@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/mixins/mixins.dart';
+import '../../core/app_mixins.dart';
 import '../media_gallery.dart';
 
-class MediaGalleryPage extends ConsumerWidget with MediaMixin {
+class MediaGalleryPage extends ConsumerWidget with AppMixins {
   const MediaGalleryPage({required this.mediaGalleryModel, super.key});
 
   final MediaGalleryModel mediaGalleryModel;

@@ -7,7 +7,7 @@ part of '../../../../templates/shared_templates/provider/shared_templates_provid
 // **************************************************************************
 
 String _$sharedTemplatesNotifierHash() =>
-    r'a9f67e8201d4b3111169c3b96de7093d326c7277';
+    r'd4ce6dddab901867ae1dc5777ccbc461da6753a0';
 
 /// Copied from Dart SDK
 class _SystemHash {
