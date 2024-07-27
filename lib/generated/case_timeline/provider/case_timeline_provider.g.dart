@@ -387,7 +387,7 @@ class _CasesDetailsNotesProviderElement
 }
 
 String _$caseTimelineNotifierHash() =>
-    r'cc0b5bbdb42783d1c3327dac04f5e90b20425d34';
+    r'12074c00cbc0ba88747ecb16ba4eb55f13aabe51';
 
 /// See also [CaseTimelineNotifier].
 @ProviderFor(CaseTimelineNotifier)

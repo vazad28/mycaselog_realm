@@ -7,7 +7,7 @@ part of '../../../sync/provider/sync_providers.dart';
 // **************************************************************************
 
 String _$syncCollectionsMapHash() =>
-    r'950cb16f5ee606c3de72b7853315ffe8fac65ed1';
+    r'4d8a2146763cfe792a052b337f2ac0914eebf551';
 
 /// See also [SyncCollectionsMap].
 @ProviderFor(SyncCollectionsMap)
@@ -24,7 +24,7 @@ final syncCollectionsMapProvider = AutoDisposeNotifierProvider<
 
 typedef _$SyncCollectionsMap
     = AutoDisposeNotifier<Map<DbCollection, BaseCollection>>;
-String _$collectionSyncerHash() => r'8abcfc34fe428bf84639e5981b8fdb61397b3f2e';
+String _$collectionSyncerHash() => r'f57ebff4bf3d6c8b1dbc5ed1f82008daacf9e0ae';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -249,22 +249,5 @@ class _CollectionSyncerProviderElement
   DbCollection get dbCollection =>
       (origin as CollectionSyncerProvider).dbCollection;
 }
-
-String _$firestoreLiveSyncHash() => r'1093e90802d9f8d204e9a3e7da9cc46d9eb2432e';
-
-/// See also [FirestoreLiveSync].
-@ProviderFor(FirestoreLiveSync)
-final firestoreLiveSyncProvider =
-    AutoDisposeNotifierProvider<FirestoreLiveSync, void>.internal(
-  FirestoreLiveSync.new,
-  name: r'firestoreLiveSyncProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$firestoreLiveSyncHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$FirestoreLiveSync = AutoDisposeNotifier<void>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, inference_failure_on_uninitialized_variable, inference_failure_on_function_return_type, inference_failure_on_untyped_parameter, deprecated_member_use_from_same_package

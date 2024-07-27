@@ -4,9 +4,7 @@ part of '../collections.dart';
 class SettingsCollection extends BaseCollection<SettingsModel> {
   SettingsCollection(super.realmDatabase)
       : _realm = realmDatabase.realm,
-        _userID = realmDatabase.user.id {
-    print('creating instance of SettingsCollection');
-  }
+        _userID = realmDatabase.user.id;
 
   final Realm _realm;
   final String _userID;
@@ -24,8 +22,8 @@ class SettingsCollection extends BaseCollection<SettingsModel> {
           );
 
   @override
-  Stream<List<SettingsModel>> listenForChanges() {
-    return stream.map((querySnapshot) {
+  Stream<List<SettingsModel>>? listenForChanges() {
+    return stream?.map((querySnapshot) {
       final documents = querySnapshot.docChanges
           .map((change) {
             final model = SettingsModelX.fromJson(change.doc.data()!);

@@ -4,6 +4,9 @@ part of '../app_providers.dart';
 Future<void> appStartUp(AppStartUpRef ref) async {
   /// Load realm database
   await ref.watch(realmDatabaseProvider.future);
+
+  final settings = ref.read(settingsNotifierProvider);
+  final syncStatus = ref.read(firestoreLiveSyncProvider);
 }
 
 @riverpod

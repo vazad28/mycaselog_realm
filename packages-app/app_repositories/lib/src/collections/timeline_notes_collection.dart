@@ -1,11 +1,7 @@
 part of '../collections.dart';
 
 class TimelineNotesCollection extends BaseCollection<TimelineNoteModel> {
-  TimelineNotesCollection(super.realmDatabase) : _realm = realmDatabase.realm {
-    print('creating instance of timeline note Collection');
-    //listenForChanges().listen((_) {}).cancelOnDisposeOf(this);
-  }
-
+  TimelineNotesCollection(super.realmDatabase) : _realm = realmDatabase.realm;
   final Realm _realm;
 
   /// Firestore Methods
@@ -21,20 +17,12 @@ class TimelineNotesCollection extends BaseCollection<TimelineNoteModel> {
           );
 
   @override
-  Stream<List<TimelineNoteModel>> listenForChanges() {
-    return stream.map((querySnapshot) {
+  Stream<List<TimelineNoteModel>>? listenForChanges() {
+    return stream?.map((querySnapshot) {
       final documents = querySnapshot.docChanges
           .map((change) async {
             final model = TimelineNoteModelX.fromJson(change.doc.data()!);
-            await _realm.writeAsync(() {
-              _realm.add<TimelineNoteModel>(model, update: true);
-
-              /// add media to cases collection if not exist
-              final caseModel = _realm.find<CaseModel>(model.caseID);
-              if (caseModel != null && !caseModel.notes.contains(model)) {
-                caseModel.notes.add(model);
-              }
-            });
+            await addTimelineNote(model);
             return model;
           })
           .whereType<TimelineNoteModel>()
@@ -57,18 +45,45 @@ class TimelineNotesCollection extends BaseCollection<TimelineNoteModel> {
   }
 
   /// Refresh media backlinks to cases collection  as needed
-  Future<void> refreshTimelineNotesBacklinks() async {
+  Future<void> refreshTimelineNotesBacklinks(
+      List<TimelineNoteModel>? models) async {
+    var groupedNotes = <String, List<TimelineNoteModel>>{};
+
+    var noteModels = models ?? _realm.all<TimelineNoteModel>();
+
     // Open a write transaction
     await _realm.writeAsync(() {
-      // Query all Media objects
-      final notesResults = _realm.all<TimelineNoteModel>();
-
-      // Group media by caseID
-      final groupedNotes =
-          notesResults.groupFoldBy<String, List<TimelineNoteModel>>(
+      groupedNotes = noteModels.groupFoldBy<String, List<TimelineNoteModel>>(
         (e) => e.caseID,
         (prev, e) => (prev ?? [])..add(e),
       );
+
+      // Open a write transaction
+      //await _realm.writeAsync(() {
+      // if (noteModels?.isNotEmpty ?? true) {
+      //   groupedNotes = noteModels!.groupFoldBy<String, List<TimelineNoteModel>>(
+      //     (e) => e.caseID,
+      //     (prev, e) => (prev ?? [])..add(e),
+      //   );
+      // } else {
+      //   // Query all Media objects
+      //   final notesResults = _realm.all<TimelineNoteModel>();
+
+      //   // Group media by caseID
+      //   groupedNotes = notesResults.groupFoldBy<String, List<TimelineNoteModel>>(
+      //     (e) => e.caseID,
+      //     (prev, e) => (prev ?? [])..add(e),
+      //   );
+      // }
+      // Query all Media objects
+      //final notesResults = _realm.all<TimelineNoteModel>();
+
+      // Group media by caseID
+      // final groupedNotes =
+      //     notesResults.groupFoldBy<String, List<TimelineNoteModel>>(
+      //   (e) => e.caseID,
+      //   (prev, e) => (prev ?? [])..add(e),
+      // );
 
       // Iterate through each group
       for (final caseID in groupedNotes.keys) {
@@ -86,6 +101,18 @@ class TimelineNotesCollection extends BaseCollection<TimelineNoteModel> {
 
         // Update the existing Cases object
         existingCase.notes.addAll(notesToAdd);
+      }
+    });
+  }
+
+  Future<void> addTimelineNote(TimelineNoteModel timelineNoteModel) async {
+    await _realm.writeAsync(() {
+      _realm.add<TimelineNoteModel>(timelineNoteModel, update: true);
+
+      /// add media to cases collection if not exist
+      final caseModel = _realm.find<CaseModel>(timelineNoteModel.caseID);
+      if (caseModel != null && !caseModel.notes.contains(timelineNoteModel)) {
+        caseModel.notes.add(timelineNoteModel);
       }
     });
   }

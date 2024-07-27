@@ -86,6 +86,8 @@ class Thumbnail extends ConsumerWidget with AppMixins {
 
             case ThumbnailActionsEnum.shareMedia:
               shareMedia(ref, mediaModels: [mediaModel]);
+            case ThumbnailActionsEnum.retry:
+              retryMediaUpload(ref, mediaModel);
             default:
               break;
           }
@@ -96,7 +98,7 @@ class Thumbnail extends ConsumerWidget with AppMixins {
   }
 }
 
-enum ThumbnailActionsEnum { deleteMedia, shareMedia }
+enum ThumbnailActionsEnum { deleteMedia, shareMedia, retry }
 
 class ThumbnailAction extends BaseAppAction {
   ThumbnailAction({
@@ -116,5 +118,10 @@ final thumbnailActions = [
     action: ThumbnailActionsEnum.shareMedia,
     title: ThumbnailActionsEnum.shareMedia.name.titleCase,
     leading: const Icon(Icons.share),
+  ),
+  ThumbnailAction(
+    action: ThumbnailActionsEnum.retry,
+    title: ThumbnailActionsEnum.retry.name.titleCase,
+    leading: const Icon(Icons.upload),
   ),
 ];

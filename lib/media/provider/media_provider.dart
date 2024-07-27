@@ -27,6 +27,18 @@ class MediaGridTileStyle extends _$MediaGridTileStyle {
 }
 
 @Riverpod(keepAlive: true)
-Stream<RealmResultsChanges<MediaModel>> mediaStream(MediaStreamRef ref) {
-  return ref.read(dbProvider).mediaCollection.getAll().changes;
+class MediaNotifier extends _$MediaNotifier {
+  @override
+  Stream<RealmResultsChanges<MediaModel>> build() {
+    return ref.read(dbProvider).mediaCollection.getAll().changes;
+  }
+
+  Future<void> pullToRefresh() {
+    try {
+      return ref.watch(dbProvider).mediaCollection.refreshMediaBacklinks(null);
+    } catch (err) {
+      ref.watch(dialogServiceProvider).showSnackBar('Refresh failed');
+      return Future<void>.sync(() => {});
+    }
+  }
 }

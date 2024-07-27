@@ -62,11 +62,12 @@ class _TimelineChatInputState extends ConsumerState<TimelineChatInput>
 
   /// controller methods
   void _openAddNote() {
-    addTimelineNote(
-      ref,
-      caseID: widget.caseModel.caseID,
-      timestamp: ModelUtils.getTimestamp,
-    );
+    openTimelineNote(
+        ref,
+        TimelineNoteModelX.zero(
+          caseID: widget.caseModel.caseID,
+          authorID: ref.read(userIDProvider),
+        ));
   }
 
   Future<void> _createTimelineItem() async {

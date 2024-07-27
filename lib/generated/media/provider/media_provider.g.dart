@@ -6,21 +6,6 @@ part of '../../../media/provider/media_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$mediaStreamHash() => r'6afe0bada60b7d759789df47bea0b83c7dc08ef0';
-
-/// See also [mediaStream].
-@ProviderFor(mediaStream)
-final mediaStreamProvider =
-    StreamProvider<RealmResultsChanges<MediaModel>>.internal(
-  mediaStream,
-  name: r'mediaStreamProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$mediaStreamHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef MediaStreamRef = StreamProviderRef<RealmResultsChanges<MediaModel>>;
 String _$mediaGridTileStyleHash() =>
     r'706b8a50e2a3f55b4ea41a7e0fcadc4029105621';
 
@@ -38,5 +23,21 @@ final mediaGridTileStyleProvider =
 );
 
 typedef _$MediaGridTileStyle = AutoDisposeNotifier<int>;
+String _$mediaNotifierHash() => r'8b10f035e4007cfe6ba0fd981b310908539bcfb0';
+
+/// See also [MediaNotifier].
+@ProviderFor(MediaNotifier)
+final mediaNotifierProvider = StreamNotifierProvider<MediaNotifier,
+    RealmResultsChanges<MediaModel>>.internal(
+  MediaNotifier.new,
+  name: r'mediaNotifierProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$mediaNotifierHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$MediaNotifier = StreamNotifier<RealmResultsChanges<MediaModel>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, inference_failure_on_uninitialized_variable, inference_failure_on_function_return_type, inference_failure_on_untyped_parameter, deprecated_member_use_from_same_package

@@ -27,4 +27,4 @@ part './services/dialog_service.dart';
 part './services/encryption_service.dart';
 part './services/fts_search_service.dart';
 part './services/local_storage.dart';
-part 'services/image_upload_service.dart';
+part './services/image_upload_service.dart';

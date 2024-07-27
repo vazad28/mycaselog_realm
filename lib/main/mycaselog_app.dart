@@ -8,6 +8,7 @@ import 'package:logger_client/logger_client.dart';
 
 import '../core/core.dart';
 import '../router/providers/app_router.dart';
+import '../sync/provider/firestore_live_sync.dart';
 
 class MycaselogApp extends ConsumerWidget with LoggerMixin {
   const MycaselogApp({super.key});
@@ -71,9 +72,9 @@ class _MycaselogApp extends ConsumerWidget with LoggerMixin {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     /// Listen for settings provider to start or stop firebse sync
-    // ref.listen(firestoreLiveSyncProvider, (previous, next) {
-    //   logger.fine('settingsNotifierProvider listening for sync');
-    // });
+    ref.listen(firestoreLiveSyncProvider, (previous, next) {
+      logger.fine('settingsNotifierProvider listening for sync');
+    });
     //ref.watch(connectivityStatusProvider);
 
     return app(context);

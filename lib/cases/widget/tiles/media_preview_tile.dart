@@ -41,6 +41,7 @@ class MediaPreviewTile extends ConsumerWidget {
         padding: EdgeInsets.only(top: AppSpacing.sm, left: leftPadding),
         shrinkWrap: true,
         children: caseModel.medias
+            .where((e) => e.removed != 1)
             .mapIndexed(
               (index, e) => _MediaPreviewTile(
                 mediaModels: caseModel.medias,

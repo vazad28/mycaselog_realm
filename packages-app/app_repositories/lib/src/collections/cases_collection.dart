@@ -1,23 +1,7 @@
 part of '../collections.dart';
 
 class CasesCollection extends BaseCollection<CaseModel> {
-  CasesCollection(super.realmDatabase) : _realm = realmDatabase.realm {
-    print('creating instance of casesCollection');
-
-    StreamSubscription? sub;
-    LiveSync().stream.listen((syncActive) {
-      print('LiveSync is active');
-      if (syncActive) {
-        print('Firebase Sync is active');
-        sub = listenForChanges().listen((_) {}); //.cancelOnDisposeOf(this);
-      } else {
-        print('Firebase Sync is not active');
-        sub?.pause();
-      }
-    }, onError: (err) {
-      print('ERROR: ${err.toString()}');
-    });
-  }
+  CasesCollection(super.realmDatabase) : _realm = realmDatabase.realm;
 
   final Realm _realm;
 
@@ -34,8 +18,8 @@ class CasesCollection extends BaseCollection<CaseModel> {
           );
 
   @override
-  Stream<List<CaseModel>> listenForChanges() {
-    return stream.map((querySnapshot) {
+  Stream<List<CaseModel>>? listenForChanges() {
+    return stream?.map((querySnapshot) {
       final documents = querySnapshot.docChanges
           .map((change) {
             final model = CaseModelX.fromJson(change.doc.data()!);
@@ -127,38 +111,38 @@ class CasesCollection extends BaseCollection<CaseModel> {
     return cases.first.surgeryDate;
   }
 
-  // Future<void> addMedia(MediaModel updatedMediaModel,
-  //     {bool remove = false}) async {
-  //   final caseModel = _realm.find<CaseModel>(updatedMediaModel.caseID);
-  //   if (caseModel == null) return;
-  //   _realm.write(() {
-  //     if (remove) {
-  //       caseModel.medias.remove(updatedMediaModel);
-  //     } else {
-  //       caseModel.medias.add(updatedMediaModel);
-  //     }
-  //     putInFirestore(updatedMediaModel.caseID,
-  //         caseModel..timestamp = ModelUtils.getTimestamp);
-  //   });
-  // }
+  /// Refresh media backlinks to cases collection  as needed
+  Future<void> refreshCasesBacklinks(List<CaseModel>? models) async {
+    // Open a write transaction
+    await _realm.writeAsync(() {
+      // Query all All CaseModel objects
+      final caseModels = models ?? _realm.all<CaseModel>();
 
-  // Future<void> addNote(TimelineNoteModel noteModel,
-  //     {bool remove = false}) async {
-  //   final caseModel = _realm.find<CaseModel>(noteModel.caseID);
-  //   if (caseModel == null) return;
-  //   _realm.write(() {
-  //     if (remove) {
-  //       caseModel.notes.remove(noteModel);
-  //     } else {
-  //       caseModel.notes.add(noteModel);
-  //     }
-  //     putInFirestore(
-  //         noteModel.caseID, caseModel..timestamp = ModelUtils.getTimestamp);
-  //   });
-  // }
+      // Iterate through each group
+      for (final caseModel in caseModels) {
+        final mediaList =
+            _realm.query<MediaModel>(r'caseID == $0', [caseModel.caseID]);
 
-  // /// todo
-  // void onMediaUploadFailure(MediaModel mediaModel, MediaStatus mediaStatus) {
-  //   logger.severe('Media upload failed');
-  // }
+        // Check for media not already in the Cases object
+        final mediaToAdd = mediaList
+            .where((media) => !caseModel.medias.contains(media))
+            .toList();
+
+        // Update the existing Cases object
+        caseModel.medias.addAll(mediaToAdd);
+
+        /// Timeline notes
+        final timelineNotesList = _realm
+            .query<TimelineNoteModel>(r'caseID == $0', [caseModel.caseID]);
+
+        // Check for media not already in the Cases object
+        final timelineNotesToAdd = timelineNotesList
+            .where((note) => !caseModel.notes.contains(note))
+            .toList();
+
+        // Update the existing Cases object
+        caseModel.notes.addAll(timelineNotesToAdd);
+      }
+    });
+  }
 }

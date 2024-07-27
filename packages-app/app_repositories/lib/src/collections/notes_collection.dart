@@ -18,8 +18,8 @@ class NotesCollection extends BaseCollection<NoteModel> {
           );
 
   @override
-  Stream<List<NoteModel>> listenForChanges() {
-    return stream.map((querySnapshot) {
+  Stream<List<NoteModel>>? listenForChanges() {
+    return stream?.map((querySnapshot) {
       final documents = querySnapshot.docChanges
           .map((change) {
             final model = NoteModelX.fromJson(change.doc.data()!);

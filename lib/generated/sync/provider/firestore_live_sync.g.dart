@@ -1,27 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of '../../../../templates/templates/provider/templates_provider.dart';
+part of '../../../sync/provider/firestore_live_sync.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$templatesNotifierHash() => r'657c1446e7c4ab88199df7c4edca91ee5845ea09';
+String _$firestoreLiveSyncHash() => r'022b8d48840d76acdd5ce57007c7e69b68f8de64';
 
-/// See also [TemplatesNotifier].
-@ProviderFor(TemplatesNotifier)
-final templatesNotifierProvider = AutoDisposeStreamNotifierProvider<
-    TemplatesNotifier, Iterable<TemplateModel>>.internal(
-  TemplatesNotifier.new,
-  name: r'templatesNotifierProvider',
+/// See also [FirestoreLiveSync].
+@ProviderFor(FirestoreLiveSync)
+final firestoreLiveSyncProvider =
+    NotifierProvider<FirestoreLiveSync, bool>.internal(
+  FirestoreLiveSync.new,
+  name: r'firestoreLiveSyncProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$templatesNotifierHash,
+      : _$firestoreLiveSyncHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$TemplatesNotifier
-    = AutoDisposeStreamNotifier<Iterable<TemplateModel>>;
+typedef _$FirestoreLiveSync = Notifier<bool>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, inference_failure_on_uninitialized_variable, inference_failure_on_function_return_type, inference_failure_on_untyped_parameter, deprecated_member_use_from_same_package

@@ -5,6 +5,5 @@ enum DbCollection {
   timelineNotes,
   templates,
   supportData,
-  settings,
-  conversation
+  settings
 }

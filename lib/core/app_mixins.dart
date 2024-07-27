@@ -6,13 +6,10 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:media_manager/media_manager.dart';
-import 'package:realm/realm.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../settings/settings.dart';
 import '../support_data/provider/support_data_provider.dart';
 import 'app_providers.dart';
-import 'app_services.dart';
 
 mixin AppMixins {
   /// ////////////////////////////////////////////////////////////////////
@@ -74,14 +71,9 @@ mixin AppMixins {
     }
   }
 
-  /// Refresh all Media Backlinks in Realm  database
-  Future<void> refreshMediaBacklinks(WidgetRef ref) async {
-    try {
-      return ref.watch(dbProvider).mediaCollection.refreshMediaBacklinks();
-    } catch (err) {
-      ref.watch(dialogServiceProvider).showSnackBar('Refresh failed');
-      return;
-    }
+  void retryMediaUpload(WidgetRef ref, MediaModel mediaModel) {
+    mediaCollection(ref)
+        .addMedia(mediaModel.toUnmanaged()..status = MediaStatus.queued);
   }
 
   /// ////////////////////////////////////////////////////////////////////
@@ -108,28 +100,9 @@ mixin AppMixins {
     }
   }
 
-  /// ////////////////////////////////////////////////////////////////////
-  /// Settings Mixin
-  /// ////////////////////////////////////////////////////////////////////
-
-  /// get settings
-  // SettingsModel getSettings(WidgetRef ref) =>
-  //     settingsCollection(ref).getSettings();
-
-  /// ////////////////////////////////////////////////////////////////////
-  /// SupportData
-  /// ////////////////////////////////////////////////////////////////////
   /// get support data
   SupportDataModel getSupportData(WidgetRef ref) =>
       supportDataCollection(ref).getSupportData();
-
-  /// support data selector watcher
-  // T watchSupportDataSelect<T>(
-  //   WidgetRef ref,
-  //   T Function(SupportDataModel supportData) selectCallback,
-  // ) {
-  //   return ref.watch(supportDataNotifierProvider.select(selectCallback));
-  // }
 
   List<ActivableCaseField> watchActiveFieldsList(WidgetRef ref) {
     return ref.watch(

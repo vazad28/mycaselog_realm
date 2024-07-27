@@ -52,7 +52,8 @@ class _CasesPageState extends ConsumerState<CasesPage>
           CupertinoSliverRefreshControl(
             builder: customScrollViewRefreshIndicator,
             refreshTriggerPullDistance: AppConst.kRefreshTriggerPullDistance,
-            onRefresh: () => refreshMediaBacklinks(ref),
+            onRefresh: () =>
+                ref.watch(casesNotifierProvider.notifier).pullToRefresh(),
           ),
           const _CasesView(key: Key('__cases_view_sub_key__')),
         ],
@@ -77,22 +78,12 @@ class _CasesView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return AsyncValueSliverWidget<RealmResultsChanges<CaseModel>>(
       key: key,
-      value: ref.watch(casesStreamProvider),
+      value: ref.watch(casesNotifierProvider),
       data: (data) {
         return CasesView(
           caseModels: data.results,
         );
       },
     );
-
-    // return stream.when(
-    //   data: (data) {
-    //     return CasesView(
-    //       caseModels: data.results,
-    //     );
-    //   },
-    //   error: buildErrorSliver,
-    //   loading: buildLoadingSliver,
-    // );
   }
 }

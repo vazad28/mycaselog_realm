@@ -1,7 +1,9 @@
 import 'package:app_ui/app_ui.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/app_const.dart';
 import '../media.dart';
 import '../search/media_search_bar.dart';
 
@@ -37,10 +39,16 @@ class _MediaPageState extends ConsumerState<MediaPage> {
         physics: const BouncingScrollPhysics(
           parent: AlwaysScrollableScrollPhysics(),
         ),
-        slivers: const [
-          MediaAppBar(),
-          MediaSearchBar(),
-          _MediaBody(),
+        slivers: [
+          const MediaAppBar(),
+          const MediaSearchBar(),
+          CupertinoSliverRefreshControl(
+            builder: customScrollViewRefreshIndicator,
+            refreshTriggerPullDistance: AppConst.kRefreshTriggerPullDistance,
+            onRefresh: () =>
+                ref.watch(mediaNotifierProvider.notifier).pullToRefresh(),
+          ),
+          const _MediaBody(),
         ],
       ),
     );
@@ -52,7 +60,7 @@ class _MediaBody extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final stream = ref.watch(mediaStreamProvider);
+    final stream = ref.watch(mediaNotifierProvider);
 
     return stream.when(
       data: (data) {

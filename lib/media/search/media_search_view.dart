@@ -305,7 +305,7 @@ class _MediaCountWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AsyncValueWidget(
-      value: ref.watch(mediaStreamProvider),
+      value: ref.watch(mediaNotifierProvider),
       data: (data) => Padding(
         padding: const EdgeInsets.only(right: AppSpacing.sm),
         child: Text(

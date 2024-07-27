@@ -1,18 +1,31 @@
 import 'package:app_models/app_models.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:misc_packages/misc_packages.dart';
 
-class CaseTimelineNoteModal extends StatefulWidget {
+import '../../core/app_providers.dart';
+
+class CaseTimelineNoteModal extends ConsumerStatefulWidget {
   const CaseTimelineNoteModal({required this.timelineNoteModel, super.key});
 
   final TimelineNoteModel timelineNoteModel;
 
   @override
-  State<CaseTimelineNoteModal> createState() => _TimelineNoteModalState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _CaseTimelineNoteModalState();
 }
 
-class _TimelineNoteModalState extends State<CaseTimelineNoteModal> {
+class _CaseTimelineNoteModalState extends ConsumerState<CaseTimelineNoteModal> {
   final TextEditingController _controller = TextEditingController();
+
+  late TimelineNoteModel timelineNoteModel;
+
+  @override
+  void initState() {
+    super.initState();
+    timelineNoteModel = widget.timelineNoteModel.toUnmanaged();
+  }
 
   Widget get timelineNote => Container(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
@@ -34,19 +47,24 @@ class _TimelineNoteModalState extends State<CaseTimelineNoteModal> {
 //save or delete note
   void _saveNote() {
     /// if note is empty and timelinenote model also was empty return
-    if (_controller.text == widget.timelineNoteModel.note) {
+    if (_controller.text == timelineNoteModel.note) {
       return Navigator.of(context).pop();
     }
 
-    ///else save it
-    Navigator.of(context).pop(
-      widget.timelineNoteModel..note = _controller.text.trim(),
-    );
+    ///else add to database
+    try {
+      ref.watch(dbProvider).timelineNotesCollection.addTimelineNote(
+            timelineNoteModel..note = _controller.text.trim(),
+          );
+      Navigator.of(context).pop();
+    } catch (err) {
+      context.showSnackBar('Failed to save note');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    _controller.text = widget.timelineNoteModel.note ?? '';
+    _controller.text = timelineNoteModel.note ?? '';
 
     return Scaffold(
       appBar: AppBar(

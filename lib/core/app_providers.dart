@@ -12,6 +12,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:storage/storage.dart';
 
+import '../settings/settings.dart';
+import '../sync/sync.dart';
 import 'core.dart';
 
 part '../generated/core/app_providers.g.dart';

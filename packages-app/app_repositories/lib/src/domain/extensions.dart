@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:app_models/app_models.dart';
 import 'package:realm/realm.dart';
 
 extension<T> on Stream<T> {

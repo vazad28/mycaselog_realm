@@ -172,7 +172,7 @@ final dbProvider = Provider<Collections>.internal(
 );
 
 typedef DbRef = ProviderRef<Collections>;
-String _$appStartUpHash() => r'16b340b1ac38ab625951f2c6c0bc0028c2d1c9fe';
+String _$appStartUpHash() => r'ce0a82ce840a9799dc1174c335179294f4114726';
 
 /// See also [appStartUp].
 @ProviderFor(appStartUp)

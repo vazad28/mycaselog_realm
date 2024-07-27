@@ -28,28 +28,16 @@ mixin TimelineMixin {
         );
   }
 
-  Future<void> addTimelineNote(
-    WidgetRef ref, {
-    required String caseID,
-    required int timestamp,
-  }) async {
+  Future<void> openTimelineNote(
+    WidgetRef ref,
+    TimelineNoteModel timelineNoteModel,
+  ) async {
     await ref
         .watch(dialogServiceProvider)
         .rootContext
         .openModalScreen<TimelineNoteModel?>(
-          CaseTimelineNoteModal(
-            timelineNoteModel: TimelineNoteModelX.zero(
-              caseID: caseID,
-              authorID: ref.read(authenticationUserProvider).id,
-            )..createdAt = timestamp,
-          ),
-        )
-        .then((note) {
-      if (note == null) return;
-
-      /// add to database
-      ref.watch(dbProvider).timelineNotesCollection.add(note.noteID, note);
-    });
+          CaseTimelineNoteModal(timelineNoteModel: timelineNoteModel),
+        );
   }
 
   Future<void> changeTimelineEventDate(
@@ -103,7 +91,7 @@ mixin TimelineMixin {
       );
 
       /// add image to database
-      ref.read(dbProvider).mediaCollection.add(mediaModel.mediaID, mediaModel);
+      ref.read(dbProvider).mediaCollection.addMedia(mediaModel);
     }).catchError((dynamic err) {
       debugPrint(err.toString());
       ref.read(dialogServiceProvider).showSnackBar('Failed to add image');

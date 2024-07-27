@@ -31,6 +31,7 @@ dependencies:
     path: ../../packages/encryption_client
   logger_client: 
     path: ../../packages/logger_client
+  collection: ^1.18.0
 
 dev_dependencies:
   very_good_analysis: ^5.0.0

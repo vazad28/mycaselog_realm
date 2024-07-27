@@ -21,8 +21,8 @@ class SupportDataCollection extends BaseCollection<SupportDataModel> {
           );
 
   @override
-  Stream<List<SupportDataModel>> listenForChanges() {
-    return stream.map((querySnapshot) {
+  Stream<List<SupportDataModel>>? listenForChanges() {
+    return stream?.map((querySnapshot) {
       final documents = querySnapshot.docChanges
           .map((change) {
             final model = SupportDataModelX.fromJson(change.doc.data()!);

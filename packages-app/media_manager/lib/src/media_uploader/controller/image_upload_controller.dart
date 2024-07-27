@@ -106,7 +106,7 @@ class ImageUploadController extends UploadController
           /// sometimes the progress is NaN as the total byte may be 0
           if (!progress.isNaN) totalUpload += progress;
 
-          //print('progress $progress - totalProgress $totalUpload');
+          print('progress $progress - totalProgress $totalUpload');
 
           final progressClamped = totalUpload / uploadTasks.length;
           //print('progressClamped $progressClamped');
@@ -205,13 +205,17 @@ class ImageUploadController extends UploadController
       targetPath,
       minHeight: minHeight,
       quality: quality,
-    );
+    ).catchError((Object err) {
+      logger.severe(err);
+      throw Exception('File compress error');
+    });
 
     return result;
   }
 
   void _onFailure(MediaStatus mediaStatus, String? message) {
-    mediaUploadService.onUploadFailure(mediaModel, mediaStatus);
+    logger.severe(message);
+    mediaUploadService.onUploadFailure(mediaModel, mediaStatus, message);
     _mediaStatus = mediaStatus;
     notifyListeners();
   }

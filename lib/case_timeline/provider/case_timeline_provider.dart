@@ -49,10 +49,6 @@ class CaseTimelineNotifier extends _$CaseTimelineNotifier with LoggerMixin {
 
     if (caseModel == null) return const AsyncData([]);
 
-    ref
-      ..watch(casesDetailsNotesProvider(caseID))
-      ..watch(casesDetailsMediaProvider(caseID));
-
     return _createTimelines(caseModel);
   }
 
@@ -98,8 +94,8 @@ class CaseTimelineNotifier extends _$CaseTimelineNotifier with LoggerMixin {
         timelineItems.add(timelineItem);
       }
 
-      print(
-          'timelineItems media length = ${timelineItems[0].mediaList.length}');
+      // print(
+      //     'timelineItems media length = ${timelineItems[0].mediaList.length}');
 
       return AsyncData(timelineItems);
     } catch (err, st) {
@@ -114,7 +110,7 @@ class CaseTimelineNotifier extends _$CaseTimelineNotifier with LoggerMixin {
   ) {
     final map = <String, List<MediaModel>>{};
     for (final mediaModel in mediaModels) {
-      if (mediaModel == null) continue;
+      if (mediaModel == null || mediaModel.removed != 0) continue;
       final kee = mediaModel.createdAt.formatYMD();
 
       map.putIfAbsent(kee, () => <MediaModel>[]).add(mediaModel);
@@ -129,7 +125,7 @@ class CaseTimelineNotifier extends _$CaseTimelineNotifier with LoggerMixin {
     final map = <String, List<TimelineNoteModel>>{};
 
     for (final timelineNote in timelineNotes) {
-      if (timelineNote == null) continue;
+      if (timelineNote == null || timelineNote.removed != 0) continue;
       final kee = timelineNote.createdAt.formatYMD();
 
       map.putIfAbsent(kee, () => <TimelineNoteModel>[]).add(timelineNote);

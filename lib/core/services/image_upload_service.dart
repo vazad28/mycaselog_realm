@@ -32,11 +32,15 @@ class ImageUploadService with LoggerMixin implements MediaUploadService {
   }
 
   @override
-  void onUploadFailure(MediaModel mediaModel, MediaStatus mediaStatus) {
+  void onUploadFailure(
+      MediaModel mediaModel, MediaStatus mediaStatus, String? message) {
     ref
         .read(dbProvider)
         .mediaCollection
-        .upsert(mediaModel.mediaID, () => mediaModel..status = mediaStatus);
+        .upsert(mediaModel.mediaID, () => mediaModel..status = mediaStatus)
+        .then((_) {
+      ref.watch(dialogServiceProvider).showSnackBar(message);
+    });
   }
 
   @override

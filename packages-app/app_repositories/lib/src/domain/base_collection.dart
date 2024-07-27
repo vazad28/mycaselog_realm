@@ -8,7 +8,6 @@ import 'package:realm/realm.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'disposable.dart';
-import 'live_sync.dart';
 import 'realm_database.dart';
 
 /// Abstract class defining [BaseCollection] structure
@@ -45,7 +44,6 @@ abstract class BaseCollection<T extends RealmObject> extends Disposable
   String get lastSyncTimestampKey => _lastSyncTimestampKey;
 
   bool isOffline = false;
-  bool liveSyncActive = true;
 
   /// ////////////////////////////////////////////////////////////////////
   /// FIRESTORE Methods
@@ -59,15 +57,15 @@ abstract class BaseCollection<T extends RealmObject> extends Disposable
       firestore.collection(path);
 
   /// Firestore collectione stream
-  late Stream<QuerySnapshot<Map<String, dynamic>>> _stream;
-  Stream<QuerySnapshot<Map<String, dynamic>>> get stream => _stream;
+  Stream<QuerySnapshot<Map<String, dynamic>>>? _stream;
+  Stream<QuerySnapshot<Map<String, dynamic>>>? get stream => _stream;
 
   /// Get collection data converted to a Model
   CollectionReference<T> get withConverter =>
       throw UnimplementedError('withConverter not set');
 
   /// Listener to be created in each collection for listening to data changes
-  Stream<List<T>> listenForChanges();
+  Stream<List<T>>? listenForChanges();
 
   /// save the model
   Future<void> putInFirestore(String docId, T model) {
@@ -94,7 +92,7 @@ abstract class BaseCollection<T extends RealmObject> extends Disposable
         .snapshots();
   }
 
-  Future<int> syncByTimestamp(int timestamp) async {
+  Future<List<T>> syncByTimestamp(int timestamp) async {
     final models = await _getDocsByTimestamp(timestamp);
 
     /// write all models to _realm
@@ -102,7 +100,7 @@ abstract class BaseCollection<T extends RealmObject> extends Disposable
       _realm.addAll<T>(models, update: true);
     });
 
-    return models.length;
+    return models;
   }
 
   /// Get the timestamp of  last  sync
@@ -122,29 +120,27 @@ abstract class BaseCollection<T extends RealmObject> extends Disposable
   /// REALM methods
   /// ////////////////////////////////////////////////////////////////////
 
-  Future<void> add(String primaryKey, T object) async {
-    //await putInFirestore(primaryKey, object);
+  Future<void> add(String primaryKey, T object) {
     return _realm.writeAsync(() {
-      _realm.add<T>(object, update: true);
-      //unawaited(putInFirestore(primaryKey, object));
+      _realm.add<T>(
+        object,
+        update: true,
+      );
+    }).then((_) {
+      putInFirestore(primaryKey, object);
     });
   }
 
   Future<T> upsert(String primaryKey, T Function() upsertCallback) async {
-    final upsertedModel = await _realm.writeAsync<T>(upsertCallback);
-    // unawaited(putInFirestore(primaryKey, upsertedModel));
-    return upsertedModel;
+    return _realm
+        .writeAsync<T>(
+      upsertCallback,
+    )
+        .then((upsertedModel) {
+      putInFirestore(primaryKey, upsertedModel);
+      return upsertedModel;
+    });
   }
-
-  // Future<T> update(String primaryKey, T Function(T) upsertCallback) async {
-  //   final model = _realm.find<T>(primaryKey)!;
-  //   final upsertedModel = await _realm.writeAsync<T>(() {
-  //     final object = upsertCallback.call(model);
-  //     return _realm.add<T>(object, update: true);
-  //   });
-  //   // unawaited(putInFirestore(primaryKey, upsertedModel));
-  //   return upsertedModel;
-  // }
 
   RealmResults<T> getAll({String? orderBy, bool isDecenting = true}) {
     if (orderBy != null) {

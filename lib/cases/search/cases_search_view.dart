@@ -267,7 +267,7 @@ class _CasesCountWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AsyncValueWidget(
-      value: ref.watch(casesStreamProvider),
+      value: ref.watch(casesNotifierProvider),
       data: (data) => Padding(
         padding: const EdgeInsets.only(right: AppSpacing.sm),
         child: Text(

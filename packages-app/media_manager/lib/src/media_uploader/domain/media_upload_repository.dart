@@ -20,7 +20,5 @@ abstract class MediaUploadService {
 
   /// on media upload failure
   void onUploadFailure(
-    MediaModel mediaModel,
-    MediaStatus mediaStatus,
-  );
+      MediaModel mediaModel, MediaStatus mediaStatus, String? message);
 }

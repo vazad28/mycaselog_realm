@@ -1,10 +1,7 @@
 part of '../collections.dart';
 
 class UserCollection extends BaseCollection<UserModel> {
-  UserCollection(super.realmDatabase) : _realm = realmDatabase.realm {
-    print('creating instance of UserCollection');
-    //listenForChanges().listen((_) {}).cancelOnDisposeOf(this);
-  }
+  UserCollection(super.realmDatabase) : _realm = realmDatabase.realm;
 
   final Realm _realm;
 
@@ -21,8 +18,8 @@ class UserCollection extends BaseCollection<UserModel> {
           );
 
   @override
-  Stream<List<UserModel>> listenForChanges() {
-    return stream.map((querySnapshot) {
+  Stream<List<UserModel>>? listenForChanges() {
+    return stream?.map((querySnapshot) {
       final documents = querySnapshot.docChanges
           .map((change) {
             final model = UserModelX.fromJson(change.doc.data()!);

@@ -1,10 +1,7 @@
 part of '../collections.dart';
 
 class TemplatesCollection extends BaseCollection<TemplateModel> {
-  TemplatesCollection(super.realmDatabase) : _realm = realmDatabase.realm {
-    print('creating instance of TemplatesCollection');
-    //listenForChanges().listen((_) {}).cancelOnDisposeOf(this);
-  }
+  TemplatesCollection(super.realmDatabase) : _realm = realmDatabase.realm;
 
   final Realm _realm;
 
@@ -20,8 +17,8 @@ class TemplatesCollection extends BaseCollection<TemplateModel> {
           );
 
   @override
-  Stream<List<TemplateModel>> listenForChanges() {
-    return stream.map((querySnapshot) {
+  Stream<List<TemplateModel>>? listenForChanges() {
+    return stream?.map((querySnapshot) {
       final documents = querySnapshot.docChanges
           .map((change) {
             final model = TemplateModelX.fromJson(change.doc.data()!);

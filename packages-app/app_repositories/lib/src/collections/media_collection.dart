@@ -21,20 +21,12 @@ class MediaCollection extends BaseCollection<MediaModel> {
           );
 
   @override
-  Stream<List<MediaModel>> listenForChanges() {
-    return stream.map((querySnapshot) {
+  Stream<List<MediaModel>>? listenForChanges() {
+    return stream?.map((querySnapshot) {
       final documents = querySnapshot.docChanges
           .map((change) async {
             final model = MediaModelX.fromJson(change.doc.data()!);
-            await _realm.writeAsync(() {
-              _realm.add<MediaModel>(model, update: true);
-
-              /// add media to cases collection if not exist
-              final caseModel = _realm.find<CaseModel>(model.caseID);
-              if (caseModel != null && !caseModel.medias.contains(model)) {
-                caseModel.medias.add(model);
-              }
-            });
+            await addMedia(model);
             return model;
           })
           .whereType<MediaModel>()
@@ -56,17 +48,32 @@ class MediaCollection extends BaseCollection<MediaModel> {
   }
 
   /// Refresh media backlinks to cases collection  as needed
-  Future<void> refreshMediaBacklinks() async {
+  Future<void> refreshMediaBacklinks(List<MediaModel>? models) async {
+    var groupedMedia = <String, List<MediaModel>>{};
+
+    var mediaModels = models ?? _realm.all<MediaModel>();
+
     // Open a write transaction
     await _realm.writeAsync(() {
-      // Query all Media objects
-      final mediaResults = _realm.all<MediaModel>();
-
-      // Group media by caseID
-      final groupedMedia = mediaResults.groupFoldBy<String, List<MediaModel>>(
+      groupedMedia = mediaModels.groupFoldBy<String, List<MediaModel>>(
         (e) => e.caseID,
         (prev, e) => (prev ?? [])..add(e),
       );
+      // if (mediaModels?.isNotEmpty ?? true) {
+      //   groupedMedia = mediaModels!.groupFoldBy<String, List<MediaModel>>(
+      //     (e) => e.caseID,
+      //     (prev, e) => (prev ?? [])..add(e),
+      //   );
+      // } else {
+      //   // Query all Media objects
+      //   final mediaResults = _realm.all<MediaModel>();
+
+      //   // Group media by caseID
+      //   groupedMedia = mediaResults.groupFoldBy<String, List<MediaModel>>(
+      //     (e) => e.caseID,
+      //     (prev, e) => (prev ?? [])..add(e),
+      //   );
+      // }
 
       // Iterate through each group
       for (final caseID in groupedMedia.keys) {
@@ -84,6 +91,18 @@ class MediaCollection extends BaseCollection<MediaModel> {
 
         // Update the existing Cases object
         existingCase.medias.addAll(mediaToAdd);
+      }
+    });
+  }
+
+  Future<void> addMedia(MediaModel model) async {
+    await _realm.writeAsync(() {
+      _realm.add<MediaModel>(model, update: true);
+
+      /// add media to cases collection if not exist
+      final caseModel = _realm.find<CaseModel>(model.caseID);
+      if (caseModel != null && !caseModel.medias.contains(model)) {
+        caseModel.medias.add(model);
       }
     });
   }

@@ -7,7 +7,6 @@ import 'package:misc_packages/misc_packages.dart';
 import 'package:recase/recase.dart';
 
 import '../../../core/app_mixins.dart';
-import '../../../settings/settings.dart';
 import '../../support_data.dart';
 
 class AnesthesiaBlocksPage extends ConsumerWidget with AppMixins {
