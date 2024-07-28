@@ -1,6 +1,6 @@
 part of '../collections.dart';
 
-class MediaCollection extends BaseCollection<MediaModel> {
+class MediaCollection extends BaseCollection<MediaModel> with LoggerMixin {
   MediaCollection(super.realmDatabase) : _realm = realmDatabase.realm {
     // print('creating instance of mediaCollection');
     // listenForChanges().listen((_) {}).cancelOnDisposeOf(this);
@@ -40,6 +40,23 @@ class MediaCollection extends BaseCollection<MediaModel> {
 
   @override
   int count() => _realm.all<MediaModel>().query(r'removed == $0', [0]).length;
+
+  /// ////////////////////////////////////////////////////////////////////
+  /// custom methods
+  /// ////////////////////////////////////////////////////////////////////
+
+  RealmResults<MediaModel> getAllMedia({
+    String? orderBy,
+    bool isDecenting = true,
+    int removed = 0,
+  }) {
+    final orderByField = orderBy ?? 'timestamp';
+    final order = isDecenting ? 'DESCENDING' : 'ASCENDING';
+    return _realm.query<MediaModel>(
+      'removed == \$0 AND TRUEPREDICATE SORT($orderByField $order)',
+      [removed],
+    );
+  }
 
   RealmResults<MediaModel> getCaseMedia(String caseID) {
     final results = _realm
@@ -96,14 +113,21 @@ class MediaCollection extends BaseCollection<MediaModel> {
   }
 
   Future<void> addMedia(MediaModel model) async {
+    logger.fine('addMedia reached');
     await _realm.writeAsync(() {
       _realm.add<MediaModel>(model, update: true);
 
       /// add media to cases collection if not exist
       final caseModel = _realm.find<CaseModel>(model.caseID);
       if (caseModel != null && !caseModel.medias.contains(model)) {
+        logger.fine('media model added to caseModel in AddMedia');
         caseModel.medias.add(model);
       }
     });
+  }
+
+  RealmResults<MediaModel> search(Iterable<String> ids) {
+    return _realm
+        .query<MediaModel>(r'caseID IN $0 AND removed == $1', [ids, 0]);
   }
 }

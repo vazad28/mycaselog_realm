@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:animations/animations.dart';
 import 'package:app_models/app_models.dart';
 import 'package:app_ui/app_ui.dart';
@@ -7,6 +5,7 @@ import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:realm/realm.dart';
 
 import '../../core/app_services.dart';
 import '../notes.dart';
@@ -26,7 +25,7 @@ class NotesSearchAnchor extends ConsumerStatefulWidget {
 class _NotesSearchAnchorState extends ConsumerState<NotesSearchAnchor> {
   final _focusNode = FocusScopeNode();
   var _searchHistory = <String>[];
-  var _results = <NoteModel>[];
+  RealmResults<NoteModel>? _results;
 
   bool _showResults = false;
 
@@ -76,16 +75,16 @@ class _NotesSearchAnchorState extends ConsumerState<NotesSearchAnchor> {
   }
 
   Iterable<Widget> getResultsWidgets(SearchController controller) {
-    return _results.map(
+    return _results!.map(
       (noteModel) => NotesSearchResultTile(
         noteModel: noteModel,
       ),
     );
   }
 
-  Future<void> handleSelection(String selectedText) async {
+  void handleSelection(String selectedText) {
     final noteModels =
-        await ref.read(ftsSearchServiceProvider).searchNotes(selectedText);
+        ref.read(ftsSearchServiceProvider).searchNotes(selectedText);
 
     setState(() {
       try {

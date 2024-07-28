@@ -29,9 +29,8 @@ class StatsRepository {
 
   ///get full text search result ids
   Future<List<String>?> _getSearchIds(String searchTermProcessed) async {
-    final searchRes = await ref
-        .watch(ftsSearchServiceProvider)
-        .searchCaseMedia<CaseModel>(searchTermProcessed);
+    final searchRes =
+        await ref.watch(dbProvider).casesCollection.search(searchTermProcessed);
 
     if (searchRes.isEmpty) return null;
     return searchRes.map((item) => item.caseID).toList();

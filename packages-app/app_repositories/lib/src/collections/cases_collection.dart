@@ -67,7 +67,7 @@ class CasesCollection extends BaseCollection<CaseModel> {
   /// ////////////////////////////////////////////////////////////////////
   /// Custom methods for the cases class
   /// ////////////////////////////////////////////////////////////////////
-  RealmResults<CaseModel> searchCases(String searchTerm) {
+  RealmResults<CaseModel> search(String searchTerm) {
     return _realm.query<CaseModel>(
       r'''
         diagnosis TEXT $0 OR 

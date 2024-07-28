@@ -81,7 +81,7 @@ mixin TimelineMixin {
       final mediaID = ModelUtils.uniqueID;
       final mediaModel = MediaModel(
         mediaID,
-        caseID,
+        ref.watch(userIDProvider), //author
         fileType: MediaType.image.name,
         caseID: caseID,
         fileUri: imageXFile.path,

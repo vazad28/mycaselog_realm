@@ -60,9 +60,9 @@ class _CaseTimelineItemViewState extends ConsumerState<CaseTimelineItemView> {
           margin: const EdgeInsets.only(top: 42, left: 8, right: 8),
           child: Material(
             type: MaterialType.card,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(8),
             shadowColor: context.colorScheme.shadow.withOpacity(0.2),
-            elevation: 1,
+            elevation: 2,
             child: MaterialCard.outlined(
               borderColor: context.colorScheme.surfaceContainerHighest,
               padding: EdgeInsets.zero,

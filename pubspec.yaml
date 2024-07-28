@@ -96,6 +96,7 @@ dependencies:
   path: ^1.9.0
   fl_chart: ^0.68.0
   connectivity_plus: ^6.0.3
+  easy_image_viewer: ^1.5.1
   
 dev_dependencies: 
   build_runner: ^2.4.11

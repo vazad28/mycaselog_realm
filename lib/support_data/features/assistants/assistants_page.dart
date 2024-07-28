@@ -64,17 +64,23 @@ class _AssistantsView extends ConsumerWidget {
       ),
       itemBuilder: (_, index) {
         final assistantModel = assistants[index];
+        final child = ListTile(
+          title: Text(
+            assistantModel.name ?? 'No name',
+          ),
+          subtitle:
+              assistantModel.phone == null ? null : Text(assistantModel.phone!),
+          onTap: () =>
+              AddAssistantRoute(assistantID: assistantModel.assistantID)
+                  .push<AssistantModel>(context),
+        );
         return DismissibleListTile(
-          title: assistantModel.name ?? 'No name',
-          subTitle: assistantModel.phone,
+          child: child,
           onDismissed: () {
             ref
                 .watch(supportDataNotifierProvider.notifier)
                 .upsertAssistant(assistantModel, CrudAction.remove);
           },
-          onTap: () =>
-              AddAssistantRoute(assistantID: assistantModel.assistantID)
-                  .push<AssistantModel>(context),
         );
       },
     );

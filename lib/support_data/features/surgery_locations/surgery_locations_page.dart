@@ -66,17 +66,25 @@ class _SurgeryLocationsView extends ConsumerWidget {
       ),
       itemBuilder: (_, index) {
         final surgeryLocation = surgeryLocations[index];
+        final child = ListTile(
+          title: Text(
+            surgeryLocation.name ?? 'No name',
+          ),
+          subtitle: surgeryLocation.phone == null
+              ? null
+              : Text(surgeryLocation.phone!),
+          onTap: () =>
+              AddSurgeryLocationRoute(locationID: surgeryLocation.locationID)
+                  .push<SurgeryLocationModel>(context),
+        );
+
         return DismissibleListTile(
-          title: surgeryLocation.name ?? 'No name',
-          subTitle: surgeryLocation.phone,
+          child: child,
           onDismissed: () {
             ref
                 .watch(supportDataNotifierProvider.notifier)
                 .upsertSurgeryLocation(surgeryLocation, CrudAction.remove);
           },
-          onTap: () =>
-              AddSurgeryLocationRoute(locationID: surgeryLocation.locationID)
-                  .push<SurgeryLocationModel>(context),
         );
       },
     );

@@ -13,7 +13,7 @@ class MediaGalleryModel {
   });
 
   final int index;
-  final List<MediaModel> mediaModels;
+  final Iterable<MediaModel> mediaModels;
   final bool navigateOnTap;
   final RouteObserver<ModalRoute<void>>? routeObserver;
 }

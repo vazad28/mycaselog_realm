@@ -30,7 +30,7 @@ class MediaGridTileStyle extends _$MediaGridTileStyle {
 class MediaNotifier extends _$MediaNotifier {
   @override
   Stream<RealmResultsChanges<MediaModel>> build() {
-    return ref.read(dbProvider).mediaCollection.getAll().changes;
+    return ref.read(dbProvider).mediaCollection.getAllMedia().changes;
   }
 
   Future<void> pullToRefresh() {

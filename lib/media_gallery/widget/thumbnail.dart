@@ -13,7 +13,7 @@ import '../../core/app_services.dart';
 class Thumbnail extends ConsumerWidget with AppMixins {
   const Thumbnail({
     required this.mediaModel,
-    this.fit,
+    this.fit = BoxFit.cover,
     this.width = 120,
     this.onTap,
     this.onLongPress,
@@ -67,7 +67,7 @@ class Thumbnail extends ConsumerWidget with AppMixins {
     };
 
     return InkWell(
-      onTap: () {},
+      onTap: onTap,
       onLongPress: () async {
         await context
             .openActionsBottomSheet(thumbnailActions)

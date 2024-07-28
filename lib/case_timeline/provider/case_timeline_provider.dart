@@ -45,11 +45,19 @@ class CaseTimelineNotifier extends _$CaseTimelineNotifier with LoggerMixin {
 
     if (caseID == null) return const AsyncData([]);
 
-    final caseModel = ref.watch(dbProvider).casesCollection.getSingle(caseID);
+    final sub = ref
+        .watch(dbProvider)
+        .casesCollection
+        .getSingle(caseID)
+        ?.changes
+        .listen((data) {
+      state = _createTimelines(data.object);
+    });
 
-    if (caseModel == null) return const AsyncData([]);
+    //return _createTimelines(caseModel);
+    ref.onDispose(() => sub?.cancel());
 
-    return _createTimelines(caseModel);
+    return const AsyncLoading();
   }
 
   AsyncValue<List<TimelineItemModel>> _createTimelines(CaseModel caseModel) {

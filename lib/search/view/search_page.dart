@@ -6,29 +6,36 @@ import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:realm/realm.dart';
 
-import '../../../media_gallery/media_gallery.dart';
-import '../../../router/providers/router_observers.dart';
 import '../../core/core.dart';
-import '../media.dart';
-import '../provider/extension.dart';
+import '../search.dart';
 
-enum MediaSearchBarStyle { icon, bar }
+part './search_results_view.dart';
 
-class MediaSearchView extends ConsumerStatefulWidget {
-  const MediaSearchView({required this.anchorStyle, super.key});
+enum SearchBarStyle { icon, bar }
 
-  final MediaSearchBarStyle anchorStyle;
+class SearchView<T> extends ConsumerStatefulWidget {
+  const SearchView({
+    required this.anchorStyle,
+    required this.onSearch,
+    this.hintText = 'search',
+    super.key,
+  });
+
+  final SearchBarStyle anchorStyle;
+  final RealmResults<T>? Function(String) onSearch;
+  final String? hintText;
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _MediaSearchViewState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _SearchViewState<T>();
 }
 
-class _MediaSearchViewState extends ConsumerState<MediaSearchView> {
+class _SearchViewState<T> extends ConsumerState<SearchView<T>> {
   final _focusNode = FocusScopeNode();
   var _searchHistory = <String>[];
-  var _results = <MediaModel>[];
+
+  RealmResults<T>? _results;
 
   bool _showResults = false;
 
@@ -82,43 +89,23 @@ class _MediaSearchViewState extends ConsumerState<MediaSearchView> {
     );
   }
 
-  Iterable<Widget> getResultsWidgets() {
-    final gridPair = context.gridPair(0);
-
-    return _results
-        .map(
-          (mediaModel) => OpenContainer<MediaModel>(
-            tappable: false,
-            closedColor: context.colorScheme.surfaceContainerLow,
-            openColor: context.colorScheme.surface,
-            closedBuilder: (_, action) => Thumbnail(
-              mediaModel: mediaModel,
-              width: gridPair.second,
-              // mediaRepository: ref.read(mediaRepositoryProvider),
-              // mediaUploadService: ref.read(mediaUploadServiceProvider),
-              onTap: action,
-            ),
-            openBuilder: (_, action) {
-              return MediaGalleryPage(
-                mediaGalleryModel: MediaGalleryModel(
-                  mediaModels: _results,
-                  index: _results.indexOf(mediaModel),
-                  routeObserver:
-                      ref.read(shellRoutesObserversProvider).mediaRouteObserver,
-                ),
-              );
-            },
-            onClosed: (_) => {},
-          ),
-        )
-        .toList();
+  Iterable<Widget>? getResultsWidgets() {
+    return _results?.map((model) {
+      if (T == CaseModel) {
+        return CasesSearchResultTile(
+          caseModel: model as CaseModel,
+        );
+      } else {
+        return MediaSearchResultTile(
+          mediaModel: model as MediaModel,
+          results: _results! as RealmResults<MediaModel>,
+          width: 90,
+        );
+      }
+    });
   }
 
   Future<void> handleSelection(String selectedText) async {
-    final mediaModels = await ref
-        .read(ftsSearchServiceProvider)
-        .searchCaseMedia<MediaModel>(selectedText);
-
     setState(() {
       try {
         if (!_searchHistory.contains(selectedText)) {
@@ -132,7 +119,9 @@ class _MediaSearchViewState extends ConsumerState<MediaSearchView> {
         ref
             .read(localStorageProvider)
             .setCaseMediaRecentSearches(_searchHistory);
-        _results = mediaModels;
+
+        _results = widget.onSearch(selectedText);
+
         _showResults = true;
 
         searchController.value = TextEditingValue(text: selectedText);
@@ -150,7 +139,7 @@ class _MediaSearchViewState extends ConsumerState<MediaSearchView> {
     final child = SearchAnchor(
       searchController: searchController,
       textInputAction: TextInputAction.search,
-      viewHintText: 'Search media',
+      viewHintText: widget.hintText,
       viewLeading: BackButton(
         onPressed: () {
           Navigator.of(context).pop();
@@ -159,7 +148,7 @@ class _MediaSearchViewState extends ConsumerState<MediaSearchView> {
         },
       ),
       builder: (BuildContext context, SearchController controller) {
-        return widget.anchorStyle == MediaSearchBarStyle.bar
+        return widget.anchorStyle == SearchBarStyle.bar
             ? SearchBar(
                 controller: controller,
                 focusNode: _focusNode,
@@ -171,9 +160,12 @@ class _MediaSearchViewState extends ConsumerState<MediaSearchView> {
                   controller.openView();
                 },
                 leading: const Icon(Icons.search),
-                hintText: 'Search media',
-                trailing: const [
-                  _MediaCountWidget(),
+                hintText: widget.hintText,
+                trailing: [
+                  if (T == CaseModel)
+                    const CasesCountWidget()
+                  else
+                    const MediaCountWidget(),
                 ],
               )
             : IconButton(
@@ -204,7 +196,12 @@ class _MediaSearchViewState extends ConsumerState<MediaSearchView> {
           },
           child: _showResults
               ? _ResultsView(children)
-              : _SuggestionsView(children),
+              : _SuggestionsView(children, (int index) {
+                  _searchHistory.removeAt(index);
+                  ref
+                      .read(localStorageProvider)
+                      .setCaseMediaRecentSearches(_searchHistory);
+                }),
         );
       },
       suggestionsBuilder: (BuildContext context, SearchController controller) {
@@ -221,7 +218,7 @@ class _MediaSearchViewState extends ConsumerState<MediaSearchView> {
         }
 
         if (_showResults) {
-          return getResultsWidgets();
+          return getResultsWidgets() ?? [const Loading(text: 'No results')];
         } else {
           return getHistoryList();
         }
@@ -235,23 +232,12 @@ class _MediaSearchViewState extends ConsumerState<MediaSearchView> {
 class _ResultsView extends StatelessWidget {
   const _ResultsView(this.searchResultWidgets);
   final Iterable<Widget> searchResultWidgets;
-
   @override
   Widget build(BuildContext context) {
-    final gridPair = context.gridPair(0);
-    final crossAxisCount = gridPair.first;
-
-    final results = GridView.builder(
-      padding: const EdgeInsets.all(AppSpacing.xs),
+    final results = ListView.builder(
+      padding: EdgeInsets.zero,
+      itemBuilder: (context, index) => searchResultWidgets.elementAt(index),
       itemCount: searchResultWidgets.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: crossAxisCount,
-        mainAxisSpacing: AppSpacing.xs,
-        crossAxisSpacing: AppSpacing.xs,
-      ),
-      itemBuilder: (_, index) {
-        return searchResultWidgets.elementAt(index);
-      },
     );
 
     final resultsCount = SizedBox(
@@ -282,37 +268,26 @@ class _ResultsView extends StatelessWidget {
   }
 }
 
-class _SuggestionsView extends StatelessWidget {
-  const _SuggestionsView(this.children);
+class _SuggestionsView extends ConsumerWidget {
+  const _SuggestionsView(this.children, this.onRemove);
+
   final Iterable<Widget> children;
+  final void Function(int) onRemove;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ListView.separated(
       padding: EdgeInsets.zero,
-      itemBuilder: (context, index) => children.elementAt(index),
+      itemBuilder: (context, index) => DismissibleListTile(
+        child: children.elementAt(index),
+        onDismissed: () {
+          onRemove(index);
+        },
+      ),
       separatorBuilder: (context, index) => const Divider(
         height: 1,
       ),
       itemCount: children.length,
-    );
-  }
-}
-
-class _MediaCountWidget extends ConsumerWidget {
-  const _MediaCountWidget();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return AsyncValueWidget(
-      value: ref.watch(mediaNotifierProvider),
-      data: (data) => Padding(
-        padding: const EdgeInsets.only(right: AppSpacing.sm),
-        child: Text(
-          data.results.length.toString(),
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
-      ),
     );
   }
 }

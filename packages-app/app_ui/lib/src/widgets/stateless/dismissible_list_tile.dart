@@ -5,21 +5,23 @@ import 'material_card.dart';
 // ignore: public_member_api_docs
 class DismissibleListTile extends StatelessWidget {
   const DismissibleListTile({
-    required this.title,
+    // required this.title,
+    required this.child,
     required this.onDismissed,
-    required this.onTap,
+    // required this.onTap,
     super.key,
-    this.subTitle,
+    //this.subTitle,
     this.wrapInCard = false,
-    this.trailing,
+    //this.trailing,
   });
 
   final VoidCallback onDismissed;
-  final VoidCallback onTap;
-  final String? subTitle;
-  final String title;
+  //final VoidCallback onTap;
+  //final String? subTitle;
+  //final String title;
   final bool wrapInCard;
-  final Widget? trailing;
+  final Widget child;
+  //final Widget? trailing;
 
   /// important to call this in same file
   Future<bool?> _confirmDelete(
@@ -50,7 +52,7 @@ class DismissibleListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    final child = Dismissible(
+    final widget = Dismissible(
       key: UniqueKey(),
       background: ColoredBox(
         color: colorScheme.primary,
@@ -87,14 +89,7 @@ class DismissibleListTile extends StatelessWidget {
       //   },
       // ),
       onDismissed: (direction) => onDismissed.call(),
-      child: ListTile(
-        title: Text(title),
-        trailing: trailing,
-        subtitle: subTitle?.isEmpty ?? true ? null : Text(subTitle!),
-        onTap: onTap,
-        contentPadding:
-            trailing == null ? null : const EdgeInsets.only(left: 16),
-      ),
+      child: child,
     );
 
     if (wrapInCard) {
@@ -102,9 +97,9 @@ class DismissibleListTile extends StatelessWidget {
         margin: const EdgeInsets.all(6),
         padding: EdgeInsets.zero,
         borderColor: Theme.of(context).colorScheme.outline,
-        child: child,
+        child: widget,
       );
     }
-    return child;
+    return widget;
   }
 }

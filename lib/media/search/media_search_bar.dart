@@ -1,11 +1,12 @@
+import 'package:app_models/app_models.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../search/search.dart';
 import '../widget/media_tile_style_toggle.dart';
-import 'media_search_view.dart';
 
-class MediaSearchBar extends ConsumerWidget {
+class MediaSearchBar extends ConsumerWidget with SearchMixin {
   const MediaSearchBar({super.key});
 
   @override
@@ -19,8 +20,9 @@ class MediaSearchBar extends ConsumerWidget {
       shadowColor: context.colorScheme.shadow.lighter(),
       surfaceTintColor: context.colorScheme.surface,
       titleSpacing: AppSpacing.md,
-      title: const MediaSearchView(
-        anchorStyle: MediaSearchBarStyle.bar,
+      title: SearchView<MediaModel>(
+        anchorStyle: SearchBarStyle.bar,
+        onSearch: (searchTerm) => searchMedia(ref, searchTerm),
       ),
       actions: const [
         MediaTileStyleToggle(),

@@ -33,6 +33,8 @@ class MediaPreviewTile extends ConsumerWidget {
     final routeObserver =
         ref.read(shellRoutesObserversProvider).casesRouteObserver;
 
+    final mediaModels = caseModel.medias.where((e) => e.removed != 1).toList();
+
     return SizedBox(
       height: height,
       child: ListView(
@@ -40,11 +42,10 @@ class MediaPreviewTile extends ConsumerWidget {
         scrollDirection: Axis.horizontal,
         padding: EdgeInsets.only(top: AppSpacing.sm, left: leftPadding),
         shrinkWrap: true,
-        children: caseModel.medias
-            .where((e) => e.removed != 1)
+        children: mediaModels
             .mapIndexed(
               (index, e) => _MediaPreviewTile(
-                mediaModels: caseModel.medias,
+                mediaModels: mediaModels,
                 index: index,
                 routeObserver: routeObserver,
               ),
@@ -68,12 +69,6 @@ class _MediaPreviewTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return SizedBox(
-    //     width: 56,
-    //     child: Thumbnail(
-    //       mediaModel: mediaModels[index],
-    //     ),);
-    //return const SizedBox(width: 90, child: Placeholder());
     return OpenContainer<MediaModel>(
       closedElevation: 0,
       tappable: false,
@@ -81,7 +76,6 @@ class _MediaPreviewTile extends StatelessWidget {
       openColor: context.colorScheme.surface,
       closedBuilder: (_, action) => Thumbnail(
         mediaModel: mediaModels[index],
-        fit: BoxFit.cover,
         onTap: () => action.call(),
         onLongPress: () => {},
       ),

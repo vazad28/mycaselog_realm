@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:app_models/app_models.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:realm/realm.dart';
 
 import '../../media_gallery/media_gallery.dart';
+import '../../router/router.dart';
 import '../media.dart';
 
 class MediaView extends ConsumerWidget {
@@ -27,7 +29,7 @@ class MediaView extends ConsumerWidget {
           ? const Key('__MediasView_list_key__')
           : const Key('__MediasView_grid_key__');
 
-      final crossAxisCount = constraints.crossAxisExtent ~/ 120;
+      final crossAxisCount = constraints.crossAxisExtent ~/ 90;
 
       return SliverGrid.builder(
         key: widgetKey,
@@ -45,9 +47,24 @@ class MediaView extends ConsumerWidget {
               ),
         itemBuilder: (context, int index) {
           final mediaModel = mediaModels[index];
-          return Thumbnail(
-            mediaModel: mediaModel,
-            fit: BoxFit.cover,
+          return OpenContainer<MediaModel>(
+            tappable: false,
+            closedColor: context.colorScheme.surfaceContainerLow,
+            closedElevation: 0,
+            openColor: context.colorScheme.surface,
+            closedBuilder: (_, action) => Thumbnail(
+              mediaModel: mediaModel,
+              onTap: () => action.call(),
+            ),
+            openBuilder: (_, action) {
+              final mediaGalleryModel = MediaGalleryModel(
+                mediaModels: mediaModels,
+                index: mediaModels.indexOf(mediaModel),
+                routeObserver:
+                    ref.read(shellRoutesObserversProvider).mediaRouteObserver,
+              );
+              return MediaGalleryPage(mediaGalleryModel: mediaGalleryModel);
+            },
           );
         },
       );

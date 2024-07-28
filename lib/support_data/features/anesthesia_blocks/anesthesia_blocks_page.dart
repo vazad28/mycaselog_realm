@@ -75,27 +75,26 @@ class AnesthesiaBlocksView extends ConsumerWidget with AppMixins {
       ),
       itemBuilder: (_, index) {
         final block = blocks[index];
+        final child = ListTile(
+          title: Text(block),
+          onTap: () {
+            context
+                .showInputDialog<String?>(title: 'Edit Block', value: block)
+                .then((newBlock) {
+              if (newBlock == null || newBlock.isEmpty) return;
+              ref
+                  .watch(supportDataNotifierProvider.notifier)
+                  .upsertAnesthesiaBlock(block, CrudAction.edit);
+            });
+          },
+        );
+
         return DismissibleListTile(
-          title: block,
+          child: child,
           onDismissed: () {
             ref
                 .watch(supportDataNotifierProvider.notifier)
                 .upsertAnesthesiaBlock(block, CrudAction.remove);
-          },
-          onTap: () {
-            context
-                .showInputDialog<String?>(
-              title: 'Edit Block',
-              value: block,
-            )
-                .then(
-              (newBlock) {
-                if (newBlock == null || newBlock.isEmpty) return;
-                ref
-                    .watch(supportDataNotifierProvider.notifier)
-                    .upsertAnesthesiaBlock(block, CrudAction.edit);
-              },
-            );
           },
         );
       },

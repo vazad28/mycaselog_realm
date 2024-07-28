@@ -23,7 +23,7 @@ final mediaGridTileStyleProvider =
 );
 
 typedef _$MediaGridTileStyle = AutoDisposeNotifier<int>;
-String _$mediaNotifierHash() => r'8b10f035e4007cfe6ba0fd981b310908539bcfb0';
+String _$mediaNotifierHash() => r'f5922abbc8e2ee4db536c56307655a77f5651bc7';
 
 /// See also [MediaNotifier].
 @ProviderFor(MediaNotifier)
