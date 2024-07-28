@@ -52,7 +52,7 @@ class AnesthesiaBlocksView extends ConsumerWidget with AppMixins {
   Widget build(BuildContext context, WidgetRef ref) {
     final blocks = ref.watch(supportDataNotifierProvider.select(
       (supportData) => supportData.anesthesiaBlocks,
-    ));
+    ),);
 
     if (blocks.isEmpty) {
       return const Center(

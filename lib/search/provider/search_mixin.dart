@@ -2,7 +2,7 @@ import 'package:app_models/app_models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:realm/realm.dart';
 
-import '../../core/app_providers.dart';
+import '../../core/providers/providers.dart';
 
 mixin SearchMixin {
   /// Full text search cases
@@ -12,7 +12,8 @@ mixin SearchMixin {
 
   /// Full text search notes
   RealmResults<MediaModel> searchMedia(WidgetRef ref, String searchTerm) {
-    final caseResults = searchCases(ref, searchTerm);
+    final caseResults =
+        ref.watch(dbProvider).casesCollection.search(searchTerm);
 
     // list of case IDs matching the search term
     final ids = caseResults.map((e) => e.caseID);
@@ -21,7 +22,10 @@ mixin SearchMixin {
   }
 
   /// Full text search notes
-  RealmResults<NoteModel> searchNotes(WidgetRef ref, String searchTerm) {
+  RealmResults<NoteModel> searchNotes(
+    WidgetRef ref,
+    String searchTerm,
+  ) {
     return ref.watch(dbProvider).notesCollection.search(searchTerm);
   }
 }

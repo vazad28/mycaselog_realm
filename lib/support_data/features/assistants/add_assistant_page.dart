@@ -64,7 +64,7 @@ class _AddAssistantPageState extends ConsumerState<AddAssistantPage> {
               };
 
               ref.watch(supportDataNotifierProvider.notifier).upsertAssistant(
-                  AssistantModelX.fromJson(assistantModelJson), CrudAction.add);
+                  AssistantModelX.fromJson(assistantModelJson), CrudAction.add,);
 
               if (context.mounted) Navigator.of(context).pop();
             },

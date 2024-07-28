@@ -129,8 +129,7 @@ class _AddPatientModalView
 
 ///
 /// const widget for form fields
-class _PatientFormFields extends ConsumerWidget
-    with AddCaseStateMixin, AppMixins {
+class _PatientFormFields extends ConsumerWidget with AddCaseMixin, AppMixins {
   const _PatientFormFields({super.key});
 
   @override

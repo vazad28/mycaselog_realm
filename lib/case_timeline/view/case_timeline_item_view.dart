@@ -10,7 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:misc_packages/misc_packages.dart';
 
 import '../../core/app_mixins.dart';
-import '../../core/app_providers.dart';
+import '../../core/providers/providers.dart';
 import '../../media_gallery/media_gallery.dart';
 import '../case_timeline.dart';
 

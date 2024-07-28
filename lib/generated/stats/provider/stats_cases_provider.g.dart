@@ -8,9 +8,7 @@ part of '../../../stats/provider/stats_cases_provider.dart';
 
 String _$statsCasesHash() => r'62a6b289caee182ce7ff805f7c10aa0ed40a5e3c';
 
-/// Provider for holding the scroll controller double value
-///
-/// Copied from [StatsCases].
+/// See also [StatsCases].
 @ProviderFor(StatsCases)
 final statsCasesProvider =
     AutoDisposeNotifierProvider<StatsCases, StateOf<List<CaseModel>>>.internal(

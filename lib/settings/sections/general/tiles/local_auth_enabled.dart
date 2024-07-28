@@ -6,7 +6,8 @@ class LocalAuthEnabledTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final localAuthEnabled = ref.watch(
-        settingsNotifierProvider.select((value) => value.localAuthEnabled));
+      settingsNotifierProvider.select((value) => value.localAuthEnabled),
+    );
 
     return SettingToggleTile(
       leading: const Icon(Icons.shield),

@@ -1,26 +1,21 @@
 part of 'add_case_provider.dart';
 
-/// ////////////////////////////////////////////////////////////////////
-/// Evenst and MIXINS
-/// ////////////////////////////////////////////////////////////////////
-///
-mixin AddCaseMixin {}
-mixin AddCaseEventMixin {
-  void submit(WidgetRef ref) => ref
+/// Add case MIXINS
+mixin AddCaseMixin {
+  /// submit add case form
+  void onSubmit(WidgetRef ref) =>
+      ref.watch(addCaseNotifierProvider.notifier).submit();
+
+  ///  on change of the case template on the screen
+  void onCaseTemplateChange(WidgetRef ref, TemplateModel templateModel) => ref
       .watch(addCaseNotifierProvider.notifier)
-      .on(const AddCaseEvent.onSubmit());
+      .onCaseTemplateChange(templateModel);
 
-  void onTemplateChange(WidgetRef ref, TemplateModel templateModel) => ref
-      .watch(addCaseNotifierProvider.notifier)
-      .on(AddCaseEvent.onTemplateChange(templateModel));
+  // on change  of the patient data form
+  void onPatientDataFormChange(WidgetRef ref, PatientModel patientModel) => ref
+      .watch(patientDataFormGroupProvider.notifier)
+      .updatePatientDataFormGroupFromOcr(patientModel);
 
-  void updatePatientDataFormGroup(WidgetRef ref, PatientModel patientModel) =>
-      ref
-          .watch(addCaseNotifierProvider.notifier)
-          .on(AddCaseEvent.onUpdatePatientDataFormGroup(patientModel));
-}
-
-mixin AddCaseStateMixin {
   FormGroup watchTemplatedDataFormGroup(WidgetRef ref) =>
       ref.watch(templatedDataFormGroupProvider);
 

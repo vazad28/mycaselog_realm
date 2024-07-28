@@ -26,7 +26,8 @@ double translateX(
       switch (cameraLensDirection) {
         case CameraLensDirection.back:
           return x * canvasSize.width / imageSize.width;
-        default:
+        case CameraLensDirection.front:
+        case CameraLensDirection.external:
           return canvasSize.width - x * canvasSize.width / imageSize.width;
       }
   }

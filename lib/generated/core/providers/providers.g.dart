@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of '../../core/app_providers.dart';
+part of '../../../core/providers/providers.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -186,6 +186,39 @@ final appStartUpProvider = AutoDisposeFutureProvider<void>.internal(
 );
 
 typedef AppStartUpRef = AutoDisposeFutureProviderRef<void>;
+String _$appDirPathHash() => r'22b325281d96a6c04d432bccec46a75a2e26b0de';
+
+/// app dir path
+///
+/// Copied from [appDirPath].
+@ProviderFor(appDirPath)
+final appDirPathProvider = Provider<String>.internal(
+  appDirPath,
+  name: r'appDirPathProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$appDirPathHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef AppDirPathRef = ProviderRef<String>;
+String _$encryptionClientHash() => r'4eba4cbca2f85dea4f17df84be1efc50cced15b5';
+
+/// Encryption service provider
+///
+/// Copied from [encryptionClient].
+@ProviderFor(encryptionClient)
+final encryptionClientProvider = AutoDisposeProvider<EncryptionClient>.internal(
+  encryptionClient,
+  name: r'encryptionClientProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$encryptionClientHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef EncryptionClientRef = AutoDisposeProviderRef<EncryptionClient>;
 String _$sharedPrefsHash() => r'394954be62ac9fcd757598b97278fd4215bc6410';
 
 /// SharedPreferences provider
@@ -237,22 +270,58 @@ final persistentStorageProvider =
 );
 
 typedef PersistentStorageRef = AutoDisposeProviderRef<PersistentStorage>;
-String _$appDirPathHash() => r'22b325281d96a6c04d432bccec46a75a2e26b0de';
+String _$localStorageHash() => r'6a8a2e8f5ba40d7b896a3d1b5d6b3288cd54b858';
 
-/// app dir path
+/// Riverpod provider to use the dialog service
 ///
-/// Copied from [appDirPath].
-@ProviderFor(appDirPath)
-final appDirPathProvider = Provider<String>.internal(
-  appDirPath,
-  name: r'appDirPathProvider',
+/// Copied from [localStorage].
+@ProviderFor(localStorage)
+final localStorageProvider = AutoDisposeProvider<LocalStorage>.internal(
+  localStorage,
+  name: r'localStorageProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$appDirPathHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$localStorageHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef AppDirPathRef = ProviderRef<String>;
+typedef LocalStorageRef = AutoDisposeProviderRef<LocalStorage>;
+String _$dialogServiceHash() => r'33d1fc7bae9b43c98c784b20bc476cfdd8a21ebd';
+
+/// Riverpod provider to use the dialog service
+///
+/// Copied from [dialogService].
+@ProviderFor(dialogService)
+final dialogServiceProvider = Provider<DialogService>.internal(
+  dialogService,
+  name: r'dialogServiceProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$dialogServiceHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef DialogServiceRef = ProviderRef<DialogService>;
+String _$imageUploadServiceHash() =>
+    r'2e2d4b581424f692b3175fa98f71374de9f05b0b';
+
+/// Riverpod provider to use the dialog service
+///
+/// Copied from [imageUploadService].
+@ProviderFor(imageUploadService)
+final imageUploadServiceProvider =
+    AutoDisposeProvider<ImageUploadService>.internal(
+  imageUploadService,
+  name: r'imageUploadServiceProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$imageUploadServiceHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef ImageUploadServiceRef = AutoDisposeProviderRef<ImageUploadService>;
 String _$connectivityStatusHash() =>
     r'3cba16e6359dc4f71f1f438fe6d9dd0239e6bfb5';
 

@@ -67,7 +67,7 @@ class _TimelineChatInputState extends ConsumerState<TimelineChatInput>
         TimelineNoteModelX.zero(
           caseID: widget.caseModel.caseID,
           authorID: ref.read(userIDProvider),
-        ));
+        ),);
   }
 
   Future<void> _createTimelineItem() async {

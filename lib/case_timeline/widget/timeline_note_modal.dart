@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:misc_packages/misc_packages.dart';
 
-import '../../core/app_providers.dart';
+import '../../core/providers/providers.dart';
 
 class CaseTimelineNoteModal extends ConsumerStatefulWidget {
   const CaseTimelineNoteModal({required this.timelineNoteModel, super.key});

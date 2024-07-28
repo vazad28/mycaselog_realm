@@ -82,7 +82,7 @@ class _FormPopScopeWrapperState extends State<FormPopScopeWrapper>
               if (res == null || res == false) return;
 
               _canPop = res;
-              if (mounted) Navigator.of(context).pop();
+              if (context.mounted) Navigator.of(context).pop();
             });
           },
         );

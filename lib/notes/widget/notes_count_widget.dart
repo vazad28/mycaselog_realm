@@ -9,7 +9,7 @@ class NotesCountWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return StreamBuilder(
-      stream: ref.read(notesProvider).changes,
+      stream: ref.read(notesNotifierProvider).changes,
       builder: (_, snapshot) {
         return RichText(
           text: TextSpan(
@@ -27,14 +27,6 @@ class NotesCountWidget extends ConsumerWidget {
             ],
           ),
         );
-
-        // return Padding(
-        //   padding: const EdgeInsets.only(right: AppSpacing.sm),
-        //   child: Text(
-        //     (snapshot.data?.results.length ?? 0).toString(),
-        //     style: Theme.of(context).textTheme.bodyMedium,
-        //   ),
-        // );
       },
     );
   }

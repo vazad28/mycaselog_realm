@@ -1,4 +1,4 @@
-part of '../app_providers.dart';
+part of 'providers.dart';
 
 /// Firebase Auth Instance for use all through the app
 @Riverpod(keepAlive: true)

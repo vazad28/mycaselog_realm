@@ -1,4 +1,24 @@
-part of '../app_services.dart';
+part of 'providers.dart';
+
+/// SharedPreferences provider
+@Riverpod(keepAlive: true)
+SharedPreferences sharedPrefs(SharedPrefsRef ref) {
+  throw UnimplementedError();
+}
+
+/// Secure storage provider
+@riverpod
+SecureStorage secureStorage(SecureStorageRef ref) {
+  return const SecureStorage();
+}
+
+/// Persistent storage provider
+@riverpod
+PersistentStorage persistentStorage(PersistentStorageRef ref) {
+  return PersistentStorage(
+    sharedPreferences: ref.watch(sharedPrefsProvider),
+  );
+}
 
 /// Riverpod provider to use the dialog service
 @riverpod

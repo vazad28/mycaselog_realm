@@ -266,8 +266,8 @@ class _CameraViewState extends State<CameraView> {
           ? ImageFormatGroup.nv21
           : ImageFormatGroup.bgra8888,
     );
-    _controller?.initialize().then((_) {
-      if (!mounted) {
+    await _controller?.initialize().then((_) {
+      if (!context.mounted) {
         return;
       }
       _controller?.getMinZoomLevel().then((value) {
@@ -285,12 +285,8 @@ class _CameraViewState extends State<CameraView> {
         _maxAvailableExposureOffset = value;
       });
       _controller?.startImageStream(_processCameraImage).then((value) {
-        if (widget.onCameraFeedReady != null) {
-          widget.onCameraFeedReady!();
-        }
-        if (widget.onCameraLensDirectionChanged != null) {
-          widget.onCameraLensDirectionChanged!(camera.lensDirection);
-        }
+        widget.onCameraFeedReady?.call();
+        widget.onCameraLensDirectionChanged?.call(camera.lensDirection);
       });
       setState(() {});
     });

@@ -8,7 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:misc_packages/misc_packages.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../core/app_providers.dart';
+import '../../core/providers/providers.dart';
 
 part '../../generated/user_profile/widget/signout_button.g.dart';
 

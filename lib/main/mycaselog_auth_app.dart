@@ -5,7 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../auth_flow/view/auth_flow_page.dart';
-import '../core/app_providers.dart';
+import '../core/providers/providers.dart';
 
 class MycaselogAuthApp extends ConsumerWidget {
   const MycaselogAuthApp({super.key});

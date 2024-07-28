@@ -6,7 +6,7 @@
 // import 'package:logger_client/logger_client.dart';
 // import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-// import '../../core/app_providers.dart';
+// import '../../core/providers.dart';
 // import '../../core/app_services.dart';
 
 // part '../../generated/support_data/provider/support_data_provider.g.dart';

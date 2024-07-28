@@ -7,7 +7,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 import '../../../add_case.dart';
 
-class AddCaseTemplatedDataForm extends ConsumerWidget with AddCaseStateMixin {
+class AddCaseTemplatedDataForm extends ConsumerWidget with AddCaseMixin {
   const AddCaseTemplatedDataForm({super.key});
 
   @override

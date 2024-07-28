@@ -47,11 +47,6 @@ part '../../generated/router/routes/settings_routes.g.dart';
         ),
         TypedGoRoute<SharedTemplatesRoute>(
           path: SharedTemplatesRoute.path,
-          routes: [
-            // TypedGoRoute<SharedTemplateRoute>(
-            //   path: SharedTemplateRoute.path,
-            // ),
-          ],
         ),
       ],
     ),

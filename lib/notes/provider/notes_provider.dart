@@ -2,8 +2,7 @@ import 'package:app_models/app_models.dart';
 import 'package:realm/realm.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../core/app_providers.dart';
-import '../../core/app_services.dart';
+import '../../core/providers/providers.dart';
 
 part '../../generated/notes/provider/notes_provider.g.dart';
 
@@ -29,9 +28,14 @@ class NoteTileStyle extends _$NoteTileStyle {
 }
 
 @riverpod
-class Notes extends _$Notes {
+class NotesNotifier extends _$NotesNotifier {
   @override
   RealmResults<NoteModel> build() {
     return ref.read(dbProvider).notesCollection.getAll();
+  }
+
+  /// Full text search notes
+  RealmResults<NoteModel> searchNotes(String searchTerm) {
+    return ref.watch(dbProvider).notesCollection.search(searchTerm);
   }
 }

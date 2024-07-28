@@ -8,7 +8,7 @@ import 'package:recase/recase.dart';
 import 'package:state_of/state_of.dart';
 
 import '../../../core/failures/app_failures.dart';
-import '../../../core/app_services.dart';
+import '../../../core/providers/providers.dart';
 import '../../../router/routes/routes.dart';
 import '../../index.dart';
 import '../shared_templates.dart';

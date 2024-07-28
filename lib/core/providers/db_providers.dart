@@ -1,4 +1,4 @@
-part of '../app_providers.dart';
+part of 'providers.dart';
 
 @Riverpod(keepAlive: true)
 Future<RealmDatabase> realmDatabase(RealmDatabaseRef ref) async {

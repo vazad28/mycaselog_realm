@@ -82,6 +82,6 @@ class SharedTemplatesView extends ConsumerWidget {
             ),
             itemCount: sharedTemplates.length,
           );
-        });
+        },);
   }
 }

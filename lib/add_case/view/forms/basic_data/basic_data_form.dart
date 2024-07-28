@@ -8,7 +8,7 @@ import '../../../../core/app_mixins.dart';
 import '../../../provider/add_case_provider.dart';
 import 'basic_data_fields.dart';
 
-class BasicDataForm extends ConsumerWidget with AddCaseStateMixin, AppMixins {
+class BasicDataForm extends ConsumerWidget with AddCaseMixin, AppMixins {
   const BasicDataForm({super.key});
 
   @override

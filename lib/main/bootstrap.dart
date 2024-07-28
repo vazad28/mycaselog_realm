@@ -8,7 +8,7 @@ import 'package:intl/intl_standalone.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../core/app_providers.dart';
+import '../core/providers/providers.dart';
 
 ///
 /// Bootstrap function
@@ -107,6 +107,6 @@ class CustomError extends StatelessWidget {
           ),
         ),
       ),
-    ));
+    ),);
   }
 }

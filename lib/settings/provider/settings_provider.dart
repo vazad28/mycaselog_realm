@@ -2,8 +2,7 @@ import 'package:app_models/app_models.dart';
 import 'package:logger_client/logger_client.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../core/app_providers.dart';
-import '../../core/app_services.dart';
+import '../../core/providers/providers.dart';
 
 part '../../generated/settings/provider/settings_provider.g.dart';
 

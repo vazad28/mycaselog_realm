@@ -33,14 +33,16 @@ class TextRecognizerPainter extends CustomPainter {
     for (final textBlock in recognizedText.blocks) {
       final builder = ParagraphBuilder(
         ParagraphStyle(
-            textAlign: TextAlign.left,
-            fontSize: 16,
-            textDirection: TextDirection.ltr,),
-      );
-      builder.pushStyle(
-          ui.TextStyle(color: Colors.lightGreenAccent, background: background),);
-      builder.addText(textBlock.text);
-      builder.pop();
+          textAlign: TextAlign.left,
+          fontSize: 16,
+          textDirection: TextDirection.ltr,
+        ),
+      )
+        ..pushStyle(
+          ui.TextStyle(color: Colors.lightGreenAccent, background: background),
+        )
+        ..addText(textBlock.text)
+        ..pop();
 
       final left = translateX(
         textBlock.boundingBox.left,
@@ -165,15 +167,17 @@ class TextRecognizerPainter extends CustomPainter {
 
       canvas.drawParagraph(
         builder.build()
-          ..layout(ParagraphConstraints(
-            width: (right - left).abs(),
-          ),),
+          ..layout(
+            ParagraphConstraints(
+              width: (right - left).abs(),
+            ),
+          ),
         Offset(
-            Platform.isAndroid &&
-                    cameraLensDirection == CameraLensDirection.front
-                ? right
-                : left,
-            top,),
+          Platform.isAndroid && cameraLensDirection == CameraLensDirection.front
+              ? right
+              : left,
+          top,
+        ),
       );
     }
   }

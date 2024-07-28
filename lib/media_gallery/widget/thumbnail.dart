@@ -8,7 +8,7 @@ import 'package:misc_packages/misc_packages.dart';
 import 'package:recase/recase.dart';
 
 import '../../core/app_mixins.dart';
-import '../../core/app_services.dart';
+import '../../core/providers/providers.dart';
 
 class Thumbnail extends ConsumerWidget with AppMixins {
   const Thumbnail({

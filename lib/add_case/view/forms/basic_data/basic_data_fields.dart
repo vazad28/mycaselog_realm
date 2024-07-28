@@ -164,7 +164,7 @@ class EblField extends StatelessWidget {
 }
 
 /// ----- Location Field -----
-class SurgeryLocationField extends ConsumerWidget with AddCaseStateMixin {
+class SurgeryLocationField extends ConsumerWidget with AddCaseMixin {
   const SurgeryLocationField({super.key});
 
   @override
@@ -218,7 +218,7 @@ class AnesthesiaField extends ConsumerWidget {
 }
 
 /// ----- Anesthesia Block Field -----
-class AnesthesiaBlockField extends ConsumerWidget with AddCaseStateMixin {
+class AnesthesiaBlockField extends ConsumerWidget with AddCaseMixin {
   const AnesthesiaBlockField({super.key});
 
   @override
@@ -240,7 +240,7 @@ class AnesthesiaBlockField extends ConsumerWidget with AddCaseStateMixin {
 }
 
 /// ----- Assistants Field -----
-class AssistantsField extends ConsumerWidget with AddCaseStateMixin {
+class AssistantsField extends ConsumerWidget with AddCaseMixin {
   const AssistantsField({super.key});
 
   @override

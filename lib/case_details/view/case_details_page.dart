@@ -75,29 +75,30 @@ class _CaseDetailsPageState extends ConsumerState<CaseDetailsPage>
   @override
   Widget build(BuildContext context) {
     final scaffold = Scaffold(
-        body: NestedScrollView(
-      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-        return <Widget>[
-          SliverOverlapAbsorber(
-            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-            sliver: CaseDetailsAppBar(
-              tabController: _tabController,
-              innerBoxIsScrolled: innerBoxIsScrolled,
-              onMoreMenuTap: _onCaseDetailsMoreMenuTap,
+      body: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            SliverOverlapAbsorber(
+              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+              sliver: CaseDetailsAppBar(
+                tabController: _tabController,
+                innerBoxIsScrolled: innerBoxIsScrolled,
+                onMoreMenuTap: _onCaseDetailsMoreMenuTap,
+              ),
             ),
-          ),
-        ];
-      },
-      body: AsyncValueWidget<CaseModel>(
-        value: ref.watch(caseDetailsNotifierProvider),
-        data: (data) {
-          return CaseDetailsView(
-            tabController: _tabController,
-            onTap: _openAddCase,
-          );
+          ];
         },
+        body: AsyncValueWidget<CaseModel>(
+          value: ref.watch(caseDetailsNotifierProvider),
+          data: (data) {
+            return CaseDetailsView(
+              tabController: _tabController,
+              onTap: _openAddCase,
+            );
+          },
+        ),
       ),
-    ));
+    );
 
     return PopScope(
       child: scaffold,

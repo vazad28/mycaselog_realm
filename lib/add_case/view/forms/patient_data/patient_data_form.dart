@@ -10,7 +10,7 @@ import '../../../../core/app_mixins.dart';
 import '../../../provider/add_case_provider.dart';
 import 'patient_data_fields.dart';
 
-class PatientDataForm extends ConsumerWidget with AddCaseStateMixin, AppMixins {
+class PatientDataForm extends ConsumerWidget with AddCaseMixin, AppMixins {
   const PatientDataForm({super.key});
 
   @override

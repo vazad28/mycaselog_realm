@@ -32,11 +32,7 @@ class AddCasePage extends ConsumerStatefulWidget {
 
 /// AddCasePage CONTROLLER Widget
 class _AddCasePageController extends ConsumerState<AddCasePage>
-    with
-        SingleTickerProviderStateMixin,
-        LoggerMixin,
-        AddCaseStateMixin,
-        AddCaseEventMixin {
+    with SingleTickerProviderStateMixin, LoggerMixin, AddCaseMixin {
   /// late variable
   late TabController _tabController;
 
@@ -144,8 +140,7 @@ class _AddCasePageView extends WidgetView<AddCasePage, _AddCasePageController> {
 /// Local class
 /// ////////////////////////////////////////////////////////////////////
 
-class _SubmitButton extends ConsumerWidget
-    with AddCaseStateMixin, AddCaseEventMixin {
+class _SubmitButton extends ConsumerWidget with AddCaseMixin {
   const _SubmitButton();
 
   @override
@@ -159,7 +154,7 @@ class _SubmitButton extends ConsumerWidget
       ),
       orElse: () => TextButton(
         child: Text(S.of(context).save),
-        onPressed: () => submit(ref),
+        onPressed: () => onSubmit(ref),
       ),
     );
   }

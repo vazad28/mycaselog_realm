@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../search/search.dart';
 import '../cases.dart';
 
-class CasesSearchBar extends ConsumerWidget with SearchMixin {
+class CasesSearchBar extends ConsumerWidget {
   const CasesSearchBar({super.key});
 
   @override
@@ -22,7 +22,8 @@ class CasesSearchBar extends ConsumerWidget with SearchMixin {
       titleSpacing: AppSpacing.md,
       title: SearchView<CaseModel>(
         anchorStyle: SearchBarStyle.bar,
-        onSearch: (searchTerm) => searchCases(ref, searchTerm),
+        onSearch: (searchTerm) =>
+            ref.watch(casesNotifierProvider.notifier).searchCases(searchTerm),
       ),
       actions: const [
         CaseTileStyleToggle(),

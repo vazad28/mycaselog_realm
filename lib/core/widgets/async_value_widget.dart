@@ -1,4 +1,4 @@
-part of '../app_widgets.dart';
+part of 'widgets.dart';
 
 class AsyncValueWidget<T> extends StatelessWidget {
   const AsyncValueWidget({
@@ -43,20 +43,21 @@ class AsyncValueSliverWidget<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return value.when(
-        data: data,
-        loading: () => SliverToBoxAdapter(
-              child: Center(
-                child: loading ?? const SizedBox.shrink(),
-              ),
-            ),
-        error: (err, __) => SliverToBoxAdapter(
-              child: _AsyncErrorWidget(err),
-            ));
+      data: data,
+      loading: () => SliverToBoxAdapter(
+        child: Center(
+          child: loading ?? const SizedBox.shrink(),
+        ),
+      ),
+      error: (err, __) => SliverToBoxAdapter(
+        child: _AsyncErrorWidget(err),
+      ),
+    );
   }
 }
 
 class _AsyncErrorWidget extends StatelessWidget {
-  const _AsyncErrorWidget(this.err, {super.key});
+  const _AsyncErrorWidget(this.err);
 
   final Object err;
   @override

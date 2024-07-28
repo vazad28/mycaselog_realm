@@ -5,7 +5,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logger_client/logger_client.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../core/app_providers.dart';
+import '../../core/providers/providers.dart';
 
 part 'auth_flow_state.dart';
 

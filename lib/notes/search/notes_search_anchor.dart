@@ -7,7 +7,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:realm/realm.dart';
 
-import '../../core/app_services.dart';
+import '../../core/providers/providers.dart';
 import '../notes.dart';
 
 enum NotesSearchBarStyle { icon, bar }
@@ -25,7 +25,7 @@ class NotesSearchAnchor extends ConsumerStatefulWidget {
 class _NotesSearchAnchorState extends ConsumerState<NotesSearchAnchor> {
   final _focusNode = FocusScopeNode();
   var _searchHistory = <String>[];
-  RealmResults<NoteModel>? _results;
+  late RealmResults<NoteModel>? _results;
 
   bool _showResults = false;
 
@@ -84,7 +84,7 @@ class _NotesSearchAnchorState extends ConsumerState<NotesSearchAnchor> {
 
   void handleSelection(String selectedText) {
     final noteModels =
-        ref.read(ftsSearchServiceProvider).searchNotes(selectedText);
+        ref.read(notesNotifierProvider.notifier).searchNotes(selectedText);
 
     setState(() {
       try {

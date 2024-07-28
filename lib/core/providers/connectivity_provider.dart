@@ -1,4 +1,4 @@
-part of '../app_providers.dart';
+part of 'providers.dart';
 
 @Riverpod(keepAlive: true)
 class ConnectivityStatus extends _$ConnectivityStatus {

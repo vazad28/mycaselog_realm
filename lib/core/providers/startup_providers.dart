@@ -1,12 +1,20 @@
-part of '../app_providers.dart';
+part of 'providers.dart';
 
 @riverpod
 Future<void> appStartUp(AppStartUpRef ref) async {
   /// Load realm database
   await ref.watch(realmDatabaseProvider.future);
 
+  // ignore: unused_local_variable
   final settings = ref.read(settingsNotifierProvider);
+  // ignore: unused_local_variable
   final syncStatus = ref.read(firestoreLiveSyncProvider);
+}
+
+/// app dir path
+@Riverpod(keepAlive: true)
+String appDirPath(AppDirPathRef ref) {
+  throw UnimplementedError();
 }
 
 @riverpod

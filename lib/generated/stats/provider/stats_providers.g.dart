@@ -44,11 +44,7 @@ final touchedIndexProvider =
 typedef _$TouchedIndex = AutoDisposeNotifier<int?>;
 String _$statsDataHash() => r'056c1d6f966309af19d901e05d82bec4134b9d72';
 
-/// Instead of returning the ChartReqModel, we use this provider to
-/// only return chartDataModel this makes the UI deals with less
-/// null checks by filtericn that here in the provider
-///
-/// Copied from [StatsData].
+/// See also [StatsData].
 @ProviderFor(StatsData)
 final statsDataProvider =
     AutoDisposeNotifierProvider<StatsData, StateOf<ChartDataModel>>.internal(

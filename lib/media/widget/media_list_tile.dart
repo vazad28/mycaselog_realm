@@ -6,7 +6,7 @@ import '../../media_gallery/media_gallery.dart';
 
 class MediaListTile extends StatelessWidget {
   const MediaListTile(
-      {required this.caseModel, required this.mediaModel, super.key});
+      {required this.caseModel, required this.mediaModel, super.key,});
 
   final CaseModel caseModel;
   final MediaModel mediaModel;
@@ -15,8 +15,8 @@ class MediaListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: SizedBox(
-        width: 50.0,
-        height: 50.0,
+        width: 50,
+        height: 50,
         child: Thumbnail(
           mediaModel: mediaModel,
         ),

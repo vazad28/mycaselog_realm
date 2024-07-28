@@ -101,22 +101,17 @@ class _MediaGalleryPageController extends ConsumerState<MediaGalleryPage>
       return;
     }
 
-    final result = deleteMedia(ref, mediaModel);
-
-    // result.when(
-    //   success: (success) {
-    //     mediaModels.removeAt(index);
-    //     if (mediaModels.isEmpty) {
-    //       if (mounted) Navigator.of(context).pop();
-    //     } else {
-    //       setState(() {});
-    //     }
-    //   },
-    //   failure: (failure) {
-    //     logger.severe(failure.toString());
-    //     return;
-    //   },
-    // );
+    try {
+      await deleteMedia(ref, mediaModel);
+      if (mediaModels.isEmpty) {
+        if (mounted) Navigator.of(context).pop();
+      } else {
+        setState(() {});
+      }
+    } catch (err) {
+      ref.watch(dialogServiceProvider).showSnackBar('failed to delete media');
+      logger.severe(err.toString());
+    }
   }
 
   /// Method to call on page change of the gallery view

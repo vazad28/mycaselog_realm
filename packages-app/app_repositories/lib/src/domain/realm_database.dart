@@ -21,7 +21,7 @@ class RealmDatabase extends Disposable {
 
   /// Init repository
   static Future<RealmDatabase> init(AuthenticationUser user) async {
-    print('realm database int called');
+    debugPrint('realm database int called');
     final sharedPrefs = await SharedPreferences.getInstance();
     return RealmDatabase._(_initRealm(user), user, sharedPrefs);
   }

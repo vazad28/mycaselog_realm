@@ -38,7 +38,7 @@ class ImageUploadControllersList with LoggerMixin {
 
     _uploadList.putIfAbsent(mediaModel.mediaID, () => controller);
 
-    print('upload controller list ${_uploadList.length}');
+    logger.fine('upload controller list ${_uploadList.length}');
     return controller;
   }
 

@@ -9,16 +9,6 @@ import '../stats.dart';
 
 part '../../generated/stats/provider/stats_cases_provider.g.dart';
 
-/// Provider for holding the scroll controller double value
-// @riverpod
-// class StatsCasesScrollPosition extends _$StatsCasesScrollPosition {
-//   @override
-//   double build() => 0;
-
-//   // ignore: use_setters_to_change_properties
-//   void update(double position) => state = position;
-// }
-
 @riverpod
 class StatsCases extends _$StatsCases {
   @override

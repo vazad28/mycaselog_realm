@@ -1,11 +1,4 @@
-part of '../app_services.dart';
-
-/// mixin to use Dialog Service
-mixin DialogServiceMixin {
-  WidgetRef get ref;
-
-  DialogService get dialogService => ref.watch(dialogServiceProvider);
-}
+part of 'providers.dart';
 
 /// Riverpod provider to use the dialog service
 @Riverpod(keepAlive: true)
@@ -108,8 +101,11 @@ class DialogService {
   }
 
   /// Form submit
-  Future<T> runBusyResult<T extends Object>(Future<T> future,
-      {String? message, int? delay}) async {
+  Future<T> runBusyResult<T extends Object>(
+    Future<T> future, {
+    String? message,
+    int? delay,
+  }) async {
     Timer? timer;
 
     final dialog = showModalBottomSheet<void>(

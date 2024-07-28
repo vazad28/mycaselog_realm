@@ -4,8 +4,7 @@ import 'package:app_models/app_models.dart';
 import 'package:realm/realm.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../core/app_providers.dart';
-import '../../core/app_services.dart';
+import '../../core/providers/providers.dart';
 
 part '../../generated/media/provider/media_provider.g.dart';
 
@@ -31,6 +30,17 @@ class MediaNotifier extends _$MediaNotifier {
   @override
   Stream<RealmResultsChanges<MediaModel>> build() {
     return ref.read(dbProvider).mediaCollection.getAllMedia().changes;
+  }
+
+  /// Full text search notes
+  RealmResults<MediaModel> searchMedia(String searchTerm) {
+    final caseResults =
+        ref.watch(dbProvider).casesCollection.search(searchTerm);
+
+    // list of case IDs matching the search term
+    final ids = caseResults.map((e) => e.caseID);
+
+    return ref.watch(dbProvider).mediaCollection.search(ids);
   }
 
   Future<void> pullToRefresh() {

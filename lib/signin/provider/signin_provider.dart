@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger_client/logger_client.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../core/app_providers.dart';
+import '../../core/providers/providers.dart';
 import 'signin_state.dart';
 
 part '../../generated/signin/provider/signin_provider.g.dart';

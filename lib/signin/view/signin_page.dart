@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/app_providers.dart';
+import '../../core/providers/providers.dart';
 import '../pages/verify_email_page.dart';
 import '../signin.dart';
 

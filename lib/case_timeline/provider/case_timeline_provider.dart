@@ -12,8 +12,7 @@ import 'package:recase/recase.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../case_details/case_details.dart';
-import '../../core/app_providers.dart';
-import '../../core/app_services.dart';
+import '../../core/providers/providers.dart';
 import '../case_timeline.dart';
 
 part './case_timeline_mixin.dart';
@@ -23,13 +22,13 @@ part '../../generated/case_timeline/provider/case_timeline_provider.g.dart';
 
 @riverpod
 Stream<RealmResultsChanges<MediaModel>> casesDetailsMedia(
-    CasesDetailsMediaRef ref, String caseID) {
+    CasesDetailsMediaRef ref, String caseID,) {
   return ref.watch(dbProvider).mediaCollection.getCaseMedia(caseID).changes;
 }
 
 @riverpod
 Stream<RealmResultsChanges<TimelineNoteModel>> casesDetailsNotes(
-    CasesDetailsNotesRef ref, String caseID) {
+    CasesDetailsNotesRef ref, String caseID,) {
   return ref
       .watch(dbProvider)
       .timelineNotesCollection

@@ -9,7 +9,7 @@ import 'package:media_manager/media_manager.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../support_data/provider/support_data_provider.dart';
-import 'app_providers.dart';
+import 'providers/providers.dart';
 
 mixin AppMixins {
   /// ////////////////////////////////////////////////////////////////////

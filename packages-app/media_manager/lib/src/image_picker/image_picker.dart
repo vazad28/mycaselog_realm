@@ -1,8 +1,5 @@
 import 'package:image_picker/image_picker.dart';
 
-
-export 'package:cross_file/cross_file.dart' show XFile;
-
 export 'image_options.dart';
 
 abstract class ImagePickerInterface {

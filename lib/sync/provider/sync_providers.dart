@@ -7,8 +7,8 @@ import 'package:realm/realm.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:state_of/state_of.dart';
 
-import '../../core/app_providers.dart';
 import '../../core/failures/app_failures.dart';
+import '../../core/providers/providers.dart';
 
 part '../../generated/sync/provider/sync_providers.g.dart';
 

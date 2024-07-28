@@ -65,7 +65,7 @@ class MycaselogApp extends ConsumerWidget with LoggerMixin {
 }
 
 class _MycaselogApp extends ConsumerWidget with LoggerMixin {
-  const _MycaselogApp({required this.app, super.key});
+  const _MycaselogApp({required this.app});
 
   final WidgetBuilder app;
 

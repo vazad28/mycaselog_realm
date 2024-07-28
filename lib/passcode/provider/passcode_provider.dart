@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../core/app_providers.dart';
+import '../../core/providers/providers.dart';
 
 part '../../generated/passcode/provider/passcode_provider.g.dart';
 

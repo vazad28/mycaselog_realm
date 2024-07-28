@@ -6,13 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recase/recase.dart';
 
-import '../../core/app_providers.dart';
+import '../../core/providers/providers.dart';
 import '../../router/routes/routes.dart';
 import '../add_case.dart';
 
 /// Select template bar
-class SelectTemplateBar extends ConsumerWidget
-    with AddCaseEventMixin, AddCaseStateMixin {
+class SelectTemplateBar extends ConsumerWidget with AddCaseMixin {
   const SelectTemplateBar({super.key});
 
   @override
@@ -63,8 +62,7 @@ class SelectTemplateBar extends ConsumerWidget
 /// Select template bottom sheet widget
 typedef OnTemplateSelect = void Function(TemplateModel);
 
-class _SelectTemplateBottomSheet extends ConsumerWidget
-    with AddCaseEventMixin, AddCaseStateMixin {
+class _SelectTemplateBottomSheet extends ConsumerWidget with AddCaseMixin {
   const _SelectTemplateBottomSheet(this.currTemplate);
 
   final TemplateModel? currTemplate;
@@ -86,7 +84,7 @@ class _SelectTemplateBottomSheet extends ConsumerWidget
                 currTemplate?.templateID != templateModel.templateID) {
               /// call addCaseNotifier to set the current forms data into an
               /// object before the new template models fields are rendered
-              onTemplateChange(ref, templateModel);
+              onCaseTemplateChange(ref, templateModel);
               return;
             }
           },

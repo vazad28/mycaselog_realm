@@ -10,35 +10,13 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:state_of/state_of.dart';
 
-import '../../core/failures/app_failures.dart';
-import '../../core/app_providers.dart';
-import '../../core/app_services.dart';
+import '../../core/core.dart';
 import '../../router/router.dart';
 import '../../support_data/support_data.dart';
 
-part '../../generated/add_case/provider/add_case_provider.freezed.dart';
 part '../../generated/add_case/provider/add_case_provider.g.dart';
 part 'add_case_mixin.dart';
 part 'form_group_provider.dart';
-
-@Freezed(
-  copyWith: false,
-  equal: false,
-  when: FreezedWhenOptions.none,
-  map: FreezedMapOptions(maybeMap: false, mapOrNull: false),
-)
-class AddCaseEvent with _$AddCaseEvent {
-  const factory AddCaseEvent.onSubmit() = _OnSubmitForm;
-  const factory AddCaseEvent.onTemplateChange(TemplateModel templateModel) =
-      _OnTemplateChange;
-  const factory AddCaseEvent.onUpdatePatientDataFormGroup(
-    PatientModel patientModel,
-  ) = _OnUpdatePatientDataFormGroup;
-}
-
-/// ////////////////////////////////////////////////////////////////////
-///  Anootations
-/// ////////////////////////////////////////////////////////////////////
 
 /// form validate failure basic data tab
 class BasicTabFormValidationError implements Exception {}
@@ -127,21 +105,21 @@ class AddCaseNotifier extends _$AddCaseNotifier with LoggerMixin {
   StateOf<CaseModel> build() => const StateOf<CaseModel>.init();
 
   /// Event  mapper
-  void on(AddCaseEvent e) {
-    e.map(
-      onSubmit: (_) {
-        _formSubmitAttempted = true;
-        _onSubmit();
-      },
-      onTemplateChange: (value) => _onCaseTemplateChange(value.templateModel),
-      onUpdatePatientDataFormGroup: (value) => ref
-          .watch(patientDataFormGroupProvider.notifier)
-          .updatePatientDataFormGroupFromOcr(value.patientModel),
-    );
-  }
+  // void on(AddCaseEvent e) {
+  //   e.map(
+  //     onSubmit: (_) {
+  //       _formSubmitAttempted = true;
+  //       _onSubmit();
+  //     },
+  //     onTemplateChange: (value) => _onCaseTemplateChange(value.templateModel),
+  //     onUpdatePatientDataFormGroup: (value) => ref
+  //         .watch(patientDataFormGroupProvider.notifier)
+  //         .updatePatientDataFormGroupFromOcr(value.patientModel),
+  //   );
+  // }
 
   /// On chnage in the template in view update form
-  void _onCaseTemplateChange(TemplateModel templateModel) {
+  void onCaseTemplateChange(TemplateModel templateModel) {
     /// Get current form data from the FormGroup
     final currentTemplateDataFormValue =
         ref.read(templatedDataFormGroupProvider).value;
@@ -154,7 +132,7 @@ class AddCaseNotifier extends _$AddCaseNotifier with LoggerMixin {
   }
 
   /// Method to submit the form
-  void _onSubmit() {
+  void submit() {
     try {
       _formSubmitAttempted = true;
       state = const StateOf<CaseModel>.loading();
@@ -296,9 +274,7 @@ Result<DecryptedPatientModel, EncryptionClientException> decryptPatientModel(
   DecryptPatientModelRef ref,
   String crypt,
 ) {
-  final encryptionService = ref.read(encryptionServiceProvider);
-
-  final jsonDataResult = encryptionService.decrypt(crypt);
+  final jsonDataResult = ref.watch(encryptionClientProvider).decrypt(crypt);
 
   return jsonDataResult.when(
     success: (jsonData) {
@@ -314,9 +290,10 @@ Result<String, EncryptionClientException> encryptPatientModel(
   EncryptPatientModelRef ref,
   DecryptedPatientModel decryptedPatientModel,
 ) {
-  final encryptionClient = ref.read(encryptionServiceProvider);
-
-  return encryptionClient.encrypt(decryptedPatientModel.toJson()).when(
+  return ref
+      .watch(encryptionClientProvider)
+      .encrypt(decryptedPatientModel.toJson())
+      .when(
         success: Result.success,
         failure: Result.failure,
       );

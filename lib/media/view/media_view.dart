@@ -68,6 +68,6 @@ class MediaView extends ConsumerWidget {
           );
         },
       );
-    });
+    },);
   }
 }

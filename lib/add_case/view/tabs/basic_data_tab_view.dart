@@ -33,7 +33,7 @@ class BasicDataTabView extends ConsumerWidget {
   }
 }
 
-class _PatientDataView extends ConsumerWidget with AddCaseEventMixin {
+class _PatientDataView extends ConsumerWidget with AddCaseMixin {
   const _PatientDataView();
 
   @override
@@ -56,12 +56,8 @@ class _PatientDataView extends ConsumerWidget with AddCaseEventMixin {
           roundedCorner: true,
           onPressed: () {
             final patientModel = caseModel.patientModel;
-            if (patientModel == null) {
-              return;
-              // const Loading(
-              //   text: 'Patient Model is null',
-              // );
-            }
+            if (patientModel == null) return;
+
             context
                 .openModalScreen<PatientModel?>(
               //TextRecognizerView()
@@ -69,7 +65,7 @@ class _PatientDataView extends ConsumerWidget with AddCaseEventMixin {
             )
                 .then((patientModel) {
               if (patientModel == null) return;
-              updatePatientDataFormGroup(ref, patientModel);
+              onPatientDataFormChange(ref, patientModel);
             });
           },
           icon: Icons.scanner,

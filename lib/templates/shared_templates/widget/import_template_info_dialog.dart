@@ -2,7 +2,7 @@ import 'package:app_l10n/app_l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/app_services.dart';
+import '../../../core/providers/providers.dart';
 
 class ImportTemplateInfoDialog extends ConsumerStatefulWidget {
   const ImportTemplateInfoDialog({super.key});

@@ -5,7 +5,7 @@ import 'dart:async';
 import 'package:logger_client/logger_client.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../core/app_providers.dart';
+import '../../core/providers/providers.dart';
 import 'sync_providers.dart';
 part '../../generated/sync/provider/firestore_live_sync.g.dart';
 

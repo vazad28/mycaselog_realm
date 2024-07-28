@@ -79,10 +79,10 @@ class CasesCollection extends BaseCollection<CaseModel> {
   }
 
   /// get cases between two timestamps among caseIDs
-  List<CaseModel> casesBetweenTimestamp({
+  RealmResults<CaseModel> casesBetweenTimestamp({
     required int fromTimestamp,
     required int toTimestamp,
-    List<String>? idList,
+    Iterable<String>? idList,
   }) {
     final params = [0, fromTimestamp, toTimestamp];
 
@@ -94,10 +94,10 @@ class CasesCollection extends BaseCollection<CaseModel> {
     );
 
     if (idList != null) {
-      return cases.query(r'caseID IN $0', [idList]).toList();
+      return cases.query(r'caseID IN $0', [idList]);
     }
 
-    return cases.toList();
+    return cases;
   }
 
   List<CaseModel> getAllByCaseIDs(List<String> caseIDs) {

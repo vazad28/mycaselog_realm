@@ -35,7 +35,7 @@ class _AddSurgeryLocationPageState
         .read(supportDataNotifierProvider)
         .surgeryLocations
         .firstWhere((e) => e.locationID == widget.locationID,
-            orElse: SurgeryLocationModelX.zero);
+            orElse: SurgeryLocationModelX.zero,);
 
     formGroup = FormGroup({
       SurgeryLocationProps.name.name: FormControl<String>(

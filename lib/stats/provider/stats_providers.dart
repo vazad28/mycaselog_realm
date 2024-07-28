@@ -24,17 +24,6 @@ class TouchedIndex extends _$TouchedIndex {
   void update(int? index) => state = index;
 }
 
-/// Instead of returning the ChartReqModel, we use this provider to
-/// only return chartDataModel this makes the UI deals with less
-/// null checks by filtericn that here in the provider
-// @riverpod
-// Future<ChartDataModel> statsData(StatsDataRef ref) async {
-//   final chartReqModel = ref.watch(statsNotifierProvider);
-//   final result =
-//       await ref.watch(statsRepositoryProvider).getStatistics(chartReqModel);
-//   return result.chartData!;
-// }
-
 @riverpod
 class StatsData extends _$StatsData {
   @override

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of '../../core/app_widgets.dart';
+part of '../../../core/widgets/widgets.dart';
 
 // **************************************************************************
 // RiverpodGenerator

@@ -1,4 +1,4 @@
-part of '../app_widgets.dart';
+part of 'widgets.dart';
 
 class SubmitState {}
 

@@ -12,7 +12,7 @@ import 'package:recase/recase.dart';
 import 'package:state_of/state_of.dart';
 
 import '../../../core/failures/app_failures.dart';
-import '../../../core/app_providers.dart';
+import '../../../core/providers/providers.dart';
 import '../../../router/routes/routes.dart';
 import '../add_template.dart';
 

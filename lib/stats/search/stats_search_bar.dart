@@ -7,7 +7,6 @@ import '../stats.dart';
 import 'stats_search_anchor.dart';
 
 part 'stats_search_phrase_list.dart';
-part 'stats_search_phrases.dart';
 
 class StatsSearchBar extends ConsumerWidget
     with StatsMixin

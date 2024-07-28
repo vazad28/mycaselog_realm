@@ -1,13 +1,14 @@
 import 'dart:math' as math show ln10, log, max, min, pow;
+
 import 'package:app_extensions/app_extensions.dart';
 import 'package:app_models/app_models.dart';
 import 'package:app_repositories/app_repositories.dart';
 import 'package:async_result/async_result.dart';
+import 'package:realm/realm.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../core/failures/app_failures.dart';
-import '../../core/app_providers.dart';
-import '../../core/app_services.dart';
+import '../../core/providers/providers.dart';
 
 part '../../generated/stats/provider/stats_repository.g.dart';
 
@@ -28,12 +29,12 @@ class StatsRepository {
   CasesCollection get _casesCollection => ref.watch(dbProvider).casesCollection;
 
   ///get full text search result ids
-  Future<List<String>?> _getSearchIds(String searchTermProcessed) async {
+  Iterable<String> _getSearchIds(String? searchTermProcessed) {
+    if (searchTermProcessed == null) return [];
     final searchRes =
-        await ref.watch(dbProvider).casesCollection.search(searchTermProcessed);
-
-    if (searchRes.isEmpty) return null;
-    return searchRes.map((item) => item.caseID).toList();
+        ref.watch(dbProvider).casesCollection.search(searchTermProcessed);
+    // list of case IDs matching the search term
+    return searchRes.map((e) => e.caseID);
   }
 
   /// Fetch statistics
@@ -46,22 +47,15 @@ class StatsRepository {
     assert(toStamp > fromStamp, 'FromTime can not be less than ToTime');
 
     // /must keep this null coz getFtsCaseIds can return null
-    List<String>? idList;
+    Iterable<String> idList;
 
     // if we have search term or filter term (just processed search term)
     // fill in the idlist
-    if (chartReqModel.filterClause != null) {
-      idList = await _getSearchIds(chartReqModel.filterClause!);
+    idList =
+        _getSearchIds(chartReqModel.filterClause ?? chartReqModel.searchTerm);
 
-      if (idList?.isEmpty ?? true) {
-        return Result.failure(const AppFailure.noStatsData());
-      }
-    } else if (chartReqModel.searchTerm != null) {
-      idList = await _getSearchIds(chartReqModel.searchTerm!);
-
-      if (idList?.isEmpty ?? true) {
-        return Result.failure(const AppFailure.noStatsData());
-      }
+    if (idList.isEmpty) {
+      return Result.failure(const AppFailure.noStatsData());
     }
 
     final caseModels = _casesCollection.casesBetweenTimestamp(
@@ -144,7 +138,7 @@ class StatsRepository {
 
   Map<String, Iterable<String>> _fetchChartDataGroupedByLabel(
     StatsGroupBy groupByLabel,
-    List<CaseModel> data,
+    RealmResults<CaseModel> data,
   ) {
     Map<String, Iterable<String>> chartDataMap;
 

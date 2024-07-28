@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../cases/cases.dart';
-import '../../../core/app_services.dart';
+import '../../../core/core.dart';
 
 class CasesSearchResultTile extends ConsumerWidget {
   const CasesSearchResultTile({
@@ -91,7 +91,7 @@ class _DecryptedPatientModel extends ConsumerWidget {
       );
     }
 
-    final encryptionRepository = ref.watch(encryptionServiceProvider);
+    final encryptionRepository = ref.watch(encryptionClientProvider);
 
     final patientModelResult =
         encryptionRepository.decrypt(caseModel.patientModel!.crypt!);

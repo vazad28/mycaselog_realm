@@ -106,7 +106,7 @@ class ImageUploadController extends UploadController
           /// sometimes the progress is NaN as the total byte may be 0
           if (!progress.isNaN) totalUpload += progress;
 
-          print('progress $progress - totalProgress $totalUpload');
+          logger.fine('progress $progress - totalProgress $totalUpload');
 
           final progressClamped = totalUpload / uploadTasks.length;
           //print('progressClamped $progressClamped');

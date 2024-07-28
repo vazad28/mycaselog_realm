@@ -2,7 +2,7 @@ import 'package:app_models/app_models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../core/app_providers.dart';
+import '../../core/providers/providers.dart';
 
 part '../../generated/case_details/provider/case_details_provider.g.dart';
 part 'case_details_mixins.dart';

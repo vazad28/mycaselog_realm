@@ -4,8 +4,7 @@ import 'package:app_models/app_models.dart';
 import 'package:realm/realm.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../core/app_providers.dart';
-import '../../core/app_services.dart';
+import '../../core/providers/providers.dart';
 
 part '../../generated/cases/provider/cases_provider.g.dart';
 
@@ -30,6 +29,11 @@ class CasesNotifier extends _$CasesNotifier {
   @override
   Stream<RealmResultsChanges<CaseModel>> build() {
     return ref.read(dbProvider).casesCollection.getAll().changes;
+  }
+
+  /// Full text search cases
+  RealmResults<CaseModel> searchCases(String searchTerm) {
+    return ref.watch(dbProvider).casesCollection.search(searchTerm);
   }
 
   Future<void> pullToRefresh() {

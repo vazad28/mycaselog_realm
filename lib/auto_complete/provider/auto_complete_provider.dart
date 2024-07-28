@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../core/app_providers.dart';
+import '../../core/providers/providers.dart';
 
 part '../../generated/auto_complete/provider/auto_complete_provider.g.dart';
 

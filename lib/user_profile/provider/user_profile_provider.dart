@@ -7,8 +7,7 @@ import 'package:image_picker/image_picker.dart' show ImagePicker, ImageSource;
 import 'package:logger_client/logger_client.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../core/app_providers.dart';
-import '../../core/app_services.dart';
+import '../../core/core.dart';
 
 part '../../generated/user_profile/provider/user_profile_provider.freezed.dart';
 part '../../generated/user_profile/provider/user_profile_provider.g.dart';

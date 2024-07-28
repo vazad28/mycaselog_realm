@@ -18,7 +18,8 @@ class _TextRecognizerViewState extends State<TextRecognizerView> {
   bool _canProcess = true;
   bool _isBusy = false;
   CustomPaint? _customPaint;
-  // ignore: unused_field
+
+  // ignore: use_late_for_private_fields_and_variables, unused_field
   String? _text;
   var _cameraLensDirection = CameraLensDirection.back;
 
@@ -35,9 +36,7 @@ class _TextRecognizerViewState extends State<TextRecognizerView> {
       body: Stack(
         children: [
           CameraView(
-            //title: 'Text Detector',
             customPaint: _customPaint,
-            //text: _text,
             onImage: _processImage,
             initialCameraLensDirection: _cameraLensDirection,
             onCameraLensDirectionChanged: (value) =>

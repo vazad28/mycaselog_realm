@@ -4,7 +4,7 @@ import 'package:app_models/app_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/app_providers.dart';
+import '../../core/providers/providers.dart';
 
 /// User Mini widget
 class UserMiniStatsWidget extends ConsumerWidget {

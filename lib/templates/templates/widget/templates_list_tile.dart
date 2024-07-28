@@ -212,7 +212,7 @@ class TemplatesListTile extends ConsumerWidget {
                 ],
               ),
             );
-          }),
+          },),
       child: templateCard,
     );
   }
@@ -254,7 +254,7 @@ class _MenuOptionsInactiveTemplate extends ConsumerWidget {
               .updateTemplate(templateModel, TemplateEvent.delete);
         },
       ),
-    ]);
+    ],);
   }
 }
 
@@ -306,6 +306,6 @@ class _MenuOptionsActiveTemplate extends ConsumerWidget {
               .updateTemplate(templateModel, TemplateEvent.deactivate);
         },
       ),
-    ]);
+    ],);
   }
 }
