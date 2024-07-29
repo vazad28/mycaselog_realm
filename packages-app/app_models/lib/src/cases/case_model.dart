@@ -102,6 +102,20 @@ class _CaseModel {
 
   Map<String, dynamic> toJson() => _$CaseModelToJson(this);
 
+  Map<String, dynamic> toJsonForPdf() => {
+        'surgeryDate': ModelUtils.formatYMD(surgeryDate),
+        'diagnosis': diagnosis,
+        'surgery': surgery,
+        'anesthesia': anesthesia,
+        'anesthesiaBlock': anesthesiaBlock,
+        'asa grade': asa.toString(),
+        'side': side,
+        'ebl': ebl.toString(),
+        'assistant': assistant.join(','),
+        'location': location,
+        'comments': comments,
+      };
+
   ///create surgery date split field
   @JsonKey(includeFromJson: false, includeToJson: false)
   String get surgeryD =>
@@ -117,8 +131,11 @@ class _CaseModel {
 }
 
 extension CaseModelX on CaseModel {
-  static CaseModel fromJson(Map<String, dynamic> json) =>
-      _$CaseModelFromJson(json).toUnmanaged();
+  static CaseModel fromJson(Map<String, dynamic> json) {
+    json['fieldsData'] ??= <dynamic>[];
+    json['assistants'] ??= <String>[];
+    return _$CaseModelFromJson(json).toUnmanaged();
+  }
 
   static CaseModel zero() {
     final timestamp = ModelUtils.getTimestamp;
@@ -160,7 +177,7 @@ enum PatientDataModelProps {
 @JsonSerializable(explicitToJson: true)
 class _PatientModel {
   @PrimaryKey()
-  late String patientID;
+  late String? patientID;
   late String? crypt;
   @Indexed(RealmIndexType.fullText)
   late String? initials;
@@ -174,7 +191,7 @@ class _PatientModel {
 
   PatientModel toUnmanaged() {
     return PatientModel(
-      patientID,
+      patientID ?? ModelUtils.uniqueID,
       crypt: crypt,
       initials: initials,
       name: name,
@@ -264,16 +281,6 @@ enum MediaStatus {
   success,
   uploading,
 }
-
-// class HybridMediaModel {
-//   HybridMediaModel({
-//     required this.caseModel,
-//     required this.mediaModel,
-//   });
-
-//   final CaseModel? caseModel;
-//   final MediaModel mediaModel;
-// }
 
 @RealmModel()
 @JsonSerializable(explicitToJson: true)

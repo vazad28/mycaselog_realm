@@ -6,8 +6,6 @@ Future<void> appStartUp(AppStartUpRef ref) async {
   await ref.watch(realmDatabaseProvider.future);
 
   // ignore: unused_local_variable
-  final settings = ref.read(settingsNotifierProvider);
-  // ignore: unused_local_variable
   final syncStatus = ref.read(firestoreLiveSyncProvider);
 }
 

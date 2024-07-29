@@ -22,16 +22,9 @@ class NotesAppBar extends StatelessWidget {
         titlePadding: EdgeInsetsDirectional.only(start: 24, bottom: 16),
         title: Row(
           children: [
-            Expanded(child: NotesCountWidget(),
-                // child: Text(
-                //   'Notes',
-                //   textAlign: TextAlign.left,
-                //   style: Theme.of(context)
-                //       .textTheme
-                //       .headlineSmall
-                //       ?.copyWith(letterSpacing: -1),
-                // ),
-                ),
+            Expanded(
+              child: NotesCountWidget(),
+            ),
           ],
         ),
       ),

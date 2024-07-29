@@ -59,7 +59,7 @@ Map<String, dynamic> _$CaseModelToJson(_CaseModel instance) =>
 
 _PatientModel _$PatientModelFromJson(Map<String, dynamic> json) =>
     _PatientModel()
-      ..patientID = json['patientID'] as String
+      ..patientID = json['patientID'] as String?
       ..crypt = json['crypt'] as String?
       ..initials = json['initials'] as String?
       ..name = json['name'] as String?

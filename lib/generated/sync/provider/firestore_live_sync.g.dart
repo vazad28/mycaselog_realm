@@ -6,7 +6,7 @@ part of '../../../sync/provider/firestore_live_sync.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$firestoreLiveSyncHash() => r'022b8d48840d76acdd5ce57007c7e69b68f8de64';
+String _$firestoreLiveSyncHash() => r'01407e92bfeac1ffce651506658efd3b3649cd63';
 
 /// See also [FirestoreLiveSync].
 @ProviderFor(FirestoreLiveSync)

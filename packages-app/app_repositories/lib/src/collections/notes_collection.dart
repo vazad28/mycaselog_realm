@@ -41,6 +41,10 @@ class NotesCollection extends BaseCollection<NoteModel> {
   /// Realm Methods
   /// ////////////////////////////////////////////////////////////////////
 
+  Future<void> deleteNote(NoteModel noteModel) {
+    return upsert(noteModel.noteID, () => noteModel..removed = 1);
+  }
+
   RealmResults<NoteModel> search(String searchTerm) {
     final results = _realm.query<NoteModel>(
       r'title TEXT $0 OR note TEXT $0',

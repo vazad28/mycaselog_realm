@@ -7,7 +7,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:logger_client/logger_client.dart';
 import 'package:media_manager/media_manager.dart';
 import 'package:misc_packages/misc_packages.dart';
-import 'package:realm/realm.dart';
 import 'package:recase/recase.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -15,26 +14,9 @@ import '../../case_details/case_details.dart';
 import '../../core/providers/providers.dart';
 import '../case_timeline.dart';
 
-part './case_timeline_mixin.dart';
-part './case_timeline_actions.dart';
-
 part '../../generated/case_timeline/provider/case_timeline_provider.g.dart';
-
-@riverpod
-Stream<RealmResultsChanges<MediaModel>> casesDetailsMedia(
-    CasesDetailsMediaRef ref, String caseID,) {
-  return ref.watch(dbProvider).mediaCollection.getCaseMedia(caseID).changes;
-}
-
-@riverpod
-Stream<RealmResultsChanges<TimelineNoteModel>> casesDetailsNotes(
-    CasesDetailsNotesRef ref, String caseID,) {
-  return ref
-      .watch(dbProvider)
-      .timelineNotesCollection
-      .getCaseNotes(caseID)
-      .changes;
-}
+part './case_timeline_actions.dart';
+part './case_timeline_mixin.dart';
 
 @riverpod
 class CaseTimelineNotifier extends _$CaseTimelineNotifier with LoggerMixin {
@@ -50,7 +32,7 @@ class CaseTimelineNotifier extends _$CaseTimelineNotifier with LoggerMixin {
         .getSingle(caseID)
         ?.changes
         .listen((data) {
-      state = _createTimelines(data.object);
+      state = AsyncData(ref.watch(caseTimelineProvider(data.object)));
     });
 
     //return _createTimelines(caseModel);
@@ -59,56 +41,74 @@ class CaseTimelineNotifier extends _$CaseTimelineNotifier with LoggerMixin {
     return const AsyncLoading();
   }
 
-  AsyncValue<List<TimelineItemModel>> _createTimelines(CaseModel caseModel) {
-    try {
-      final timelineItems = <TimelineItemModel>[];
+  void createTempTimelineItem(CaseModel caseModel, DateTime dateTime) {
+    final stateList = List<TimelineItemModel>.from(state.requireValue.toList());
+    final eventDate = dateTime.formatYMD();
 
-      // group media by date YMD
-      final mediaModelsGroupedByDateMap = _groupMediaByDate(caseModel.medias);
+    final timelineItem = TimelineItemModel.zero().copyWith(
+      eventDate: eventDate,
+      caseID: caseModel.caseID,
+      surgeryDate: caseModel.surgeryDate,
+      eventTimestamp: eventDate.timestampFromYMD(),
+      mediaList: [],
+      noteList: [],
+    );
 
-      // group notes by date YMD
-      final timelineNotesGroupedByDateMap =
-          _groupTimelineNotesByDate(caseModel.notes);
+    stateList.add(timelineItem);
 
-      //get all the keys which are dates of timeline events both media and notes
-      final mediaModelsDates = mediaModelsGroupedByDateMap.keys.toList();
-      final timelineNotesDates = timelineNotesGroupedByDateMap.keys.toList();
+    state = AsyncData(stateList);
+  }
+}
 
-      /// dates are in string format of formatYMD()
-      final allDates = List<String>.from(mediaModelsDates)
-        ..addAll(timelineNotesDates);
+@riverpod
+class CaseTimeline extends _$CaseTimeline {
+  @override
+  List<TimelineItemModel> build(CaseModel caseModel) {
+    return createTimelines(caseModel);
+  }
 
-      /// add todays date if not in list of events
-      final todaysDate = DateTime.now().formatYMD();
+  List<TimelineItemModel> createTimelines(CaseModel caseModel) {
+    final timelineItems = <TimelineItemModel>[];
 
-      if (!allDates.contains(todaysDate)) {
-        allDates.add(todaysDate);
-      }
+    // group media by date YMD
+    final mediaModelsGroupedByDateMap = _groupMediaByDate(caseModel.medias);
 
-      final distinctDates = allDates.toSet().toList()..sort();
+    // group notes by date YMD
+    final timelineNotesGroupedByDateMap =
+        _groupTimelineNotesByDate(caseModel.notes);
 
-      // timelineItems
-      for (final eventDate in distinctDates.reversed) {
-        final timelineItem = TimelineItemModel.zero().copyWith(
-          eventDate: eventDate,
-          caseID: caseModel.caseID,
-          surgeryDate: caseModel.surgeryDate,
-          eventTimestamp: eventDate.timestampFromYMD(),
-          mediaList: mediaModelsGroupedByDateMap[eventDate] ?? [],
-          noteList: timelineNotesGroupedByDateMap[eventDate] ?? [],
-        );
+    //get all the keys which are dates of timeline events both media and notes
+    final mediaModelsDates = mediaModelsGroupedByDateMap.keys.toList();
+    final timelineNotesDates = timelineNotesGroupedByDateMap.keys.toList();
 
-        timelineItems.add(timelineItem);
-      }
+    /// dates are in string format of formatYMD()
+    final allDates = List<String>.from(mediaModelsDates)
+      ..addAll(timelineNotesDates);
 
-      // print(
-      //     'timelineItems media length = ${timelineItems[0].mediaList.length}');
+    /// add todays date if not in list of events
+    final todaysDate = DateTime.now().formatYMD();
 
-      return AsyncData(timelineItems);
-    } catch (err, st) {
-      logger.fine(err);
-      return AsyncError(err, st);
+    if (!allDates.contains(todaysDate)) {
+      allDates.add(todaysDate);
     }
+
+    final distinctDates = allDates.toSet().toList()..sort();
+
+    // timelineItems
+    for (final eventDate in distinctDates.reversed) {
+      final timelineItem = TimelineItemModel.zero().copyWith(
+        eventDate: eventDate,
+        caseID: caseModel.caseID,
+        surgeryDate: caseModel.surgeryDate,
+        eventTimestamp: eventDate.timestampFromYMD(),
+        mediaList: mediaModelsGroupedByDateMap[eventDate] ?? [],
+        noteList: timelineNotesGroupedByDateMap[eventDate] ?? [],
+      );
+
+      timelineItems.add(timelineItem);
+    }
+
+    return timelineItems;
   }
 
   /// Group timeline media by date ymd format
@@ -138,23 +138,5 @@ class CaseTimelineNotifier extends _$CaseTimelineNotifier with LoggerMixin {
       map.putIfAbsent(kee, () => <TimelineNoteModel>[]).add(timelineNote);
     }
     return map;
-  }
-
-  void createTempTimelineItem(CaseModel caseModel, DateTime dateTime) {
-    final stateList = List<TimelineItemModel>.from(state.requireValue.toList());
-    final eventDate = dateTime.formatYMD();
-
-    final timelineItem = TimelineItemModel.zero().copyWith(
-      eventDate: eventDate,
-      caseID: caseModel.caseID,
-      surgeryDate: caseModel.surgeryDate,
-      eventTimestamp: eventDate.timestampFromYMD(),
-      mediaList: [],
-      noteList: [],
-    );
-
-    stateList.add(timelineItem);
-
-    state = AsyncData(stateList);
   }
 }

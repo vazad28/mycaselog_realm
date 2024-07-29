@@ -1,8 +1,10 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../add_case/add_case.dart';
 import '../../case_details/case_details.dart';
+import '../../case_pdf/case_pdf.dart';
 import '../../cases/cases.dart';
 import '../utils/route_animations.dart';
 
@@ -12,6 +14,7 @@ part '../../generated/router/routes/cases_routes.g.dart';
   path: CasesRoute.path,
   routes: <TypedGoRoute<GoRouteData>>[
     TypedGoRoute<CaseDetailsRoute>(path: CaseDetailsRoute.path),
+    TypedGoRoute<CasePdfRoute>(path: CasePdfRoute.path),
     TypedGoRoute<AddCaseRoute>(path: AddCaseRoute.path),
   ],
 )
@@ -60,4 +63,22 @@ class CaseDetailsRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       CaseDetailsPage(caseID: caseID, activeTab: activeTab);
+}
+
+/// Sync data Route
+class CasePdfRoute extends GoRouteData {
+  const CasePdfRoute(this.caseID);
+  static const name = 'case_pdf';
+  static const path = name;
+
+  final String caseID;
+
+  @override
+  Page buildPage(BuildContext context, GoRouterState state) =>
+      SharedAxisTransitionPage(
+          key: state.pageKey,
+          child: CasePdfPage(
+            caseID: caseID,
+          ),
+          transitionType: SharedAxisTransitionType.horizontal);
 }

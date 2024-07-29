@@ -1,8 +1,8 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 
-import '../../../core/app_vars.dart';
-import '../../../sync/view/sync_page.dart';
+import '../../../database_io/database_io.dart';
+import '../../../router/router.dart';
 
 part 'tiles/database_io_tile.dart';
 part 'tiles/export_csv_data_tile.dart';
@@ -18,7 +18,7 @@ class SyncSettingsSection extends StatelessWidget {
       children: [
         VerticalSpacer.normal,
         SyncDataTile(),
-        ReindexSearchTile(),
+        //ReindexSearchTile(),
         DatabaseIoTile(),
         ExportCsvDataTile(),
       ],

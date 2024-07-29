@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/core.dart';
 import '../notes.dart';
 
 class NotesCountWidget extends ConsumerWidget {
@@ -8,9 +9,9 @@ class NotesCountWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return StreamBuilder(
-      stream: ref.read(notesNotifierProvider).changes,
-      builder: (_, snapshot) {
+    return AsyncValueWidget(
+      value: ref.watch(notesNotifierProvider),
+      data: (data) {
         return RichText(
           text: TextSpan(
             text: 'Notes ',
@@ -21,7 +22,7 @@ class NotesCountWidget extends ConsumerWidget {
             children: <TextSpan>[
               const TextSpan(text: ' '),
               TextSpan(
-                text: (snapshot.data?.results.length ?? 0).toString(),
+                text: data.results.length.toString(),
                 style: Theme.of(context).textTheme.bodySmall,
               ),
             ],

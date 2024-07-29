@@ -19,7 +19,7 @@ class FirestoreLiveSync extends _$FirestoreLiveSync with LoggerMixin {
         .watch(dbProvider)
         .settingsCollection
         .getSettings()
-        .changes
+        ?.changes
         .listen((settings) {
       if (settings.object.syncOnStart != state) {
         settings.object.syncOnStart

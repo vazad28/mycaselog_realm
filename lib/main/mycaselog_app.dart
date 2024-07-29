@@ -24,24 +24,26 @@ class MycaselogApp extends ConsumerWidget with LoggerMixin {
 
     final themeMode = ref.watch(currentThemeModeProvider);
 
+    final currentTheme = themeMode == 0
+        ? brightness == Brightness.light
+            ? theme.light()
+            : theme.dark().copyWith(
+                  cupertinoOverrideTheme: const CupertinoThemeData(
+                    textTheme: CupertinoTextThemeData(), // This is required
+                  ),
+                )
+        : themeMode == 1
+            ? theme.light()
+            : theme.dark().copyWith(
+                  cupertinoOverrideTheme: const CupertinoThemeData(
+                    textTheme: CupertinoTextThemeData(), // This is required
+                  ),
+                );
+
     final materialApp = MaterialApp.router(
       routerConfig: ref.read(mycaselogRouterProvider),
       scaffoldMessengerKey: AppVars.appScaffoldMessengerKey,
-      theme: themeMode == 0
-          ? brightness == Brightness.light
-              ? theme.light()
-              : theme.dark().copyWith(
-                    cupertinoOverrideTheme: const CupertinoThemeData(
-                      textTheme: CupertinoTextThemeData(), // This is required
-                    ),
-                  )
-          : themeMode == 1
-              ? theme.light()
-              : theme.dark().copyWith(
-                    cupertinoOverrideTheme: const CupertinoThemeData(
-                      textTheme: CupertinoTextThemeData(), // This is required
-                    ),
-                  ),
+      theme: currentTheme,
       localizationsDelegates: const [
         S.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -54,7 +56,13 @@ class MycaselogApp extends ConsumerWidget with LoggerMixin {
     final app = AsyncValueWidget(
       value: ref.watch(appStartUpProvider),
       data: (_) => _MycaselogApp(app: (context) => materialApp),
-      loading: const Text('loading'),
+      loading: SizedBox.expand(
+        child: Material(
+          type: MaterialType.card,
+          color: currentTheme.canvasColor,
+          child: const Center(child: Text('loading..')),
+        ),
+      ),
     );
 
     return PopScope(
@@ -80,3 +88,25 @@ class _MycaselogApp extends ConsumerWidget with LoggerMixin {
     return app(context);
   }
 }
+
+/* 
+final app = ref.watch(appStartUpProvider).when(
+      data: (_) => _MycaselogApp(app: (context) => materialApp),
+      loading: ()=> Material(
+        type: MaterialType.card,
+        color: brightness == Brightness.light ? Colors.white : Colors.black,
+        textStyle: TextStyle().copyWith(
+          color: brightness == Brightness.light ? Colors.black : Colors.white,
+        ),
+        child: const Text('loading..'),
+      ),
+      error: (err,st)=> Center(
+      child: Text(
+        err.toString(),
+        style: Theme.of(context)
+            .textTheme
+            .headlineSmall!
+            .copyWith(color: Colors.red),
+      ),
+    );
+    ); */

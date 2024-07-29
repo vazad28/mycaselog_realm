@@ -1,19 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/app_mixins.dart';
 import '../sync.dart';
 
-/// this page fails if using stateful... go figure
-class SyncPage extends ConsumerWidget {
+class SyncPage extends ConsumerStatefulWidget {
   const SyncPage({super.key});
 
   static Page<void> page() => const MaterialPage<void>(child: SyncPage());
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return const Scaffold(
-      extendBody: true,
-      body: SyncView(),
+  ConsumerState<ConsumerStatefulWidget> createState() => _SyncPageState();
+}
+
+class _SyncPageState extends ConsumerState<SyncPage> with AppMixins {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => hideBottomNavbar(ref));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return PopScope(
+      child: const Material(child: SyncView()),
+      onPopInvokedWithResult: (didPop, _) {
+        showBottomNavbar(ref);
+      },
     );
   }
 }

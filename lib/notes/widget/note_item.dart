@@ -4,18 +4,17 @@ import 'package:app_models/app_models.dart';
 import 'package:app_ui/app_ui.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../add_note/add_note.dart';
 
-class NoteItem extends ConsumerWidget {
+class NoteItem extends StatelessWidget {
   const NoteItem({required this.noteModel, required this.maxLines, super.key});
 
   final NoteModel noteModel;
   final int maxLines;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return OpenContainer<void>(
       transitionType: ContainerTransitionType.fadeThrough,
       closedColor: context.colorScheme.surface,
@@ -35,7 +34,7 @@ class NoteItem extends ConsumerWidget {
   }
 }
 
-class NoteTile extends ConsumerWidget {
+class NoteTile extends StatelessWidget {
   const NoteTile({
     required this.noteModel,
     required this.maxLines,
@@ -46,7 +45,7 @@ class NoteTile extends ConsumerWidget {
   final int maxLines;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return MaterialCard.outlined(
       padding: const EdgeInsets.all(AppSpacing.md),
       elevation: 1,

@@ -515,7 +515,7 @@ final currentCaseTemplateProvider =
 
 typedef _$CurrentCaseTemplate = AutoDisposeNotifier<TemplateModel?>;
 String _$patientDataFormGroupHash() =>
-    r'6e3fbc627f5b3e5093c1718e69604616760c9513';
+    r'9baa367fea79a89e899a20ae1e25020fe1e01bd0';
 
 /// See also [PatientDataFormGroup].
 @ProviderFor(PatientDataFormGroup)

@@ -49,10 +49,6 @@ class SyncView extends StatelessWidget {
           DbCollection.supportData,
         ), // support data
         _divider,
-        // const _TableToSync<SettingsModel>(
-        //   DbCollection.settings,
-        // ), // settings notes
-        // _divider,
         const SizedBox(height: AppSpacing.xlg),
         const Center(child: SyncDoneButton()),
       ],

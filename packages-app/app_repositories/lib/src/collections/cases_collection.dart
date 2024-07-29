@@ -40,6 +40,10 @@ class CasesCollection extends BaseCollection<CaseModel> {
   @override
   int count() => _realm.all<CaseModel>().query(r'removed == $0', [0]).length;
 
+  // Future<void> addCase(CaseModel caseModel) {
+  //   return add(caseModel.caseID, caseModel);
+  // }
+
   /// ////////////////////////////////////////////////////////////////////
   /// Autocomplete Data
   /// ////////////////////////////////////////////////////////////////////

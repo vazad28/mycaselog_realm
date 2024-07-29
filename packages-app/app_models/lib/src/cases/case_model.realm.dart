@@ -351,7 +351,7 @@ class PatientModel extends _PatientModel
   static var _defaultsSet = false;
 
   PatientModel(
-    String patientID, {
+    String? patientID, {
     String? crypt,
     String? initials,
     String? name,
@@ -382,10 +382,10 @@ class PatientModel extends _PatientModel
   PatientModel._();
 
   @override
-  String get patientID =>
-      RealmObjectBase.get<String>(this, 'patientID') as String;
+  String? get patientID =>
+      RealmObjectBase.get<String>(this, 'patientID') as String?;
   @override
-  set patientID(String value) => RealmObjectBase.set(this, 'patientID', value);
+  set patientID(String? value) => RealmObjectBase.set(this, 'patientID', value);
 
   @override
   String? get crypt => RealmObjectBase.get<String>(this, 'crypt') as String?;
@@ -496,7 +496,8 @@ class PatientModel extends _PatientModel
     RealmObjectBase.registerFactory(PatientModel._);
     register(_toEJson, _fromEJson);
     return SchemaObject(ObjectType.realmObject, PatientModel, 'PatientModel', [
-      SchemaProperty('patientID', RealmPropertyType.string, primaryKey: true),
+      SchemaProperty('patientID', RealmPropertyType.string,
+          optional: true, primaryKey: true),
       SchemaProperty('crypt', RealmPropertyType.string, optional: true),
       SchemaProperty('initials', RealmPropertyType.string,
           optional: true, indexType: RealmIndexType.fullText),

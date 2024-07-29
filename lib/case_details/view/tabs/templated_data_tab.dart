@@ -5,10 +5,12 @@ import 'package:app_models/app_models.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logger_client/logger_client.dart';
 
 import '../../case_details.dart';
 
-class CaseDetailsTemplatedTab extends ConsumerWidget with CaseDetailsMixin {
+class CaseDetailsTemplatedTab extends ConsumerWidget
+    with CaseDetailsMixin, LoggerMixin {
   const CaseDetailsTemplatedTab({super.key});
 
   @override
@@ -17,7 +19,7 @@ class CaseDetailsTemplatedTab extends ConsumerWidget with CaseDetailsMixin {
 
     return caseTemplateAsync.when(
       loading: () => Center(child: Text(S.of(context).select)),
-      error: (err, _) => Center(child: Text(S.of(context).errorTitle)),
+      error: (err, _) => Center(child: Text(err.toString())),
       data: (templateModel) {
         return _TemplateCaseData(templateModel: templateModel);
       },

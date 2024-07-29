@@ -32,8 +32,8 @@ class CasesView extends ConsumerWidget {
         return SliverAlignedGrid.count(
           key: widgetKey,
           crossAxisCount: crossAxisCount,
-          mainAxisSpacing: AppSpacing.sm,
-          crossAxisSpacing: AppSpacing.sm,
+          mainAxisSpacing: AppSpacing.xs,
+          crossAxisSpacing: AppSpacing.xs,
           itemCount: caseModels.length,
           itemBuilder: (BuildContext context, int index) {
             final caseModel = caseModels[index];

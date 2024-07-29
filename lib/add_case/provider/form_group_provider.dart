@@ -24,7 +24,7 @@ class PatientDataFormGroup extends _$PatientDataFormGroup {
     final encryptedEither = ref.read(
       encryptPatientModelProvider(
         DecryptedPatientModel(
-          patientID: patientModel.patientID,
+          patientID: patientModel.patientID!,
           name: patientModel.name,
           mrn: patientModel.mrn,
           phone: patientModel.phone,

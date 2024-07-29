@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../core/core.dart';
 import '../../onboarding/onboarding.dart';
 import '../../passcode/passcode.dart';
 import '../../router/utils/route_animations.dart';
@@ -12,13 +13,17 @@ import '../auth_flow.dart';
 class AuthFlowPage extends ConsumerWidget {
   const AuthFlowPage({super.key});
 
-  //static Page<void> page() => const MaterialPage<void>(child: AuthFlowPage());
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return FlowBuilder<AuthFlowState>(
-      state: ref.watch(authFlowNotifierProvider),
-      onGeneratePages: onGenerateAppViewPages,
+    final asyncAuthValue = ref.watch(authenticationUserStreamProvider);
+
+    return AsyncValueWidget(
+      value: asyncAuthValue,
+      data: (_) => FlowBuilder<AuthFlowState>(
+        state: ref.watch(authFlowNotifierProvider),
+        onGeneratePages: onGenerateAppViewPages,
+      ),
+      loading: const Text('loading'),
     );
   }
 

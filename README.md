@@ -10,10 +10,13 @@ This project is a starting point for a Mycaselog application.
 flutter create --org com.xxx -i swift -a kotlin --description 'my log of surgeries' mycaselog
 
 ## add firebase with command
-lutterFire configure -a com.xxx.mycaselog
+flutterFire configure -a com.*** project name in your firebase account like flutterFire configure -p mycaselog-vik 
 
 ## update Podfile to add firebase compiled code
 pod 'FirebaseFirestore', :git => 'https://github.com/invertase/firestore-ios-sdk-frameworks.git', :tag => '10.24.0'
+
+## flutter_native_splash
+dart run flutter_native_splash:create
 
 ## update info.plist in Runner folder to add code for google signin - LIKE
 <key>GIDClientID</key>

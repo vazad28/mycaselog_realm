@@ -19,6 +19,10 @@ RouteBase get $casesRoute => GoRouteData.$route(
           factory: $CaseDetailsRouteExtension._fromState,
         ),
         GoRouteData.$route(
+          path: 'case_pdf',
+          factory: $CasePdfRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
           path: 'case/:caseID/:tabIndex',
           factory: $AddCaseRouteExtension._fromState,
         ),
@@ -50,6 +54,28 @@ extension $CaseDetailsRouteExtension on CaseDetailsRoute {
 
   String get location => GoRouteData.$location(
         '/cases/${Uri.encodeComponent(caseID)}/${Uri.encodeComponent(activeTab!.toString())}',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $CasePdfRouteExtension on CasePdfRoute {
+  static CasePdfRoute _fromState(GoRouterState state) => CasePdfRoute(
+        state.uri.queryParameters['case-i-d']!,
+      );
+
+  String get location => GoRouteData.$location(
+        '/cases/case_pdf',
+        queryParams: {
+          'case-i-d': caseID,
+        },
       );
 
   void go(BuildContext context) => context.go(location);

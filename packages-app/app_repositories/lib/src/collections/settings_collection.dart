@@ -44,8 +44,8 @@ class SettingsCollection extends BaseCollection<SettingsModel> {
   /// ////////////////////////////////////////////////////////////////////
   /// Realm Methods
   /// ////////////////////////////////////////////////////////////////////
-  SettingsModel getSettings() {
-    return _realm.find<SettingsModel>(_userID) ?? SettingsModelX.zero(_userID);
+  SettingsModel? getSettings() {
+    return _realm.find<SettingsModel>(_userID);
   }
 
   Future<void> saveSettings(SettingsModel object) {

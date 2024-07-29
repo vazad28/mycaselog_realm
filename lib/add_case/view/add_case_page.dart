@@ -13,8 +13,6 @@ import '../add_case.dart';
 /// AddCasePage ROOT Widget
 class AddCasePage extends ConsumerStatefulWidget {
   const AddCasePage({
-    //required this.caseModel,
-    //required this.newRecord,
     required this.caseID,
     super.key,
     this.tabIndex = 0,
@@ -22,8 +20,6 @@ class AddCasePage extends ConsumerStatefulWidget {
 
   final int tabIndex;
   final String caseID;
-  // final bool newRecord;
-  // final CaseModel caseModel;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>

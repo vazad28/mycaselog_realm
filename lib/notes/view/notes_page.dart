@@ -1,8 +1,11 @@
 import 'package:app_l10n/app_l10n.dart';
+import 'package:app_models/app_models.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:realm/realm.dart';
 
+import '../../core/core.dart';
 import '../../router/routes/notes_routes.dart';
 import '../notes.dart';
 
@@ -18,8 +21,7 @@ class _NotesPageState extends ConsumerState<NotesPage> {
 
   @override
   void dispose() {
-    Future<void>.delayed(Durations.long1)
-        .then((_) => _scrollController.dispose());
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -42,7 +44,7 @@ class _NotesPageState extends ConsumerState<NotesPage> {
           NotesAppBar(),
           SliverPadding(
             padding: EdgeInsets.all(AppSpacing.sm),
-            sliver: NotesView(),
+            sliver: _NotesView(),
           ),
         ],
       ),
@@ -55,6 +57,23 @@ class _NotesPageState extends ConsumerState<NotesPage> {
           AddNoteRoute().push<void>(context);
         },
       ),
+    );
+  }
+}
+
+class _NotesView extends ConsumerWidget {
+  const _NotesView({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return AsyncValueSliverWidget<RealmResultsChanges<NoteModel>>(
+      key: key,
+      value: ref.watch(notesNotifierProvider),
+      data: (data) {
+        return NotesView(
+          noteModels: data.results,
+        );
+      },
     );
   }
 }

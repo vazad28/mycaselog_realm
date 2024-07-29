@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:media_manager/media_manager.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../router/router.dart';
 import '../support_data/provider/support_data_provider.dart';
 import 'providers/providers.dart';
 
@@ -29,6 +30,18 @@ mixin AppMixins {
 
   SupportDataCollection supportDataCollection(WidgetRef ref) =>
       ref.watch(dbProvider).supportDataCollection;
+
+  void showBottomNavbar(WidgetRef ref) {
+    if (!ref.read(bottomNavVisibilityProvider)) {
+      ref.watch(bottomNavVisibilityProvider.notifier).update(value: true);
+    }
+  }
+
+  void hideBottomNavbar(WidgetRef ref) {
+    if (ref.read(bottomNavVisibilityProvider)) {
+      ref.watch(bottomNavVisibilityProvider.notifier).update(value: false);
+    }
+  }
 
   /// ////////////////////////////////////////////////////////////////////
   /// Media Mixins
@@ -79,30 +92,11 @@ mixin AppMixins {
   /// ////////////////////////////////////////////////////////////////////
   /// Cases Mixins
   /// ////////////////////////////////////////////////////////////////////
-  /// delete case media
-  Future<void> deleteCase(
-    WidgetRef ref,
-    CaseModel caseModel,
-  ) async {
-    try {
-      /// delete media from storage
-      for (final mediaModel in caseModel.medias) {
-        await storageCollection(ref).deleteMedia(mediaModel);
-      }
-    } on FirebaseException catch (error) {
-      debugPrint(error.toString());
-    } finally {
-      /// delete from firestore because we need to make sure the error deleting
-      /// files does not compromise this part and also we can  not reference a file
-      /// if the ref object is removed from tree if we delete caseModel itself first
-      await casesCollection(ref)
-          .upsert(caseModel.caseID, () => caseModel..removed = 1);
-    }
-  }
 
   /// get support data
   SupportDataModel getSupportData(WidgetRef ref) =>
-      supportDataCollection(ref).getSupportData();
+      supportDataCollection(ref).getSupportData() ??
+      SupportDataModelX.zero(ref.watch(userIDProvider));
 
   List<ActivableCaseField> watchActiveFieldsList(WidgetRef ref) {
     return ref.watch(

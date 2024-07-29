@@ -106,11 +106,12 @@ class _CaseTimelineItemHeaderState extends ConsumerState<CaseTimelineItemHeader>
           );
         case TimelineActionEnum.addNote:
           openTimelineNote(
-              ref,
-              TimelineNoteModelX.zero(
-                caseID: timelineItemModel.caseID,
-                authorID: ref.read(userIDProvider),
-              )..createdAt = timelineItemModel.eventTimestamp);
+            ref,
+            TimelineNoteModelX.zero(
+              caseID: timelineItemModel.caseID,
+              authorID: ref.read(userIDProvider),
+            )..createdAt = timelineItemModel.eventTimestamp,
+          );
         case TimelineActionEnum.shareMedia:
           shareMedia(
             ref,

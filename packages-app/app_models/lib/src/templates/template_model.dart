@@ -51,8 +51,8 @@ class _TemplateModel {
     );
   }
 
-  static TemplateModel fromJson(Map<String, dynamic> json) =>
-      _$TemplateModelFromJson(json).toUnmanaged();
+  // static TemplateModel fromJson(Map<String, dynamic> json) =>
+  //     _$TemplateModelFromJson(json).toUnmanaged();
 
   Map<String, dynamic> toJson() => _$TemplateModelToJson(this);
 }
@@ -69,8 +69,10 @@ extension TemplateModelX on TemplateModel {
     return templateModel;
   }
 
-  static TemplateModel fromJson(Map<String, dynamic> json) =>
-      _$TemplateModelFromJson(json).toUnmanaged();
+  static TemplateModel fromJson(Map<String, dynamic> json) {
+    json['fields'] ??= <dynamic>[];
+    return _$TemplateModelFromJson(json).toUnmanaged();
+  }
 
   Map<String, dynamic> toJson() => _$TemplateModelToJson(this);
 }

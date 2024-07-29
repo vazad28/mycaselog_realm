@@ -127,7 +127,8 @@ abstract class BaseCollection<T extends RealmObject> extends Disposable
         update: true,
       );
     }).then((_) {
-      putInFirestore(primaryKey, object);
+      logger.fine('added $T');
+      //putInFirestore(primaryKey, object);
     });
   }
 

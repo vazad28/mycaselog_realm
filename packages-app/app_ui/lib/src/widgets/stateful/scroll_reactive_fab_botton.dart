@@ -52,12 +52,6 @@ class _ScrollReactiveFabButtonState extends State<ScrollReactiveFabButton> {
     });
   }
 
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
-
   Widget _child(VoidCallback? action) {
     return FloatingActionButton.extended(
       key: const Key('ScrollReactiveFabButtonKey'),

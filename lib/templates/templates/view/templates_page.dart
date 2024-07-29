@@ -17,13 +17,17 @@ class TemplatesPage extends ConsumerStatefulWidget {
 }
 
 class _TemplatesPageState extends ConsumerState<TemplatesPage> {
-  final _scrollController = ScrollController();
+  late ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+  }
 
   @override
   void dispose() {
-    /// to prevent error - scroll controlled used after disposed
-    Future<void>.delayed(Durations.long1)
-        .then((_) => _scrollController.dispose());
+    _scrollController.dispose();
     super.dispose();
   }
 

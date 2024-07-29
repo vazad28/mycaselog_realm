@@ -100,23 +100,26 @@ class $TemplateFieldModel {
     );
   }
 
-  static TemplateFieldModel fromJson(Map<String, dynamic> json) =>
-      TemplateFieldModelX.fromJson(json);
+  static TemplateFieldModel fromJson(Map<String, dynamic> json) {
+    json['options'] ??= <String>[];
+    return TemplateFieldModelX.fromJson(json);
+  }
 
   Map<String, dynamic> toJson() => _$$TemplateFieldModelToJson(this);
 }
 
 extension TemplateFieldModelX on TemplateFieldModel {
   static TemplateFieldModel zero() {
-    final templateFieldModel = TemplateFieldModel(
-      ModelUtils.uniqueID,
-    );
+    final templateFieldModel =
+        TemplateFieldModel(ModelUtils.uniqueID, options: <String>[]);
 
     return templateFieldModel;
   }
 
-  static TemplateFieldModel fromJson(Map<String, dynamic> json) =>
-      _$$TemplateFieldModelFromJson(json).toUnmanaged();
+  static TemplateFieldModel fromJson(Map<String, dynamic> json) {
+    json['options'] ??= <String>[];
+    return _$$TemplateFieldModelFromJson(json).toUnmanaged();
+  }
 
-  Map<String, dynamic> toJson() => _$$TemplateFieldModelToJson(this);
+  //Map<String, dynamic> toJson() => _$$TemplateFieldModelToJson(this);
 }

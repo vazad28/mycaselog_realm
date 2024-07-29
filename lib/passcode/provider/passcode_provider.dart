@@ -12,12 +12,13 @@ const passcodeClaimsKey = 'mclPasscode';
 @riverpod
 class PasscodeNotifier extends _$PasscodeNotifier {
   @override
-  Future<void> build() async {
+  Future<String> build() async {
     /// await for all initialization code to be complete before returning
     final passcode = await _loadUserPasscode();
-
+    //rint('passcode $passcode');
     /// so we have passcode. lets set this up in the provider
     ref.watch(passcodeProvider.notifier).update((_) => passcode);
+    return passcode;
   }
 
   /// Method will check custom claims to see if the passcode exist in the

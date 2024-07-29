@@ -29,8 +29,7 @@ class StatsRepository {
   CasesCollection get _casesCollection => ref.watch(dbProvider).casesCollection;
 
   ///get full text search result ids
-  Iterable<String> _getSearchIds(String? searchTermProcessed) {
-    if (searchTermProcessed == null) return [];
+  Iterable<String> _getSearchIds(String searchTermProcessed) {
     final searchRes =
         ref.watch(dbProvider).casesCollection.search(searchTermProcessed);
     // list of case IDs matching the search term
@@ -46,16 +45,15 @@ class StatsRepository {
 
     assert(toStamp > fromStamp, 'FromTime can not be less than ToTime');
 
-    // /must keep this null coz getFtsCaseIds can return null
-    Iterable<String> idList;
-
     // if we have search term or filter term (just processed search term)
-    // fill in the idlist
-    idList =
-        _getSearchIds(chartReqModel.filterClause ?? chartReqModel.searchTerm);
+    final searchTerm = chartReqModel.filterClause ?? chartReqModel.searchTerm;
+    Iterable<String>? idList;
 
-    if (idList.isEmpty) {
-      return Result.failure(const AppFailure.noStatsData());
+    if (searchTerm != null) {
+      idList = _getSearchIds(searchTerm);
+      if (idList.isEmpty) {
+        return Result.failure(const AppFailure.noStatsData());
+      }
     }
 
     final caseModels = _casesCollection.casesBetweenTimestamp(

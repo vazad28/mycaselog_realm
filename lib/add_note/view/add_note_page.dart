@@ -47,13 +47,18 @@ class _AddNotePageState extends ConsumerState<AddNotePage> with LoggerMixin {
   @override
   void initState() {
     super.initState();
-    _loadDocument();
     _editorFocusNode.addListener(() {
       if (_editorHasFocus != _editorFocusNode.hasFocus) {
         setState(() {
           _editorHasFocus = !_editorHasFocus;
         });
       }
+    });
+
+    /// to prevent error
+    /// dependOnInheritedElement() was called before initstate() in flutter
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadDocument();
     });
   }
 
@@ -106,6 +111,18 @@ class _AddNotePageState extends ConsumerState<AddNotePage> with LoggerMixin {
               );
             },
             menuChildren: [
+              MenuItemButton(
+                child: const Icon(Icons.delete),
+                onPressed: () {
+                  ref
+                      .watch(dbProvider)
+                      .notesCollection
+                      .deleteNote(_noteModel)
+                      .then((res) {
+                    if (context.mounted) Navigator.of(context).pop();
+                  });
+                },
+              ),
               MenuItemButton(
                 onPressed: () async {
                   await loader.loadFonts();

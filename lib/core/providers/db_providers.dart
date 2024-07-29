@@ -7,6 +7,7 @@ Future<RealmDatabase> realmDatabase(RealmDatabaseRef ref) async {
   final user = await userFuture;
 
   final realmDb = await RealmDatabase.init(user);
+
   ref.onDispose(realmDb.dispose);
 
   return realmDb;

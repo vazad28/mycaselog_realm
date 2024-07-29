@@ -1,7 +1,7 @@
 /// Namespace for Default App Breakpoints
 abstract class Breakpoints {
   /// Max width for a small layout.
-  static const double mobile = 760;
+  static const double mobile = 480;
 
   /// Max width for a medium layout.
   static const double tablets = 1644;

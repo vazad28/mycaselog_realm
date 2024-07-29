@@ -1,8 +1,10 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../settings/settings.dart';
 import '../../support_data/support_data.dart';
+import '../../sync/sync.dart';
 import '../../templates/index.dart';
 import '../../user_profile/user_profile.dart';
 import '../utils/route_animations.dart';
@@ -49,6 +51,11 @@ part '../../generated/router/routes/settings_routes.g.dart';
           path: SharedTemplatesRoute.path,
         ),
       ],
+    ),
+
+    /// sync route
+    TypedGoRoute<SyncRoute>(
+      path: SyncRoute.path,
     ),
   ],
 )
@@ -191,17 +198,16 @@ class SharedTemplatesRoute extends GoRouteData {
       SharedTemplatesPage(speciality: speciality);
 }
 
-/// Speciality shared template route
-// class SharedTemplateRoute extends GoRouteData {
-//   SharedTemplateRoute({required this.speciality, this.templateID = 'new'});
+/// Sync data Route
+class SyncRoute extends GoRouteData {
+  const SyncRoute();
+  static const name = 'sync';
+  static const path = name;
 
-//   static const name = 'shared_template/:templateID';
-//   static const path = name;
-
-//   final String templateID;
-//   final String speciality;
-
-//   @override
-//   Widget build(BuildContext context, GoRouterState state) =>
-//       SharedTemplatePage(templateID: templateID, speciality: speciality);
-// }
+  @override
+  Page buildPage(BuildContext context, GoRouterState state) =>
+      SharedAxisTransitionPage(
+          key: state.pageKey,
+          child: const SyncPage(),
+          transitionType: SharedAxisTransitionType.horizontal);
+}

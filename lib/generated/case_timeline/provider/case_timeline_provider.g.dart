@@ -6,7 +6,25 @@ part of '../../../case_timeline/provider/case_timeline_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$casesDetailsMediaHash() => r'0bdeb10b6089c4c71599024b21260e1195b16bb9';
+String _$caseTimelineNotifierHash() =>
+    r'65131835dd7004b89350ca41b03f507a2fede61f';
+
+/// See also [CaseTimelineNotifier].
+@ProviderFor(CaseTimelineNotifier)
+final caseTimelineNotifierProvider = AutoDisposeNotifierProvider<
+    CaseTimelineNotifier, AsyncValue<List<TimelineItemModel>>>.internal(
+  CaseTimelineNotifier.new,
+  name: r'caseTimelineNotifierProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$caseTimelineNotifierHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$CaseTimelineNotifier
+    = AutoDisposeNotifier<AsyncValue<List<TimelineItemModel>>>;
+String _$caseTimelineHash() => r'782398033f91fb7684af9fbda53f70e5e088395a';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,14 +47,23 @@ class _SystemHash {
   }
 }
 
-/// See also [casesDetailsMedia].
-@ProviderFor(casesDetailsMedia)
-const casesDetailsMediaProvider = CasesDetailsMediaFamily();
+abstract class _$CaseTimeline
+    extends BuildlessAutoDisposeNotifier<List<TimelineItemModel>> {
+  late final CaseModel caseModel;
 
-/// See also [casesDetailsMedia].
-class CasesDetailsMediaFamily extends Family {
-  /// See also [casesDetailsMedia].
-  const CasesDetailsMediaFamily();
+  List<TimelineItemModel> build(
+    CaseModel caseModel,
+  );
+}
+
+/// See also [CaseTimeline].
+@ProviderFor(CaseTimeline)
+const caseTimelineProvider = CaseTimelineFamily();
+
+/// See also [CaseTimeline].
+class CaseTimelineFamily extends Family {
+  /// See also [CaseTimeline].
+  const CaseTimelineFamily();
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
 
@@ -50,359 +77,157 @@ class CasesDetailsMediaFamily extends Family {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'casesDetailsMediaProvider';
+  String? get name => r'caseTimelineProvider';
 
-  /// See also [casesDetailsMedia].
-  CasesDetailsMediaProvider call(
-    String caseID,
+  /// See also [CaseTimeline].
+  CaseTimelineProvider call(
+    CaseModel caseModel,
   ) {
-    return CasesDetailsMediaProvider(
-      caseID,
+    return CaseTimelineProvider(
+      caseModel,
     );
   }
 
   @visibleForOverriding
   @override
-  CasesDetailsMediaProvider getProviderOverride(
-    covariant CasesDetailsMediaProvider provider,
+  CaseTimelineProvider getProviderOverride(
+    covariant CaseTimelineProvider provider,
   ) {
     return call(
-      provider.caseID,
+      provider.caseModel,
     );
   }
 
   /// Enables overriding the behavior of this provider, no matter the parameters.
-  Override overrideWith(
-      Stream<RealmResultsChanges<MediaModel>> Function(CasesDetailsMediaRef ref)
-          create) {
-    return _$CasesDetailsMediaFamilyOverride(this, create);
+  Override overrideWith(CaseTimeline Function() create) {
+    return _$CaseTimelineFamilyOverride(this, create);
   }
 }
 
-class _$CasesDetailsMediaFamilyOverride implements FamilyOverride {
-  _$CasesDetailsMediaFamilyOverride(this.overriddenFamily, this.create);
+class _$CaseTimelineFamilyOverride implements FamilyOverride {
+  _$CaseTimelineFamilyOverride(this.overriddenFamily, this.create);
 
-  final Stream<RealmResultsChanges<MediaModel>> Function(
-      CasesDetailsMediaRef ref) create;
-
-  @override
-  final CasesDetailsMediaFamily overriddenFamily;
+  final CaseTimeline Function() create;
 
   @override
-  CasesDetailsMediaProvider getProviderOverride(
-    covariant CasesDetailsMediaProvider provider,
+  final CaseTimelineFamily overriddenFamily;
+
+  @override
+  CaseTimelineProvider getProviderOverride(
+    covariant CaseTimelineProvider provider,
   ) {
     return provider._copyWith(create);
   }
 }
 
-/// See also [casesDetailsMedia].
-class CasesDetailsMediaProvider
-    extends AutoDisposeStreamProvider<RealmResultsChanges<MediaModel>> {
-  /// See also [casesDetailsMedia].
-  CasesDetailsMediaProvider(
-    String caseID,
+/// See also [CaseTimeline].
+class CaseTimelineProvider extends AutoDisposeNotifierProviderImpl<CaseTimeline,
+    List<TimelineItemModel>> {
+  /// See also [CaseTimeline].
+  CaseTimelineProvider(
+    CaseModel caseModel,
   ) : this._internal(
-          (ref) => casesDetailsMedia(
-            ref as CasesDetailsMediaRef,
-            caseID,
-          ),
-          from: casesDetailsMediaProvider,
-          name: r'casesDetailsMediaProvider',
+          () => CaseTimeline()..caseModel = caseModel,
+          from: caseTimelineProvider,
+          name: r'caseTimelineProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$casesDetailsMediaHash,
-          dependencies: CasesDetailsMediaFamily._dependencies,
+                  : _$caseTimelineHash,
+          dependencies: CaseTimelineFamily._dependencies,
           allTransitiveDependencies:
-              CasesDetailsMediaFamily._allTransitiveDependencies,
-          caseID: caseID,
+              CaseTimelineFamily._allTransitiveDependencies,
+          caseModel: caseModel,
         );
 
-  CasesDetailsMediaProvider._internal(
+  CaseTimelineProvider._internal(
     super.create, {
     required super.name,
     required super.dependencies,
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.caseID,
+    required this.caseModel,
   }) : super.internal();
 
-  final String caseID;
+  final CaseModel caseModel;
 
   @override
-  Override overrideWith(
-    Stream<RealmResultsChanges<MediaModel>> Function(CasesDetailsMediaRef ref)
-        create,
+  List<TimelineItemModel> runNotifierBuild(
+    covariant CaseTimeline notifier,
   ) {
+    return notifier.build(
+      caseModel,
+    );
+  }
+
+  @override
+  Override overrideWith(CaseTimeline Function() create) {
     return ProviderOverride(
       origin: this,
-      override: CasesDetailsMediaProvider._internal(
-        (ref) => create(ref as CasesDetailsMediaRef),
+      override: CaseTimelineProvider._internal(
+        () => create()..caseModel = caseModel,
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        caseID: caseID,
+        caseModel: caseModel,
       ),
     );
   }
 
   @override
-  (String,) get argument {
-    return (caseID,);
+  (CaseModel,) get argument {
+    return (caseModel,);
   }
 
   @override
-  AutoDisposeStreamProviderElement<RealmResultsChanges<MediaModel>>
+  AutoDisposeNotifierProviderElement<CaseTimeline, List<TimelineItemModel>>
       createElement() {
-    return _CasesDetailsMediaProviderElement(this);
+    return _CaseTimelineProviderElement(this);
   }
 
-  CasesDetailsMediaProvider _copyWith(
-    Stream<RealmResultsChanges<MediaModel>> Function(CasesDetailsMediaRef ref)
-        create,
+  CaseTimelineProvider _copyWith(
+    CaseTimeline Function() create,
   ) {
-    return CasesDetailsMediaProvider._internal(
-      (ref) => create(ref as CasesDetailsMediaRef),
+    return CaseTimelineProvider._internal(
+      () => create()..caseModel = caseModel,
       name: name,
       dependencies: dependencies,
       allTransitiveDependencies: allTransitiveDependencies,
       debugGetCreateSourceHash: debugGetCreateSourceHash,
       from: from,
-      caseID: caseID,
+      caseModel: caseModel,
     );
   }
 
   @override
   bool operator ==(Object other) {
-    return other is CasesDetailsMediaProvider && other.caseID == caseID;
+    return other is CaseTimelineProvider && other.caseModel == caseModel;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, caseID.hashCode);
+    hash = _SystemHash.combine(hash, caseModel.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
 
-mixin CasesDetailsMediaRef
-    on AutoDisposeStreamProviderRef<RealmResultsChanges<MediaModel>> {
-  /// The parameter `caseID` of this provider.
-  String get caseID;
+mixin CaseTimelineRef
+    on AutoDisposeNotifierProviderRef<List<TimelineItemModel>> {
+  /// The parameter `caseModel` of this provider.
+  CaseModel get caseModel;
 }
 
-class _CasesDetailsMediaProviderElement
-    extends AutoDisposeStreamProviderElement<RealmResultsChanges<MediaModel>>
-    with CasesDetailsMediaRef {
-  _CasesDetailsMediaProviderElement(super.provider);
+class _CaseTimelineProviderElement extends AutoDisposeNotifierProviderElement<
+    CaseTimeline, List<TimelineItemModel>> with CaseTimelineRef {
+  _CaseTimelineProviderElement(super.provider);
 
   @override
-  String get caseID => (origin as CasesDetailsMediaProvider).caseID;
+  CaseModel get caseModel => (origin as CaseTimelineProvider).caseModel;
 }
-
-String _$casesDetailsNotesHash() => r'f14e0c30bcb64940f4f1c60c164397c950b40c95';
-
-/// See also [casesDetailsNotes].
-@ProviderFor(casesDetailsNotes)
-const casesDetailsNotesProvider = CasesDetailsNotesFamily();
-
-/// See also [casesDetailsNotes].
-class CasesDetailsNotesFamily extends Family {
-  /// See also [casesDetailsNotes].
-  const CasesDetailsNotesFamily();
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'casesDetailsNotesProvider';
-
-  /// See also [casesDetailsNotes].
-  CasesDetailsNotesProvider call(
-    String caseID,
-  ) {
-    return CasesDetailsNotesProvider(
-      caseID,
-    );
-  }
-
-  @visibleForOverriding
-  @override
-  CasesDetailsNotesProvider getProviderOverride(
-    covariant CasesDetailsNotesProvider provider,
-  ) {
-    return call(
-      provider.caseID,
-    );
-  }
-
-  /// Enables overriding the behavior of this provider, no matter the parameters.
-  Override overrideWith(
-      Stream<RealmResultsChanges<TimelineNoteModel>> Function(
-              CasesDetailsNotesRef ref)
-          create) {
-    return _$CasesDetailsNotesFamilyOverride(this, create);
-  }
-}
-
-class _$CasesDetailsNotesFamilyOverride implements FamilyOverride {
-  _$CasesDetailsNotesFamilyOverride(this.overriddenFamily, this.create);
-
-  final Stream<RealmResultsChanges<TimelineNoteModel>> Function(
-      CasesDetailsNotesRef ref) create;
-
-  @override
-  final CasesDetailsNotesFamily overriddenFamily;
-
-  @override
-  CasesDetailsNotesProvider getProviderOverride(
-    covariant CasesDetailsNotesProvider provider,
-  ) {
-    return provider._copyWith(create);
-  }
-}
-
-/// See also [casesDetailsNotes].
-class CasesDetailsNotesProvider
-    extends AutoDisposeStreamProvider<RealmResultsChanges<TimelineNoteModel>> {
-  /// See also [casesDetailsNotes].
-  CasesDetailsNotesProvider(
-    String caseID,
-  ) : this._internal(
-          (ref) => casesDetailsNotes(
-            ref as CasesDetailsNotesRef,
-            caseID,
-          ),
-          from: casesDetailsNotesProvider,
-          name: r'casesDetailsNotesProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$casesDetailsNotesHash,
-          dependencies: CasesDetailsNotesFamily._dependencies,
-          allTransitiveDependencies:
-              CasesDetailsNotesFamily._allTransitiveDependencies,
-          caseID: caseID,
-        );
-
-  CasesDetailsNotesProvider._internal(
-    super.create, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.caseID,
-  }) : super.internal();
-
-  final String caseID;
-
-  @override
-  Override overrideWith(
-    Stream<RealmResultsChanges<TimelineNoteModel>> Function(
-            CasesDetailsNotesRef ref)
-        create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: CasesDetailsNotesProvider._internal(
-        (ref) => create(ref as CasesDetailsNotesRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        caseID: caseID,
-      ),
-    );
-  }
-
-  @override
-  (String,) get argument {
-    return (caseID,);
-  }
-
-  @override
-  AutoDisposeStreamProviderElement<RealmResultsChanges<TimelineNoteModel>>
-      createElement() {
-    return _CasesDetailsNotesProviderElement(this);
-  }
-
-  CasesDetailsNotesProvider _copyWith(
-    Stream<RealmResultsChanges<TimelineNoteModel>> Function(
-            CasesDetailsNotesRef ref)
-        create,
-  ) {
-    return CasesDetailsNotesProvider._internal(
-      (ref) => create(ref as CasesDetailsNotesRef),
-      name: name,
-      dependencies: dependencies,
-      allTransitiveDependencies: allTransitiveDependencies,
-      debugGetCreateSourceHash: debugGetCreateSourceHash,
-      from: from,
-      caseID: caseID,
-    );
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is CasesDetailsNotesProvider && other.caseID == caseID;
-  }
-
-  @override
-  int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, caseID.hashCode);
-
-    return _SystemHash.finish(hash);
-  }
-}
-
-mixin CasesDetailsNotesRef
-    on AutoDisposeStreamProviderRef<RealmResultsChanges<TimelineNoteModel>> {
-  /// The parameter `caseID` of this provider.
-  String get caseID;
-}
-
-class _CasesDetailsNotesProviderElement
-    extends AutoDisposeStreamProviderElement<
-        RealmResultsChanges<TimelineNoteModel>> with CasesDetailsNotesRef {
-  _CasesDetailsNotesProviderElement(super.provider);
-
-  @override
-  String get caseID => (origin as CasesDetailsNotesProvider).caseID;
-}
-
-String _$caseTimelineNotifierHash() =>
-    r'426f1c9ef1f72f3153d664160b51abff67b6a27a';
-
-/// See also [CaseTimelineNotifier].
-@ProviderFor(CaseTimelineNotifier)
-final caseTimelineNotifierProvider = AutoDisposeNotifierProvider<
-    CaseTimelineNotifier, AsyncValue<List<TimelineItemModel>>>.internal(
-  CaseTimelineNotifier.new,
-  name: r'caseTimelineNotifierProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$caseTimelineNotifierHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$CaseTimelineNotifier
-    = AutoDisposeNotifier<AsyncValue<List<TimelineItemModel>>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, inference_failure_on_uninitialized_variable, inference_failure_on_function_return_type, inference_failure_on_untyped_parameter, deprecated_member_use_from_same_package

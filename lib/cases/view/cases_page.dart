@@ -25,9 +25,7 @@ class _CasesPageState extends ConsumerState<CasesPage>
 
   @override
   void dispose() {
-    /// to prevent error - scroll controlled used after disposed
-    Future<void>.delayed(Durations.short1)
-        .then((_) => _scrollController.dispose());
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -55,7 +53,13 @@ class _CasesPageState extends ConsumerState<CasesPage>
             onRefresh: () =>
                 ref.watch(casesNotifierProvider.notifier).pullToRefresh(),
           ),
-          const _CasesView(key: Key('__cases_view_sub_key__')),
+          const SliverPadding(
+            sliver: _CasesView(key: Key('__cases_view_sub_key__')),
+            padding: EdgeInsets.symmetric(
+              vertical: AppSpacing.sm,
+              horizontal: AppSpacing.xs,
+            ),
+          ),
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,

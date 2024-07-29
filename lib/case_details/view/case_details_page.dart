@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app_extensions/app_extensions.dart';
+import 'package:app_l10n/app_l10n.dart';
 import 'package:app_models/app_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -125,21 +126,21 @@ class _CaseDetailsPageState extends ConsumerState<CaseDetailsPage>
       if (!mounted || selected == null) return null;
 
       if (selected.action == CaseDetailsActionEnum.generateCasePdf) {
-        // ignore: use_build_context_synchronously
-        // AppVars.rootContext.openModalScreen<CaseModel?>(
-        //   CasePdfPage(
-        //     caseModel: watchCaseDetailsModel(ref).requireValue,
-        //   ),
-        // );
+        CasePdfRoute(widget.caseID).push<void>(context);
       } else if (selected.action == CaseDetailsActionEnum.duplicateCase) {
-        context.showSnackBar('Not implemented yet');
-        // return AddCaseRoute(getDuplicateCase(ref))
-        //     .push<String?>(context)
-        //     .then((caseID) async {
-        //   if (caseID != null) reSeedCaseDetailsPage(ref, caseID);
+        // final currentCaseModel = watchCaseDetailsModel(ref).requireValue;
+        // duplicateCase(ref, currentCaseModel).then((newCaseID) {
+        //   if (mounted) AddCaseRoute(caseID: newCaseID).pushReplacement(context);
         // });
+        ref.watch(dialogServiceProvider).showSnackBar('Not yet implemented');
       } else if (selected.action == CaseDetailsActionEnum.deleteCase) {
-        context.showSnackBar('Not implemented yet');
+        context
+            .showConfirmDialog(S.of(context).contentHardDeleteWarning)
+            .then((res) {
+          if (!res) return;
+          final currentCaseModel = watchCaseDetailsModel(ref).requireValue;
+          deleteCase(ref, currentCaseModel);
+        });
       }
     });
   }

@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:app_ui/app_ui.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -10,7 +9,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger_client/logger_client.dart';
 
-import 'core/providers/providers.dart';
+import 'auth_flow/auth_flow.dart';
 import 'firebase_options.dart';
 import 'main/bootstrap.dart';
 import 'main/mycaselog_app.dart';
@@ -78,19 +77,11 @@ class AppStartupWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authUserState = ref.watch(authenticationUserStreamProvider);
+    final authUserState = ref.watch(authFlowNotifierProvider);
 
-    return authUserState.when(
-      data: (user) => user.isAnonymous
-          ? needsAuthentication(context)
-          : onAuthenticated(context),
-      loading: () => const Loading(),
-      error: (e, st) => Loading(
-        text: e.toString(),
-        // onRetry: () {
-        //   ref.invalidate(appStartupProvider);
-        // },
-      ),
+    return authUserState.maybeWhen(
+      authorized: (_) => onAuthenticated(context),
+      orElse: () => needsAuthentication(context),
     );
   }
 }
