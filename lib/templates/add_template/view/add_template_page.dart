@@ -101,7 +101,7 @@ class _AddTemplatePageController extends ConsumerState<AddTemplatePage>
     final userModel = ref.read(dbProvider).userCollection.getSingle(userID);
 
     if (userModel?.speciality?.isEmpty ?? true) {
-      _needUserSpeciality();
+      delay(500).then((_) => _needUserSpeciality());
     } else {
       seedFormProvider(ref, widget.templateID, userModel!.speciality!);
     }

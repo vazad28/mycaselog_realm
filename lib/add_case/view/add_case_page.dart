@@ -1,3 +1,5 @@
+import 'package:app_annotations/app_annotations.dart';
+import 'package:app_extensions/app_extensions.dart';
 import 'package:app_l10n/app_l10n.dart';
 import 'package:app_models/app_models.dart';
 import 'package:app_ui/app_ui.dart';
@@ -6,29 +8,28 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger_client/logger_client.dart';
 import 'package:misc_packages/misc_packages.dart';
+import 'package:recase/recase.dart';
 import 'package:state_of/state_of.dart';
 
+import '../../core/app_mixins.dart';
+import '../../core/core.dart';
 import '../add_case.dart';
 
-/// AddCasePage ROOT Widget
-class AddCasePage extends ConsumerStatefulWidget {
-  const AddCasePage({
-    required this.caseID,
-    super.key,
-    this.tabIndex = 0,
-  });
+import 'tabs/basic_data_tab_view.dart';
+import 'tabs/template_data_tab_view.dart';
 
-  final int tabIndex;
+class AddCasePage extends ConsumerStatefulWidget {
+  const AddCasePage({required this.caseID, required this.tabIndex, super.key});
+
   final String caseID;
+  final int tabIndex;
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _AddCasePageController();
+  ConsumerState<ConsumerStatefulWidget> createState() => _AddCasePageState();
 }
 
-/// AddCasePage CONTROLLER Widget
-class _AddCasePageController extends ConsumerState<AddCasePage>
-    with SingleTickerProviderStateMixin, LoggerMixin, AddCaseMixin {
+class _AddCasePageState extends ConsumerState<AddCasePage>
+    with SingleTickerProviderStateMixin, LoggerMixin, AppMixins, AddCaseMixin {
   /// late variable
   late TabController _tabController;
 
@@ -39,24 +40,29 @@ class _AddCasePageController extends ConsumerState<AddCasePage>
 
     /// Seed the case provider
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      ref.watch(addCaseSeederProvider.notifier).seed(widget.caseID);
+      hideBottomNavbar(ref);
 
       Future<void>.delayed(const Duration(milliseconds: 300)).then((value) {
         if (widget.tabIndex > 0) _tabController.animateTo(widget.tabIndex);
       });
+
+      ref.watch(addCaseSeederProvider.notifier).seed(widget.caseID);
     });
 
     super.initState();
   }
 
   @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    ref.listen<StateOf<CaseModel>>(addCaseNotifierProvider, (prev, next) {
+    ref.listen<StateOf<CaseModel>>(addCaseFormSubmitProvider, (prev, next) {
       if (next.isSuccess) {
         logger.info('AddCaseForm submit success');
-
-        /// we send the caseModel caseID to reload the caseModel on caseDetails
-        /// screeen on pop and update the view with new values
         Navigator.of(context).pop();
         return;
       }
@@ -84,64 +90,59 @@ class _AddCasePageController extends ConsumerState<AddCasePage>
         actions: const [
           _SubmitButton(),
         ],
-        bottom: AddCaseTabBar(tabController: _tabController),
+        bottom: TabBar(
+          controller: _tabController,
+          labelColor: context.colorScheme.secondary,
+          unselectedLabelColor: context.colorScheme.onSurfaceVariant,
+          indicatorSize: TabBarIndicatorSize.tab,
+          tabs: [
+            Tab(
+              text: CaseDetailsTabsEnum.values.names[0].titleCase.toUpperCase(),
+            ),
+            Tab(
+              text: CaseDetailsTabsEnum.values.names[1].titleCase.toUpperCase(),
+            ),
+          ],
+        ),
       ),
-      body: _AddCasePageView(this),
+      body: SafeArea(
+        top: false, //critical
+        child: AsyncValueWidget(
+          value: ref.watch(addCaseSeederProvider),
+          data: (_) => TabBarView(
+            controller: _tabController,
+            children: const [
+              KeepAliveWrapper(
+                key: Key('__basic_case_data_add_case_tab__'),
+                child: BasicDataTabView(),
+              ),
+              KeepAliveWrapper(
+                key: Key('__template_case_data_add_case_tab__'),
+                child: TemplateDataTabView(),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
 
     return FormPopScopeWrapper(
       canPop: () => canPop(ref),
-      visibilitySwitcher: (visibility) {
-        switchNavBarVisibility(ref, visibility: visibility);
+      visibilitySwitcher: (visibile) {
+        visibile ? showBottomNavbar(ref) : hideBottomNavbar(ref);
       },
       routeObserver: pageRouteObserver(ref),
       child: scaffold,
     );
-
-    //return scaffold;
-  }
-
-  /// controller methods
-  bool get _isFormSeeded => isFormSeeded(ref);
-}
-
-/// AddCasePage VIEW Widget
-class _AddCasePageView extends WidgetView<AddCasePage, _AddCasePageController> {
-  const _AddCasePageView(super.state);
-
-  @override
-  Widget build(BuildContext context) {
-    return !state._isFormSeeded
-        ? const Loading()
-        : SafeArea(
-            top: false, //critical
-            child: TabBarView(
-              controller: state._tabController,
-              children: const [
-                KeepAliveWrapper(
-                  key: Key('__basic_case_data_add_case_tab__'),
-                  child: BasicDataTabView(),
-                ),
-                KeepAliveWrapper(
-                  key: Key('__template_case_data_add_case_tab__'),
-                  child: TemplateDataTabView(),
-                ),
-              ],
-            ),
-          );
   }
 }
-
-/// ////////////////////////////////////////////////////////////////////
-/// Local class
-/// ////////////////////////////////////////////////////////////////////
 
 class _SubmitButton extends ConsumerWidget with AddCaseMixin {
   const _SubmitButton();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final status = formSubmitStatus(ref);
+    final status = ref.watch(addCaseFormSubmitProvider);
 
     return status.maybeWhen(
       loading: (_) => IconButton(
@@ -150,7 +151,7 @@ class _SubmitButton extends ConsumerWidget with AddCaseMixin {
       ),
       orElse: () => TextButton(
         child: Text(S.of(context).save),
-        onPressed: () => onSubmit(ref),
+        onPressed: () => ref.watch(addCaseFormSubmitProvider.notifier).submit(),
       ),
     );
   }

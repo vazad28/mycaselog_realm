@@ -31,6 +31,9 @@ mixin AppMixins {
   SupportDataCollection supportDataCollection(WidgetRef ref) =>
       ref.watch(dbProvider).supportDataCollection;
 
+  /// ////////////////////////////////////////////////////////////////////
+  /// Show hide bottom nav bar Mixins
+  /// ////////////////////////////////////////////////////////////////////
   void showBottomNavbar(WidgetRef ref) {
     if (!ref.read(bottomNavVisibilityProvider)) {
       ref.watch(bottomNavVisibilityProvider.notifier).update(value: true);
@@ -90,13 +93,17 @@ mixin AppMixins {
   }
 
   /// ////////////////////////////////////////////////////////////////////
-  /// Cases Mixins
+  /// Support data Mixins
   /// ////////////////////////////////////////////////////////////////////
 
   /// get support data
   SupportDataModel getSupportData(WidgetRef ref) =>
       supportDataCollection(ref).getSupportData() ??
       SupportDataModelX.zero(ref.watch(userIDProvider));
+
+  List<T> supportDataSelect<T>(
+          WidgetRef ref, List<T> Function(SupportDataModel) selectCallback) =>
+      ref.watch(supportDataNotifierProvider.select(selectCallback));
 
   List<ActivableCaseField> watchActiveFieldsList(WidgetRef ref) {
     return ref.watch(
@@ -111,4 +118,17 @@ mixin AppMixins {
       }),
     );
   }
+
+  /// Encrypt patient Model
+  String encryptDecryptedPatientModel(
+    WidgetRef ref,
+    DecryptedPatientModel decryptedPatientModel,
+  ) =>
+      ref
+          .watch(encryptPatientModelProvider(decryptedPatientModel))
+          .when(success: (success) => success, failure: (f) => throw f);
+
+  DecryptedPatientModel decryptPatientModel(WidgetRef ref, String crypt) => ref
+      .watch(decryptPatientModelProvider(crypt))
+      .when(success: (success) => success, failure: (f) => throw f);
 }

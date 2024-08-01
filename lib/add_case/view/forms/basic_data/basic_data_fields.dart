@@ -1,15 +1,4 @@
-import 'package:app_l10n/app_l10n.dart';
-import 'package:app_models/app_models.dart';
-import 'package:app_ui/app_ui.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
-import 'package:misc_packages/misc_packages.dart';
-import 'package:reactive_forms/reactive_forms.dart';
-import 'package:recase/recase.dart';
-
-import '../../../../auto_complete/auto_complete.dart';
-import '../../../add_case.dart';
+part of '../forms.dart';
 
 /// ----- Surgery Date -----
 class SurgeryDateField extends StatelessWidget {
@@ -21,7 +10,6 @@ class SurgeryDateField extends StatelessWidget {
       formControlName: BasicDataModelProps.surgeryDate.name,
       type: ReactiveTimestampPickerFieldType.dateTime,
       dateFormat: DateFormat('MMM dd, yyyy'),
-      //showClearIcon: false,
       decoration: context.inputDecorOutline(
         labelText: BasicDataModelProps.surgeryDate.name,
         suffixIcon: const Icon(ThemeConstants.suffixIcon),
@@ -164,14 +152,15 @@ class EblField extends StatelessWidget {
 }
 
 /// ----- Location Field -----
-class SurgeryLocationField extends ConsumerWidget with AddCaseMixin {
+class SurgeryLocationField extends ConsumerWidget with AppMixins {
   const SurgeryLocationField({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final name = BasicDataModelProps.location.name;
 
-    final options = watchSurgeryLocations(ref);
+    final options = supportDataSelect<SurgeryLocationModel>(
+        ref, (supportData) => supportData.surgeryLocations);
 
     final items = options
         .map(
@@ -218,14 +207,17 @@ class AnesthesiaField extends ConsumerWidget {
 }
 
 /// ----- Anesthesia Block Field -----
-class AnesthesiaBlockField extends ConsumerWidget with AddCaseMixin {
+class AnesthesiaBlockField extends ConsumerWidget with AppMixins {
   const AnesthesiaBlockField({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final name = BasicDataModelProps.anesthesiaBlock.name;
 
-    final options = watchAnesthesiaBlocks(ref);
+    //final options = watchAnesthesiaBlocks(ref);
+    final options = supportDataSelect<String>(
+        ref, (supportData) => supportData.anesthesiaBlocks);
+
     final items = options
         .map((e) => RadioSelectOption<String>(title: e.titleCase, value: e))
         .toList();
@@ -240,13 +232,15 @@ class AnesthesiaBlockField extends ConsumerWidget with AddCaseMixin {
 }
 
 /// ----- Assistants Field -----
-class AssistantsField extends ConsumerWidget with AddCaseMixin {
+class AssistantsField extends ConsumerWidget with AppMixins {
   const AssistantsField({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final name = BasicDataModelProps.assistant.name;
-    final options = watchAssistantModels(ref);
+    //final options = watchAssistantModels(ref);
+    final options = supportDataSelect<AssistantModel>(
+        ref, (supportData) => supportData.assistants);
 
     final items = options
         .map(

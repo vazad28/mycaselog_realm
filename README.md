@@ -40,3 +40,6 @@ dart run flutter_native_splash:create
 </array>
 <!-- End of the Google Sign-in Section -->
 
+
+## Build for android
+flutter build apk --split-per-abi

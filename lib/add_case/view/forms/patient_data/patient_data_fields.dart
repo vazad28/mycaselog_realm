@@ -1,21 +1,7 @@
-import 'package:app_extensions/app_extensions.dart';
-import 'package:app_l10n/app_l10n.dart';
-import 'package:app_models/app_models.dart';
-import 'package:app_ui/app_ui.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:misc_packages/misc_packages.dart';
-import 'package:reactive_forms/reactive_forms.dart';
-import 'package:recase/recase.dart';
-
-import '../../../../core/providers/providers.dart';
-import '../../../../settings/settings.dart';
-import '../../../provider/add_case_provider.dart';
-import 'add_patient_modal.dart';
+part of '../forms.dart';
 
 /// ----- Patient name field -----
-class PatientNameField extends ConsumerWidget with AddCaseMixin {
+class PatientNameField extends ConsumerWidget with AppMixins {
   const PatientNameField({required this.cryptControl, super.key});
   final AbstractControl<String?>? cryptControl;
 
@@ -82,7 +68,10 @@ class PatientGenderField extends StatelessWidget {
     final name = PatientDataModelProps.gender.name;
     return ReactiveDropdownField<String>(
       formControlName: name,
-      decoration: context.inputDecorOutline(labelText: name.titleCase),
+      decoration: context.inputDecorOutline(
+        labelText: name.titleCase,
+        //contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+      ),
       items: S.current.genderList
           .split(',')
           .map((e) => DropdownMenuItem(value: e, child: Text(e)))

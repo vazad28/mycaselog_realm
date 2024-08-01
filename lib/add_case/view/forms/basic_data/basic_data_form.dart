@@ -1,14 +1,6 @@
-import 'package:app_annotations/app_annotations.dart';
-import 'package:app_ui/app_ui.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:reactive_forms/reactive_forms.dart';
+part of '../forms.dart';
 
-import '../../../../core/app_mixins.dart';
-import '../../../provider/add_case_provider.dart';
-import 'basic_data_fields.dart';
-
-class BasicDataForm extends ConsumerWidget with AddCaseMixin, AppMixins {
+class BasicDataForm extends ConsumerWidget with AppMixins {
   const BasicDataForm({super.key});
 
   @override

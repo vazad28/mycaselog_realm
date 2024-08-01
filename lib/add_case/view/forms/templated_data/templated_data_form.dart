@@ -1,18 +1,11 @@
-import 'package:app_l10n/app_l10n.dart';
-import 'package:app_ui/app_ui.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:misc_packages/misc_packages.dart';
-import 'package:reactive_forms/reactive_forms.dart';
+part of '../forms.dart';
 
-import '../../../add_case.dart';
-
-class AddCaseTemplatedDataForm extends ConsumerWidget with AddCaseMixin {
-  const AddCaseTemplatedDataForm({super.key});
+class TemplatedDataForm extends ConsumerWidget {
+  const TemplatedDataForm({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final form = watchTemplatedDataFormGroup(ref);
+    final form = ref.watch(templatedDataFormGroupProvider);
 
     return Expanded(
       child: form.controls.isEmpty
@@ -22,6 +15,8 @@ class AddCaseTemplatedDataForm extends ConsumerWidget with AddCaseMixin {
   }
 }
 
+/// We take the form group to draw form from the form group provider
+/// And only create fields that are in the current template
 class _TemplateDataFieldsBuilder extends ConsumerWidget {
   const _TemplateDataFieldsBuilder({
     required this.form,

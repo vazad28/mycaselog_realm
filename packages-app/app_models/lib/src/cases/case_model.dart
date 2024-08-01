@@ -128,6 +128,35 @@ class _CaseModel {
   @JsonKey(includeFromJson: false, includeToJson: false)
   String get surgeryY => DateFormat('yyyy')
       .format(DateTime.fromMillisecondsSinceEpoch(surgeryDate));
+
+  /// custom equality
+  @override
+  bool operator ==(Object other) {
+    //if (identical(this, other)) return true;
+    if (other is! CaseModel) return false;
+    return true;
+    // return caseID == other.caseID &&
+    //     surgeryDate == other.surgeryDate &&
+    //     createdAt == other.createdAt &&
+    //     patientModel == other.patientModel &&
+    //     fieldsData.length == other.fieldsData.length &&
+    //     listEquals(fieldsData, other.fieldsData) &&
+    //     templateID == other.templateID &&
+    //     removed == other.removed &&
+    //     timestamp == other.timestamp;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        caseID,
+        surgeryDate,
+        createdAt,
+        patientModel?.hashCode,
+        fieldsData.map((e) => e.toJson()).toList(),
+        templateID,
+        removed,
+        timestamp,
+      );
 }
 
 extension CaseModelX on CaseModel {

@@ -63,8 +63,10 @@ class DefaultFirebaseOptions {
     messagingSenderId: '768480572372',
     projectId: 'mycaselog-vik',
     storageBucket: 'mycaselog-vik.appspot.com',
-    androidClientId: '768480572372-022mmmmmoim3q373sushahs2tcqerhin.apps.googleusercontent.com',
-    iosClientId: '768480572372-t1vj2nj5ju68j37dfdpr3k9pmmmvmitd.apps.googleusercontent.com',
-    iosBundleId: 'com.example.mycaselog',
+    androidClientId:
+        '768480572372-022mmmmmoim3q373sushahs2tcqerhin.apps.googleusercontent.com',
+    iosClientId:
+        '768480572372-t1vj2nj5ju68j37dfdpr3k9pmmmvmitd.apps.googleusercontent.com',
+    iosBundleId: 'com.vik.mycaselog',
   );
 }

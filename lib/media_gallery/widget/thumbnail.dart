@@ -14,14 +14,14 @@ class Thumbnail extends ConsumerWidget with AppMixins {
   const Thumbnail({
     required this.mediaModel,
     this.fit = BoxFit.cover,
-    this.width = 120,
+    this.width,
     this.onTap,
     this.onLongPress,
     super.key,
   });
 
   final MediaModel mediaModel;
-  final double width;
+  final double? width;
   final BoxFit? fit;
   final VoidCallback? onTap;
   final VoidCallback? onLongPress;
@@ -32,7 +32,7 @@ class Thumbnail extends ConsumerWidget with AppMixins {
       key: ValueKey(mediaModel),
       mediaModel: mediaModel,
       fit: fit,
-      width: 96,
+      width: width,
     );
 
     final child = switch (mediaModel.status) {

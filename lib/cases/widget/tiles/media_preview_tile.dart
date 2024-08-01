@@ -76,6 +76,7 @@ class _MediaPreviewTile extends StatelessWidget {
       openColor: context.colorScheme.surface,
       closedBuilder: (_, action) => Thumbnail(
         mediaModel: mediaModels[index],
+        fit: BoxFit.fitHeight,
         onTap: () => action.call(),
         onLongPress: () => {},
       ),

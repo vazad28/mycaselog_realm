@@ -1,15 +1,6 @@
-import 'package:app_annotations/app_annotations.dart';
-import 'package:app_extensions/app_extensions.dart';
-import 'package:app_models/app_models.dart';
-import 'package:app_ui/app_ui.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:reactive_forms/reactive_forms.dart';
+part of '../forms.dart';
 
-import '../../../../core/app_mixins.dart';
-import '../../../provider/add_case_provider.dart';
-import 'patient_data_fields.dart';
-
+/// Widget
 class PatientDataForm extends ConsumerWidget with AddCaseMixin, AppMixins {
   const PatientDataForm({super.key});
 

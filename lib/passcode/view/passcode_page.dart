@@ -16,7 +16,7 @@ class PasscodePage extends ConsumerStatefulWidget {
 }
 
 class _PasscodePageState extends ConsumerState<PasscodePage> with LoggerMixin {
-  String _message = '';
+  String _message = 'loading..';
 
   @override
   void initState() {
