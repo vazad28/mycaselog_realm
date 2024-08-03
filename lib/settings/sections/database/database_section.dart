@@ -1,5 +1,6 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../csv_export/csv_export.dart';
 import '../../../database_io/database_io.dart';
@@ -19,7 +20,7 @@ class SyncSettingsSection extends StatelessWidget {
       children: [
         VerticalSpacer.normal,
         SyncDataTile(),
-        //ReindexSearchTile(),
+        ReindexSearchTile(),
         DatabaseIoTile(),
         ExportCsvDataTile(),
       ],

@@ -53,7 +53,7 @@ class _CasePdfPageController extends ConsumerState<CasePdfPage> with AppMixins {
             IconButton(
               icon: const Icon(Icons.share),
               onPressed: () => shareFile(casePdfState.value?.pdfFile),
-            )
+            ),
             // PdfPrintAction(jobName: '${widget.caseID}-pdf file'),
             // PdfShareAction(filename: '${widget.caseID}-pdf file'),
           ],

@@ -9,6 +9,10 @@ part of 'case_model_equatable.dart';
 CaseModelEquatable _$CaseModelEquatableFromJson(Map<String, dynamic> json) =>
     CaseModelEquatable(
       caseID: json['caseID'] as String?,
+      patientModel: json['patientModel'] == null
+          ? null
+          : PatientModelEquatable.fromJson(
+              json['patientModel'] as Map<String, dynamic>),
       surgeryDate: (json['surgeryDate'] as num?)?.toInt(),
       createdAt: (json['createdAt'] as num?)?.toInt(),
       anesthesia: json['anesthesia'] as String?,
@@ -26,11 +30,10 @@ CaseModelEquatable _$CaseModelEquatableFromJson(Map<String, dynamic> json) =>
       location: json['location'] as String?,
       side: json['side'] as String?,
       surgery: json['surgery'] as String?,
-      fieldsData: (json['fieldsData'] as List<dynamic>?)
-              ?.map((e) => TemplateFieldModelEquatable.fromJson(
-                  e as Map<String, dynamic>))
-              .toList() ??
-          const [],
+      fieldsData: (json['fieldsData'] as List<dynamic>)
+          .map((e) =>
+              TemplateFieldModelEquatable.fromJson(e as Map<String, dynamic>))
+          .toList(),
       templateID: json['templateID'] as String?,
       removed: (json['removed'] as num?)?.toInt() ?? 0,
       timestamp: (json['timestamp'] as num?)?.toInt() ?? 0,
@@ -39,6 +42,7 @@ CaseModelEquatable _$CaseModelEquatableFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$CaseModelEquatableToJson(CaseModelEquatable instance) =>
     <String, dynamic>{
       'caseID': instance.caseID,
+      'patientModel': instance.patientModel,
       'surgeryDate': instance.surgeryDate,
       'createdAt': instance.createdAt,
       'anesthesia': instance.anesthesia,
@@ -86,4 +90,34 @@ Map<String, dynamic> _$TemplateFieldModelEquatableToJson(
       'value': instance.value,
       'inputMask': instance.inputMask,
       'suffixText': instance.suffixText,
+    };
+
+PatientModelEquatable _$PatientModelEquatableFromJson(
+        Map<String, dynamic> json) =>
+    PatientModelEquatable(
+      patientID: json['patientID'] as String?,
+      crypt: json['crypt'] as String?,
+      initials: json['initials'] as String?,
+      name: json['name'] as String?,
+      yob: json['yob'] as String?,
+      bmi: (json['bmi'] as num?)?.toDouble(),
+      gender: json['gender'] as String?,
+      mrn: json['mrn'] as String?,
+      phone: json['phone'] as String?,
+      address: json['address'] as String?,
+    );
+
+Map<String, dynamic> _$PatientModelEquatableToJson(
+        PatientModelEquatable instance) =>
+    <String, dynamic>{
+      'patientID': instance.patientID,
+      'crypt': instance.crypt,
+      'initials': instance.initials,
+      'name': instance.name,
+      'yob': instance.yob,
+      'bmi': instance.bmi,
+      'gender': instance.gender,
+      'mrn': instance.mrn,
+      'phone': instance.phone,
+      'address': instance.address,
     };

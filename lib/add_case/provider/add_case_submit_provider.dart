@@ -124,19 +124,9 @@ class AddCaseFormSubmit extends _$AddCaseFormSubmit with LoggerMixin {
     final formModelEquatable =
         CaseModelEquatable.fromJson(formToModel.toJson());
 
-    for (final val in formToModel.fieldsData) {
-      print(val.value);
-    }
-
     final originalModelEquatable =
         CaseModelEquatable.fromJson(_originalModelJson);
 
-    for (final val in originalModelEquatable.fieldsData) {
-      print(val.value);
-    }
-
-    final isEqual = formModelEquatable == originalModelEquatable;
-
-    return isEqual;
+    return formModelEquatable == originalModelEquatable;
   }
 }

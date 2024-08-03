@@ -11,15 +11,8 @@ class DatabaseIoTile extends StatelessWidget {
       subTitle: 'Import/Export database from/to a file',
       leading: const Icon(Icons.label_important_rounded),
       onTap: () async {
-        // return showModalBottomSheet(
-        //   context: context,
-        //   builder: (BuildContext context) {
-        //     return _ExportBottomSheet();
-        //   },
-        // );
         await showModalBottomSheet<DatabaseIoPage>(
           context: context,
-          //isDismissible: false,
           enableDrag: true,
           builder: (_) => const DatabaseIoPage(),
         );

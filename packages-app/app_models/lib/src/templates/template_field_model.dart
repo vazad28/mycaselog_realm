@@ -91,7 +91,11 @@ class $TemplateFieldModel {
       idx: idx,
       isRequired: isRequired,
       fieldType: _fieldType,
-      fieldDataType: _fieldDataType,
+      fieldDataType: _fieldDataType ??= (fieldType == FieldType.bool)
+          ? FieldDataType.bool.name
+          : fieldType == FieldType.number
+              ? FieldDataType.int.name
+              : FieldDataType.string.name,
       options: options,
       defaultValue: defaultValue,
       value: value,
@@ -102,6 +106,12 @@ class $TemplateFieldModel {
 
   static TemplateFieldModel fromJson(Map<String, dynamic> json) {
     json['options'] ??= <String>[];
+    json['fieldDataType'] ??= (json['fieldType'] == FieldType.bool.name)
+        ? FieldDataType.bool.name
+        : json['fieldType'] == FieldType.number.name
+            ? FieldDataType.int.name
+            : FieldDataType.string.name;
+
     return TemplateFieldModelX.fromJson(json);
   }
 

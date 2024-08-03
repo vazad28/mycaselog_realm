@@ -76,21 +76,6 @@ class MediaCollection extends BaseCollection<MediaModel> with LoggerMixin {
         (e) => e.caseID,
         (prev, e) => (prev ?? [])..add(e),
       );
-      // if (mediaModels?.isNotEmpty ?? true) {
-      //   groupedMedia = mediaModels!.groupFoldBy<String, List<MediaModel>>(
-      //     (e) => e.caseID,
-      //     (prev, e) => (prev ?? [])..add(e),
-      //   );
-      // } else {
-      //   // Query all Media objects
-      //   final mediaResults = _realm.all<MediaModel>();
-
-      //   // Group media by caseID
-      //   groupedMedia = mediaResults.groupFoldBy<String, List<MediaModel>>(
-      //     (e) => e.caseID,
-      //     (prev, e) => (prev ?? [])..add(e),
-      //   );
-      // }
 
       // Iterate through each group
       for (final caseID in groupedMedia.keys) {
@@ -129,5 +114,19 @@ class MediaCollection extends BaseCollection<MediaModel> with LoggerMixin {
   RealmResults<MediaModel> search(Iterable<String> ids) {
     return _realm
         .query<MediaModel>(r'caseID IN $0 AND removed == $1', [ids, 0]);
+  }
+
+  Future<void> changeTimelineMediaTimestamp(
+      List<MediaModel> mediaList, int timestamp) {
+    return _realm.writeAsync(() {
+      final updatedMediaList = mediaList
+        ..map((e) => e.timestamp = timestamp).toList();
+
+      _realm.addAll<MediaModel>(updatedMediaList, update: true);
+
+      for (final mediaModel in updatedMediaList) {
+        putInFirestore(mediaModel.mediaID, mediaModel);
+      }
+    });
   }
 }

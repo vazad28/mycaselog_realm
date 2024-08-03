@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:media_manager/media_manager.dart';
 import 'package:misc_packages/misc_packages.dart';
-import 'package:recase/recase.dart';
+// import 'package:recase/recase.dart';
 
 import '../../core/app_mixins.dart';
 import '../../core/providers/providers.dart';

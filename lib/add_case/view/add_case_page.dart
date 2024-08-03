@@ -8,7 +8,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger_client/logger_client.dart';
 import 'package:misc_packages/misc_packages.dart';
-import 'package:recase/recase.dart';
+//import 'package:recase/recase.dart';
 import 'package:state_of/state_of.dart';
 
 import '../../core/app_mixins.dart';

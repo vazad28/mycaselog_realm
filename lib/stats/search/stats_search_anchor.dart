@@ -24,9 +24,6 @@ class StatsSearchAnchor extends StatefulWidget {
 
 // ignore: public_member_api_docs
 class StatsSearchAnchorState extends State<StatsSearchAnchor> {
-  // The most recent suggestions received from the API.
-  //late Iterable<Widget> _results = <Widget>[];
-
   String? _getTokenizedQuery(String query) {
     var searchTermTokenized = '';
 

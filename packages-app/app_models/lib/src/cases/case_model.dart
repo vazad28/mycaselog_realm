@@ -94,9 +94,8 @@ class _CaseModel {
       fieldsData: fieldsData
           .map((e) => TemplateFieldModelX.fromJson(e.toJson()))
           .toList(),
-      medias: medias.map((e) => MediaModel._fromEJson(e.toEJson())).toList(),
-      notes:
-          notes.map((e) => TimelineNoteModel._fromEJson(e.toEJson())).toList(),
+      medias: medias.map((e) => MediaModelX.fromJson(e.toJson())).toList(),
+      notes: notes.map((e) => TimelineNoteModelX.fromJson(e.toJson())).toList(),
     );
   }
 
@@ -128,41 +127,14 @@ class _CaseModel {
   @JsonKey(includeFromJson: false, includeToJson: false)
   String get surgeryY => DateFormat('yyyy')
       .format(DateTime.fromMillisecondsSinceEpoch(surgeryDate));
-
-  /// custom equality
-  @override
-  bool operator ==(Object other) {
-    //if (identical(this, other)) return true;
-    if (other is! CaseModel) return false;
-    return true;
-    // return caseID == other.caseID &&
-    //     surgeryDate == other.surgeryDate &&
-    //     createdAt == other.createdAt &&
-    //     patientModel == other.patientModel &&
-    //     fieldsData.length == other.fieldsData.length &&
-    //     listEquals(fieldsData, other.fieldsData) &&
-    //     templateID == other.templateID &&
-    //     removed == other.removed &&
-    //     timestamp == other.timestamp;
-  }
-
-  @override
-  int get hashCode => Object.hash(
-        caseID,
-        surgeryDate,
-        createdAt,
-        patientModel?.hashCode,
-        fieldsData.map((e) => e.toJson()).toList(),
-        templateID,
-        removed,
-        timestamp,
-      );
 }
 
 extension CaseModelX on CaseModel {
   static CaseModel fromJson(Map<String, dynamic> json) {
     json['fieldsData'] ??= <dynamic>[];
-    json['assistants'] ??= <String>[];
+    json['assistant'] ??= <String>[];
+    //print(json);
+    //print("${json['caseID']} - ${json['timestamp']}");
     return _$CaseModelFromJson(json).toUnmanaged();
   }
 
@@ -240,8 +212,10 @@ class _PatientModel {
 }
 
 extension PatientModelX on PatientModel {
-  static PatientModel fromJson(Map<String, dynamic> json) =>
-      _$PatientModelFromJson(json).toUnmanaged();
+  static PatientModel fromJson(Map<String, dynamic> json) {
+    json['patientID'] ??= ModelUtils.uniqueID;
+    return _$PatientModelFromJson(json).toUnmanaged();
+  }
 
   static PatientModel zero() {
     return PatientModel(ModelUtils.uniqueID);
@@ -363,9 +337,6 @@ class _MediaModel {
     );
   }
 
-  // static MediaModel fromJson(Map<String, dynamic> json) =>
-  //     _$MediaModelFromJson(json).toUnmanaged();
-
   Map<String, dynamic> toJson() => _$MediaModelToJson(this);
 }
 
@@ -386,43 +357,6 @@ extension MediaModelX on MediaModel {
     return mediaModel;
   }
 }
-
-// @RealmModel()
-// @JsonSerializable(explicitToJson: true)
-// class _Conversation {
-//   @PrimaryKey()
-//   late String id;
-//   late String? title;
-//   late String? description;
-//   late DateTime? createdAt;
-//   @JsonKey(includeFromJson: false, includeToJson: false)
-//   //List<_Participant> participants = [];
-//   @JsonKey(includeFromJson: false, includeToJson: false)
-//   List<_TimelineNoteModel> notes = [];
-//   List<_MediaModel> mediaModels = [];
-//   int timestamp = 0;
-//   int removed = 0;
-
-//   Map<String, dynamic> toJson() => _$ConversationToJson(this);
-
-//   Conversation toUnmanaged() {
-//     return Conversation(id,
-//         createdAt: DateTime.now(),
-//         title: title,
-//         description: description,
-//         mediaModels: mediaModels.map((e) => MediaModel._fromEJson(e.toEJson())),
-//         // participants:
-//         //     participants.map((e) => Participant._fromEJson(e.toEJson())),
-//         // messages: messages.map((e) => Message._fromEJson(e.toEJson())),
-//         removed: removed,
-//         timestamp: timestamp);
-//   }
-// }
-
-// extension ConversationX on Conversation {
-//   static Conversation fromJson(Map<String, dynamic> json) =>
-//       _$ConversationFromJson(json).toUnmanaged();
-// }
 
 // ----- Timeline note -----
 @RealmModel()
@@ -480,33 +414,3 @@ extension TimelineNoteModelX on TimelineNoteModel {
     );
   }
 }
-
-
-/// ////////////////////////////////////////////////////////////////////
-/// TRIGGERS
-/// ////////////////////////////////////////////////////////////////////
-// Define a trigger on the Media class
-// @RealmTrigger(classes: [Media])
-// class MediaTrigger extends RealmTrigger {
-//   @override
-//   Future<void> onInsert(Realm realm, Object model) async {
-//     // Cast the model to Media object
-//     final media = model as Media;
-
-//     // Check if a Cases object is already associated
-//     if (media.caseObject == null) {
-//       // Need to associate with an existing Cases object or create a new one
-//       // (Logic for finding or creating the Cases object goes here)
-//     }
-//   }
-
-//   @override
-//   Future<void> onUpdate(Realm realm, Object model) async {
-//     // Similar logic to onInsert for updates, update the backlink if needed
-//   }
-
-//   @override
-//   Future<void> onDelete(Realm realm, Object model) async {
-//     // Remove the backlink from the Cases object when the media is deleted
-//   }
-// }

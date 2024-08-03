@@ -3,7 +3,7 @@ import 'package:app_l10n/app_l10n.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:recase/recase.dart';
+//import 'package:recase/recase.dart';
 
 import '../../../core/core.dart';
 import '../../../router/routes/routes.dart';

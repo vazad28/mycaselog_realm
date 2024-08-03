@@ -99,7 +99,7 @@ class CsvExportNotifier extends _$CsvExportNotifier with LoggerMixin {
       values.add(jointMap);
     }
 
-    _iterateCsvData(values, 0);
+    await _iterateCsvData(values, 0);
   }
 
   Future<void> _iterateCsvData(List<Map<String, dynamic>> data, int idx) async {

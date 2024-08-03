@@ -7,6 +7,7 @@ part 'case_model_equatable.g.dart';
 class CaseModelEquatable extends Equatable {
   const CaseModelEquatable({
     this.caseID,
+    this.patientModel,
     this.surgeryDate,
     this.createdAt,
     this.anesthesia,
@@ -32,6 +33,7 @@ class CaseModelEquatable extends Equatable {
   }
 
   final String? caseID;
+  final PatientModelEquatable? patientModel;
   final int? surgeryDate;
   final int? createdAt;
   final String? anesthesia;
@@ -54,6 +56,7 @@ class CaseModelEquatable extends Equatable {
   @override
   List<Object?> get props => [
         caseID,
+        patientModel,
         surgeryDate,
         createdAt,
         anesthesia,
@@ -77,16 +80,6 @@ class CaseModelEquatable extends Equatable {
 
 @JsonSerializable(explicitToJson: false)
 class TemplateFieldModelEquatable extends Equatable {
-  final String fieldID;
-  final String? title;
-  final int idx;
-  final bool isRequired;
-  final List<String> options;
-  final String? defaultValue;
-  final String? value;
-  final String? inputMask;
-  final String? suffixText;
-
   const TemplateFieldModelEquatable({
     required this.fieldID,
     required this.title,
@@ -103,6 +96,16 @@ class TemplateFieldModelEquatable extends Equatable {
     return _$TemplateFieldModelEquatableFromJson(json);
   }
 
+  final String fieldID;
+  final String? title;
+  final int idx;
+  final bool isRequired;
+  final List<String> options;
+  final String? defaultValue;
+  final String? value;
+  final String? inputMask;
+  final String? suffixText;
+
   @override
   List<Object?> get props => [
         fieldID,
@@ -114,5 +117,50 @@ class TemplateFieldModelEquatable extends Equatable {
         value,
         inputMask,
         suffixText,
+      ];
+}
+
+@JsonSerializable(explicitToJson: false)
+class PatientModelEquatable extends Equatable {
+  const PatientModelEquatable({
+    this.patientID,
+    this.crypt,
+    this.initials,
+    this.name,
+    this.yob,
+    this.bmi,
+    this.gender,
+    this.mrn,
+    this.phone,
+    this.address,
+  });
+
+  factory PatientModelEquatable.fromJson(Map<String, dynamic> json) {
+    return _$PatientModelEquatableFromJson(json);
+  }
+
+  final String? patientID;
+  final String? crypt;
+  final String? initials;
+  final String? name;
+  final String? yob;
+  final double? bmi;
+  final String? gender;
+  final String? mrn;
+  final String? phone;
+  final String? address;
+
+  @override
+  List<Object?> get props => [
+        patientID,
+        crypt,
+        initials,
+        name,
+        yob,
+        bmi,
+        gender,
+        mrn,
+        phone,
+        address,
       ];
 }

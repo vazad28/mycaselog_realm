@@ -50,9 +50,11 @@ class AnesthesiaBlocksView extends ConsumerWidget with AppMixins {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final blocks = ref.watch(supportDataNotifierProvider.select(
-      (supportData) => supportData.anesthesiaBlocks,
-    ),);
+    final blocks = ref.watch(
+      supportDataNotifierProvider.select(
+        (supportData) => supportData.anesthesiaBlocks,
+      ),
+    );
 
     if (blocks.isEmpty) {
       return const Center(
@@ -94,7 +96,7 @@ class AnesthesiaBlocksView extends ConsumerWidget with AppMixins {
           onDismissed: () {
             ref
                 .watch(supportDataNotifierProvider.notifier)
-                .upsertAnesthesiaBlock(block, CrudAction.remove);
+                .upsertAnesthesiaBlock(block, CrudAction.delete);
           },
         );
       },

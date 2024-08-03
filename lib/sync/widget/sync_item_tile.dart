@@ -5,7 +5,7 @@ import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:misc_packages/misc_packages.dart';
-import 'package:recase/recase.dart';
+//import 'package:recase/recase.dart';
 
 import '../../core/failures/app_failures.dart';
 import '../provider/sync_providers.dart';

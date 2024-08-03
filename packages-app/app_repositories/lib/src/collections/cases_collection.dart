@@ -78,7 +78,7 @@ class CasesCollection extends BaseCollection<CaseModel> {
         diagnosis TEXT $0 OR 
         surgery TEXT $0 OR 
         comments TEXT $0 OR 
-        patientModel[*].initials TEXT $0''',
+        patientModel[*].initials TEXT $0 SORT(timestamp DESC)''',
       ['$searchTerm*'],
     );
   }
@@ -150,4 +150,35 @@ class CasesCollection extends BaseCollection<CaseModel> {
       }
     });
   }
+
+  // Future<void> addPatientIdIfNotExist() async {
+  //   //final firestore = FirebaseFirestore.instance;
+  //   //final casesCollection = firestore.collection('cases');
+
+  //   try {
+  //     // Query for cases without patientID
+  //     final querySnapshot = await collectionRef
+  //         .where('patientModel.patientID', isNull: true)
+  //         .get();
+
+  //     for (final doc in querySnapshot.docs) {
+  //       // Get the current case data
+  //       final caseData = doc.data() as Map<String, dynamic>;
+  //       print(caseData['caseID']);
+  //       final patientModelData =
+  //           caseData['patientModel'] as Map<String, dynamic>;
+
+  //       // Generate patientID (replace with your logic)
+  //       final newPatientID = ModelUtils.uniqueID;
+
+  //       // Update patientModel with patientID
+  //       patientModelData['patientID'] = newPatientID;
+
+  //       // Update the case document
+  //       await doc.reference.update({'patientModel': patientModelData});
+  //     }
+  //   } catch (e) {
+  //     print('Error updating patient IDs: $e');
+  //   }
+  // }
 }

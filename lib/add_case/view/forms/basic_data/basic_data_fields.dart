@@ -160,7 +160,9 @@ class SurgeryLocationField extends ConsumerWidget with AppMixins {
     final name = BasicDataModelProps.location.name;
 
     final options = supportDataSelect<SurgeryLocationModel>(
-        ref, (supportData) => supportData.surgeryLocations);
+      ref,
+      (supportData) => supportData.surgeryLocations,
+    );
 
     final items = options
         .map(
@@ -216,7 +218,9 @@ class AnesthesiaBlockField extends ConsumerWidget with AppMixins {
 
     //final options = watchAnesthesiaBlocks(ref);
     final options = supportDataSelect<String>(
-        ref, (supportData) => supportData.anesthesiaBlocks);
+      ref,
+      (supportData) => supportData.anesthesiaBlocks,
+    );
 
     final items = options
         .map((e) => RadioSelectOption<String>(title: e.titleCase, value: e))
@@ -240,7 +244,9 @@ class AssistantsField extends ConsumerWidget with AppMixins {
     final name = BasicDataModelProps.assistant.name;
     //final options = watchAssistantModels(ref);
     final options = supportDataSelect<AssistantModel>(
-        ref, (supportData) => supportData.assistants);
+      ref,
+      (supportData) => supportData.assistants,
+    );
 
     final items = options
         .map(

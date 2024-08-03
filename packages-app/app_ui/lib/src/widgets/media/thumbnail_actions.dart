@@ -1,6 +1,6 @@
 import 'package:app_extensions/app_extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:recase/recase.dart';
+//import 'package:recase/recase.dart';
 
 enum ThumbnailActionsEnum { deleteMedia, shareMedia, refreshMedia }
 

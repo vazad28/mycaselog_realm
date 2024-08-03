@@ -28,7 +28,11 @@ class CaseTileStyle extends _$CaseTileStyle {
 class CasesNotifier extends _$CasesNotifier {
   @override
   Stream<RealmResultsChanges<CaseModel>> build() {
-    return ref.read(dbProvider).casesCollection.getAll().changes;
+    return ref
+        .read(dbProvider)
+        .casesCollection
+        .getAll(orderByField: BasicDataModelProps.surgeryDate.name)
+        .changes;
   }
 
   /// Full text search cases

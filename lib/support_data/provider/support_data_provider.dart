@@ -47,7 +47,7 @@ class SupportDataNotifier extends _$SupportDataNotifier {
   }
 
   void upsertAnesthesiaBlock(String block, CrudAction action) {
-    if (action == CrudAction.remove) {
+    if (action == CrudAction.delete) {
       _updateSupportData(state..anesthesiaBlocks.remove(block));
     } else {
       _updateSupportData(state..anesthesiaBlocks.replaceOrAdd(block));

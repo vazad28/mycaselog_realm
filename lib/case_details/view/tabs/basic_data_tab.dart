@@ -75,19 +75,20 @@ class _PatientDetailsWidget extends ConsumerWidget
     if (caseModel.patientModel == null) return const Text('No patient data');
 
     final activeFieldsList = watchActiveFieldsList(ref);
+    final patientModel = caseModel.patientModel!;
 
     final children = [
       Expanded(
         child: CaseDetailsField(
           label: S.of(context).name,
-          value: caseModel.patientModel!.initials,
+          value: patientModel.initials,
         ),
       ),
       if (activeFieldsList.contains(ActivableCaseField.gender)) ...[
         Expanded(
           child: CaseDetailsField(
             label: S.of(context).gender,
-            value: caseModel.patientModel!.gender,
+            value: patientModel.gender,
           ),
         ),
       ],
@@ -95,7 +96,7 @@ class _PatientDetailsWidget extends ConsumerWidget
         Expanded(
           child: CaseDetailsField(
             label: S.of(context).birthYear,
-            value: caseModel.patientModel!.yob,
+            value: patientModel.yob,
           ),
         ),
       ],
@@ -103,7 +104,7 @@ class _PatientDetailsWidget extends ConsumerWidget
         Expanded(
           child: CaseDetailsField(
             label: S.of(context).bmi,
-            value: caseModel.patientModel!.bmi?.toString() ?? '-',
+            value: patientModel.bmi?.toString() ?? '-',
           ),
         ),
       ],
@@ -198,7 +199,7 @@ class _BasicCaseDataWidget extends ConsumerWidget
                 Expanded(
                   child: CaseDetailsField(
                     label: S.of(context).surgerySide,
-                    value: caseModel.side.toString(),
+                    value: caseModel.side.toString().titleCase,
                   ),
                 ),
               if (activeFieldsList.contains(ActivableCaseField.bmi))

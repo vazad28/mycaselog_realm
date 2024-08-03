@@ -139,6 +139,7 @@ class _SearchViewState<T> extends ConsumerState<SearchView<T>> {
     final child = SearchAnchor(
       searchController: searchController,
       textInputAction: TextInputAction.search,
+      keyboardType: TextInputType.visiblePassword,
       viewHintText: widget.hintText,
       viewLeading: BackButton(
         onPressed: () {

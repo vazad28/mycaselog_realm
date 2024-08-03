@@ -116,4 +116,25 @@ class TimelineNotesCollection extends BaseCollection<TimelineNoteModel> {
       }
     });
   }
+
+  Future<void> changeTimelineNotesTimestamp(
+      List<TimelineNoteModel> noteList, int timestamp) {
+    return _realm.writeAsync(() {
+      final updatedList = noteList
+        ..map((e) => e.timestamp = timestamp).toList();
+
+      _realm.addAll<TimelineNoteModel>(updatedList, update: true);
+
+      // final updatedNoteList = noteList
+      //   ..map((e) => e.timestamp = timestamp).toList();
+
+      // /// add to realm
+
+      //   ..addAll<TimelineNoteModel>(updatedNoteList, update: true);
+
+      for (final noteModel in updatedList) {
+        putInFirestore(noteModel.noteID, noteModel);
+      }
+    });
+  }
 }

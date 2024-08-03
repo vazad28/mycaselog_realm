@@ -1,4 +1,5 @@
 import 'package:animations/animations.dart';
+import 'package:app_annotations/app_annotations.dart';
 import 'package:app_extensions/app_extensions.dart';
 import 'package:app_models/app_models.dart';
 import 'package:app_ui/app_ui.dart';
@@ -6,6 +7,7 @@ import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 
 import '../../add_note/add_note.dart';
+import '../notes.dart';
 
 class NoteItem extends StatelessWidget {
   const NoteItem({required this.noteModel, required this.maxLines, super.key});
@@ -49,6 +51,19 @@ class NoteTile extends StatelessWidget {
     return MaterialCard.outlined(
       padding: const EdgeInsets.all(AppSpacing.md),
       elevation: 1,
+      onLongPress: () {
+        context.openActionsBottomSheet([
+          NoteAction(
+              action: CrudAction.delete,
+              title: CrudAction.delete.name.titleCase,
+              subTitle: 'Delete this note?')
+        ]).then((action) {
+          if (action == null) return;
+          if (action.action == CrudAction.delete) {
+            _deleteNote();
+          }
+        });
+      },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         // ignore: avoid_redundant_argument_values
@@ -78,4 +93,6 @@ class NoteTile extends StatelessWidget {
       ),
     );
   }
+
+  void _deleteNote() {}
 }

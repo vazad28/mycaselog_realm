@@ -102,7 +102,9 @@ mixin AppMixins {
       SupportDataModelX.zero(ref.watch(userIDProvider));
 
   List<T> supportDataSelect<T>(
-          WidgetRef ref, List<T> Function(SupportDataModel) selectCallback) =>
+    WidgetRef ref,
+    List<T> Function(SupportDataModel) selectCallback,
+  ) =>
       ref.watch(supportDataNotifierProvider.select(selectCallback));
 
   List<ActivableCaseField> watchActiveFieldsList(WidgetRef ref) {

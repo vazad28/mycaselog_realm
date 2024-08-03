@@ -39,7 +39,7 @@ class Crud extends _$Crud {
     CrudAction crudAction,
   ) async {
     return _realm.writeAsync(() {
-      if (crudAction == CrudAction.remove) {
+      if (crudAction == CrudAction.delete) {
         _realm.delete<T>(object);
       } else {
         _realm.add<T>(object, update: true);
@@ -53,7 +53,7 @@ class Crud extends _$Crud {
     CrudAction crudAction,
   ) {
     return _realm.write(() {
-      if (crudAction == CrudAction.remove) {
+      if (crudAction == CrudAction.delete) {
         realmList.remove(element);
       } else {
         final index = realmList.indexOf(element);

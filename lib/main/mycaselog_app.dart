@@ -59,8 +59,14 @@ class MycaselogApp extends ConsumerWidget with LoggerMixin {
       loading: SizedBox.expand(
         child: Material(
           type: MaterialType.card,
-          color: currentTheme.canvasColor,
-          child: const Center(child: Text('loading..')),
+          color: currentTheme.colorScheme.surface,
+          child: Center(
+            child: Text(
+              'MYCASELOG',
+              style: currentTheme.textTheme.titleMedium
+                  ?.copyWith(color: currentTheme.colorScheme.onSurface),
+            ),
+          ),
         ),
       ),
     );

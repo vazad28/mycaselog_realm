@@ -83,7 +83,7 @@ class _SurgeryLocationsView extends ConsumerWidget {
           onDismissed: () {
             ref
                 .watch(supportDataNotifierProvider.notifier)
-                .upsertSurgeryLocation(surgeryLocation, CrudAction.remove);
+                .upsertSurgeryLocation(surgeryLocation, CrudAction.delete);
           },
         );
       },

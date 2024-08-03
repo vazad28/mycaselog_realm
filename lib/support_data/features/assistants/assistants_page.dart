@@ -79,7 +79,7 @@ class _AssistantsView extends ConsumerWidget {
           onDismissed: () {
             ref
                 .watch(supportDataNotifierProvider.notifier)
-                .upsertAssistant(assistantModel, CrudAction.remove);
+                .upsertAssistant(assistantModel, CrudAction.delete);
           },
         );
       },

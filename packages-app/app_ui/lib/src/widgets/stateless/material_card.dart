@@ -13,6 +13,7 @@ class MaterialCard extends StatelessWidget {
     this.backgroundColor,
     this.elevation = 1.0,
     this.onTap,
+    this.onLongPress,
     this.clipBehavior = Clip.antiAlias,
     this.padding = _kCardPadding,
     this.outsidePadding = EdgeInsets.zero,
@@ -30,6 +31,7 @@ class MaterialCard extends StatelessWidget {
     this.backgroundColor,
     this.elevation = 0.0,
     this.onTap,
+    this.onLongPress,
     this.clipBehavior = Clip.antiAlias,
     this.padding = _kCardPadding,
     this.margin = EdgeInsets.zero,
@@ -49,6 +51,7 @@ class MaterialCard extends StatelessWidget {
     this.backgroundColor,
     this.elevation = 0.0,
     this.onTap,
+    this.onLongPress,
     this.clipBehavior = Clip.antiAlias,
     this.padding = _kCardPadding,
     this.margin = EdgeInsets.zero,
@@ -61,12 +64,14 @@ class MaterialCard extends StatelessWidget {
             : MaterialType.canvas,
         borderSides = BorderSides.tile,
         showOutline = true;
+
   final Color? backgroundColor;
   final double elevation;
   final Color? borderColor;
   final double borderWidth;
   final double borderRadius;
   final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
   final Widget child;
   final Clip clipBehavior;
   final EdgeInsets padding;
@@ -99,6 +104,7 @@ class MaterialCard extends StatelessWidget {
       child: onTap != null
           ? InkWell(
               onTap: onTap,
+              onLongPress: onLongPress,
               child: Padding(padding: padding, child: child),
             )
           : Padding(padding: padding, child: child),

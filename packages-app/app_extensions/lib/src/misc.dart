@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 extension MiscExt on String {
   // ignore: unused_element
   bool parseBool() {
@@ -10,5 +12,18 @@ extension MiscExt on String {
 
     // Combine the replacement and remaining parts after joining
     return '$replacement.${parts.skip(1).join('.')}';
+  }
+
+  String get sentenceCase => toBeginningOfSentenceCase(this);
+
+  String get titleCase {
+    if (isEmpty) return this;
+
+    // Basic implementation: capitalize first letter of each word
+    return split(' ')
+        .map((word) => word.isNotEmpty
+            ? '${word[0].toUpperCase()}${word.substring(1).toLowerCase()}'
+            : word)
+        .join(' ');
   }
 }

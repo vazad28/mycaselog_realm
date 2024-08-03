@@ -44,26 +44,33 @@ mixin TimelineMixin {
     WidgetRef ref,
     TimelineItemModel timelineItemModel,
   ) async {
-    final originalTimestamp = timelineItemModel.eventTimestamp;
+    try {
+      final originalTimestamp = timelineItemModel.eventTimestamp;
 
-    final dateTimePicked = await ref.read(dialogServiceProvider).openDatePicker(
-          initialDate: DateTime.fromMillisecondsSinceEpoch(originalTimestamp),
-        );
+      final dateTimePicked = await ref
+          .read(dialogServiceProvider)
+          .openDatePicker(
+            initialDate: DateTime.fromMillisecondsSinceEpoch(originalTimestamp),
+          );
 
-    /// of no date time selected - nothing doing
-    if (dateTimePicked == null) return;
+      /// of no date time selected - nothing doing
+      if (dateTimePicked == null) return;
 
-    /// no media and no notes. nothing doing
-    if (timelineItemModel.mediaList.isEmpty &&
-        timelineItemModel.noteList.isEmpty) return;
+      /// no media and no notes. nothing doing
+      if (timelineItemModel.mediaList.isEmpty &&
+          timelineItemModel.noteList.isEmpty) return;
 
-    // TODO await ref.watch(dbProvider).casesCollection.updateTimelineData(
-    //       timelineItemModel.caseID,
-    //       timelineItemModel.mediaList,
-    //       timelineItemModel.noteList,
-    //       dateTimePicked.millisecondsSinceEpoch,
-    //     );
-    throw UnimplementedError();
+      await ref.watch(dbProvider).mediaCollection.changeTimelineMediaTimestamp(
+          timelineItemModel.mediaList, dateTimePicked.millisecondsSinceEpoch);
+
+      await ref
+          .watch(dbProvider)
+          .timelineNotesCollection
+          .changeTimelineNotesTimestamp(timelineItemModel.noteList,
+              dateTimePicked.millisecondsSinceEpoch);
+    } catch (err) {
+      ref.watch(dialogServiceProvider).showSnackBar(err.toString());
+    }
   }
 
   /// Add timeline image

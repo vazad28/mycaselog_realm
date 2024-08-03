@@ -4,7 +4,7 @@ import 'package:app_models/app_models.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:recase/recase.dart';
+//import 'package:recase/recase.dart';
 
 import '../../../router/router.dart';
 import '../../index.dart';
@@ -197,22 +197,23 @@ class TemplatesListTile extends ConsumerWidget {
         AddTemplateRoute(templateModel.templateID).push<void>(context);
       },
       onLongPress: () => context.openModalBottomSheet<Widget>(
-          useRootNavigator: true,
-          builder: (ctx) {
-            return SafeArea(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const SizedBox(height: 16),
-                  if (templateModel.removed == 0)
-                    _MenuOptionsActiveTemplate(templateModel),
-                  if (templateModel.removed != 0)
-                    _MenuOptionsInactiveTemplate(templateModel),
-                  const SizedBox(height: 16),
-                ],
-              ),
-            );
-          },),
+        useRootNavigator: true,
+        builder: (ctx) {
+          return SafeArea(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(height: 16),
+                if (templateModel.removed == 0)
+                  _MenuOptionsActiveTemplate(templateModel),
+                if (templateModel.removed != 0)
+                  _MenuOptionsInactiveTemplate(templateModel),
+                const SizedBox(height: 16),
+              ],
+            ),
+          );
+        },
+      ),
       child: templateCard,
     );
   }
@@ -225,36 +226,39 @@ class _MenuOptionsInactiveTemplate extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Column(mainAxisSize: MainAxisSize.min, children: [
-      ListTile(
-        title: const Text('Re-activate Template'),
-        leading: const Icon(Icons.redo),
-        subtitle: const Text(
-          'Re-activate a template to make it available for use in add case',
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        ListTile(
+          title: const Text('Re-activate Template'),
+          leading: const Icon(Icons.redo),
+          subtitle: const Text(
+            'Re-activate a template to make it available for use in add case',
+          ),
+          onTap: () {
+            Navigator.of(context).pop();
+            ref
+                .watch(templatesNotifierProvider.notifier)
+                .updateTemplate(templateModel, TemplateEvent.reactivate);
+          },
         ),
-        onTap: () {
-          Navigator.of(context).pop();
-          ref
-              .watch(templatesNotifierProvider.notifier)
-              .updateTemplate(templateModel, TemplateEvent.reactivate);
-        },
-      ),
-      const Divider(indent: 64),
-      ListTile(
-        title: Text(S.of(context).delete.titleCase),
-        leading: Icon(
-          Icons.delete_forever,
-          color: context.colorScheme.error,
+        const Divider(indent: 64),
+        ListTile(
+          title: Text(S.of(context).delete.titleCase),
+          leading: Icon(
+            Icons.delete_forever,
+            color: context.colorScheme.error,
+          ),
+          subtitle: const Text('Deleting a template can not be undone'),
+          onTap: () {
+            Navigator.of(context).pop();
+            ref
+                .watch(templatesNotifierProvider.notifier)
+                .updateTemplate(templateModel, TemplateEvent.delete);
+          },
         ),
-        subtitle: const Text('Deleting a template can not be undone'),
-        onTap: () {
-          Navigator.of(context).pop();
-          ref
-              .watch(templatesNotifierProvider.notifier)
-              .updateTemplate(templateModel, TemplateEvent.delete);
-        },
-      ),
-    ],);
+      ],
+    );
   }
 }
 
@@ -265,47 +269,49 @@ class _MenuOptionsActiveTemplate extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Column(children: [
-      if (templateModel.shared == false)
+    return Column(
+      children: [
+        if (templateModel.shared == false)
+          ListTile(
+            title: const Text('Share Template'),
+            leading: const Icon(Icons.file_upload_outlined),
+            subtitle: const Text('Share template with other users of the app'),
+            onTap: () {
+              Navigator.of(context).pop();
+              ref
+                  .watch(templatesNotifierProvider.notifier)
+                  .updateTemplate(templateModel, TemplateEvent.share);
+            },
+          ),
+        // ignore: use_if_null_to_convert_nulls_to_bools
+        if (templateModel.shared == true)
+          ListTile(
+            title: const Text('Un-Share Template'),
+            leading: const Icon(Icons.offline_share),
+            subtitle:
+                const Text('Remove this template from shared templates list'),
+            onTap: () {
+              Navigator.of(context).pop();
+              ref
+                  .watch(templatesNotifierProvider.notifier)
+                  .updateTemplate(templateModel, TemplateEvent.unShare);
+            },
+          ),
+        const Divider(indent: 64),
         ListTile(
-          title: const Text('Share Template'),
-          leading: const Icon(Icons.file_upload_outlined),
-          subtitle: const Text('Share template with other users of the app'),
+          title: const Text('De-activate Template'),
+          leading: const Icon(Icons.hide_source),
+          subtitle: const Text(
+            '''Deactivate a template only removes it from selectable list of templates''',
+          ),
           onTap: () {
             Navigator.of(context).pop();
             ref
                 .watch(templatesNotifierProvider.notifier)
-                .updateTemplate(templateModel, TemplateEvent.share);
+                .updateTemplate(templateModel, TemplateEvent.deactivate);
           },
         ),
-      // ignore: use_if_null_to_convert_nulls_to_bools
-      if (templateModel.shared == true)
-        ListTile(
-          title: const Text('Un-Share Template'),
-          leading: const Icon(Icons.offline_share),
-          subtitle:
-              const Text('Remove this template from shared templates list'),
-          onTap: () {
-            Navigator.of(context).pop();
-            ref
-                .watch(templatesNotifierProvider.notifier)
-                .updateTemplate(templateModel, TemplateEvent.unShare);
-          },
-        ),
-      const Divider(indent: 64),
-      ListTile(
-        title: const Text('De-activate Template'),
-        leading: const Icon(Icons.hide_source),
-        subtitle: const Text(
-          '''Deactivate a template only removes it from selectable list of templates''',
-        ),
-        onTap: () {
-          Navigator.of(context).pop();
-          ref
-              .watch(templatesNotifierProvider.notifier)
-              .updateTemplate(templateModel, TemplateEvent.deactivate);
-        },
-      ),
-    ],);
+      ],
+    );
   }
 }

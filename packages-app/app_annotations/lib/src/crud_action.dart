@@ -1,1 +1,1 @@
-enum CrudAction { add, edit, remove }
+enum CrudAction { add, edit, delete }

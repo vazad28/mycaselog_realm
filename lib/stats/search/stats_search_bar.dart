@@ -102,20 +102,12 @@ class _StatsSearchBarTrailing extends ConsumerWidget with StatsMixin {
       transitionBuilder: (Widget child, Animation<double> animation) {
         return FadeTransition(opacity: animation, child: child);
       },
-      child: (chartReqModel.searchTerm != null ||
-              chartReqModel.filterClause != null)
+      child: ((chartReqModel.searchTerm?.isNotEmpty ?? false) ||
+              (chartReqModel.filterClause?.isNotEmpty ?? false))
           ? IconButton.filled(
-              // style: FilledButton.styleFrom(
-              //   fixedSize: const Size(56, 16),
-              //   shape: const StadiumBorder(),
-              //   elevation: 1,
-              //   padding: EdgeInsets.zero,
-              //   visualDensity: VisualDensity.compact,
-              // ),
               color: context.colorScheme.onPrimary,
               visualDensity: VisualDensity.compact,
               icon: const Icon(Icons.close),
-              //child: Text(S.of(context).clear),
               onPressed: () {
                 searchStats(ref, null, null);
                 searchController.clear();

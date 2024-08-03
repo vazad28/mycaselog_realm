@@ -78,8 +78,8 @@ class StatsNotifier extends _$StatsNotifier with LoggerMixin {
 
   void searchStats({String? searchTerm, String? filterClause}) {
     state = state.copyWith(
-      searchTerm: searchTerm,
-      filterClause: filterClause,
+      searchTerm: searchTerm ?? '',
+      filterClause: filterClause ?? '',
     );
   }
 

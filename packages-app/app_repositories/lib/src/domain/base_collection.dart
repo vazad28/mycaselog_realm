@@ -10,6 +10,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'disposable.dart';
 import 'realm_database.dart';
 
+enum OrderByType {
+  descending('DESC'),
+  ascending('ASC');
+
+  const OrderByType(this.type);
+  final String type;
+}
+
 /// Abstract class defining [BaseCollection] structure
 abstract class BaseCollection<T extends RealmObject> extends Disposable
     with LoggerMixin {
@@ -69,18 +77,18 @@ abstract class BaseCollection<T extends RealmObject> extends Disposable
 
   /// save the model
   Future<void> putInFirestore(String docId, T model) {
-    if (isOffline) {
-      return _realm.writeAsync(() {
-        _realm.add<T>(model, update: true);
-        withConverter.doc(docId).set(model);
-      });
-    } else {
-      return withConverter.doc(docId).set(model).then((_) {
-        logger.info('success put');
-      }).catchError((dynamic err) {
-        logger.severe(err.toString());
-      });
-    }
+    // if (isOffline) {
+    //   return _realm.writeAsync(() {
+    //     _realm.add<T>(model, update: true);
+    //     withConverter.doc(docId).set(model);
+    //   });
+    // } else {
+    return withConverter.doc(docId).set(model).then((_) {
+      logger.info('success put');
+    }).catchError((dynamic err) {
+      logger.severe(err.toString());
+    });
+    //}
   }
 
   /// create collection stream
@@ -128,7 +136,7 @@ abstract class BaseCollection<T extends RealmObject> extends Disposable
       );
     }).then((_) {
       logger.fine('added $T');
-      //putInFirestore(primaryKey, object);
+      putInFirestore(primaryKey, object);
     });
   }
 
@@ -143,10 +151,13 @@ abstract class BaseCollection<T extends RealmObject> extends Disposable
     });
   }
 
-  RealmResults<T> getAll({String? orderBy, bool isDecenting = true}) {
-    if (orderBy != null) {
-      final order = isDecenting ? 'DESCENDING' : 'ASCENDING';
-      return _realm.query<T>('TRUEPREDICATE SORT($orderBy $order)');
+  RealmResults<T> getAll({
+    String? orderByField,
+    OrderByType orderByType = OrderByType.descending,
+  }) {
+    if (orderByField != null) {
+      final order = orderByType.type;
+      return _realm.query<T>('TRUEPREDICATE SORT($orderByField $order)');
     }
     return _realm.all<T>();
   }
@@ -167,6 +178,7 @@ abstract class BaseCollection<T extends RealmObject> extends Disposable
     docs = timestamp != null
         ? (await withConverter
                 .where('timestamp', isGreaterThan: timestamp)
+                //.limit(100)
                 .get())
             .docs
         : (await withConverter.get()).docs;

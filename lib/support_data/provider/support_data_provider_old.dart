@@ -95,7 +95,7 @@
 
 //   // void upsertAnesthesiaBlock(String value, CrudAction action) {
 //   //   final anesthesiaList = List<String>.from(state.anesthesiaBlocks);
-//   //   if (action == CrudAction.remove) {
+//   //   if (action == CrudAction.delete) {
 //   //     anesthesiaList.remove(value);
 //   //   } else {
 //   //     anesthesiaList.replaceOrAdd(value);
