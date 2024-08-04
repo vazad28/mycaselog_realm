@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:app_models/app_models.dart';
+import 'package:logger_client/logger_client.dart';
 import 'package:realm/realm.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../core/providers/providers.dart';
+import '../../sync/sync.dart';
 
 part '../../generated/cases/provider/cases_provider.g.dart';
 
@@ -25,9 +27,14 @@ class CaseTileStyle extends _$CaseTileStyle {
 
 /// Cases  stream  provider
 @Riverpod(keepAlive: true)
-class CasesNotifier extends _$CasesNotifier {
+class CasesNotifier extends _$CasesNotifier with LoggerMixin {
   @override
   Stream<RealmResultsChanges<CaseModel>> build() {
+    /// Listen for settings provider to start or stop firebse sync
+    ref.listen(firestoreLiveSyncProvider, (previous, next) {
+      logger.fine('settingsNotifierProvider listening for sync');
+    });
+
     return ref
         .read(dbProvider)
         .casesCollection
@@ -42,10 +49,17 @@ class CasesNotifier extends _$CasesNotifier {
 
   Future<void> pullToRefresh() {
     try {
-      return ref.watch(dbProvider).casesCollection.refreshCasesBacklinks(null);
+      return ref.watch(dbProvider).casesCollection.refreshBacklinks(null);
     } catch (err) {
       ref.watch(dialogServiceProvider).showSnackBar('Refresh failed');
       return Future<void>.sync(() => {});
     }
   }
+
+  // void _checkSyncOnStart() {
+  //   // ignore: unused_local_variable
+  //   final settingsModel =
+  //       ref.watch(dbProvider).settingsCollection.getSettings();
+  //   if (settingsModel?.syncOnStart ?? false) {}
+  // }
 }

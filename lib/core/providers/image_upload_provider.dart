@@ -40,7 +40,7 @@ class ImageUploadService with LoggerMixin implements MediaUploadService {
     ref
         .read(dbProvider)
         .mediaCollection
-        .upsert(mediaModel.mediaID, () => mediaModel..status = mediaStatus)
+        .upsert(() => mediaModel..status = mediaStatus)
         .then((_) {
       ref.watch(dialogServiceProvider).showSnackBar(message);
     });
@@ -57,7 +57,6 @@ class ImageUploadService with LoggerMixin implements MediaUploadService {
 
     ///  update the database
     await ref.read(dbProvider).mediaCollection.upsert(
-          mediaModel.mediaID,
           () => mediaModel
             ..fileUri = fullUri
             ..mediumUri = mediumUri

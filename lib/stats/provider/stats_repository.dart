@@ -2,7 +2,7 @@ import 'dart:math' as math show ln10, log, max, min, pow;
 
 import 'package:app_extensions/app_extensions.dart';
 import 'package:app_models/app_models.dart';
-import 'package:app_repositories/app_repositories.dart';
+import 'package:app_data/app_data.dart';
 import 'package:async_result/async_result.dart';
 import 'package:realm/realm.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

@@ -7,7 +7,7 @@ part of '../../../auto_complete/provider/auto_complete_provider.dart';
 // **************************************************************************
 
 String _$autoCompleteNotifierHash() =>
-    r'a1c643967d5ae9216dfe43069fb3584a558cc80e';
+    r'90ee3cadca570786579a1dc019862fb0d4c021be';
 
 /// See also [AutoCompleteNotifier].
 @ProviderFor(AutoCompleteNotifier)

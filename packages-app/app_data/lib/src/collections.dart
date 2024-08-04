@@ -9,7 +9,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:logger_client/logger_client.dart';
 import 'package:realm/realm.dart';
 
-import '../app_repositories.dart';
+import '../app_data.dart';
 
 part 'collections/cases_collection.dart';
 part 'collections/media_collection.dart';

@@ -1,39 +1,13 @@
 part of '../collections.dart';
 
-class TemplatesCollection extends BaseCollection<TemplateModel> {
-  TemplatesCollection(super.realmDatabase) : _realm = realmDatabase.realm;
-
-  final Realm _realm;
+class TemplatesCollection extends SyncCollection<TemplateModel> {
+  TemplatesCollection(super.realmDatabase);
 
   @override
   String get path => '$root/$userID/${DbCollection.templates.name}';
 
   @override
-  CollectionReference<TemplateModel> get withConverter =>
-      firestore.collection(path).withConverter<TemplateModel>(
-            fromFirestore: (snapshot, _) =>
-                TemplateModelX.fromJson(snapshot.data()!),
-            toFirestore: (model, _) => model.toJson(),
-          );
-
-  @override
-  Stream<List<TemplateModel>>? listenForChanges() {
-    return stream?.map((querySnapshot) {
-      final documents = querySnapshot.docChanges
-          .map((change) {
-            final model = TemplateModelX.fromJson(change.doc.data()!);
-
-            _realm.write(() => _realm.add<TemplateModel>(model, update: true));
-            return model;
-          })
-          .whereType<TemplateModel>()
-          .toList();
-
-      // set last update time
-      setLastSyncTimestamp();
-      return documents;
-    });
-  }
+  String getPrimaryKey(TemplateModel object) => object.templateID;
 
   /// ////////////////////////////////////////////////////////////////////
   /// Realm Methods
@@ -103,5 +77,18 @@ class TemplatesCollection extends BaseCollection<TemplateModel> {
             toFirestore: (model, _) => model.toJson());
 
     return (await converter.doc(templateID).get()).data();
+  }
+
+  @override
+  TemplateModel mapToModel(Map<String, dynamic> data) =>
+      TemplateModelX.fromJson(data);
+
+  @override
+  Map<String, dynamic> modelToMap(TemplateModel object) => object.toJson();
+
+  Future<void> addTemplate(TemplateModel object) {
+    return realm.writeAsync(
+      () => realm.add<TemplateModel>(object, update: true),
+    );
   }
 }

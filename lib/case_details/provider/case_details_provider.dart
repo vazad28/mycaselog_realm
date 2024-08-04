@@ -9,10 +9,6 @@ import '../../core/providers/providers.dart';
 part '../../generated/case_details/provider/case_details_provider.g.dart';
 part 'case_details_mixins.dart';
 
-/// ////////////////////////////////////////////////////////////////////
-/// Main Provider
-/// ////////////////////////////////////////////////////////////////////
-
 ///  Case details seeder provider
 final caseIDProvider = StateProvider.autoDispose<String?>((ref) => null);
 

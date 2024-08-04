@@ -92,9 +92,7 @@ class AddCaseFormSubmit extends _$AddCaseFormSubmit with LoggerMixin {
 
   Future<void> _doSubmit(CaseModel modelToSubmit) async {
     try {
-      await ref.watch(dbProvider).casesCollection.addCase(
-            modelToSubmit,
-          );
+      await ref.watch(dbProvider).casesCollection.addCase(modelToSubmit);
 
       /// set last used location as default location to use next time
       if (modelToSubmit.location != null) {

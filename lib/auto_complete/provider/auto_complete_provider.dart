@@ -1,3 +1,4 @@
+import 'package:app_models/app_models.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../core/providers/providers.dart';
@@ -22,10 +23,13 @@ class AutoCompleteNotifier extends _$AutoCompleteNotifier {
     return ref
         .watch(dbProvider)
         .casesCollection
-        .getAutoCompleteDiagnosis(query);
+        .getAutoCompleteData(query, BasicDataModelProps.diagnosis.name);
   }
 
   Future<List<String>> surgeryAutoComplete(String? query) {
-    return ref.watch(dbProvider).casesCollection.getAutoCompleteSurgery(query);
+    return ref
+        .watch(dbProvider)
+        .casesCollection
+        .getAutoCompleteData(query, BasicDataModelProps.surgery.name);
   }
 }

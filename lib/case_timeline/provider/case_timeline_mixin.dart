@@ -9,7 +9,7 @@ mixin TimelineMixin {
     return ref
         .watch(dbProvider)
         .timelineNotesCollection
-        .upsert(timelineNoteModel.noteID, () => timelineNoteModel..removed = 1);
+        .upsert(() => timelineNoteModel..removed = 1);
   }
 
   /// Change timeline  note data
@@ -23,7 +23,6 @@ mixin TimelineMixin {
     final createdAt = (dateTimePicked ?? DateTime.now()).millisecondsSinceEpoch;
 
     await ref.watch(dbProvider).timelineNotesCollection.upsert(
-          timelineNoteModel.noteID,
           () => timelineNoteModel..createdAt = createdAt,
         );
   }

@@ -6,35 +6,40 @@ import '../../core/providers/providers.dart';
 
 part '../../generated/settings/provider/settings_provider.g.dart';
 
+// final settingsProvider = StreamProvider<SettingsModel>((ref) {
+//   final stream = ref.watch(dbProvider).settingsCollection.getSettingsChanges();
+//   return stream.map((res) => res.object.toUnmanaged());
+// });
+
 /// Use a Notifier provider so we can have access to the settings without async
 @Riverpod(keepAlive: true)
 class SettingsNotifier extends _$SettingsNotifier with LoggerMixin {
   @override
   SettingsModel build() {
-    final userID = ref.watch(authenticationUserProvider).id;
+    //   //return ref.watch(settingsProvider).requireValue;
+    //   final stream = ref.watch(dbProvider).settingsCollection.getSettingsChanges();
+    // return stream.map((res) => res.object.toUnmanaged());
+    return SettingsModelX.zero(ref.watch(userIDProvider));
+  }
 
-    final sub = ref
-        .watch(dbProvider)
-        .settingsCollection
-        .getAll()
-        .changes
-        .listen((data) {
-      /// Create unmanaged onject so that we can manipulate  it for crud
-      if (data.results.isNotEmpty) state = data.results.last.toUnmanaged();
-    });
-
-    ref.onDispose(sub.cancel);
-
-    return SettingsModelX.zero(userID);
+  Future<void> init() async {
+    final settings = ref.watch(dbProvider).settingsCollection.getSettings();
+    state = settings?.toUnmanaged() ??
+        SettingsModelX.zero(ref.watch(userIDProvider));
   }
 
   /// Update settings
   void _updateSettings(SettingsModel settingsModel) {
     try {
-      ref.watch(dbProvider).settingsCollection.add(
-            state.userID,
-            settingsModel..timestamp = ModelUtils.getTimestamp,
-          );
+      ref
+          .watch(dbProvider)
+          .settingsCollection
+          .upsert(
+            () => settingsModel..timestamp = ModelUtils.getTimestamp,
+          )
+          .then((res) {
+        state = res.toUnmanaged();
+      });
     } catch (err) {
       ref.watch(dialogServiceProvider).showSnackBar(err.toString());
     }

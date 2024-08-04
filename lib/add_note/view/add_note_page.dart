@@ -284,7 +284,7 @@ class _AddNotePageState extends ConsumerState<AddNotePage> with LoggerMixin {
       await ref
           .watch(dbProvider)
           .notesCollection
-          .add(_noteModel.noteID, noteModelUnmanaged.toUnmanaged());
+          .upsert(() => noteModelUnmanaged);
 
       await Future<void>.delayed(Durations.medium4);
 

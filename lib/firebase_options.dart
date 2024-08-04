@@ -50,23 +50,22 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyC6tEeD0k6TosKN5Skhf-iDU40eGb3o7sk',
-    appId: '1:768480572372:android:153795ac48d9eee3325c41',
-    messagingSenderId: '768480572372',
-    projectId: 'mycaselog-vik',
-    storageBucket: 'mycaselog-vik.appspot.com',
+    apiKey: 'AIzaSyCQKt3c2t5krXqgERGd51LF_VgWbbjRsME',
+    appId: '1:575010129050:android:e3093448048f1960250b23',
+    messagingSenderId: '575010129050',
+    projectId: 'mycaselog-dev',
+    storageBucket: 'mycaselog-dev.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBdRLz5n1eorWm0nbE7BZdwyU7zY24VrZU',
-    appId: '1:768480572372:ios:15c4987a542815c9325c41',
-    messagingSenderId: '768480572372',
-    projectId: 'mycaselog-vik',
-    storageBucket: 'mycaselog-vik.appspot.com',
-    androidClientId:
-        '768480572372-022mmmmmoim3q373sushahs2tcqerhin.apps.googleusercontent.com',
-    iosClientId:
-        '768480572372-t1vj2nj5ju68j37dfdpr3k9pmmmvmitd.apps.googleusercontent.com',
-    iosBundleId: 'com.vik.mycaselog',
+    apiKey: 'AIzaSyBnRrxfz8TEm3xEFrWok4WVza_EtYj2DN8',
+    appId: '1:575010129050:ios:f85f8a54bbf6cd27250b23',
+    messagingSenderId: '575010129050',
+    projectId: 'mycaselog-dev',
+    storageBucket: 'mycaselog-dev.appspot.com',
+    androidClientId: '575010129050-591jpb83rmphh1i592rjfq9hc26dmlii.apps.googleusercontent.com',
+    iosClientId: '575010129050-v9hcf364sk7bs7vvl9ojofuol9bak7qq.apps.googleusercontent.com',
+    iosBundleId: 'com.example.mycaselog',
   );
+
 }

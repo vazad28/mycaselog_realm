@@ -1,8 +1,7 @@
 import 'dart:async';
 
 import 'package:app_annotations/app_annotations.dart';
-import 'package:app_models/app_models.dart';
-import 'package:app_repositories/app_repositories.dart';
+import 'package:app_data/app_data.dart';
 import 'package:realm/realm.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:state_of/state_of.dart';
@@ -15,17 +14,17 @@ part '../../generated/sync/provider/sync_providers.g.dart';
 @riverpod
 class SyncCollectionsMap extends _$SyncCollectionsMap {
   @override
-  Map<DbCollection, BaseCollection> build() {
+  Map<DbCollection, SyncCollection> build() {
     final database = ref.watch(dbProvider);
 
-    final collectionsMap = <DbCollection, BaseCollection>{
+    final collectionsMap = <DbCollection, SyncCollection>{
       DbCollection.cases: database.casesCollection,
       DbCollection.media: database.mediaCollection,
-      DbCollection.timelineNotes: database.timelineNotesCollection,
-      DbCollection.notes: database.notesCollection,
-      DbCollection.templates: database.templatesCollection,
-      DbCollection.supportData: database.supportDataCollection,
-      DbCollection.settings: database.settingsCollection,
+      // DbCollection.timelineNotes: database.timelineNotesCollection,
+      // DbCollection.notes: database.notesCollection,
+      // DbCollection.templates: database.templatesCollection,
+      // DbCollection.supportData: database.supportDataCollection,
+      // DbCollection.settings: database.settingsCollection,
     };
 
     return collectionsMap;
@@ -36,7 +35,7 @@ class SyncCollectionsMap extends _$SyncCollectionsMap {
 /// status updates
 @riverpod
 class CollectionSyncer extends _$CollectionSyncer {
-  BaseCollection<RealmObject>? _collection;
+  SyncCollection<RealmObject>? _collection;
 
   @override
   StateOf<int> build(DbCollection dbCollection) {
@@ -53,30 +52,28 @@ class CollectionSyncer extends _$CollectionSyncer {
     }
 
     state = const StateOf<int>.loading();
-    _collection?.syncByTimestamp(timestamp).then((items) async {
-      state = StateOf<int>.success(items.length);
-      await _onSuccess(items);
+    _collection?.syncByTimestamp(timestamp).then((ids) async {
+      state = StateOf<int>.success(ids.length);
+
+      /// if timestamp is 0, we send null for ids so
+      /// link functions can load all cases instead of  by ids
+      await _onSuccess(timestamp == 0 ? null : ids);
     }).catchError((Object? err) {
       state = StateOf<int>.failure(Exception(err));
     });
   }
 
-  Future<void> _onSuccess(List<RealmObject> items) async {
+  /// null for ids means  collection runs backlinks on all items
+  Future<void> _onSuccess(List<String>? ids) async {
     if (dbCollection == DbCollection.media) {
-      return ref
-          .watch(dbProvider)
-          .mediaCollection
-          .refreshMediaBacklinks(items as List<MediaModel>);
+      return ref.watch(dbProvider).mediaCollection.refreshBacklinks(ids);
     } else if (dbCollection == DbCollection.timelineNotes) {
       return ref
           .watch(dbProvider)
           .timelineNotesCollection
-          .refreshTimelineNotesBacklinks(items as List<TimelineNoteModel>);
+          .refreshBacklinks(ids);
     } else if (dbCollection == DbCollection.cases) {
-      return ref
-          .watch(dbProvider)
-          .casesCollection
-          .refreshCasesBacklinks(items as List<CaseModel>);
+      return ref.watch(dbProvider).casesCollection.refreshBacklinks(ids);
     }
   }
 }

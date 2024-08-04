@@ -8,7 +8,6 @@ import 'package:logger_client/logger_client.dart';
 
 import '../core/core.dart';
 import '../router/providers/app_router.dart';
-import '../sync/provider/firestore_live_sync.dart';
 
 class MycaselogApp extends ConsumerWidget with LoggerMixin {
   const MycaselogApp({super.key});
@@ -53,66 +52,38 @@ class MycaselogApp extends ConsumerWidget with LoggerMixin {
       supportedLocales: S.delegate.supportedLocales,
     );
 
-    final app = AsyncValueWidget(
-      value: ref.watch(appStartUpProvider),
-      data: (_) => _MycaselogApp(app: (context) => materialApp),
-      loading: SizedBox.expand(
-        child: Material(
-          type: MaterialType.card,
-          color: currentTheme.colorScheme.surface,
-          child: Center(
-            child: Text(
-              'MYCASELOG',
-              style: currentTheme.textTheme.titleMedium
-                  ?.copyWith(color: currentTheme.colorScheme.onSurface),
-            ),
+    return PopScope(
+      onPopInvokedWithResult: (bool didPop, result) => {},
+      child: TapOutsideUnfocus(
+        child: AsyncValueWidget(
+          value: ref.watch(appStartUpProvider),
+          data: (_) => materialApp,
+          loading: _MyCaselogLoading(currentTheme: currentTheme),
+        ),
+      ),
+    );
+  }
+}
+
+class _MyCaselogLoading extends StatelessWidget {
+  const _MyCaselogLoading({required this.currentTheme});
+
+  final ThemeData currentTheme;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox.expand(
+      child: Material(
+        type: MaterialType.card,
+        color: currentTheme.colorScheme.surface,
+        child: Center(
+          child: Text(
+            'MYCASELOG',
+            style: currentTheme.textTheme.titleMedium
+                ?.copyWith(color: currentTheme.colorScheme.onSurface),
           ),
         ),
       ),
     );
-
-    return PopScope(
-      onPopInvokedWithResult: (bool didPop, result) => {},
-      child: TapOutsideUnfocus(child: app),
-    );
   }
 }
-
-class _MycaselogApp extends ConsumerWidget with LoggerMixin {
-  const _MycaselogApp({required this.app});
-
-  final WidgetBuilder app;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    /// Listen for settings provider to start or stop firebse sync
-    ref.listen(firestoreLiveSyncProvider, (previous, next) {
-      logger.fine('settingsNotifierProvider listening for sync');
-    });
-    //ref.watch(connectivityStatusProvider);
-
-    return app(context);
-  }
-}
-
-/* 
-final app = ref.watch(appStartUpProvider).when(
-      data: (_) => _MycaselogApp(app: (context) => materialApp),
-      loading: ()=> Material(
-        type: MaterialType.card,
-        color: brightness == Brightness.light ? Colors.white : Colors.black,
-        textStyle: TextStyle().copyWith(
-          color: brightness == Brightness.light ? Colors.black : Colors.white,
-        ),
-        child: const Text('loading..'),
-      ),
-      error: (err,st)=> Center(
-      child: Text(
-        err.toString(),
-        style: Theme.of(context)
-            .textTheme
-            .headlineSmall!
-            .copyWith(color: Colors.red),
-      ),
-    );
-    ); */

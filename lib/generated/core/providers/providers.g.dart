@@ -172,36 +172,23 @@ final dbProvider = Provider<Collections>.internal(
 );
 
 typedef DbRef = ProviderRef<Collections>;
-String _$appStartUpHash() => r'836b12656d227f316ec25f10d7e002fe09998e30';
+String _$dialogServiceHash() => r'33d1fc7bae9b43c98c784b20bc476cfdd8a21ebd';
 
-/// See also [appStartUp].
-@ProviderFor(appStartUp)
-final appStartUpProvider = AutoDisposeFutureProvider<void>.internal(
-  appStartUp,
-  name: r'appStartUpProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$appStartUpHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef AppStartUpRef = AutoDisposeFutureProviderRef<void>;
-String _$appDirPathHash() => r'22b325281d96a6c04d432bccec46a75a2e26b0de';
-
-/// app dir path
+/// Riverpod provider to use the dialog service
 ///
-/// Copied from [appDirPath].
-@ProviderFor(appDirPath)
-final appDirPathProvider = Provider<String>.internal(
-  appDirPath,
-  name: r'appDirPathProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$appDirPathHash,
+/// Copied from [dialogService].
+@ProviderFor(dialogService)
+final dialogServiceProvider = Provider<DialogService>.internal(
+  dialogService,
+  name: r'dialogServiceProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$dialogServiceHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef AppDirPathRef = ProviderRef<String>;
+typedef DialogServiceRef = ProviderRef<DialogService>;
 String _$encryptionClientHash() => r'4eba4cbca2f85dea4f17df84be1efc50cced15b5';
 
 /// Encryption service provider
@@ -630,6 +617,25 @@ class _EncryptPatientModelProviderElement extends AutoDisposeProviderElement<
       (origin as EncryptPatientModelProvider).decryptedPatientModel;
 }
 
+String _$imageUploadServiceHash() =>
+    r'2e2d4b581424f692b3175fa98f71374de9f05b0b';
+
+/// Riverpod provider to use the dialog service
+///
+/// Copied from [imageUploadService].
+@ProviderFor(imageUploadService)
+final imageUploadServiceProvider =
+    AutoDisposeProvider<ImageUploadService>.internal(
+  imageUploadService,
+  name: r'imageUploadServiceProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$imageUploadServiceHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef ImageUploadServiceRef = AutoDisposeProviderRef<ImageUploadService>;
 String _$sharedPrefsHash() => r'394954be62ac9fcd757598b97278fd4215bc6410';
 
 /// SharedPreferences provider
@@ -697,42 +703,36 @@ final localStorageProvider = AutoDisposeProvider<LocalStorage>.internal(
 );
 
 typedef LocalStorageRef = AutoDisposeProviderRef<LocalStorage>;
-String _$dialogServiceHash() => r'33d1fc7bae9b43c98c784b20bc476cfdd8a21ebd';
+String _$appStartUpHash() => r'16b340b1ac38ab625951f2c6c0bc0028c2d1c9fe';
 
-/// Riverpod provider to use the dialog service
-///
-/// Copied from [dialogService].
-@ProviderFor(dialogService)
-final dialogServiceProvider = Provider<DialogService>.internal(
-  dialogService,
-  name: r'dialogServiceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$dialogServiceHash,
+/// See also [appStartUp].
+@ProviderFor(appStartUp)
+final appStartUpProvider = AutoDisposeFutureProvider<void>.internal(
+  appStartUp,
+  name: r'appStartUpProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$appStartUpHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef DialogServiceRef = ProviderRef<DialogService>;
-String _$imageUploadServiceHash() =>
-    r'2e2d4b581424f692b3175fa98f71374de9f05b0b';
+typedef AppStartUpRef = AutoDisposeFutureProviderRef<void>;
+String _$appDirPathHash() => r'22b325281d96a6c04d432bccec46a75a2e26b0de';
 
-/// Riverpod provider to use the dialog service
+/// app dir path
 ///
-/// Copied from [imageUploadService].
-@ProviderFor(imageUploadService)
-final imageUploadServiceProvider =
-    AutoDisposeProvider<ImageUploadService>.internal(
-  imageUploadService,
-  name: r'imageUploadServiceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$imageUploadServiceHash,
+/// Copied from [appDirPath].
+@ProviderFor(appDirPath)
+final appDirPathProvider = Provider<String>.internal(
+  appDirPath,
+  name: r'appDirPathProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$appDirPathHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef ImageUploadServiceRef = AutoDisposeProviderRef<ImageUploadService>;
+typedef AppDirPathRef = ProviderRef<String>;
 String _$connectivityStatusHash() =>
     r'3cba16e6359dc4f71f1f438fe6d9dd0239e6bfb5';
 
@@ -750,7 +750,7 @@ final connectivityStatusProvider =
 );
 
 typedef _$ConnectivityStatus = Notifier<bool>;
-String _$crudHash() => r'f361ecd25af373b1d7dce35b6c6bbf316f584dbb';
+String _$crudHash() => r'dfe47e19091047799cb47d8227e1f9ac7f405ff0';
 
 /// See also [Crud].
 @ProviderFor(Crud)

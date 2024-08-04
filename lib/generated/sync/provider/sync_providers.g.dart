@@ -7,12 +7,12 @@ part of '../../../sync/provider/sync_providers.dart';
 // **************************************************************************
 
 String _$syncCollectionsMapHash() =>
-    r'4d8a2146763cfe792a052b337f2ac0914eebf551';
+    r'0f6c29aa3094993039b875d83e26a9e362be6c69';
 
 /// See also [SyncCollectionsMap].
 @ProviderFor(SyncCollectionsMap)
 final syncCollectionsMapProvider = AutoDisposeNotifierProvider<
-    SyncCollectionsMap, Map<DbCollection, BaseCollection>>.internal(
+    SyncCollectionsMap, Map<DbCollection, SyncCollection>>.internal(
   SyncCollectionsMap.new,
   name: r'syncCollectionsMapProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -23,8 +23,8 @@ final syncCollectionsMapProvider = AutoDisposeNotifierProvider<
 );
 
 typedef _$SyncCollectionsMap
-    = AutoDisposeNotifier<Map<DbCollection, BaseCollection>>;
-String _$collectionSyncerHash() => r'f57ebff4bf3d6c8b1dbc5ed1f82008daacf9e0ae';
+    = AutoDisposeNotifier<Map<DbCollection, SyncCollection>>;
+String _$collectionSyncerHash() => r'c2d7f09a0b40f50570acaedcb895f44b4680d4a3';
 
 /// Copied from Dart SDK
 class _SystemHash {

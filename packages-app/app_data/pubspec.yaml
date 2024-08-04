@@ -1,5 +1,5 @@
-name: app_repositories
-description: App repositories package.
+name: app_data
+description: App data package.
 version: 1.0.0+1
 publish_to: none
 

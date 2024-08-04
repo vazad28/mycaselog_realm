@@ -29,17 +29,10 @@ class SupportDataNotifier extends _$SupportDataNotifier {
     return SupportDataModelX.zero(userID);
   }
 
-  // Future<void> updateSupportData(
-  //     SupportDataModel Function(SupportDataModel) updateCallback) async {
-  //   //state = updateCallback.call(state);
-  // }
-
   Future<void> _updateSupportData(SupportDataModel supportDataModel) async {
     try {
-      final userID = ref.watch(authenticationUserProvider).id;
-      await ref.watch(dbProvider).supportDataCollection.add(
-            userID,
-            supportDataModel..timestamp = ModelUtils.getTimestamp,
+      await ref.watch(dbProvider).supportDataCollection.upsert(
+            () => supportDataModel..timestamp = ModelUtils.getTimestamp,
           );
     } catch (err) {
       ref.watch(dialogServiceProvider).showSnackBar(err.toString());

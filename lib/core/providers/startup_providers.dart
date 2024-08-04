@@ -5,8 +5,8 @@ Future<void> appStartUp(AppStartUpRef ref) async {
   /// Load realm database
   await ref.watch(realmDatabaseProvider.future);
 
-  // ignore: unused_local_variable
-  final syncStatus = ref.read(firestoreLiveSyncProvider);
+  /// load setting provider
+  await ref.watch(settingsNotifierProvider.notifier).init();
 }
 
 /// app dir path

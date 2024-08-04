@@ -193,10 +193,7 @@ class AddTemplateNotifier extends _$AddTemplateNotifier with LoggerMixin {
   /// ---- DO the form submit  ---
   Future<void> _doSubmit(TemplateModel modelToSubmit) async {
     try {
-      await ref
-          .read(dbProvider)
-          .templatesCollection
-          .add(modelToSubmit.templateID, modelToSubmit);
+      await ref.read(dbProvider).templatesCollection.addTemplate(modelToSubmit);
       state = StateOf<TemplateModel>.success(modelToSubmit);
     } catch (err) {
       state = StateOf<TemplateModel>.failure(err.toAppFailure());

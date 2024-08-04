@@ -13,7 +13,7 @@ const passcodeClaimsKey = 'mclPasscode';
 @riverpod
 class PasscodeNotifier extends _$PasscodeNotifier with LoggerMixin {
   @override
-  Future<String> build() async {
+  Future<void> build() async {
     final currentUserID =
         ref.read(firebaseAuthInstanceProvider).currentUser?.uid;
 
@@ -31,10 +31,8 @@ class PasscodeNotifier extends _$PasscodeNotifier with LoggerMixin {
         await ref.watch(secureStorageProvider).read(key: secureStorageKey) ??
             await _loadUserPasscode(secureStorageKey);
 
-    //rint('passcode $passcode');
     /// so we have passcode. lets set this up in the provider
     ref.watch(passcodeProvider.notifier).update((_) => passcode);
-    return passcode;
   }
 
   /// Method will check custom claims to see if the passcode exist in the

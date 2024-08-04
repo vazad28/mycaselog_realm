@@ -36,7 +36,6 @@ class TemplatesNotifier extends _$TemplatesNotifier {
     TemplateEvent event,
   ) {
     return ref.watch(dbProvider).templatesCollection.upsert(
-      templateModel.templateID,
       () {
         return switch (event) {
           TemplateEvent.share => templateModel..shared = true,

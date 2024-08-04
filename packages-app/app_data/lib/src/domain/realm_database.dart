@@ -51,7 +51,4 @@ class RealmDatabase extends Disposable {
     );
     return Realm(config);
   }
-
-  /// check if the auto sync is on
-  static void checkAutoSync() {}
 }

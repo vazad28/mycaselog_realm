@@ -5,7 +5,7 @@ import 'package:app_annotations/app_annotations.dart';
 import 'package:app_extensions/app_extensions.dart';
 import 'package:app_l10n/app_l10n.dart';
 import 'package:app_models/app_models.dart';
-import 'package:app_repositories/app_repositories.dart';
+import 'package:app_data/app_data.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:async_result/async_result.dart';
 import 'package:authentication_client/authentication_client.dart';
@@ -28,23 +28,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:storage/storage.dart';
 
 import '../../settings/settings.dart';
-import '../../sync/sync.dart';
 import '../core.dart';
 
+part '../../generated/core/providers/providers.g.dart';
 part 'auth_providers.dart';
 part 'connectivity_provider.dart';
 part 'db_providers.dart';
-part 'startup_providers.dart';
-part 'encryption_client_provider.dart';
-part 'local_storage_provider.dart';
 part 'dialog_service_provider.dart';
+part 'encryption_client_provider.dart';
 part 'image_upload_provider.dart';
-
-part '../../generated/core/providers/providers.g.dart';
-
-/// EXTENSIONS
-extension AutoDisposeStreamSubscription on StreamSubscription {
-  void cancelOnDispose(Ref ref) {
-    ref.onDispose(cancel);
-  }
-}
+part 'local_storage_provider.dart';
+part 'startup_providers.dart';

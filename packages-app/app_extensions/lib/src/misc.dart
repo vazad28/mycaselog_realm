@@ -27,3 +27,19 @@ extension MiscExt on String {
         .join(' ');
   }
 }
+
+
+// extension ThrottleExtension<T> on T Function() {
+//   T Function() throttle(Duration duration) {
+//     Timer? timer;
+//     return () {
+//       if (timer == null) {
+//         this();
+//         timer = Timer(duration, () {
+//           timer = null;
+//         });
+//       }
+//       return null;
+//     };
+//   }
+// }

@@ -68,6 +68,13 @@ packages:
       relative: true
     source: path
     version: "1.0.0+1"
+  app_data:
+    dependency: "direct main"
+    description:
+      path: "packages-app/app_data"
+      relative: true
+    source: path
+    version: "1.0.0+1"
   app_extensions:
     dependency: "direct main"
     description:
@@ -86,13 +93,6 @@ packages:
     dependency: "direct main"
     description:
       path: "packages-app/app_models"
-      relative: true
-    source: path
-    version: "1.0.0+1"
-  app_repositories:
-    dependency: "direct main"
-    description:
-      path: "packages-app/app_repositories"
       relative: true
     source: path
     version: "1.0.0+1"

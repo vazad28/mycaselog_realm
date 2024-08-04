@@ -29,7 +29,11 @@ class MediaGridTileStyle extends _$MediaGridTileStyle {
 class MediaNotifier extends _$MediaNotifier {
   @override
   Stream<RealmResultsChanges<MediaModel>> build() {
-    return ref.read(dbProvider).mediaCollection.getAllMedia().changes;
+    return ref
+        .read(dbProvider)
+        .mediaCollection
+        .getAll(orderByField: 'timestamp')
+        .changes;
   }
 
   /// Full text search notes
@@ -45,7 +49,7 @@ class MediaNotifier extends _$MediaNotifier {
 
   Future<void> pullToRefresh() {
     try {
-      return ref.watch(dbProvider).mediaCollection.refreshMediaBacklinks(null);
+      return ref.watch(dbProvider).mediaCollection.refreshBacklinks(null);
     } catch (err) {
       ref.watch(dialogServiceProvider).showSnackBar('Refresh failed');
       return Future<void>.sync(() => {});

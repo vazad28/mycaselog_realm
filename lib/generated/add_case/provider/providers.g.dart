@@ -39,7 +39,7 @@ final currentCaseTemplateProvider =
 );
 
 typedef _$CurrentCaseTemplate = AutoDisposeNotifier<TemplateModel?>;
-String _$addCaseFormSubmitHash() => r'549740356a50248012ccc2b8b6d24d951607b81c';
+String _$addCaseFormSubmitHash() => r'5b99957e29bd2b7916640ea1fb531663d2df350c';
 
 /// See also [AddCaseFormSubmit].
 @ProviderFor(AddCaseFormSubmit)

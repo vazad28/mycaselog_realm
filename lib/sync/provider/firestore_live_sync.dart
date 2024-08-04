@@ -15,30 +15,26 @@ class FirestoreLiveSync extends _$FirestoreLiveSync with LoggerMixin {
 
   @override
   bool build() {
-    ref
+    final sub = ref
         .watch(dbProvider)
         .settingsCollection
         .getSettings()
         ?.changes
         .listen((settings) {
       if (settings.object.syncOnStart != state) {
-        settings.object.syncOnStart
-            ? _startFirebaseListeners()
-            : _pauseFirebaseListeners();
-
         state = settings.object.syncOnStart;
+        _updateFirebaseSyncStatus();
       }
     });
 
     /// on dispose kill all listeners
-    ref.onDispose(_stopFirebaseListeners);
+    ref.onDispose(() => sub?.cancel());
 
     return false;
   }
 
-  void _startFirebaseListeners() {
+  void _updateFirebaseSyncStatus() {
     logger.fine('starting firebase listeners on Firebase Sync live');
-    if (subs.isNotEmpty) return _resumeFirebaseListeners();
 
     try {
       final collectionsMap = ref.read(syncCollectionsMapProvider);
@@ -46,31 +42,10 @@ class FirestoreLiveSync extends _$FirestoreLiveSync with LoggerMixin {
         final collection = collectionsMap[dbCollection];
         if (collection == null) continue;
 
-        final stream = collection.listenForChanges();
-        if (stream == null) continue;
-
-        // ignore: cancel_subscriptions
-        final sub = stream.listen((_) {});
-        subs.putIfAbsent(dbCollection.name, () => sub);
+        collection.updateFirebaseSyncStatus(status: state);
       }
     } catch (err) {
       logger.severe('sync listeners error $err');
     }
-  }
-
-  void _resumeFirebaseListeners() {
-    logger.fine('resumeing firebase listeners on Firebase Sync live');
-    for (final sub in subs.values) sub.resume();
-  }
-
-  void _pauseFirebaseListeners() {
-    logger.fine('pausing firebase listeners on Firebase Sync live');
-    for (final sub in subs.values) sub.pause();
-  }
-
-  void _stopFirebaseListeners() {
-    for (final sub in subs.values) sub.cancel();
-    logger.fine('FirestoreLiveSync is disposing');
-    subs.clear();
   }
 }
