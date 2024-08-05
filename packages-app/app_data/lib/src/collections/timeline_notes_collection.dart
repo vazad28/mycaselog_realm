@@ -37,24 +37,30 @@ class TimelineNotesCollection extends SyncCollection<TimelineNoteModel> {
   /// Refresh media backlinks to cases collection  as needed
   Future<void> refreshBacklinks(List<String>? ids) async {
     ignoreRealmChanges = true;
-    await _realm.writeAsync(() {
+    return _realm.writeAsync(() {
+      // Query all TimelineNoteModel objects
       final noteModels = ids == null
           ? _realm.all<TimelineNoteModel>()
-          : getAllByTimelineNoteIDs(ids);
+          : _realm.query<TimelineNoteModel>(r'timelineNoteID IN $0', [ids]);
 
+      // Group notes by caseID
       final groupedNotes =
           noteModels.groupFoldBy<String, List<TimelineNoteModel>>(
         (e) => e.caseID,
         (prev, e) => (prev ?? [])..add(e),
       );
 
+      // Iterate through each caseID
       for (final caseID in groupedNotes.keys) {
         final notesList = groupedNotes[caseID]!;
         final existingCase = _realm.find<CaseModel>(caseID);
 
         if (existingCase != null) {
+          // Add missing notes to the case model
           existingCase.notes.addAll(
-            notesList.where((note) => !existingCase.notes.contains(note)),
+            notesList.where(
+              (note) => !existingCase.notes.contains(note),
+            ),
           );
         }
       }
@@ -74,7 +80,9 @@ class TimelineNotesCollection extends SyncCollection<TimelineNoteModel> {
   }
 
   Future<void> changeTimelineNotesTimestamp(
-      List<TimelineNoteModel> noteList, int timestamp) {
+    List<TimelineNoteModel> noteList,
+    int timestamp,
+  ) {
     return _realm.writeAsync(() {
       final updatedList = noteList
         ..map((e) => e.timestamp = timestamp).toList();

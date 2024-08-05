@@ -1,72 +1,102 @@
 import 'package:app_annotations/app_annotations.dart';
-import 'package:app_models/app_models.dart';
+import 'package:app_extensions/app_extensions.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../sync.dart';
 
-class SyncView extends StatelessWidget {
+final collectionsOrder = [
+  DbCollection.cases,
+  DbCollection.media,
+  DbCollection.timelineNotes,
+  DbCollection.notes,
+  DbCollection.templates,
+  DbCollection.supportData,
+  DbCollection.settings,
+];
+
+class SyncView extends ConsumerWidget {
   const SyncView({super.key});
 
-  /// divider
-  Divider get _divider => const Divider(indent: 24, height: 1);
-
   @override
-  Widget build(BuildContext context) {
-    final child = ListView(
+  Widget build(BuildContext context, WidgetRef ref) {
+    //final collectionsMap = ref.watch(syncCollectionsMapProvider);
+
+    final collectionsOrder = [
+      DbCollection.cases,
+      DbCollection.media,
+      DbCollection.timelineNotes,
+      DbCollection.notes,
+      DbCollection.templates,
+      DbCollection.supportData,
+      DbCollection.settings,
+    ];
+
+    return ListView.separated(
       shrinkWrap: true,
-      children: [
-        SizedBox(
-          height: kToolbarHeight,
-          child: Text(
-            'Sync Data',
-            style: Theme.of(context).textTheme.titleMedium,
-            textAlign: TextAlign.center,
+      itemCount: collectionsOrder.length,
+      itemBuilder: (context, index) {
+        final dbCollection = collectionsOrder[index];
+
+        final syncStateProvider = ref.watch(syncNotifierProvider(dbCollection));
+        final notifier = ref.watch(syncNotifierProvider(dbCollection).notifier);
+
+        return ListTile(
+          minTileHeight: kToolbarHeight,
+          title: Text(
+            dbCollection.name.camelToTitleCase,
+            style: context.textTheme.titleMedium,
           ),
-        ),
-
-        const _TableToSync<CaseModel>(
-          DbCollection.cases,
-        ), //cases
-        _divider,
-        const _TableToSync<MediaModel>(
-          DbCollection.media,
-        ), //media
-        _divider,
-        const _TableToSync<TemplateModel>(
-          DbCollection.templates,
-        ), // templates
-        _divider,
-        const _TableToSync<TimelineNoteModel>(
-          DbCollection.timelineNotes,
-        ), // timeline notes
-        _divider,
-        const _TableToSync<NoteModel>(
-          DbCollection.notes,
-        ), // timeline notes
-        _divider,
-        const _TableToSync<SupportDataModel>(
-          DbCollection.supportData,
-        ), // support data
-        _divider,
-        const SizedBox(height: AppSpacing.xlg),
-        const Center(child: SyncDoneButton()),
-      ],
-    );
-
-    return Center(child: child);
-  }
-}
-
-class _TableToSync<T> extends StatelessWidget {
-  const _TableToSync(this.dbCollection, {super.key});
-  final DbCollection dbCollection;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(left: 16),
-      child: SyncItemTile<T>(dbCollection),
+          trailing: syncStateProvider.maybeWhen(
+            success: (syncedIds) => TextButton(
+              onPressed: syncStateProvider.isLoading
+                  ? null
+                  : () {
+                      context.openDraggableBottomSheet<void>(
+                        builder: (_) {
+                          /// Bottom sheet to select 'time since' for syncing data
+                          return SyncTimeSelector(
+                            onSelect: (timestamp) {
+                              if (timestamp == null) return;
+                              notifier.syncCollection(timestamp);
+                            },
+                          );
+                        },
+                      );
+                    },
+              child: Text('${syncedIds.length}'),
+            ),
+            loading: (_) => const CircularProgressIndicator.adaptive(),
+            failure: (_) => const Text('Error'),
+            orElse: () => TextButton(
+              onPressed: syncStateProvider.isLoading
+                  ? null
+                  : () {
+                      context.openDraggableBottomSheet<void>(
+                        builder: (_) {
+                          /// Bottom sheet to select 'time since' for syncing data
+                          return SyncTimeSelector(
+                            onSelect: (timestamp) {
+                              if (timestamp == null) return;
+                              notifier.syncCollection(timestamp);
+                            },
+                          );
+                        },
+                      );
+                    },
+              child: const Text('sync'),
+            ),
+          ),
+        );
+      },
+      separatorBuilder: (BuildContext context, int index) {
+        return const Divider(
+          height: 0.5,
+          indent: 16,
+          endIndent: 16,
+        );
+      },
     );
   }
 }

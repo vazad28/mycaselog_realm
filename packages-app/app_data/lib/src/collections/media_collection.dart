@@ -34,26 +34,29 @@ class MediaCollection extends SyncCollection<MediaModel> with LoggerMixin {
 
   Future<void> refreshBacklinks(List<String>? ids) async {
     ignoreRealmChanges = true;
-    await realm.writeAsync(() {
-      final mediaModels =
-          ids == null ? realm.all<MediaModel>() : getAllByMediaIDs(ids);
+    return realm.writeAsync(() {
+      // Query all MediaModel objects
+      final mediaModels = ids == null
+          ? realm.all<MediaModel>()
+          : realm.query<MediaModel>(r'mediaID IN $0', [ids]);
 
+      // Group media by caseID
       final groupedMedia = mediaModels.groupFoldBy<String, List<MediaModel>>(
         (e) => e.caseID,
         (prev, e) => (prev ?? [])..add(e),
       );
 
+      // Iterate through each caseID
       for (final caseID in groupedMedia.keys) {
         final mediaList = groupedMedia[caseID]!;
         final caseModel = realm.find<CaseModel>(caseID);
 
         if (caseModel == null) continue;
 
-        caseModel.medias.addAll(
-          mediaList.where(
-            (m) => !caseModel.medias.any((cm) => cm.mediaID == m.mediaID),
-          ),
-        );
+        // Add missing media to the case model
+        caseModel.medias.addAll(mediaList.where(
+          (media) => !caseModel.medias.any((m) => m.mediaID == media.mediaID),
+        ));
       }
     }).whenComplete(() => ignoreRealmChanges = false);
   }

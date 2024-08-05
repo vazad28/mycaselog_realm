@@ -1,15 +1,12 @@
-import 'dart:async';
-
 import 'package:app_annotations/app_annotations.dart';
 import 'package:app_data/app_data.dart';
-import 'package:realm/realm.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:state_of/state_of.dart';
 
 import '../../core/failures/app_failures.dart';
 import '../../core/providers/providers.dart';
 
-part '../../generated/sync/provider/sync_providers.g.dart';
+part '../../generated/sync/provider/sync_provider.g.dart';
 
 @riverpod
 class SyncCollectionsMap extends _$SyncCollectionsMap {
@@ -20,46 +17,45 @@ class SyncCollectionsMap extends _$SyncCollectionsMap {
     final collectionsMap = <DbCollection, SyncCollection>{
       DbCollection.cases: database.casesCollection,
       DbCollection.media: database.mediaCollection,
-      // DbCollection.timelineNotes: database.timelineNotesCollection,
-      // DbCollection.notes: database.notesCollection,
-      // DbCollection.templates: database.templatesCollection,
-      // DbCollection.supportData: database.supportDataCollection,
-      // DbCollection.settings: database.settingsCollection,
+      DbCollection.timelineNotes: database.timelineNotesCollection,
+      DbCollection.notes: database.notesCollection,
+      DbCollection.templates: database.templatesCollection,
+      DbCollection.supportData: database.supportDataCollection,
+      DbCollection.settings: database.settingsCollection,
     };
 
     return collectionsMap;
   }
 }
 
-/// A family provider to fire sync on each collection with
-/// status updates
-@riverpod
-class CollectionSyncer extends _$CollectionSyncer {
-  SyncCollection<RealmObject>? _collection;
-
+@Riverpod(keepAlive: true)
+class SyncNotifier extends _$SyncNotifier {
   @override
-  StateOf<int> build(DbCollection dbCollection) {
-    final collectionsMap = ref.read(syncCollectionsMapProvider);
-    _collection = collectionsMap[dbCollection];
-    return const StateOf<int>.init();
+  StateOf<List<String>> build(DbCollection dbCollection) {
+    return const StateOf<List<String>>.init();
   }
 
   void syncCollection(int timestamp) {
-    if (_collection == null) {
-      state =
-          const StateOf<int>.failure(AppFailure.generic('No such collection'));
+    final collectionsMap = ref.read(syncCollectionsMapProvider);
+    final collection = collectionsMap[dbCollection];
+
+    if (collection == null) {
+      state = const StateOf<List<String>>.failure(
+        AppFailure.generic('No such collection'),
+      );
       return;
     }
 
-    state = const StateOf<int>.loading();
-    _collection?.syncByTimestamp(timestamp).then((ids) async {
-      state = StateOf<int>.success(ids.length);
+    state = const StateOf<List<String>>.loading();
+
+    collection.syncByTimestamp(timestamp).then((ids) async {
+      state = StateOf<List<String>>.success(ids);
 
       /// if timestamp is 0, we send null for ids so
       /// link functions can load all cases instead of  by ids
       await _onSuccess(timestamp == 0 ? null : ids);
     }).catchError((Object? err) {
-      state = StateOf<int>.failure(Exception(err));
+      state = StateOf<List<String>>.failure(Exception(err));
     });
   }
 

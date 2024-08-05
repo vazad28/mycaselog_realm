@@ -1,3 +1,4 @@
+import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -22,11 +23,89 @@ class _SyncPageState extends ConsumerState<SyncPage> with AppMixins {
 
   @override
   Widget build(BuildContext context) {
+    final widget = Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Spacer(flex: 1),
+        Container(
+          padding: const EdgeInsets.only(bottom: AppSpacing.lg),
+          alignment: AlignmentDirectional.bottomCenter,
+          child: Text(
+            'Sync Data',
+            style: Theme.of(context).textTheme.titleMedium,
+            textAlign: TextAlign.center,
+          ),
+        ),
+        const Expanded(
+          flex: 3,
+          child: Center(
+            child: SyncView(),
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.only(top: AppSpacing.xlg),
+          alignment: AlignmentDirectional.topCenter,
+          child: const SyncDoneButton(),
+        ),
+        const Spacer(flex: 1),
+      ],
+    );
+
     return PopScope(
-      child: const Material(child: SyncView()),
       onPopInvokedWithResult: (didPop, _) {
         showBottomNavbar(ref);
       },
+      child: Material(
+        child: widget,
+      ),
     );
+
+    // return PopScope(
+    //   child: Material(
+    //     child: Center(
+    //       child: Padding(
+    //         padding: const EdgeInsets.symmetric(
+    //           vertical: AppSpacing.xxlg,
+    //           horizontal: AppSpacing.lg,
+    //         ),
+    //         child: Column(
+    //           mainAxisSize: MainAxisSize.min,
+    //           mainAxisAlignment: MainAxisAlignment.center,
+    //           children: [
+    //             // const SizedBox(
+    //             //   height: kToolbarHeight,
+    //             // ),
+    //             // Header
+    //             SizedBox(
+    //               height: kToolbarHeight,
+    //               child: Text(
+    //                 'Sync Data',
+    //                 style: Theme.of(context).textTheme.titleMedium,
+    //                 textAlign: TextAlign.center,
+    //               ),
+    //             ),
+
+    //             // List View
+    //             const Expanded(
+    //               child: SyncView(),
+    //             ),
+
+    //             // Footer
+    //             const SizedBox(
+    //               height: kToolbarHeight,
+    //               child: Center(child: SyncDoneButton()),
+    //             ),
+    //             // const SizedBox(
+    //             //   height: kToolbarHeight,
+    //             // ),
+    //           ],
+    //         ),
+    //       ),
+    //     ),
+    //   ),
+    //   onPopInvokedWithResult: (didPop, _) {
+    //     showBottomNavbar(ref);
+    //   },
+    // );
   }
 }

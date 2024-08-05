@@ -16,14 +16,22 @@ extension MiscExt on String {
 
   String get sentenceCase => toBeginningOfSentenceCase(this);
 
+  String get camelToTitleCase {
+    final result = replaceAll(RegExp('(?<!^)(?=[A-Z])'), ' ');
+    final finalResult = result[0].toUpperCase() + result.substring(1);
+    return finalResult;
+  }
+
   String get titleCase {
     if (isEmpty) return this;
 
     // Basic implementation: capitalize first letter of each word
     return split(' ')
-        .map((word) => word.isNotEmpty
-            ? '${word[0].toUpperCase()}${word.substring(1).toLowerCase()}'
-            : word)
+        .map(
+          (word) => word.isNotEmpty
+              ? '${word[0].toUpperCase()}${word.substring(1).toLowerCase()}'
+              : word,
+        )
         .join(' ');
   }
 }

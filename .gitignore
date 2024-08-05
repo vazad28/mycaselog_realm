@@ -44,3 +44,4 @@ app.*.map.json
 
 #extra folder
 /dev_ios
+/ios

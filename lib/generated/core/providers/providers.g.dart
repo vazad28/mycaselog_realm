@@ -703,7 +703,7 @@ final localStorageProvider = AutoDisposeProvider<LocalStorage>.internal(
 );
 
 typedef LocalStorageRef = AutoDisposeProviderRef<LocalStorage>;
-String _$appStartUpHash() => r'16b340b1ac38ab625951f2c6c0bc0028c2d1c9fe';
+String _$appStartUpHash() => r'2078745a57753b762a5e93e4b382e7b300b728ef';
 
 /// See also [appStartUp].
 @ProviderFor(appStartUp)

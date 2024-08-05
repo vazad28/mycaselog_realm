@@ -6,26 +6,18 @@ import '../../core/providers/providers.dart';
 
 part '../../generated/settings/provider/settings_provider.g.dart';
 
-// final settingsProvider = StreamProvider<SettingsModel>((ref) {
-//   final stream = ref.watch(dbProvider).settingsCollection.getSettingsChanges();
-//   return stream.map((res) => res.object.toUnmanaged());
-// });
-
 /// Use a Notifier provider so we can have access to the settings without async
 @Riverpod(keepAlive: true)
 class SettingsNotifier extends _$SettingsNotifier with LoggerMixin {
   @override
   SettingsModel build() {
-    //   //return ref.watch(settingsProvider).requireValue;
-    //   final stream = ref.watch(dbProvider).settingsCollection.getSettingsChanges();
-    // return stream.map((res) => res.object.toUnmanaged());
-    return SettingsModelX.zero(ref.watch(userIDProvider));
+    return SettingsModelX.zero(ref.read(userIDProvider));
   }
 
   Future<void> init() async {
     final settings = ref.watch(dbProvider).settingsCollection.getSettings();
     state = settings?.toUnmanaged() ??
-        SettingsModelX.zero(ref.watch(userIDProvider));
+        SettingsModelX.zero(ref.read(userIDProvider));
   }
 
   /// Update settings

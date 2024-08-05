@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of '../../../sync/provider/sync_providers.dart';
+part of '../../../sync/provider/sync_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
 String _$syncCollectionsMapHash() =>
-    r'0f6c29aa3094993039b875d83e26a9e362be6c69';
+    r'ab28250ac1a658fbf1ccdb9f181423f6f01b6dc1';
 
 /// See also [SyncCollectionsMap].
 @ProviderFor(SyncCollectionsMap)
@@ -24,7 +24,7 @@ final syncCollectionsMapProvider = AutoDisposeNotifierProvider<
 
 typedef _$SyncCollectionsMap
     = AutoDisposeNotifier<Map<DbCollection, SyncCollection>>;
-String _$collectionSyncerHash() => r'c2d7f09a0b40f50570acaedcb895f44b4680d4a3';
+String _$syncNotifierHash() => r'3aa8f1e411476900de43ed4f7adcb50999d3eca2';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -47,32 +47,22 @@ class _SystemHash {
   }
 }
 
-abstract class _$CollectionSyncer
-    extends BuildlessAutoDisposeNotifier<StateOf<int>> {
+abstract class _$SyncNotifier extends BuildlessNotifier<StateOf<List<String>>> {
   late final DbCollection dbCollection;
 
-  StateOf<int> build(
+  StateOf<List<String>> build(
     DbCollection dbCollection,
   );
 }
 
-/// A family provider to fire sync on each collection with
-/// status updates
-///
-/// Copied from [CollectionSyncer].
-@ProviderFor(CollectionSyncer)
-const collectionSyncerProvider = CollectionSyncerFamily();
+/// See also [SyncNotifier].
+@ProviderFor(SyncNotifier)
+const syncNotifierProvider = SyncNotifierFamily();
 
-/// A family provider to fire sync on each collection with
-/// status updates
-///
-/// Copied from [CollectionSyncer].
-class CollectionSyncerFamily extends Family {
-  /// A family provider to fire sync on each collection with
-  /// status updates
-  ///
-  /// Copied from [CollectionSyncer].
-  const CollectionSyncerFamily();
+/// See also [SyncNotifier].
+class SyncNotifierFamily extends Family {
+  /// See also [SyncNotifier].
+  const SyncNotifierFamily();
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
 
@@ -86,24 +76,21 @@ class CollectionSyncerFamily extends Family {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'collectionSyncerProvider';
+  String? get name => r'syncNotifierProvider';
 
-  /// A family provider to fire sync on each collection with
-  /// status updates
-  ///
-  /// Copied from [CollectionSyncer].
-  CollectionSyncerProvider call(
+  /// See also [SyncNotifier].
+  SyncNotifierProvider call(
     DbCollection dbCollection,
   ) {
-    return CollectionSyncerProvider(
+    return SyncNotifierProvider(
       dbCollection,
     );
   }
 
   @visibleForOverriding
   @override
-  CollectionSyncerProvider getProviderOverride(
-    covariant CollectionSyncerProvider provider,
+  SyncNotifierProvider getProviderOverride(
+    covariant SyncNotifierProvider provider,
   ) {
     return call(
       provider.dbCollection,
@@ -111,54 +98,48 @@ class CollectionSyncerFamily extends Family {
   }
 
   /// Enables overriding the behavior of this provider, no matter the parameters.
-  Override overrideWith(CollectionSyncer Function() create) {
-    return _$CollectionSyncerFamilyOverride(this, create);
+  Override overrideWith(SyncNotifier Function() create) {
+    return _$SyncNotifierFamilyOverride(this, create);
   }
 }
 
-class _$CollectionSyncerFamilyOverride implements FamilyOverride {
-  _$CollectionSyncerFamilyOverride(this.overriddenFamily, this.create);
+class _$SyncNotifierFamilyOverride implements FamilyOverride {
+  _$SyncNotifierFamilyOverride(this.overriddenFamily, this.create);
 
-  final CollectionSyncer Function() create;
-
-  @override
-  final CollectionSyncerFamily overriddenFamily;
+  final SyncNotifier Function() create;
 
   @override
-  CollectionSyncerProvider getProviderOverride(
-    covariant CollectionSyncerProvider provider,
+  final SyncNotifierFamily overriddenFamily;
+
+  @override
+  SyncNotifierProvider getProviderOverride(
+    covariant SyncNotifierProvider provider,
   ) {
     return provider._copyWith(create);
   }
 }
 
-/// A family provider to fire sync on each collection with
-/// status updates
-///
-/// Copied from [CollectionSyncer].
-class CollectionSyncerProvider
-    extends AutoDisposeNotifierProviderImpl<CollectionSyncer, StateOf<int>> {
-  /// A family provider to fire sync on each collection with
-  /// status updates
-  ///
-  /// Copied from [CollectionSyncer].
-  CollectionSyncerProvider(
+/// See also [SyncNotifier].
+class SyncNotifierProvider
+    extends NotifierProviderImpl<SyncNotifier, StateOf<List<String>>> {
+  /// See also [SyncNotifier].
+  SyncNotifierProvider(
     DbCollection dbCollection,
   ) : this._internal(
-          () => CollectionSyncer()..dbCollection = dbCollection,
-          from: collectionSyncerProvider,
-          name: r'collectionSyncerProvider',
+          () => SyncNotifier()..dbCollection = dbCollection,
+          from: syncNotifierProvider,
+          name: r'syncNotifierProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$collectionSyncerHash,
-          dependencies: CollectionSyncerFamily._dependencies,
+                  : _$syncNotifierHash,
+          dependencies: SyncNotifierFamily._dependencies,
           allTransitiveDependencies:
-              CollectionSyncerFamily._allTransitiveDependencies,
+              SyncNotifierFamily._allTransitiveDependencies,
           dbCollection: dbCollection,
         );
 
-  CollectionSyncerProvider._internal(
+  SyncNotifierProvider._internal(
     super.create, {
     required super.name,
     required super.dependencies,
@@ -171,8 +152,8 @@ class CollectionSyncerProvider
   final DbCollection dbCollection;
 
   @override
-  StateOf<int> runNotifierBuild(
-    covariant CollectionSyncer notifier,
+  StateOf<List<String>> runNotifierBuild(
+    covariant SyncNotifier notifier,
   ) {
     return notifier.build(
       dbCollection,
@@ -180,10 +161,10 @@ class CollectionSyncerProvider
   }
 
   @override
-  Override overrideWith(CollectionSyncer Function() create) {
+  Override overrideWith(SyncNotifier Function() create) {
     return ProviderOverride(
       origin: this,
-      override: CollectionSyncerProvider._internal(
+      override: SyncNotifierProvider._internal(
         () => create()..dbCollection = dbCollection,
         from: from,
         name: null,
@@ -201,15 +182,14 @@ class CollectionSyncerProvider
   }
 
   @override
-  AutoDisposeNotifierProviderElement<CollectionSyncer, StateOf<int>>
-      createElement() {
-    return _CollectionSyncerProviderElement(this);
+  NotifierProviderElement<SyncNotifier, StateOf<List<String>>> createElement() {
+    return _SyncNotifierProviderElement(this);
   }
 
-  CollectionSyncerProvider _copyWith(
-    CollectionSyncer Function() create,
+  SyncNotifierProvider _copyWith(
+    SyncNotifier Function() create,
   ) {
-    return CollectionSyncerProvider._internal(
+    return SyncNotifierProvider._internal(
       () => create()..dbCollection = dbCollection,
       name: name,
       dependencies: dependencies,
@@ -222,8 +202,7 @@ class CollectionSyncerProvider
 
   @override
   bool operator ==(Object other) {
-    return other is CollectionSyncerProvider &&
-        other.dbCollection == dbCollection;
+    return other is SyncNotifierProvider && other.dbCollection == dbCollection;
   }
 
   @override
@@ -235,19 +214,19 @@ class CollectionSyncerProvider
   }
 }
 
-mixin CollectionSyncerRef on AutoDisposeNotifierProviderRef<StateOf<int>> {
+mixin SyncNotifierRef on NotifierProviderRef<StateOf<List<String>>> {
   /// The parameter `dbCollection` of this provider.
   DbCollection get dbCollection;
 }
 
-class _CollectionSyncerProviderElement
-    extends AutoDisposeNotifierProviderElement<CollectionSyncer, StateOf<int>>
-    with CollectionSyncerRef {
-  _CollectionSyncerProviderElement(super.provider);
+class _SyncNotifierProviderElement
+    extends NotifierProviderElement<SyncNotifier, StateOf<List<String>>>
+    with SyncNotifierRef {
+  _SyncNotifierProviderElement(super.provider);
 
   @override
   DbCollection get dbCollection =>
-      (origin as CollectionSyncerProvider).dbCollection;
+      (origin as SyncNotifierProvider).dbCollection;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, inference_failure_on_uninitialized_variable, inference_failure_on_function_return_type, inference_failure_on_untyped_parameter, deprecated_member_use_from_same_package

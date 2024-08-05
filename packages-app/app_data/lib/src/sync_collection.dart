@@ -77,18 +77,6 @@ abstract class SyncCollection<T extends RealmObject> extends Disposable
     return realm.all<T>();
   }
 
-  // Future<void> add(String primaryKey, T object) {
-  //   return realm.writeAsync(() {
-  //     realm.add<T>(
-  //       object,
-  //       update: true,
-  //     );
-  //   }).then((_) {
-  //     logger.fine('added $T');
-  //     putInFirestore(primaryKey, object);
-  //   });
-  // }
-
   // Upserts data in Realm by executing the provided callback function
   Future<T> upsert(T Function() upsertCallback) async {
     return realm.writeAsync<T>(() {
@@ -105,6 +93,7 @@ abstract class SyncCollection<T extends RealmObject> extends Disposable
   /// sync cases based on timestamp
 
   Future<List<String>> syncByTimestamp(int timestamp) async {
+    logger.fine('timestamp syncByTimestamp = $timestamp');
     ignoreRealmChanges = true;
 
     final query = collectionRef.where('timestamp', isGreaterThan: timestamp);
@@ -114,12 +103,13 @@ abstract class SyncCollection<T extends RealmObject> extends Disposable
 
     // Use batch operations and async/await
     await realm.writeAsync(() {
-      snapshot.docs.map((e) async {
+      for (final e in snapshot.docs) {
         final model = mapToModel(e.data());
-        realm.add(model, update: true);
         ids.add(getPrimaryKey(model));
-      });
+        return realm.add(model, update: true);
+      }
     }).whenComplete(() {
+      logger.fine(ids.length.toString());
       ignoreRealmChanges = false;
     });
 
