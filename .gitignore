@@ -45,3 +45,4 @@ app.*.map.json
 #extra folder
 /dev_ios
 /ios
+/firebase_options.dart

@@ -41,7 +41,7 @@ class _CaseCommentsState extends State<CaseComments> {
             onPressed: _deleteComment,
           ),
           IconButton(
-            icon: const Icon(Icons.cloud),
+            icon: const Icon(Icons.check_circle_outline),
             onPressed: () => Navigator.pop(context, ctrl.text),
           ),
         ],

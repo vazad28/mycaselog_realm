@@ -37,6 +37,7 @@ class CaseDetailsTimelineTab extends ConsumerWidget {
                 ),
                 CaseTimelinePage(
                   key: Key('CaseTimelineScreen-${caseModel.caseID}'),
+                  caseID: caseModel.caseID,
                 ),
                 const SliverToBoxAdapter(
                   child: SizedBox(height: kChatInputBoxHeight),

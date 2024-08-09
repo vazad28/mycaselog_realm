@@ -22,8 +22,8 @@ class ImageUploadController extends UploadController
     required this.mediaUploadService,
     required this.onRemoveController,
     this.uploadFullSize = false,
-  }) : _mediaStatus = mediaModel.status {
-    if (mediaModel.status == MediaStatus.queued) startUpload();
+  }) {
+    startUpload();
   }
   final MediaUploadService mediaUploadService;
 
@@ -35,123 +35,107 @@ class ImageUploadController extends UploadController
   @override
   double get uploadProgress => _uploadProgress;
 
-  MediaStatus _mediaStatus;
+  UploadStatus _uploadStatus = UploadStatus.queued;
   @override
-  MediaStatus get mediaStatus => _mediaStatus;
+  UploadStatus get uploadStatus => _uploadStatus;
 
   final _cacheManager = AppCacheManager.instance;
 
   @override
   Future<void> startUpload() async {
+    if (mediaModel.fileUri == null || mediaModel.fileName == null) {
+      _onFailure(UploadStatus.failed, 'File not found');
+      return;
+    }
+
+    final imageFile = XFile(mediaModel.fileUri!);
+    final resizedFiles = await Future.wait([
+      _resizeImage(imageFile, ResizeType.thumbnail),
+      _resizeImage(imageFile, ResizeType.medium),
+    ]);
+
+    if (resizedFiles.any((file) => file == null)) {
+      _onFailure(UploadStatus.failed, 'Resize failed');
+      return;
+    }
+
+    final thumbnailFile = resizedFiles[0]!;
+    final mediumFile = resizedFiles[1]!;
+    final uploadTasks = [
+      mediaUploadService
+          .getThumbRef(mediaModel)
+          .putData(await thumbnailFile.readAsBytes()),
+      mediaUploadService
+          .getMediumRef(mediaModel)
+          .putData(await mediumFile.readAsBytes()),
+    ];
+
+    if (uploadFullSize) {
+      uploadTasks.add(
+        mediaUploadService
+            .getOriginalRef(mediaModel)
+            .putData(await imageFile.readAsBytes()),
+      );
+    }
+
+    _uploadStatus = UploadStatus.uploading;
+    notifyListeners();
+
+    final totalUploadSize = await Future.wait([
+      thumbnailFile.length(),
+      mediumFile.length(),
+      if (uploadFullSize) imageFile.length() else Future.value(0),
+    ]).then((values) => values.reduce((a, b) => a + b));
+
+    var completedTasks = 0.0;
     StreamSubscription<TaskSnapshot>? sub;
     try {
-      _mediaStatus = MediaStatus.processing;
-      notifyListeners();
-
-      if (mediaModel.fileUri == null || mediaModel.fileName == null) {
-        throw Exception('File not found');
-      }
-
-      if (mediaModel.fileUri?.isEmpty ?? true) {
-        throw Exception('File not found');
-      }
-
-      final imageFile = XFile(mediaModel.fileUri!);
-
-      final thumbnailFile = await _resizeImage(
-        imageFile,
-        mediaModel.fileName!,
-        ResizeType.thumbnail,
-      );
-      if (thumbnailFile == null) throw Exception('Thumb not found');
-
-      final mediumFile = await _resizeImage(
-        imageFile,
-        mediaModel.fileName!,
-        ResizeType.medium,
-      );
-      if (mediumFile == null) throw Exception('Medium not found');
-
-      /// refs
-      final thumbnailRef = mediaUploadService.getThumbRef(mediaModel);
-      final thumbFileData = await thumbnailFile.readAsBytes();
-      final thumbnailTask = thumbnailRef.putData(thumbFileData);
-
-      final mediumRef = mediaUploadService.getMediumRef(mediaModel);
-      final mediumFileData = await mediumFile.readAsBytes();
-      final mediumTask = mediumRef.putData(mediumFileData);
-
-      final uploadTasks = <UploadTask>[thumbnailTask, mediumTask];
-
-      if (uploadFullSize) {
-        final originalRef = mediaUploadService.getOriginalRef(mediaModel);
-        final originalTask = originalRef.putData(await imageFile.readAsBytes());
-        uploadTasks.add(originalTask);
-      }
-
-      _mediaStatus = MediaStatus.uploading;
-      notifyListeners();
-
-      /// starrt processing the upload stream
-      var totalUpload = 0.0;
-
-      final groupedUploadTaskStream = StreamGroup.merge<TaskSnapshot>(
+      sub = StreamGroup.merge<TaskSnapshot>(
         uploadTasks.map((e) => e.snapshotEvents).toList(),
-      );
-
-      sub = groupedUploadTaskStream.listen(
+      ).listen(
         (snapshot) {
-          final progress = snapshot.bytesTransferred / snapshot.totalBytes;
-
-          /// sometimes the progress is NaN as the total byte may be 0
-          if (!progress.isNaN) totalUpload += progress;
-
-          logger.fine('progress $progress - totalProgress $totalUpload');
-
-          final progressClamped = totalUpload / uploadTasks.length;
-          //print('progressClamped $progressClamped');
-
-          _uploadProgress = progressClamped.clamp(0.0, 0.95);
-          _mediaStatus = MediaStatus.uploading;
+          completedTasks += snapshot.bytesTransferred;
+          _uploadProgress = completedTasks / totalUploadSize;
+          _uploadStatus = UploadStatus.uploading;
           notifyListeners();
         },
         onError: (Object? err) {
-          uploadTasks.clear();
-          throw Exception(err);
+          _onFailure(UploadStatus.failed, err.toString());
         },
-        cancelOnError: true,
       );
 
-      await Future.wait(uploadTasks.map((task) => task));
+      await Future.wait(uploadTasks);
 
-      final downloadUrlThumb = await thumbnailRef.getDownloadURL();
-      await _putInCache(
-        downloadUrlThumb,
-        thumbFileData,
-        extension(thumbnailFile.path).substring(1),
-      );
+      final downloadUrls = await Future.wait([
+        mediaUploadService.getThumbRef(mediaModel).getDownloadURL(),
+        mediaUploadService.getMediumRef(mediaModel).getDownloadURL(),
+        if (uploadFullSize)
+          mediaUploadService.getOriginalRef(mediaModel).getDownloadURL()
+        else
+          Future.value(null),
+      ]);
 
-      final downloadUrlMedium = await mediumRef.getDownloadURL();
-      await _putInCache(
-        downloadUrlMedium,
-        mediumFileData,
-        extension(mediumFile.path).substring(1),
-      );
+      await Future.wait([
+        _putInCache(
+          downloadUrls[0],
+          await thumbnailFile.readAsBytes(),
+          extension(thumbnailFile.path).substring(1),
+        ),
+        _putInCache(
+          downloadUrls[1],
+          await mediumFile.readAsBytes(),
+          extension(mediumFile.path).substring(1),
+        ),
+      ]);
 
-      String? downloadUrlFull;
-      if (uploadTasks.length == 3) {
-        downloadUrlFull = await mediumRef.getDownloadURL();
-      }
-
-      _onSuccess(downloadUrlThumb, downloadUrlMedium, downloadUrlFull);
+      _onSuccess(downloadUrls[0], downloadUrls[1], downloadUrls[2]);
     } on FirebaseException catch (err) {
-      _onFailure(MediaStatus.failed, err.message ?? err.code);
+      _onFailure(UploadStatus.failed, err.message ?? err.code);
     } catch (err) {
-      _onFailure(MediaStatus.failed, err.toString());
+      _onFailure(UploadStatus.failed, err.toString());
     } finally {
       await sub?.cancel();
-      logger.fine('Upload reached  finally');
-      _removeUploadController();
+      logger.fine('Upload reached finally');
     }
   }
 
@@ -160,23 +144,24 @@ class ImageUploadController extends UploadController
   @override
   void retryUpload() {
     _uploadProgress = 0;
-    _mediaStatus = MediaStatus.queued;
+    _uploadStatus = UploadStatus.queued;
     startUpload();
   }
 
   @override
   void cancelUpload() {
-    _onFailure(MediaStatus.cancelled, 'User cancelled upload');
+    _onFailure(UploadStatus.cancelled, 'User cancelled upload');
   }
 
   /// ////////////////////////////////////////////////////////////////////
   /// Local methods
   /// ////////////////////////////////////////////////////////////////////
   Future<void> _putInCache(
-    String url,
+    String? url,
     Uint8List fileData,
     String fileExt,
   ) {
+    if (url == null) return Future<void>.sync(() => {});
     return _cacheManager.putFile(
       url,
       fileData,
@@ -186,48 +171,49 @@ class ImageUploadController extends UploadController
     );
   }
 
-  Future<XFile?> _resizeImage(
-    XFile imageFile,
-    String fileName,
-    ResizeType type,
-  ) async {
+  Future<String> _getResizeFilePath(String fileName, ResizeType type) async {
     final tempDir = await getTemporaryDirectory();
-    final tempPath = tempDir.path;
-    final targetPath = type == ResizeType.thumbnail
-        ? '$tempPath/thumb_$fileName'
-        : '$tempPath/medium_$fileName';
+
+    return '${tempDir.path}/${type == ResizeType.thumbnail ? 'thumb_' : 'medium_'}$fileName';
+  }
+
+  Future<XFile?> _resizeImage(XFile imageFile, ResizeType type) async {
+    final targetPath = await _getResizeFilePath(mediaModel.fileName!, type);
 
     final minHeight = type == ResizeType.thumbnail ? 200 : 1080;
     final quality = type == ResizeType.thumbnail ? 80 : 90;
 
-    final result = await FlutterImageCompress.compressAndGetFile(
-      imageFile.path,
-      targetPath,
-      minHeight: minHeight,
-      quality: quality,
-    ).catchError((Object err) {
+    try {
+      final result = await FlutterImageCompress.compressAndGetFile(
+        imageFile.path,
+        targetPath,
+        minHeight: minHeight,
+        quality: quality,
+      );
+      return result;
+    } catch (err) {
       logger.severe(err);
-      throw Exception('File compress error');
-    });
-
-    return result;
+      return null;
+    }
   }
 
-  void _onFailure(MediaStatus mediaStatus, String? message) {
+  void _onFailure(UploadStatus uploadStatus, String? message) {
     logger.severe(message);
-    mediaUploadService.onUploadFailure(mediaModel, mediaStatus, message);
-    _mediaStatus = mediaStatus;
+    mediaUploadService.onUploadFailure(mediaModel, uploadStatus, message);
+    _uploadStatus = uploadStatus;
     notifyListeners();
+    _removeUploadController();
   }
 
-  void _onSuccess(String thumbUri, String mediumUri, String? fullUri) {
+  void _onSuccess(String? thumbUri, String? mediumUri, String? fullUri) {
     mediaUploadService.onUploadSucces(
       mediaModel,
       thumbUri: thumbUri,
       mediumUri: mediumUri,
       fullUri: fullUri,
     );
-    _mediaStatus = MediaStatus.success;
+    _uploadStatus = UploadStatus.success;
     notifyListeners();
+    _removeUploadController();
   }
 }

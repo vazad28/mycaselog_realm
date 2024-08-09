@@ -24,7 +24,7 @@ final syncCollectionsMapProvider = AutoDisposeNotifierProvider<
 
 typedef _$SyncCollectionsMap
     = AutoDisposeNotifier<Map<DbCollection, SyncCollection>>;
-String _$syncNotifierHash() => r'3aa8f1e411476900de43ed4f7adcb50999d3eca2';
+String _$syncNotifierHash() => r'589464eafc04ec0c174417217c48ca7684036b45';
 
 /// Copied from Dart SDK
 class _SystemHash {

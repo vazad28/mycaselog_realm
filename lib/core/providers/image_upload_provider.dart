@@ -1,7 +1,7 @@
 part of 'providers.dart';
 
 /// Riverpod provider to use the dialog service
-@riverpod
+@Riverpod(keepAlive: true)
 ImageUploadService imageUploadService(ImageUploadServiceRef ref) {
   return ImageUploadService(ref);
 }
@@ -34,9 +34,15 @@ class ImageUploadService with LoggerMixin implements MediaUploadService {
   @override
   void onUploadFailure(
     MediaModel mediaModel,
-    MediaStatus mediaStatus,
+    UploadStatus uploadStatus,
     String? message,
   ) {
+    var mediaStatus = MediaStatus.failed;
+
+    if (uploadStatus == UploadStatus.cancelled) {
+      mediaStatus = MediaStatus.cancelled;
+    }
+
     ref
         .read(dbProvider)
         .mediaCollection

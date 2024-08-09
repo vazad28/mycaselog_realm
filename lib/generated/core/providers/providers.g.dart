@@ -618,14 +618,13 @@ class _EncryptPatientModelProviderElement extends AutoDisposeProviderElement<
 }
 
 String _$imageUploadServiceHash() =>
-    r'2e2d4b581424f692b3175fa98f71374de9f05b0b';
+    r'c3b7da7baffca53575a112599b77ed8fe0304a48';
 
 /// Riverpod provider to use the dialog service
 ///
 /// Copied from [imageUploadService].
 @ProviderFor(imageUploadService)
-final imageUploadServiceProvider =
-    AutoDisposeProvider<ImageUploadService>.internal(
+final imageUploadServiceProvider = Provider<ImageUploadService>.internal(
   imageUploadService,
   name: r'imageUploadServiceProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -635,7 +634,7 @@ final imageUploadServiceProvider =
   allTransitiveDependencies: null,
 );
 
-typedef ImageUploadServiceRef = AutoDisposeProviderRef<ImageUploadService>;
+typedef ImageUploadServiceRef = ProviderRef<ImageUploadService>;
 String _$sharedPrefsHash() => r'394954be62ac9fcd757598b97278fd4215bc6410';
 
 /// SharedPreferences provider

@@ -24,7 +24,7 @@ final caseTileStyleProvider =
 );
 
 typedef _$CaseTileStyle = AutoDisposeNotifier<int>;
-String _$casesNotifierHash() => r'431393c73b777d02a60db9a4bff808972484d5b7';
+String _$casesNotifierHash() => r'0118f23a300cd312530ad13039e2eb49c92f0f0d';
 
 /// Cases  stream  provider
 ///

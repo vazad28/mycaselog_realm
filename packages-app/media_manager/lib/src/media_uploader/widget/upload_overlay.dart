@@ -1,35 +1,42 @@
 // ignore: prefer_relative_imports
 import 'package:app_l10n/app_l10n.dart';
-import 'package:app_models/app_models.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 enum MediaUploadAction { cancelUpload, retryUpload }
 
+enum UploadStatus {
+  cancelled,
+  failed,
+  processing,
+  queued,
+  success,
+  uploading,
+}
+
 @immutable
 class UploadOverlay extends StatelessWidget {
   const UploadOverlay({
-    required this.status,
+    required this.uploadStatus,
     required this.onRetry,
     required this.onCancel,
-    //required this.onRemove,
     super.key,
     this.uploadProgress = 0.0,
     this.transitionDuration = const Duration(milliseconds: 500),
   });
 
-  final MediaStatus status;
+  final UploadStatus uploadStatus;
   final double uploadProgress;
   final VoidCallback onRetry;
   final VoidCallback onCancel;
-  //final VoidCallback onRemove;
+
   final Duration transitionDuration;
 
-  bool get _isUploading => status == MediaStatus.uploading;
+  bool get _isUploading => uploadStatus == UploadStatus.uploading;
 
-  bool get _isProcessing => status == MediaStatus.processing;
+  bool get _isProcessing => uploadStatus == UploadStatus.processing;
 
-  bool get _isUploaded => status == MediaStatus.success;
+  bool get _isUploaded => uploadStatus == UploadStatus.success;
 
   void _onActionSelection(MediaUploadAction action) {
     switch (action) {

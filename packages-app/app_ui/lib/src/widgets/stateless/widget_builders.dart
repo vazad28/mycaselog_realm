@@ -10,6 +10,9 @@ Widget buildLoadingWidget() =>
 Widget buildErrorSliver(Object? error, StackTrace? stackTrace) =>
     SliverToBoxAdapter(child: ErrorWidget('Unknown Error'));
 
-Widget buildLoadingSliver() => const SliverToBoxAdapter(
-      child: Center(child: CircularProgressIndicator.adaptive()),
+Widget buildLoadingSliver() => const SliverFillRemaining(
+      hasScrollBody: false,
+      child: Center(
+        child: CircularProgressIndicator.adaptive(),
+      ),
     );

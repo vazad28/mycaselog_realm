@@ -23,7 +23,7 @@ class MediaGalleryHeader extends ConsumerWidget implements PreferredSizeWidget {
             : ListTile(
                 onTap: () => onPush?.call(caseModel),
                 title: Text(
-                  caseModel.surgery?.sentenceCase ?? 'No Surgery',
+                  caseModel.surgery?.titleCase ?? 'No Surgery',
                 ),
                 subtitle: Text(
                   caseModel.diagnosis?.sentenceCase ?? 'No Diagnosis',

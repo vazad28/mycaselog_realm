@@ -17,6 +17,7 @@ dependencies:
   google_mlkit_commons: ^0.7.1
   google_mlkit_text_recognition: ^0.13.0
   permission_handler: ^11.3.1
+  image_picker: ^1.1.2
 
 dev_dependencies:
   very_good_analysis: ^6.0.0

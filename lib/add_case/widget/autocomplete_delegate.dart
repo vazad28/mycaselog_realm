@@ -57,7 +57,7 @@ class AddCaseAutoCompleteDelegate extends SearchDelegate<String?> {
     return FutureBuilder(
       future: onQueryStringList?.call(query),
       builder: (_, snapshot) {
-        if (!snapshot.hasData) return const Loading();
+        if (!snapshot.hasData) return const SizedBox.shrink();
 
         if (snapshot.hasError) {
           return Loading(

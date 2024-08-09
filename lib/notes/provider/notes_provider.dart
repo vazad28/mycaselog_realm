@@ -45,11 +45,8 @@ class NoteTileStyle extends _$NoteTileStyle {
 @riverpod
 class NotesNotifier extends _$NotesNotifier {
   @override
-  // RealmResults<NoteModel> build() {
-  //   return ref.read(dbProvider).notesCollection.getAll();
-  //
   Stream<RealmResultsChanges<NoteModel>> build() {
-    return ref.watch(dbProvider).notesCollection.getAll().changes;
+    return ref.watch(dbProvider).notesCollection.getAllNotes().changes;
   }
 
   /// Full text search notes

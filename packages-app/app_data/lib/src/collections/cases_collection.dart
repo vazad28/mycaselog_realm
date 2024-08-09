@@ -23,6 +23,11 @@ class CasesCollection extends SyncCollection<CaseModel> {
   @override
   int count() => realm.all<CaseModel>().query(r'removed == $0', [0]).length;
 
+  // Retrieves all cases from Realm
+  RealmResults<CaseModel> getAllCases() {
+    return realm.query<CaseModel>('removed == 0 SORT(surgeryDate DESC)');
+  }
+
   // @override
   // CollectionReference<CaseModel> get withConverter =>
   //     firestore.collection(path).withConverter<CaseModel>(
@@ -59,7 +64,6 @@ class CasesCollection extends SyncCollection<CaseModel> {
     } else {
       throw Exception('Unknown field for autocomplete');
     }
-
     return resList.nonNulls.toList();
   }
 
@@ -71,11 +75,8 @@ class CasesCollection extends SyncCollection<CaseModel> {
   /// Returns a RealmResults object containing the matching cases.
   RealmResults<CaseModel> _getAutoCompleteList(String? query, String field) {
     return (query == null)
-        ? realm.query<CaseModel>(r'DISTINCT($field) LIMIT(50)')
-        : realm.query<CaseModel>(
-            r'$field TEXT CONTAINS $0 DISTINCT($field)',
-            ['$query*'],
-          );
+        ? realm.query<CaseModel>('$field CONTAINS ALL[*] LIMIT(50)')
+        : realm.query<CaseModel>('$field CONTAINS[c] \$0', [query]);
   }
 
   /// Searches for cases containing a specific search term in various fields.
@@ -135,31 +136,35 @@ class CasesCollection extends SyncCollection<CaseModel> {
 
   /// Refreshes media backlinks for a given list of CaseModel objects
   /// or all cases if not provided.
-  Future<void> refreshBacklinks(List<String>? ids) async {
-    ignoreRealmChanges = true;
-    // Open a write transaction
-    return realm.writeAsync(() {
-      // Query all CaseModel objects
-      final caseModels = ids == null
-          ? realm.all<CaseModel>()
-          : realm.query<CaseModel>(r'caseID IN $0', [ids]);
+  void refreshBacklinks() => refreshCasesBacklinks(realm, null);
 
-      // Iterate through each case model
-      for (final caseModel in caseModels) {
-        // Query media and timeline notes for the current case
-        final mediaList =
-            realm.query<MediaModel>(r'caseID == $0', [caseModel.caseID]);
-        final timelineNotesList =
-            realm.query<TimelineNoteModel>(r'caseID == $0', [caseModel.caseID]);
+  // /// Refreshes media backlinks for a given list of CaseModel objects
+  // /// or all cases if not provided.
+  // Future<void> refreshBacklinks(List<String>? ids) async {
+  //   ignoreRealmChanges = true;
+  //   // Open a write transaction
+  //   return realm.writeAsync(() {
+  //     // Query all CaseModel objects
+  //     final caseModels = ids == null
+  //         ? realm.all<CaseModel>()
+  //         : realm.query<CaseModel>(r'caseID IN $0', [ids]);
 
-        // Add missing media and notes to the case model
-        caseModel.medias.addAll(
-          mediaList.where((media) => !caseModel.medias.contains(media)),
-        );
-        caseModel.notes.addAll(
-          timelineNotesList.where((note) => !caseModel.notes.contains(note)),
-        );
-      }
-    }).whenComplete(() => ignoreRealmChanges = false);
-  }
+  //     // Iterate through each case model
+  //     for (final caseModel in caseModels) {
+  //       // Query media and timeline notes for the current case
+  //       final mediaList =
+  //           realm.query<MediaModel>(r'caseID == $0', [caseModel.caseID]);
+  //       final timelineNotesList =
+  //           realm.query<TimelineNoteModel>(r'caseID == $0', [caseModel.caseID]);
+
+  //       // Add missing media and notes to the case model
+  //       caseModel.medias.addAll(
+  //         mediaList.where((media) => !caseModel.medias.contains(media)),
+  //       );
+  //       caseModel.notes.addAll(
+  //         timelineNotesList.where((note) => !caseModel.notes.contains(note)),
+  //       );
+  //     }
+  //   }).whenComplete(() => ignoreRealmChanges = false);
+  // }
 }

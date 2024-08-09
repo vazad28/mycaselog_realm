@@ -20,7 +20,7 @@ class SyncSettingsSection extends StatelessWidget {
       children: [
         VerticalSpacer.normal,
         SyncDataTile(),
-        ReindexSearchTile(),
+        //ReindexSearchTile(),
         DatabaseIoTile(),
         ExportCsvDataTile(),
       ],

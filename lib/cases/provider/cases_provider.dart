@@ -49,7 +49,9 @@ class CasesNotifier extends _$CasesNotifier with LoggerMixin {
 
   Future<void> pullToRefresh() {
     try {
-      return ref.watch(dbProvider).casesCollection.refreshBacklinks(null);
+      return Future<void>.delayed(const Duration(milliseconds: 1600)).then((_) {
+        return ref.watch(dbProvider).casesCollection.refreshBacklinks();
+      });
     } catch (err) {
       ref.watch(dialogServiceProvider).showSnackBar('Refresh failed');
       return Future<void>.sync(() => {});

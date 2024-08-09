@@ -1,6 +1,7 @@
 part of '../case_timeline_item_view.dart';
 
-class CaseTimelineItemHeader extends ConsumerStatefulWidget {
+class CaseTimelineItemHeader extends ConsumerWidget
+    with TimelineMixin, AppMixins {
   const CaseTimelineItemHeader({
     required this.timelineItemModel,
     super.key,
@@ -9,69 +10,27 @@ class CaseTimelineItemHeader extends ConsumerStatefulWidget {
   final TimelineItemModel timelineItemModel;
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _CaseTimelineItemHeaderState();
-}
-
-class _CaseTimelineItemHeaderState extends ConsumerState<CaseTimelineItemHeader>
-    with TimelineMixin, AppMixins {
-  bool _isTodayTimeline = false;
-
-  late final DateTime surgeryDateTimeMidNight;
-  late final TimelineItemModel timelineItemModel;
-
-  String timeAgoString = '';
-  String timeAgoSuffix = '';
-
-  @override
-  void initState() {
-    timelineItemModel = widget.timelineItemModel;
-    final surgeryDateTime =
-        DateTime.fromMillisecondsSinceEpoch(timelineItemModel.surgeryDate);
-
-    surgeryDateTimeMidNight = DateTime(
-      surgeryDateTime.year,
-      surgeryDateTime.month,
-      surgeryDateTime.day,
-    );
-
+  Widget build(BuildContext context, WidgetRef ref) {
     final eventDateTime =
         DateTime.fromMillisecondsSinceEpoch(timelineItemModel.eventTimestamp);
 
-    _isTodayTimeline = eventDateTime.isToday;
+    final isTodayTimeline = eventDateTime.isToday;
 
-    if (eventDateTime.day == surgeryDateTimeMidNight.day) {
-      timeAgoSuffix = 'on surgery day';
-      timeAgoString = '';
-    } else {
-      timeAgoString = surgeryDateTimeMidNight.millisecondsSinceEpoch.timeAgo(
-        fromTimestamp: timelineItemModel.eventTimestamp,
-        extended: true,
-      );
+    final timeAgoString = _getTimeAgo();
 
-      if (surgeryDateTimeMidNight.difference(eventDateTime).isNegative) {
-        timeAgoSuffix = 'post-op';
-      } else {
-        timeAgoSuffix = 'pre-op';
-      }
-    }
-
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     final Widget sinceTime = Expanded(
-      child: Text('$timeAgoString $timeAgoSuffix'),
+      child: Text(timeAgoString),
     );
 
     final Widget moreMenu = IconButton(
       icon: const Icon(Icons.more_vert_sharp),
-      onPressed: _onHeaderTap,
+      onPressed: () {
+        _onHeaderTap(ref, context);
+      },
     );
 
     final Widget child = ColoredBox(
-      color: _isTodayTimeline
+      color: isTodayTimeline
           ? context.colorScheme.primaryContainer
           : context.colorScheme.surfaceContainerHighest,
       child: SizedBox(
@@ -85,7 +44,31 @@ class _CaseTimelineItemHeaderState extends ConsumerState<CaseTimelineItemHeader>
     return child;
   }
 
-  void _onHeaderTap() {
+  String _getTimeAgo() {
+    final eventDateTime =
+        DateTime.fromMillisecondsSinceEpoch(timelineItemModel.eventTimestamp);
+
+    final surgeryDateTime =
+        DateTime.fromMillisecondsSinceEpoch(timelineItemModel.surgeryDate);
+
+    final surgeryDateTimeMidNight = DateTime(
+      surgeryDateTime.year,
+      surgeryDateTime.month,
+      surgeryDateTime.day,
+    );
+
+    if (eventDateTime.day == surgeryDateTimeMidNight.day) {
+      return 'on surgery day';
+    } else {
+      final timeAgo = surgeryDateTimeMidNight.millisecondsSinceEpoch.timeAgo(
+        fromTimestamp: timelineItemModel.eventTimestamp,
+        extended: true,
+      );
+      return '${timeAgo} ${surgeryDateTimeMidNight.difference(eventDateTime).isNegative ? 'post-op' : 'pre-op'}';
+    }
+  }
+
+  void _onHeaderTap(WidgetRef ref, BuildContext context) {
     context.openActionsBottomSheet(timelineItemActions).then((headerAction) {
       if (headerAction == null) return;
 

@@ -12,6 +12,7 @@ import '../../core/core.dart';
 import '../search.dart';
 
 part './search_results_view.dart';
+part './suggestion_view.dart';
 
 enum SearchBarStyle { icon, bar }
 
@@ -93,11 +94,12 @@ class _SearchViewState<T> extends ConsumerState<SearchView<T>> {
     return _results?.map((model) {
       if (T == CaseModel) {
         return CasesSearchResultTile(
-          caseModel: model as CaseModel,
-        );
+            caseModel: model as CaseModel,
+            key: Key('__CasesSearchResultTile_${model.caseID}_key__'));
       } else {
         return MediaSearchResultTile(
           mediaModel: model as MediaModel,
+          key: Key('__MediaSearchResultTile_${model.mediaID}_key__'),
           results: _results! as RealmResults<MediaModel>,
           width: 90,
         );
@@ -196,8 +198,8 @@ class _SearchViewState<T> extends ConsumerState<SearchView<T>> {
             );
           },
           child: _showResults
-              ? _ResultsView(children)
-              : _SuggestionsView(children, (int index) {
+              ? ResultsView<T>(children)
+              : SuggestionsView(children, (int index) {
                   _searchHistory.removeAt(index);
                   ref
                       .read(localStorageProvider)
@@ -227,68 +229,5 @@ class _SearchViewState<T> extends ConsumerState<SearchView<T>> {
     );
 
     return child;
-  }
-}
-
-class _ResultsView extends StatelessWidget {
-  const _ResultsView(this.searchResultWidgets);
-  final Iterable<Widget> searchResultWidgets;
-  @override
-  Widget build(BuildContext context) {
-    final results = ListView.builder(
-      padding: EdgeInsets.zero,
-      itemBuilder: (context, index) => searchResultWidgets.elementAt(index),
-      itemCount: searchResultWidgets.length,
-    );
-
-    final resultsCount = SizedBox(
-      height: kToolbarHeight * 0.5,
-      child: Row(
-        children: [
-          const SizedBox(width: AppSpacing.md),
-          Text(
-            '${searchResultWidgets.length} RESULTS',
-            style: context.textTheme.bodyMedium?.lighter(),
-            textAlign: TextAlign.start,
-          ),
-        ],
-      ),
-    );
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        resultsCount,
-        Divider(
-          height: 1,
-          color: context.colorScheme.onSurface.lighter(0.8),
-        ),
-        Expanded(child: results),
-      ],
-    );
-  }
-}
-
-class _SuggestionsView extends ConsumerWidget {
-  const _SuggestionsView(this.children, this.onRemove);
-
-  final Iterable<Widget> children;
-  final void Function(int) onRemove;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return ListView.separated(
-      padding: EdgeInsets.zero,
-      itemBuilder: (context, index) => DismissibleListTile(
-        child: children.elementAt(index),
-        onDismissed: () {
-          onRemove(index);
-        },
-      ),
-      separatorBuilder: (context, index) => const Divider(
-        height: 1,
-      ),
-      itemCount: children.length,
-    );
   }
 }

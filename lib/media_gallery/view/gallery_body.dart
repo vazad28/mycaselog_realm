@@ -83,13 +83,6 @@ class _MediaGalleryBodyState extends State<MediaGalleryBody> {
         return true;
       },
       key: _popScopeKey,
-      // child: Dialog(
-      //     backgroundColor: widget.backgroundColor,
-      //     insetPadding: EdgeInsets.zero,
-      //     // We set the shape here to ensure no rounded corners allow any of the
-      //     // underlying view to show. We want the whole background to be covered.
-      //     shape:
-      //         const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
 
       child: Stack(
         clipBehavior: Clip.none,

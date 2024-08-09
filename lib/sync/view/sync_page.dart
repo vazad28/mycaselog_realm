@@ -26,9 +26,9 @@ class _SyncPageState extends ConsumerState<SyncPage> with AppMixins {
     final widget = Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Spacer(flex: 1),
+        const Spacer(),
         Container(
-          padding: const EdgeInsets.only(bottom: AppSpacing.lg),
+          padding: const EdgeInsets.only(bottom: AppSpacing.md),
           alignment: AlignmentDirectional.bottomCenter,
           child: Text(
             'Sync Data',
@@ -47,7 +47,7 @@ class _SyncPageState extends ConsumerState<SyncPage> with AppMixins {
           alignment: AlignmentDirectional.topCenter,
           child: const SyncDoneButton(),
         ),
-        const Spacer(flex: 1),
+        const Spacer(),
       ],
     );
 
@@ -56,56 +56,8 @@ class _SyncPageState extends ConsumerState<SyncPage> with AppMixins {
         showBottomNavbar(ref);
       },
       child: Material(
-        child: widget,
+        child: widget.paddingSymmetric(vertical: 8, horizontal: 16),
       ),
     );
-
-    // return PopScope(
-    //   child: Material(
-    //     child: Center(
-    //       child: Padding(
-    //         padding: const EdgeInsets.symmetric(
-    //           vertical: AppSpacing.xxlg,
-    //           horizontal: AppSpacing.lg,
-    //         ),
-    //         child: Column(
-    //           mainAxisSize: MainAxisSize.min,
-    //           mainAxisAlignment: MainAxisAlignment.center,
-    //           children: [
-    //             // const SizedBox(
-    //             //   height: kToolbarHeight,
-    //             // ),
-    //             // Header
-    //             SizedBox(
-    //               height: kToolbarHeight,
-    //               child: Text(
-    //                 'Sync Data',
-    //                 style: Theme.of(context).textTheme.titleMedium,
-    //                 textAlign: TextAlign.center,
-    //               ),
-    //             ),
-
-    //             // List View
-    //             const Expanded(
-    //               child: SyncView(),
-    //             ),
-
-    //             // Footer
-    //             const SizedBox(
-    //               height: kToolbarHeight,
-    //               child: Center(child: SyncDoneButton()),
-    //             ),
-    //             // const SizedBox(
-    //             //   height: kToolbarHeight,
-    //             // ),
-    //           ],
-    //         ),
-    //       ),
-    //     ),
-    //   ),
-    //   onPopInvokedWithResult: (didPop, _) {
-    //     showBottomNavbar(ref);
-    //   },
-    // );
   }
 }

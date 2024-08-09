@@ -32,6 +32,7 @@ class SyncTimeSelector extends StatelessWidget {
       itemCount: syncTimeOptions.length,
       itemBuilder: (ctx, index) {
         final syncTimeOption = syncTimeOptions[index];
+
         return ListTile(
           title: Text(syncTimeOption.key),
           onTap: () {

@@ -5,10 +5,46 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:media_manager/media_manager.dart';
 import 'package:misc_packages/misc_packages.dart';
-// import 'package:recase/recase.dart';
 
 import '../../core/app_mixins.dart';
 import '../../core/providers/providers.dart';
+import '../../core/widgets/widgets.dart';
+
+enum ThumbnailActionsEnum { deleteMedia, shareMedia, retry }
+
+class ThumbnailAction extends BaseAppAction {
+  ThumbnailAction({
+    required super.action,
+    required super.title,
+    required super.leading,
+  });
+}
+
+final thumbnailActions = [
+  ThumbnailAction(
+    action: ThumbnailActionsEnum.deleteMedia,
+    title: ThumbnailActionsEnum.deleteMedia.enumToTitleCase,
+    leading: const Icon(Icons.delete),
+  ),
+  ThumbnailAction(
+    action: ThumbnailActionsEnum.shareMedia,
+    title: ThumbnailActionsEnum.shareMedia.enumToTitleCase,
+    leading: const Icon(Icons.share),
+  ),
+  ThumbnailAction(
+    action: ThumbnailActionsEnum.retry,
+    title: ThumbnailActionsEnum.retry.enumToTitleCase,
+    leading: const Icon(Icons.upload),
+  ),
+];
+
+final mediaModelProvider = StreamProvider.autoDispose
+    .family<MediaModel, String>((ref, mediaID) async* {
+  final mediaObject = ref.watch(dbProvider).mediaCollection.getSingle(mediaID);
+
+  yield* mediaObject?.changes.map((event) => event.object) ??
+      const Stream.empty();
+});
 
 class Thumbnail extends ConsumerWidget with AppMixins {
   const Thumbnail({
@@ -28,100 +64,108 @@ class Thumbnail extends ConsumerWidget with AppMixins {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final cachedImage = CachedImage(
-      key: ValueKey(mediaModel),
-      mediaModel: mediaModel,
-      fit: fit,
-      width: width,
-    );
+    if (mediaModel.status == MediaStatus.success) {
+      return _Thumbnail(
+        mediaModel: mediaModel,
+        fit: fit,
+        width: width,
+        onTap: onTap,
+        onLongPress: onLongPress,
+      );
+    }
 
-    final child = switch (mediaModel.status) {
-      MediaStatus.queued ||
-      MediaStatus.uploading ||
-      MediaStatus.failed =>
-        Stack(
-          alignment: Alignment.center,
-          children: [
-            cachedImage,
-            if (mediaModel.status == MediaStatus.failed)
-              Icon(Icons.error, color: Colors.red.shade400, size: 48),
-            if (mediaModel.status != MediaStatus.failed)
-              MediaUploadOverlayWidget(
-                key: Key(
-                  '__media_upload_overlay_widget_${mediaModel.mediaID}__',
-                ),
-                mediaModel: mediaModel,
+    return Consumer(
+      builder: (context, ref, child) {
+        final mediaModelAsync =
+            ref.watch(mediaModelProvider(mediaModel.mediaID));
+
+        return AsyncValueWidget(
+          value: mediaModelAsync,
+          data: (model) => Stack(
+            children: [
+              _Thumbnail(
+                mediaModel: model,
+                fit: fit,
                 width: width,
-                uploadController: MediaManager.getUploadController(
-                  mediaModel: mediaModel,
-                  mediaUploadService: ref.read(imageUploadServiceProvider),
-                ),
+                onTap: onTap,
+                onLongPress: onLongPress,
               ),
-          ],
-        ),
-      MediaStatus.success => cachedImage,
-      MediaStatus.removed ||
-      MediaStatus.processing ||
-      MediaStatus.cancelled =>
-        const SizedBox.shrink(),
-    };
+              if (model.status == MediaStatus.failed)
+                Center(
+                  child: Icon(Icons.error, color: Colors.red.shade400),
+                ),
 
-    return InkWell(
-      onTap: onTap,
-      onLongPress: () async {
-        await context
-            .openActionsBottomSheet(thumbnailActions)
-            .then((appAction) {
-          switch (appAction?.action) {
-            case ThumbnailActionsEnum.deleteMedia:
-              if (!context.mounted) return;
-              context
-                  .showConfirmDialog(S.current.contentHardDeleteWarning)
-                  .then((res) {
-                if (!res) return;
-
-                ///  use mixin
-                deleteMedia(ref, mediaModel);
-              });
-
-            case ThumbnailActionsEnum.shareMedia:
-              shareMedia(ref, mediaModels: [mediaModel]);
-            case ThumbnailActionsEnum.retry:
-              retryMediaUpload(ref, mediaModel);
-            default:
-              break;
-          }
-        });
+              /// important else it will be a loop
+              /// If we are saying failed, we cant keep uploading
+              if (mediaModel.status != MediaStatus.failed &&
+                  mediaModel.status != MediaStatus.cancelled &&
+                  mediaModel.status != MediaStatus.removed)
+                MediaUploadOverlayWidget(
+                  key: Key(
+                    '__media_upload_overlay_widget_${mediaModel.mediaID}__',
+                  ),
+                  mediaModel: model,
+                  width: width,
+                  uploadController: MediaManager.getUploadController(
+                    mediaModel: mediaModel,
+                    mediaUploadService: ref.read(imageUploadServiceProvider),
+                  ),
+                ),
+            ],
+          ),
+        );
       },
-      child: child,
     );
   }
 }
 
-enum ThumbnailActionsEnum { deleteMedia, shareMedia, retry }
-
-class ThumbnailAction extends BaseAppAction {
-  ThumbnailAction({
-    required super.action,
-    required super.title,
-    required super.leading,
+class _Thumbnail extends ConsumerWidget with AppMixins {
+  const _Thumbnail({
+    required this.mediaModel,
+    this.fit = BoxFit.cover,
+    this.width,
+    this.onTap,
+    this.onLongPress,
   });
-}
 
-final thumbnailActions = [
-  ThumbnailAction(
-    action: ThumbnailActionsEnum.deleteMedia,
-    title: ThumbnailActionsEnum.deleteMedia.name.titleCase,
-    leading: const Icon(Icons.delete),
-  ),
-  ThumbnailAction(
-    action: ThumbnailActionsEnum.shareMedia,
-    title: ThumbnailActionsEnum.shareMedia.name.titleCase,
-    leading: const Icon(Icons.share),
-  ),
-  ThumbnailAction(
-    action: ThumbnailActionsEnum.retry,
-    title: ThumbnailActionsEnum.retry.name.titleCase,
-    leading: const Icon(Icons.upload),
-  ),
-];
+  final MediaModel mediaModel;
+  final double? width;
+  final BoxFit? fit;
+  final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return InkWell(
+      onTap: onTap,
+      onLongPress: onLongPress ??
+          () async {
+            final appAction =
+                await context.openActionsBottomSheet(thumbnailActions);
+            if (appAction == null) return;
+
+            switch (appAction.action) {
+              case ThumbnailActionsEnum.deleteMedia:
+                if (!context.mounted) return;
+                return context
+                    .showConfirmDialog(S.current.contentHardDeleteWarning)
+                    .then((res) {
+                  if (res) deleteMedia(ref, mediaModel);
+                });
+              case ThumbnailActionsEnum.shareMedia:
+                return shareMedia(ref, mediaModels: [mediaModel]);
+              case ThumbnailActionsEnum.retry:
+                return retryMediaUpload(ref, mediaModel);
+              default:
+                break;
+            }
+          },
+      child: CachedImage(
+        key: ValueKey(mediaModel),
+        mediaModel: mediaModel,
+        fit: fit,
+        width: width,
+      ),
+    );
+  }
+}

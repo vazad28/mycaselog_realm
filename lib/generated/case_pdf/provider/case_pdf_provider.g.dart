@@ -6,7 +6,7 @@ part of '../../../case_pdf/provider/case_pdf_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$casePdfNotifierHash() => r'8ac85019267b71f6a06c4c7ff39825907abb7c91';
+String _$casePdfNotifierHash() => r'9d825bcbd3ac132e32a2ea4968d68a06678655bc';
 
 /// Copied from Dart SDK
 class _SystemHash {

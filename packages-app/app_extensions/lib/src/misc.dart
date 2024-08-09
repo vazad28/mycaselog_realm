@@ -36,18 +36,8 @@ extension MiscExt on String {
   }
 }
 
-
-// extension ThrottleExtension<T> on T Function() {
-//   T Function() throttle(Duration duration) {
-//     Timer? timer;
-//     return () {
-//       if (timer == null) {
-//         this();
-//         timer = Timer(duration, () {
-//           timer = null;
-//         });
-//       }
-//       return null;
-//     };
-//   }
-// }
+extension EnumX on Enum {
+  String get enumToTitleCase {
+    return name.camelToTitleCase;
+  }
+}

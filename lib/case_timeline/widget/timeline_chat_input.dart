@@ -63,11 +63,12 @@ class _TimelineChatInputState extends ConsumerState<TimelineChatInput>
   /// controller methods
   void _openAddNote() {
     openTimelineNote(
-        ref,
-        TimelineNoteModelX.zero(
-          caseID: widget.caseModel.caseID,
-          authorID: ref.read(userIDProvider),
-        ),);
+      ref,
+      TimelineNoteModelX.zero(
+        caseID: widget.caseModel.caseID,
+        authorID: ref.read(userIDProvider),
+      ),
+    );
   }
 
   Future<void> _createTimelineItem() async {
@@ -75,9 +76,10 @@ class _TimelineChatInputState extends ConsumerState<TimelineChatInput>
           initialDate: DateTime.now(),
         );
     if (dateTimePicked == null) return;
-    final notifier = ref.watch(caseTimelineNotifierProvider.notifier);
+    final notifier = ref
+        .watch(caseTimelineNotifierProvider(widget.caseModel.caseID).notifier);
     //ignore: cascade_invocations
-    notifier.createTempTimelineItem(widget.caseModel, dateTimePicked);
+    notifier.createEmptyTimelineItem(widget.caseModel, dateTimePicked);
   }
 
   void _openAddMedia(MediaType image, ImageSource source) {

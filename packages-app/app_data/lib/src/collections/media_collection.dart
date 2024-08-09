@@ -20,6 +20,11 @@ class MediaCollection extends SyncCollection<MediaModel> with LoggerMixin {
   Map<String, dynamic> modelToMap(MediaModel object) => object.toJson();
 
   // --- Custom methods ---
+  // Retrieves all items from Realm, optionally sorted by a specific field
+  RealmResults<MediaModel> getAllMedia() {
+    // Query Realm with sorting
+    return realm.query<MediaModel>('removed == 0 SORT(timestamp DESC)');
+  }
 
   /// Retrieves media items associated with a specific case ID from Realm.
   RealmResults<MediaModel> getCaseMedia(String caseID) {
@@ -32,34 +37,7 @@ class MediaCollection extends SyncCollection<MediaModel> with LoggerMixin {
     return realm.query<MediaModel>(r'mediaID IN $0', [mediaIDs]);
   }
 
-  Future<void> refreshBacklinks(List<String>? ids) async {
-    ignoreRealmChanges = true;
-    return realm.writeAsync(() {
-      // Query all MediaModel objects
-      final mediaModels = ids == null
-          ? realm.all<MediaModel>()
-          : realm.query<MediaModel>(r'mediaID IN $0', [ids]);
-
-      // Group media by caseID
-      final groupedMedia = mediaModels.groupFoldBy<String, List<MediaModel>>(
-        (e) => e.caseID,
-        (prev, e) => (prev ?? [])..add(e),
-      );
-
-      // Iterate through each caseID
-      for (final caseID in groupedMedia.keys) {
-        final mediaList = groupedMedia[caseID]!;
-        final caseModel = realm.find<CaseModel>(caseID);
-
-        if (caseModel == null) continue;
-
-        // Add missing media to the case model
-        caseModel.medias.addAll(mediaList.where(
-          (media) => !caseModel.medias.any((m) => m.mediaID == media.mediaID),
-        ));
-      }
-    }).whenComplete(() => ignoreRealmChanges = false);
-  }
+  void refreshBacklinks() => refreshMediaBacklinks(realm, null);
 
   /// Adds a media item to Realm and updates the linked case object.
   Future<void> addMedia(MediaModel model) async {

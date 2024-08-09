@@ -8,7 +8,7 @@ import 'package:realm/realm.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../app_data.dart';
-import 'domain/disposable.dart';
+import 'sync_mixin.dart';
 
 enum OrderByType {
   descending('DESC'),
@@ -19,20 +19,20 @@ enum OrderByType {
 }
 
 // Abstract class for a synchronized collection of Realm objects
-abstract class SyncCollection<T extends RealmObject> extends Disposable
-    with LoggerMixin {
+abstract class SyncCollection<T extends RealmObject>
+    with LoggerMixin, SyncMixin {
   SyncCollection(
     RealmDatabase realmDatabase, // Realm database instance
   )   : realm = realmDatabase.realm, // Realm instance for local data storage
         userID = realmDatabase.user.id, // User ID for the current user
-        sharedPrefs = realmDatabase.sharedPrefs {
-    /// Starts the synchronization process Realm to Firestore.
-    _syncToFirestore();
-  }
+        sharedPrefs = realmDatabase.sharedPrefs,
+        _baseCollection = BaseCollection();
 
   final Realm realm;
   final String userID;
   final SharedPreferences sharedPrefs;
+  final BaseCollection _baseCollection;
+
   final String root = 'usersData';
   final String path = '';
 
@@ -94,7 +94,7 @@ abstract class SyncCollection<T extends RealmObject> extends Disposable
 
   Future<List<String>> syncByTimestamp(int timestamp) async {
     logger.fine('timestamp syncByTimestamp = $timestamp');
-    ignoreRealmChanges = true;
+    _baseCollection.ignoreRealmChanges = true;
 
     final query = collectionRef.where('timestamp', isGreaterThan: timestamp);
     final snapshot = await query.get();
@@ -106,11 +106,19 @@ abstract class SyncCollection<T extends RealmObject> extends Disposable
       for (final e in snapshot.docs) {
         final model = mapToModel(e.data());
         ids.add(getPrimaryKey(model));
-        return realm.add(model, update: true);
+        realm.add(model, update: true);
+      }
+
+      if (T == MediaModel) {
+        refreshMediaBacklinks(realm, ids);
+      } else if (T == TimelineNoteModel) {
+        refreshTimelineNotesBacklinks(realm, ids);
+      } else if (T == CaseModel) {
+        refreshCasesBacklinks(realm, ids);
       }
     }).whenComplete(() {
       logger.fine(ids.length.toString());
-      ignoreRealmChanges = false;
+      _baseCollection.ignoreRealmChanges = false;
     });
 
     return ids;
@@ -129,12 +137,6 @@ abstract class SyncCollection<T extends RealmObject> extends Disposable
   /// ////////////////////////////////////////////////////////////////////
   /// SYNC Functionality
   /// ////////////////////////////////////////////////////////////////////
-
-  /// Flag to indicate ignoring changes from the Realm database.
-  bool ignoreRealmChanges = false;
-
-  /// Flag to indicate ignoring changes from the Firestore database.
-  bool ignoreFirestoreChanges = false;
 
   void pauseSync() {
     logger.fine('pauseSync called');
@@ -156,9 +158,9 @@ abstract class SyncCollection<T extends RealmObject> extends Disposable
     final models = realm.all<T>();
 
     models.changes.listen((changes) async {
-      if (ignoreRealmChanges) return;
+      if (_baseCollection.ignoreRealmChanges) return;
 
-      ignoreFirestoreChanges = true; // Prevent infinite loop
+      _baseCollection.ignoreFirestoreChanges = true; // Prevent infinite loop
 
       for (final index in changes.inserted) {
         debugPrint('Received model $T from Realm to sync (inserted)');
@@ -177,7 +179,7 @@ abstract class SyncCollection<T extends RealmObject> extends Disposable
 
       // Reset flag after a short delay to avoid conflicts
       await Future<void>.delayed(const Duration(milliseconds: 300));
-      ignoreFirestoreChanges = false;
+      _baseCollection.ignoreFirestoreChanges = false;
     });
   }
 
@@ -190,9 +192,9 @@ abstract class SyncCollection<T extends RealmObject> extends Disposable
         .where('timestamp', isGreaterThan: timestamp)
         .snapshots()
         .listen((snapshot) async {
-      if (ignoreFirestoreChanges) return;
+      if (_baseCollection.ignoreFirestoreChanges) return;
 
-      ignoreRealmChanges = true; // Prevent infinite loop
+      _baseCollection.ignoreRealmChanges = true; // Prevent infinite loop
 
       for (final docChange in snapshot.docChanges) {
         debugPrint('Received model  $T from Firestore to sync');
@@ -214,7 +216,7 @@ abstract class SyncCollection<T extends RealmObject> extends Disposable
       setLastSyncTimestamp();
 
       // Reset flag after processing changes
-      ignoreRealmChanges = false;
+      _baseCollection.ignoreRealmChanges = false;
     });
   }
 

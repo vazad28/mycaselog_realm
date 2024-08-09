@@ -9,25 +9,20 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'disposable.dart';
 
 class RealmDatabase extends Disposable {
-  RealmDatabase._(this._realm, this._user, this._sharedPrefs);
+  final Realm realm;
+  final AuthenticationUser user;
+  final SharedPreferences sharedPrefs;
 
-  final Realm _realm;
-  final AuthenticationUser _user;
-  final SharedPreferences _sharedPrefs;
+  // ignore: sort_constructors_first
+  RealmDatabase._(this.realm, this.user, this.sharedPrefs);
 
-  Realm get realm => _realm;
-  AuthenticationUser get user => _user;
-  SharedPreferences get sharedPrefs => _sharedPrefs;
-
-  /// Init repository
   static Future<RealmDatabase> init(AuthenticationUser user) async {
-    debugPrint('realm database int called');
     final sharedPrefs = await SharedPreferences.getInstance();
-    return RealmDatabase._(_initRealm(user), user, sharedPrefs);
+    final realm = await _createRealm(user);
+    return RealmDatabase._(realm, user, sharedPrefs);
   }
 
-  /// Initialize realm with user
-  static Realm _initRealm(AuthenticationUser user) {
+  static Future<Realm> _createRealm(AuthenticationUser user) async {
     Configuration.defaultRealmName = '${user.id}.realm';
 
     final config = Configuration.local(
@@ -47,8 +42,13 @@ class RealmDatabase extends Disposable {
         UserModel.schema,
       ],
       shouldDeleteIfMigrationNeeded: kDebugMode,
-      //schemaVersion: 2,
     );
+
     return Realm(config);
+  }
+
+  @override
+  Future<void> dispose() {
+    return Future<void>.sync(realm.close);
   }
 }

@@ -23,7 +23,7 @@ class CasePdfModel {
   });
 
   final CaseModel? caseModel;
-  final List<TimelineItemPdf>? timelines;
+  final Iterable<TimelineItemPdf>? timelines;
   final File? pdfFile;
 }
 
@@ -79,34 +79,35 @@ class CasePdfNotifier extends _$CasePdfNotifier with LoggerMixin {
     final caseModel = caseModelManaged.toUnmanaged();
 
     try {
-      /// get timeline items
-      final timelineItems = ref.watch(caseTimelineProvider(caseModel));
+      // Get timeline items
+      final timelineItems =
+          ref.read(caseTimelineNotifierProvider(caseModel.caseID));
 
-      /// create a  simple list of timelines for PDF generation
-      final timelines = <TimelineItemPdf>[];
+      // Check if data is available
+      if (timelineItems.value == null) return;
 
-      for (final e in timelineItems) {
-        /// get data for timeline
+      // Create a list of timelines for PDF generation
+      final timelines = await Future.wait(timelineItems.value!.map((e) async {
+        // Get data for timeline
         final notes = e.noteList.map((noteModel) => noteModel.note).toList();
         final medias = await mediaFiles(e.mediaList);
 
-        /// if the timeline has no media and no note either done add it
-        if (notes.isEmpty && medias.isEmpty) continue;
-        timelines.add(
-          TimelineItemPdf(
-            mediaFiles: medias,
-            notes: notes,
-            eventDate: e.eventDate,
-          ),
+        // Skip if no media and no notes
+        if (notes.isEmpty && medias.isEmpty) return null;
+
+        return TimelineItemPdf(
+          mediaFiles: medias,
+          notes: notes,
+          eventDate: e.eventDate,
         );
-      }
+      }));
 
       final dir = (await getTemporaryDirectory()).path;
       final path = '$dir/${caseModel.caseID}.pdf';
 
       final casePdfModel = CasePdfModel(
         caseModel: caseModel,
-        timelines: timelines,
+        timelines: timelines.nonNulls,
         pdfFile: File(path),
       );
 

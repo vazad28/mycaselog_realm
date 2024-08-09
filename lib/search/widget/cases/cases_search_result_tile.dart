@@ -3,9 +3,13 @@
 import 'package:animations/animations.dart';
 import 'package:app_models/app_models.dart';
 import 'package:app_ui/app_ui.dart';
+import 'package:async_result/async_result.dart';
+import 'package:encryption_client/encryption_client.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:memoized/memoized.dart';
 
+import '../../../case_details/case_details.dart';
 import '../../../cases/cases.dart';
 import '../../../core/core.dart';
 
@@ -61,10 +65,9 @@ class CasesSearchResultTile extends ConsumerWidget {
     final Widget child = OpenContainer(
       closedColor: Colors.transparent,
       closedElevation: 0,
-      openBuilder: (context, action) => const Placeholder(),
-      // CaseDetailsPage(
-      //   caseModel: caseModel,
-      // ),
+      openBuilder: (context, action) => CaseDetailsPage(
+        caseID: caseModel.caseID,
+      ),
       closedBuilder: (context, action) => tile,
     );
 
@@ -93,8 +96,17 @@ class _DecryptedPatientModel extends ConsumerWidget {
 
     final encryptionRepository = ref.watch(encryptionClientProvider);
 
-    final patientModelResult =
-        encryptionRepository.decrypt(caseModel.patientModel!.crypt!);
+    if (caseModel.patientModel?.crypt == null) {
+      return const SizedBox.shrink(
+        child: Text('No encrypted data'),
+      );
+    }
+
+    final memoizedDecrypt = Memoized1<
+        Result<Map<String, dynamic>, EncryptionClientException>,
+        String>(encryptionRepository.decrypt);
+
+    final patientModelResult = memoizedDecrypt(caseModel.patientModel!.crypt!);
 
     final child = patientModelResult.when(success: (json) {
       final patientModel = PatientModelX.fromJson(json);

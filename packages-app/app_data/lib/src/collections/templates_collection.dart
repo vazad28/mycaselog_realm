@@ -87,8 +87,9 @@ class TemplatesCollection extends SyncCollection<TemplateModel> {
   Map<String, dynamic> modelToMap(TemplateModel object) => object.toJson();
 
   Future<void> addTemplate(TemplateModel object) {
-    return realm.writeAsync(
-      () => realm.add<TemplateModel>(object, update: true),
-    );
+    return realm.writeAsync(() {
+      object.timestamp = ModelUtils.getTimestamp;
+      realm.add<TemplateModel>(object, update: true);
+    });
   }
 }

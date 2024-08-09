@@ -49,27 +49,24 @@ class SyncNotifier extends _$SyncNotifier {
     state = const StateOf<List<String>>.loading();
 
     collection.syncByTimestamp(timestamp).then((ids) async {
+      //collection.ignoreRealmChanges = true; //  important
       state = StateOf<List<String>>.success(ids);
-
-      /// if timestamp is 0, we send null for ids so
-      /// link functions can load all cases instead of  by ids
-      await _onSuccess(timestamp == 0 ? null : ids);
     }).catchError((Object? err) {
       state = StateOf<List<String>>.failure(Exception(err));
     });
   }
 
-  /// null for ids means  collection runs backlinks on all items
-  Future<void> _onSuccess(List<String>? ids) async {
-    if (dbCollection == DbCollection.media) {
-      return ref.watch(dbProvider).mediaCollection.refreshBacklinks(ids);
-    } else if (dbCollection == DbCollection.timelineNotes) {
-      return ref
-          .watch(dbProvider)
-          .timelineNotesCollection
-          .refreshBacklinks(ids);
-    } else if (dbCollection == DbCollection.cases) {
-      return ref.watch(dbProvider).casesCollection.refreshBacklinks(ids);
-    }
-  }
+  // /// null for ids means  collection runs backlinks on all items
+  // Future<void> _onSuccess(List<String>? ids) async {
+  //   if (dbCollection == DbCollection.media) {
+  //     return ref.watch(dbProvider).mediaCollection.refreshBacklinks(ids);
+  //   } else if (dbCollection == DbCollection.timelineNotes) {
+  //     return ref
+  //         .watch(dbProvider)
+  //         .timelineNotesCollection
+  //         .refreshBacklinks(ids);
+  //   } else if (dbCollection == DbCollection.cases) {
+  //     return ref.watch(dbProvider).casesCollection.refreshBacklinks(ids);
+  //   }
+  // }
 }

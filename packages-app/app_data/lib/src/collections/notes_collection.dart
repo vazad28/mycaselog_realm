@@ -16,6 +16,11 @@ class NotesCollection extends SyncCollection<NoteModel> {
   @override
   Map<String, dynamic> modelToMap(NoteModel object) => object.toJson();
 
+  // Retrieves all cases from Realm
+  RealmResults<NoteModel> getAllNotes() {
+    return realm.query<NoteModel>('removed == 0 SORT(timestamp DESC)');
+  }
+
   Future<void> deleteNote(NoteModel noteModel) {
     return upsert(() => noteModel..removed = 1);
   }

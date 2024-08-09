@@ -5,6 +5,7 @@ import 'package:async_result/async_result.dart';
 import 'package:crypto/crypto.dart';
 import 'package:encrypt/encrypt.dart';
 import 'package:flutter/foundation.dart' as foundation;
+//import 'package:memoized/memoized.dart';
 
 part 'encryption_failures.dart';
 
@@ -31,8 +32,6 @@ class EncryptionClient {
 
   Result<Map<String, dynamic>, EncryptionClientException> decrypt(String data) {
     try {
-      //if (_encrypter == null) throw const EncrypterNotAvailableException();
-
       // ignore: omit_local_variable_types
       final Uint8List dataUint8 = TypeHelper.base64ToBytes(data);
 

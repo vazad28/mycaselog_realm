@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../sync.dart';
+import '../widget/sync_bottom_sheet.dart';
 
 final collectionsOrder = [
   DbCollection.cases,
@@ -34,6 +35,7 @@ class SyncView extends ConsumerWidget {
     ];
 
     return ListView.separated(
+      padding: EdgeInsets.zero,
       shrinkWrap: true,
       itemCount: collectionsOrder.length,
       itemBuilder: (context, index) {
@@ -59,6 +61,7 @@ class SyncView extends ConsumerWidget {
                           return SyncTimeSelector(
                             onSelect: (timestamp) {
                               if (timestamp == null) return;
+                              //print(timestamp);
                               notifier.syncCollection(timestamp);
                             },
                           );
@@ -76,7 +79,7 @@ class SyncView extends ConsumerWidget {
                       context.openDraggableBottomSheet<void>(
                         builder: (_) {
                           /// Bottom sheet to select 'time since' for syncing data
-                          return SyncTimeSelector(
+                          return SyncBottomSheet(
                             onSelect: (timestamp) {
                               if (timestamp == null) return;
                               notifier.syncCollection(timestamp);

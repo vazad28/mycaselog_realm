@@ -44,12 +44,12 @@ class _MediaUploadOverlayWidget extends StatelessWidget with LoggerMixin {
     return AnimatedBuilder(
       animation: uploadController,
       builder: (context, child) {
-        final status = uploadController.mediaStatus;
-        if (status == MediaStatus.success) {
+        final status = uploadController.uploadStatus;
+        if (status == UploadStatus.success) {
           return const SizedBox.shrink();
         }
 
-        if (status == MediaStatus.failed) {
+        if (status == UploadStatus.failed) {
           _onFailure(context);
         }
 
@@ -58,7 +58,7 @@ class _MediaUploadOverlayWidget extends StatelessWidget with LoggerMixin {
         );
 
         return UploadOverlay(
-          status: status,
+          uploadStatus: status,
           uploadProgress: uploadController.uploadProgress,
           onRetry: uploadController.retryUpload,
           onCancel: uploadController.cancelUpload,

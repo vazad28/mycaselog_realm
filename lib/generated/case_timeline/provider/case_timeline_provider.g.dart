@@ -7,24 +7,7 @@ part of '../../../case_timeline/provider/case_timeline_provider.dart';
 // **************************************************************************
 
 String _$caseTimelineNotifierHash() =>
-    r'65131835dd7004b89350ca41b03f507a2fede61f';
-
-/// See also [CaseTimelineNotifier].
-@ProviderFor(CaseTimelineNotifier)
-final caseTimelineNotifierProvider = AutoDisposeNotifierProvider<
-    CaseTimelineNotifier, AsyncValue<List<TimelineItemModel>>>.internal(
-  CaseTimelineNotifier.new,
-  name: r'caseTimelineNotifierProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$caseTimelineNotifierHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$CaseTimelineNotifier
-    = AutoDisposeNotifier<AsyncValue<List<TimelineItemModel>>>;
-String _$caseTimelineHash() => r'782398033f91fb7684af9fbda53f70e5e088395a';
+    r'c2da83e2311040ee78a4d268aab123e96a803ec5';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -47,23 +30,23 @@ class _SystemHash {
   }
 }
 
-abstract class _$CaseTimeline
-    extends BuildlessAutoDisposeNotifier<List<TimelineItemModel>> {
-  late final CaseModel caseModel;
+abstract class _$CaseTimelineNotifier
+    extends BuildlessAutoDisposeNotifier<AsyncValue<List<TimelineItemModel>>> {
+  late final String caseID;
 
-  List<TimelineItemModel> build(
-    CaseModel caseModel,
+  AsyncValue<List<TimelineItemModel>> build(
+    String caseID,
   );
 }
 
-/// See also [CaseTimeline].
-@ProviderFor(CaseTimeline)
-const caseTimelineProvider = CaseTimelineFamily();
+/// See also [CaseTimelineNotifier].
+@ProviderFor(CaseTimelineNotifier)
+const caseTimelineNotifierProvider = CaseTimelineNotifierFamily();
 
-/// See also [CaseTimeline].
-class CaseTimelineFamily extends Family {
-  /// See also [CaseTimeline].
-  const CaseTimelineFamily();
+/// See also [CaseTimelineNotifier].
+class CaseTimelineNotifierFamily extends Family {
+  /// See also [CaseTimelineNotifier].
+  const CaseTimelineNotifierFamily();
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
 
@@ -77,157 +60,158 @@ class CaseTimelineFamily extends Family {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'caseTimelineProvider';
+  String? get name => r'caseTimelineNotifierProvider';
 
-  /// See also [CaseTimeline].
-  CaseTimelineProvider call(
-    CaseModel caseModel,
+  /// See also [CaseTimelineNotifier].
+  CaseTimelineNotifierProvider call(
+    String caseID,
   ) {
-    return CaseTimelineProvider(
-      caseModel,
+    return CaseTimelineNotifierProvider(
+      caseID,
     );
   }
 
   @visibleForOverriding
   @override
-  CaseTimelineProvider getProviderOverride(
-    covariant CaseTimelineProvider provider,
+  CaseTimelineNotifierProvider getProviderOverride(
+    covariant CaseTimelineNotifierProvider provider,
   ) {
     return call(
-      provider.caseModel,
+      provider.caseID,
     );
   }
 
   /// Enables overriding the behavior of this provider, no matter the parameters.
-  Override overrideWith(CaseTimeline Function() create) {
-    return _$CaseTimelineFamilyOverride(this, create);
+  Override overrideWith(CaseTimelineNotifier Function() create) {
+    return _$CaseTimelineNotifierFamilyOverride(this, create);
   }
 }
 
-class _$CaseTimelineFamilyOverride implements FamilyOverride {
-  _$CaseTimelineFamilyOverride(this.overriddenFamily, this.create);
+class _$CaseTimelineNotifierFamilyOverride implements FamilyOverride {
+  _$CaseTimelineNotifierFamilyOverride(this.overriddenFamily, this.create);
 
-  final CaseTimeline Function() create;
-
-  @override
-  final CaseTimelineFamily overriddenFamily;
+  final CaseTimelineNotifier Function() create;
 
   @override
-  CaseTimelineProvider getProviderOverride(
-    covariant CaseTimelineProvider provider,
+  final CaseTimelineNotifierFamily overriddenFamily;
+
+  @override
+  CaseTimelineNotifierProvider getProviderOverride(
+    covariant CaseTimelineNotifierProvider provider,
   ) {
     return provider._copyWith(create);
   }
 }
 
-/// See also [CaseTimeline].
-class CaseTimelineProvider extends AutoDisposeNotifierProviderImpl<CaseTimeline,
-    List<TimelineItemModel>> {
-  /// See also [CaseTimeline].
-  CaseTimelineProvider(
-    CaseModel caseModel,
+/// See also [CaseTimelineNotifier].
+class CaseTimelineNotifierProvider extends AutoDisposeNotifierProviderImpl<
+    CaseTimelineNotifier, AsyncValue<List<TimelineItemModel>>> {
+  /// See also [CaseTimelineNotifier].
+  CaseTimelineNotifierProvider(
+    String caseID,
   ) : this._internal(
-          () => CaseTimeline()..caseModel = caseModel,
-          from: caseTimelineProvider,
-          name: r'caseTimelineProvider',
+          () => CaseTimelineNotifier()..caseID = caseID,
+          from: caseTimelineNotifierProvider,
+          name: r'caseTimelineNotifierProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$caseTimelineHash,
-          dependencies: CaseTimelineFamily._dependencies,
+                  : _$caseTimelineNotifierHash,
+          dependencies: CaseTimelineNotifierFamily._dependencies,
           allTransitiveDependencies:
-              CaseTimelineFamily._allTransitiveDependencies,
-          caseModel: caseModel,
+              CaseTimelineNotifierFamily._allTransitiveDependencies,
+          caseID: caseID,
         );
 
-  CaseTimelineProvider._internal(
+  CaseTimelineNotifierProvider._internal(
     super.create, {
     required super.name,
     required super.dependencies,
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.caseModel,
+    required this.caseID,
   }) : super.internal();
 
-  final CaseModel caseModel;
+  final String caseID;
 
   @override
-  List<TimelineItemModel> runNotifierBuild(
-    covariant CaseTimeline notifier,
+  AsyncValue<List<TimelineItemModel>> runNotifierBuild(
+    covariant CaseTimelineNotifier notifier,
   ) {
     return notifier.build(
-      caseModel,
+      caseID,
     );
   }
 
   @override
-  Override overrideWith(CaseTimeline Function() create) {
+  Override overrideWith(CaseTimelineNotifier Function() create) {
     return ProviderOverride(
       origin: this,
-      override: CaseTimelineProvider._internal(
-        () => create()..caseModel = caseModel,
+      override: CaseTimelineNotifierProvider._internal(
+        () => create()..caseID = caseID,
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        caseModel: caseModel,
+        caseID: caseID,
       ),
     );
   }
 
   @override
-  (CaseModel,) get argument {
-    return (caseModel,);
+  (String,) get argument {
+    return (caseID,);
   }
 
   @override
-  AutoDisposeNotifierProviderElement<CaseTimeline, List<TimelineItemModel>>
-      createElement() {
-    return _CaseTimelineProviderElement(this);
+  AutoDisposeNotifierProviderElement<CaseTimelineNotifier,
+      AsyncValue<List<TimelineItemModel>>> createElement() {
+    return _CaseTimelineNotifierProviderElement(this);
   }
 
-  CaseTimelineProvider _copyWith(
-    CaseTimeline Function() create,
+  CaseTimelineNotifierProvider _copyWith(
+    CaseTimelineNotifier Function() create,
   ) {
-    return CaseTimelineProvider._internal(
-      () => create()..caseModel = caseModel,
+    return CaseTimelineNotifierProvider._internal(
+      () => create()..caseID = caseID,
       name: name,
       dependencies: dependencies,
       allTransitiveDependencies: allTransitiveDependencies,
       debugGetCreateSourceHash: debugGetCreateSourceHash,
       from: from,
-      caseModel: caseModel,
+      caseID: caseID,
     );
   }
 
   @override
   bool operator ==(Object other) {
-    return other is CaseTimelineProvider && other.caseModel == caseModel;
+    return other is CaseTimelineNotifierProvider && other.caseID == caseID;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, caseModel.hashCode);
+    hash = _SystemHash.combine(hash, caseID.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
 
-mixin CaseTimelineRef
-    on AutoDisposeNotifierProviderRef<List<TimelineItemModel>> {
-  /// The parameter `caseModel` of this provider.
-  CaseModel get caseModel;
+mixin CaseTimelineNotifierRef
+    on AutoDisposeNotifierProviderRef<AsyncValue<List<TimelineItemModel>>> {
+  /// The parameter `caseID` of this provider.
+  String get caseID;
 }
 
-class _CaseTimelineProviderElement extends AutoDisposeNotifierProviderElement<
-    CaseTimeline, List<TimelineItemModel>> with CaseTimelineRef {
-  _CaseTimelineProviderElement(super.provider);
+class _CaseTimelineNotifierProviderElement
+    extends AutoDisposeNotifierProviderElement<CaseTimelineNotifier,
+        AsyncValue<List<TimelineItemModel>>> with CaseTimelineNotifierRef {
+  _CaseTimelineNotifierProviderElement(super.provider);
 
   @override
-  CaseModel get caseModel => (origin as CaseTimelineProvider).caseModel;
+  String get caseID => (origin as CaseTimelineNotifierProvider).caseID;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, inference_failure_on_uninitialized_variable, inference_failure_on_function_return_type, inference_failure_on_untyped_parameter, deprecated_member_use_from_same_package

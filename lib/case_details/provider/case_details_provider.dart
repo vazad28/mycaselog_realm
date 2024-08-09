@@ -12,6 +12,18 @@ part 'case_details_mixins.dart';
 ///  Case details seeder provider
 final caseIDProvider = StateProvider.autoDispose<String?>((ref) => null);
 
+final caseModelProvider = StreamProvider.autoDispose<AsyncValue<CaseModel>>(
+  (ref) {
+    final caseID = ref.watch(caseIDProvider);
+    if (caseID == null) throw Exception('Case ID is null');
+
+    final caseModelChange =
+        ref.watch(dbProvider).casesCollection.getSingle(caseID);
+    return caseModelChange!.changes
+        .map((event) => AsyncValue.data(event.object));
+  },
+);
+
 @riverpod
 class CaseDetailsNotifier extends _$CaseDetailsNotifier {
   @override

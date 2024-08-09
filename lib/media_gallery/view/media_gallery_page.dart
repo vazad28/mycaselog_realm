@@ -1,4 +1,5 @@
 import 'package:app_assets/app_assets.dart';
+import 'package:app_extensions/app_extensions.dart';
 import 'package:app_l10n/app_l10n.dart';
 import 'package:app_models/app_models.dart';
 import 'package:app_ui/app_ui.dart';
@@ -9,7 +10,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger_client/logger_client.dart';
 import 'package:media_manager/media_manager.dart';
 import 'package:misc_packages/misc_packages.dart';
-import 'package:recase/recase.dart';
 
 import '../../core/app_mixins.dart';
 import '../../core/core.dart';

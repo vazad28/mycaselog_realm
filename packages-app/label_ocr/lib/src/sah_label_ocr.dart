@@ -116,6 +116,25 @@ class _SahLabelOcrState<T> extends State<SahLabelOcr>
     setState(() {});
   }
 
+  // Future<void> _pickImage() async {
+  //   final pickedFile =
+  //       await ImagePicker().pickImage(source: ImageSource.gallery);
+  //   if (pickedFile == null) return;
+
+  //   final file = File(pickedFile.path);
+  //   final inputImage = InputImage.fromFile(file);
+  //   final recognizedText = await textRecognizer.processImage(inputImage);
+
+  //   if (!mounted) return;
+
+  //   if (recognizedText.text.isEmpty) {
+  //     ScaffoldMessenger.of(context)
+  //         .showSnackBar(const SnackBar(content: Text('No OCR text')));
+  //   }
+
+  //   _createReturnModel(recognizedText);
+  // }
+
   Future<void> _scanImage() async {
     if (_cameraController == null) return;
 
@@ -165,37 +184,24 @@ class _SahLabelOcrState<T> extends State<SahLabelOcr>
     }
   }
 
-  void _ocrToPatientModelSah(RecognizedText recognizedText) {
-    final name = extractFullName(recognizedText.text);
-    final mrn = extractMrn(recognizedText.text);
-    final yob = extractYob(recognizedText.text);
-    final gender = extractGender(recognizedText.text);
-
-    final patientModel = (widget.model as PatientModel)
-      ..name = name
-      ..gender = gender
-      ..initials = name.initials
-      ..yob = yob
-      ..mrn = mrn;
-
-    Navigator.of(context).pop(patientModel);
-  }
-
   void _ocrToDecryptedPatientModel(RecognizedText recognizedText) {
+    final textArray = const LineSplitter().convert(recognizedText.text);
+    if (textArray.isEmpty) throw Exception('Could not read label');
+
     final decryptedPatientModel = DecryptedPatientModel.zero().copyWith(
-      name: extractName(recognizedText),
+      name: _extractName(textArray.first),
       mrn: extractMrn(recognizedText.text),
     );
 
     Navigator.of(context).pop(decryptedPatientModel);
   }
 
-  String? extractFullName(String paragraph) {
-    final match = RegExp(r'(\w+)\, (\w+)(?: ([\w ]+))?').firstMatch(paragraph);
+  String? _extractName(String paragraph) {
+    final match = RegExp(r'(\w+)\,(\w+)(?: ([\w ]+))?').firstMatch(paragraph);
     if (match == null) return null;
 
     final lastName = match.group(1)!;
-    final firstName = match.group(2)!;
+    final firstName = match.group(2);
     final middleName = match.group(3);
 
     final name = middleName != null
@@ -207,11 +213,37 @@ class _SahLabelOcrState<T> extends State<SahLabelOcr>
     return name.replaceAll(regex, '');
   }
 
-  String extractName(RecognizedText recognizedText) {
-    final textArray = const LineSplitter().convert(recognizedText.text);
-    if (textArray.isEmpty) throw Exception('Could not read label');
+  String _extractGender(String text) {
+    final genderRegex = RegExp('(M|F|male|female)', caseSensitive: false);
+    final match = genderRegex.firstMatch(text);
 
-    return textArray.first;
+    if (match == null) return text.substring(text.length - 1);
+
+    final gender = switch (match.group(0)!) {
+      'M' || 'male' => 'Male',
+      'F' || 'female' => 'Female',
+      String() => 'NA',
+    };
+
+    return gender;
+  }
+
+  void _ocrToPatientModelSah(RecognizedText recognizedText) {
+    final blocks = recognizedText.blocks;
+    if (blocks.isEmpty) return;
+
+    final nameLine = blocks[1].lines.first.text;
+    final name = _extractName(nameLine);
+    final lastLine = blocks.last.lines.last.text;
+
+    final patientModel = (widget.model as PatientModel)
+      ..mrn = lastLine.substring(3, lastLine.indexOf(' '))
+      ..yob = _extractYob(lastLine)
+      ..gender = _extractGender(lastLine)
+      ..name = name
+      ..initials = name.initials;
+
+    Navigator.of(context).pop(patientModel);
   }
 
   /// extract MRN from recognized text
@@ -229,7 +261,7 @@ class _SahLabelOcrState<T> extends State<SahLabelOcr>
   }
 
   /// get date
-  String extractYob(String paragraph) {
+  String _extractYob(String paragraph) {
     final regex = RegExp(r'\d{2}/\d{2}/\d{4}'); // Pattern for 'mm/dd/yyyy'
     final match = regex.firstMatch(paragraph);
     if (match == null) {
@@ -238,23 +270,6 @@ class _SahLabelOcrState<T> extends State<SahLabelOcr>
 
     final dob = match.group(0)!; // Extract the captured group (full match)
     return dob.split('/').last;
-  }
-
-  /// extract gender
-  String extractGender(String text) {
-    final genderRxp = RegExp('M|F');
-    final match = genderRxp.firstMatch(text);
-
-    if (match == null) {
-      throw const FormatException('Invalid Gender format. Must be M or F');
-    }
-    final gender = switch (match.group(0)!) {
-      'M' => 'Male',
-      'F' => 'Female',
-      String() => 'NA',
-    };
-
-    return gender;
   }
 }
 
@@ -285,8 +300,8 @@ class _SahLabelOcrView extends StatelessWidget {
           ),
         Scaffold(
           appBar: AppBar(
-            title: const Text('Text Recognition Sample'),
-          ),
+              // title: const Text('Text Recognition Sample'),
+              ),
           // Set the background to transparent so you can see the camera preview
           backgroundColor:
               _state._isPermissionGranted ? Colors.transparent : null,
@@ -301,7 +316,7 @@ class _SahLabelOcrView extends StatelessWidget {
                       child: Center(
                         child: ElevatedButton(
                           onPressed: _state._scanImage,
-                          child: const Text('Scan text'),
+                          child: const Text('Scan label'),
                         ),
                       ),
                     ),
@@ -321,3 +336,33 @@ class _SahLabelOcrView extends StatelessWidget {
     );
   }
 }
+
+
+/// SahLabelOcr VIEW Widget
+// class _SahLabelOcrView extends StatelessWidget {
+//   const _SahLabelOcrView(_SahLabelOcrState ocrState) : _state = ocrState;
+
+//   final _SahLabelOcrState _state;
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(),
+//       body: Column(
+//         children: [
+//           Expanded(
+//             child: Container(),
+//           ),
+//           Container(
+//             padding: const EdgeInsets.only(bottom: 30),
+//             child: Center(
+//               child: ElevatedButton(
+//                 onPressed: _state._pickImage,
+//                 child: const Text('scan'),
+//               ),
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }

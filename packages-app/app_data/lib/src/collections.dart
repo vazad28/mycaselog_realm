@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:app_annotations/app_annotations.dart';
 import 'package:app_models/app_models.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:collection/collection.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:logger_client/logger_client.dart';
 import 'package:realm/realm.dart';

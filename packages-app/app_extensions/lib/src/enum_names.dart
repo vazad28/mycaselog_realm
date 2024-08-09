@@ -12,14 +12,6 @@ extension EnumValuesNames<T extends Enum> on Iterable<T> {
     );
   }
 
-  // T? findOrNull(T item) {
-  //   final input = this;
-  //   return input.firstWhereOrNull(
-  //     (element) => element == item,
-  //     orElse: () => null,
-  //   );
-  // }
-
   T containsItem(T item) {
     final input = this;
     return input.firstWhere(
