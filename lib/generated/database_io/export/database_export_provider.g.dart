@@ -7,7 +7,7 @@ part of '../../../database_io/export/database_export_provider.dart';
 // **************************************************************************
 
 String _$databaseExportNotifierHash() =>
-    r'f4a2e5187f9c63596a3f8f1a5565dd8e3469c5a7';
+    r'b29d100ee58b2c0657bfa187ad74cca2d7829887';
 
 /// See also [DatabaseExportNotifier].
 @ProviderFor(DatabaseExportNotifier)

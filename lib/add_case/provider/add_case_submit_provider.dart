@@ -69,6 +69,8 @@ class AddCaseFormSubmit extends _$AddCaseFormSubmit with LoggerMixin {
 
     final currTemplateModel = ref.read(currentCaseTemplateProvider);
 
+    print(_patientDataForm.value);
+
     final createdModel = CaseModelX.fromJson(caseModelJson)
       ..patientModel = PatientModelX.fromJson(_patientDataForm.value)
       ..templateID = currTemplateModel?.templateID;

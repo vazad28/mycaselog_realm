@@ -23,20 +23,6 @@ class UserProfilePage extends ConsumerWidget {
         ],
       ),
       body: const UserProfileView(),
-      // RefreshIndicator(
-      //   onRefresh: () {
-      //     return _pullRefresh(ref);
-      //   },
-      //   child: const TapOutsideUnfocus(
-      //     child: UserProfileView(),
-      //   ),
-      // ),
     );
   }
-
-  // Future<void> _pullRefresh(WidgetRef ref) async {
-  //   ref
-  //     ..invalidate(userProfileNotifierProvider)
-  //     ..invalidate(userMiniStatsProvider);
-  // }
 }

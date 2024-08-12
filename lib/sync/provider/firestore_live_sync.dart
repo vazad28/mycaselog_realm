@@ -42,7 +42,8 @@ class FirestoreLiveSync extends _$FirestoreLiveSync with LoggerMixin {
         final collection = collectionsMap[dbCollection];
         if (collection == null) continue;
 
-        collection.updateFirebaseSyncStatus(status: state);
+        /// TODO
+        //collection.updateFirebaseSyncStatus(status: state);
       }
     } catch (err) {
       logger.severe('sync listeners error $err');

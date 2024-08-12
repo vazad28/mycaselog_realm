@@ -130,6 +130,4 @@ extension TemplateFieldModelX on TemplateFieldModel {
     json['options'] ??= <String>[];
     return _$$TemplateFieldModelFromJson(json).toUnmanaged();
   }
-
-  //Map<String, dynamic> toJson() => _$$TemplateFieldModelToJson(this);
 }

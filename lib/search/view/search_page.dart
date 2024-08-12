@@ -94,8 +94,9 @@ class _SearchViewState<T> extends ConsumerState<SearchView<T>> {
     return _results?.map((model) {
       if (T == CaseModel) {
         return CasesSearchResultTile(
-            caseModel: model as CaseModel,
-            key: Key('__CasesSearchResultTile_${model.caseID}_key__'));
+          caseModel: model as CaseModel,
+          key: Key('__CasesSearchResultTile_${model.caseID}_key__'),
+        );
       } else {
         return MediaSearchResultTile(
           mediaModel: model as MediaModel,

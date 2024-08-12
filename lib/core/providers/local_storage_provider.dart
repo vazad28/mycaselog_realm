@@ -81,17 +81,18 @@ class LocalStorage {
   /// Media Tile style
   int getMediaGridTileStyle() =>
       _persistentStorage.readInt(StorageKeys.mediaGridTileStyle, 0);
+
   void setMediaGridTileStyle(int value) =>
       _persistentStorage.writeInt(StorageKeys.mediaGridTileStyle, value);
 
   /// Notes title style
-  int getNoteListTileStyle() =>
+  int get noteListTileStyle =>
       _persistentStorage.readInt(StorageKeys.noteListTileStyle, 0);
   void setNoteListTileStyle(int value) =>
       _persistentStorage.writeInt(StorageKeys.noteListTileStyle, value);
 
   /// tile styles
-  int getCaseTileNavigate() =>
+  int get caseTileNavigate =>
       _persistentStorage.readInt(StorageKeys.caseTileNavigate, 0);
 
   void setCaseTileNavigate(int value) =>

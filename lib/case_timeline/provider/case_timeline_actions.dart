@@ -41,12 +41,12 @@ class TimelineAction extends BaseAppAction {
 final timelineItemActions = [
   TimelineAction(
     action: TimelineActionEnum.addCameraPhoto,
-    title: TimelineActionEnum.addCameraPhoto.name.titleCase,
+    title: TimelineActionEnum.addCameraPhoto.name,
     leading: const Icon(Icons.camera_alt),
   ),
   TimelineAction(
     action: TimelineActionEnum.addGalleryPhoto,
-    title: TimelineActionEnum.addGalleryPhoto.name.titleCase,
+    title: TimelineActionEnum.addGalleryPhoto.name,
     leading: const Icon(Icons.photo_library),
   ),
   TimelineAction(
@@ -56,12 +56,12 @@ final timelineItemActions = [
   ),
   TimelineAction(
     action: TimelineActionEnum.changeTimelineDate,
-    title: TimelineActionEnum.changeTimelineDate.name.titleCase,
+    title: TimelineActionEnum.changeTimelineDate.name,
     leading: const Icon(Icons.calendar_today),
   ),
   TimelineAction(
     action: TimelineActionEnum.shareMedia,
-    title: TimelineActionEnum.shareMedia.name.titleCase,
+    title: TimelineActionEnum.shareMedia.name,
     leading: const Icon(Icons.share),
   ),
 ];
@@ -69,17 +69,17 @@ final timelineItemActions = [
 final mediaActionsLong = [
   TimelineAction(
     action: TimelineActionEnum.changeMediaDate,
-    title: TimelineActionEnum.changeMediaDate.name.titleCase,
+    title: TimelineActionEnum.changeMediaDate.name,
     leading: const Icon(Icons.camera_alt),
   ),
   TimelineAction(
     action: TimelineActionEnum.deleteMedia,
-    title: TimelineActionEnum.deleteMedia.name.titleCase,
+    title: TimelineActionEnum.deleteMedia.name,
     leading: const Icon(Icons.delete),
   ),
   TimelineAction(
     action: TimelineActionEnum.shareMedia,
-    title: TimelineActionEnum.shareMedia.name.titleCase,
+    title: TimelineActionEnum.shareMedia.name,
     leading: const Icon(Icons.share),
   ),
 ];
@@ -87,12 +87,12 @@ final mediaActionsLong = [
 final mediaActionsShort = [
   TimelineAction(
     action: TimelineActionEnum.deleteMedia,
-    title: TimelineActionEnum.deleteMedia.name.titleCase,
+    title: TimelineActionEnum.deleteMedia.name,
     leading: const Icon(Icons.delete),
   ),
   TimelineAction(
     action: TimelineActionEnum.shareMedia,
-    title: TimelineActionEnum.shareMedia.name.titleCase,
+    title: TimelineActionEnum.shareMedia.name,
     leading: const Icon(Icons.share),
   ),
 ];
@@ -100,12 +100,12 @@ final mediaActionsShort = [
 final timelineNoteActions = [
   TimelineAction(
     action: TimelineActionEnum.changeNoteDate,
-    title: TimelineActionEnum.changeNoteDate.name.titleCase,
+    title: TimelineActionEnum.changeNoteDate.name,
     leading: const Icon(Icons.camera_alt),
   ),
   TimelineAction(
     action: TimelineActionEnum.deleteNote,
-    title: TimelineActionEnum.deleteNote.name.titleCase,
+    title: TimelineActionEnum.deleteNote.name,
     leading: const Icon(Icons.delete),
   ),
 ];

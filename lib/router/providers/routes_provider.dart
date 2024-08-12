@@ -54,7 +54,7 @@ List<NavigationDestination> rootNavDestinations(RootNavDestinationsRef ref) {
 List<RouteBase> routes(RoutesRef ref) {
   debugPrint('routes provider called');
   final routesList = [
-    $authFlowRoute,
+    //$authFlowRoute,
     StatefulShellRoute.indexedStack(
       branches: <StatefulShellBranch>[
         StatefulShellBranch(

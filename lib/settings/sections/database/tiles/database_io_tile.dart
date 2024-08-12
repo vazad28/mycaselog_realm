@@ -13,6 +13,7 @@ class DatabaseIoTile extends StatelessWidget {
       onTap: () async {
         await showModalBottomSheet<DatabaseIoPage>(
           context: context,
+          // ignore: avoid_redundant_argument_values
           enableDrag: true,
           builder: (_) => const DatabaseIoPage(),
         );

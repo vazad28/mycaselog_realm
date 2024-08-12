@@ -16,6 +16,8 @@ class PatientDataForm extends ConsumerWidget with AddCaseMixin, AppMixins {
         child: PatientNameField(
           cryptControl: form.controls[PatientDataModelProps.crypt.name]
               as AbstractControl<String?>?,
+          nameControl: form.controls[PatientDataModelProps.name.name]
+              as AbstractControl<String?>?,
         ),
       ),
 

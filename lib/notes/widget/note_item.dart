@@ -54,9 +54,10 @@ class NoteTile extends StatelessWidget {
       onLongPress: () {
         context.openActionsBottomSheet([
           NoteAction(
-              action: CrudAction.delete,
-              title: CrudAction.delete.name.titleCase,
-              subTitle: 'Delete this note?')
+            action: CrudAction.delete,
+            title: CrudAction.delete.name.titleCase,
+            subTitle: 'Delete this note?',
+          ),
         ]).then((action) {
           if (action == null) return;
           if (action.action == CrudAction.delete) {

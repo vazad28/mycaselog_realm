@@ -43,10 +43,13 @@ class _CaseDetailsPageState extends ConsumerState<CaseDetailsPage>
   @override
   void initState() {
     /// active tab based on router or settings
+    print('active tab ${ref.read(settingsNotifierProvider).caseTileNavigate}');
     _activeTab =
         widget.activeTab ?? ref.read(settingsNotifierProvider).caseTileNavigate;
 
-    if (_activeTab > 2) _activeTab = 0;
+    if (_activeTab > 2) {
+      _activeTab = ref.read(localStorageProvider).caseTileNavigate;
+    }
 
     /// set active tab
     _tabController =
@@ -57,6 +60,7 @@ class _CaseDetailsPageState extends ConsumerState<CaseDetailsPage>
             ref
                 .watch(bottomNavVisibilityProvider.notifier)
                 .update(value: _tabController.index != 2);
+            _activeTab = _tabController.index;
           });
 
     /// Seed the provider
@@ -109,6 +113,7 @@ class _CaseDetailsPageState extends ConsumerState<CaseDetailsPage>
                 value: true,
               );
         }
+        ref.read(localStorageProvider).setCaseTileNavigate(_activeTab);
       },
     );
   }

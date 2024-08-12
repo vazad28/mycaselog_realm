@@ -1,7 +1,9 @@
+import 'package:app_models/app_models.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/core.dart';
 import '../../../csv_export/csv_export.dart';
 import '../../../database_io/database_io.dart';
 import '../../../router/router.dart';
@@ -10,6 +12,7 @@ part 'tiles/database_io_tile.dart';
 part 'tiles/export_csv_data_tile.dart';
 part 'tiles/reindex_fts_search_tile.dart';
 part 'tiles/sync_data_tile.dart';
+part 'tiles/upgrade_database_tile.dart';
 
 class SyncSettingsSection extends StatelessWidget {
   const SyncSettingsSection({super.key});
@@ -23,6 +26,7 @@ class SyncSettingsSection extends StatelessWidget {
         //ReindexSearchTile(),
         DatabaseIoTile(),
         ExportCsvDataTile(),
+        UpgradeDatabaseTile()
       ],
     );
   }

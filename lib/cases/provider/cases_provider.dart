@@ -36,7 +36,7 @@ class CasesNotifier extends _$CasesNotifier with LoggerMixin {
     });
 
     return ref
-        .read(dbProvider)
+        .watch(dbProvider)
         .casesCollection
         .getAll(orderByField: BasicDataModelProps.surgeryDate.name)
         .changes;

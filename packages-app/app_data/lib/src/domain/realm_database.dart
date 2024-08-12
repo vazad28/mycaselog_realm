@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:app_models/app_models.dart';
 import 'package:authentication_client/authentication_client.dart';
-import 'package:flutter/foundation.dart';
 import 'package:realm/realm.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,6 +12,9 @@ class RealmDatabase extends Disposable {
   final AuthenticationUser user;
   final SharedPreferences sharedPrefs;
 
+  // Define the initial schema version
+  static const initialSchemaVersion = 1;
+
   // ignore: sort_constructors_first
   RealmDatabase._(this.realm, this.user, this.sharedPrefs);
 
@@ -22,8 +24,19 @@ class RealmDatabase extends Disposable {
     return RealmDatabase._(realm, user, sharedPrefs);
   }
 
+  static void _migrationCallback(Migration migration, int oldSchemaVersion) {
+    if (oldSchemaVersion < 3) {
+      // Add a full-text index to the 'name' field in  PatientModel
+      /// No specific code required for adding index
+    }
+  }
+
   static Future<Realm> _createRealm(AuthenticationUser user) async {
     Configuration.defaultRealmName = '${user.id}.realm';
+
+    /// on sign out we want  to return empty realm
+    /// to  prevent collections recreated and starting listeners
+    if (user.isAnonymous) return Realm(Configuration.local([]));
 
     final config = Configuration.local(
       [
@@ -41,7 +54,9 @@ class RealmDatabase extends Disposable {
         TimelineNoteModel.schema,
         UserModel.schema,
       ],
-      shouldDeleteIfMigrationNeeded: kDebugMode,
+      //shouldDeleteIfMigrationNeeded: kDebugMode,
+      // schemaVersion: 3,
+      //migrationCallback: _migrationCallback,
     );
 
     return Realm(config);

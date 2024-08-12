@@ -78,7 +78,14 @@ class StatsSearchAnchorState extends State<StatsSearchAnchor> {
               },
               leading: const Icon(Icons.search),
               hintText: widget.hintText,
-              trailing: widget.trailing,
+              trailing: [
+                ...widget.trailing ?? [],
+                if (controller.text.isNotEmpty)
+                  IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () => controller.clear(),
+                  ),
+              ],
             ),
           ),
         );

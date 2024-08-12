@@ -58,9 +58,29 @@ extension UserModelX on UserModel {
 
   Map<String, dynamic> toJson() => _$UserModelToJson(this);
 
-  static UserModel zero({
-    required String userID,
-  }) {
-    return UserModel(userID, timestamp: ModelUtils.getTimestamp);
+  // static UserModel zero({required String userID, required String email}) {
+  //   final timestamp = ModelUtils.getTimestamp;
+  //   return UserModel(userID,
+  //       email: email,
+  //       timestamp: timestamp,
+  //       creationTime: timestamp,
+  //       lastSignInTime: timestamp);
+  // }
+
+  static UserModel fromUser(
+      {required String userID,
+      String? email,
+      String? displayName,
+      String? photoUrl}) {
+    final timestamp = ModelUtils.getTimestamp;
+    return UserModel(
+      userID,
+      email: email,
+      displayName: displayName,
+      photoUrl: photoUrl,
+      timestamp: timestamp,
+      creationTime: timestamp,
+      lastSignInTime: timestamp,
+    );
   }
 }

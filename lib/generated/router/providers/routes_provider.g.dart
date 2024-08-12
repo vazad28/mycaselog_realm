@@ -23,7 +23,7 @@ final rootNavDestinationsProvider =
 );
 
 typedef RootNavDestinationsRef = ProviderRef<List<NavigationDestination>>;
-String _$routesHash() => r'2f2da9917d026f2a8c340bf9a7f87bbe112aa857';
+String _$routesHash() => r'91dcfe392ab676f9d7d5a2d8af9355690956aa2d';
 
 /// Routes Provider
 ///

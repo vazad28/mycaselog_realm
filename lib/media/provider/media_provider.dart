@@ -29,7 +29,7 @@ class MediaGridTileStyle extends _$MediaGridTileStyle {
 class MediaNotifier extends _$MediaNotifier {
   @override
   Stream<RealmResultsChanges<MediaModel>> build() {
-    return ref.read(dbProvider).mediaCollection.getAllMedia().changes;
+    return ref.watch(dbProvider).mediaCollection.getAllMedia().changes;
   }
 
   /// Full text search notes

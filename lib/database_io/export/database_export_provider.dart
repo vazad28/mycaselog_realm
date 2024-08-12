@@ -57,17 +57,20 @@ class DatabaseExportNotifier extends _$DatabaseExportNotifier {
 
       /// create zip fiel encoder
       await ZipFile.createFromFiles(
-          sourceDir: appDocDirectory, files: [realmFile], zipFile: zipFile);
+        sourceDir: appDocDirectory,
+        files: [realmFile],
+        zipFile: zipFile,
+      );
 
       // You might want to handle the ZIP file here, e.g., share it, show a notification, etc.
-      print('Database exported to ${zipFile.path}');
+      //print('Database exported to ${zipFile.path}');
 
       // Clean up the temporary directory
       //await tempDir.delete(recursive: true);
       state = StateOf<File?>.success(File(zipFilePath));
     } catch (err) {
       // Handle errors
-      print('Error exporting database: $err');
+      //print('Error exporting database: $err');
       state = StateOf<File?>.failure(err.toAppFailure());
     }
   }

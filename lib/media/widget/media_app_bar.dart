@@ -18,7 +18,7 @@ class MediaAppBar extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                'Surgery media',
+                'Surgery Media',
                 textAlign: TextAlign.left,
                 style: Theme.of(context)
                     .textTheme

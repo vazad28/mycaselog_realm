@@ -43,7 +43,8 @@ class _PatientDataForm extends ConsumerWidget with AddCaseMixin {
 
     const child = PatientDataForm();
 
-    if (crypt != null) return child;
+    if (crypt != null)
+      return child; // we are not reading the label if it is edit
 
     return Stack(
       alignment: Alignment.center,

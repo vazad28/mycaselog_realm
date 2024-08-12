@@ -6,7 +6,7 @@ class SyncBottomSheet extends StatefulWidget {
   final void Function(int?) onSelect;
 
   // ignore: sort_constructors_first
-  const SyncBottomSheet({required this.onSelect, Key? key}) : super(key: key);
+  const SyncBottomSheet({required this.onSelect, super.key});
 
   @override
   _SyncBottomSheetState createState() => _SyncBottomSheetState();

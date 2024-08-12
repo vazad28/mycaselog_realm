@@ -14,9 +14,16 @@ class SyncDataOnAppStartTile extends ConsumerWidget {
       subTitle: S.of(context).syncDataOnAppStartSubTitle,
       switchValue: syncOnStart,
       onToggle: (value) {
-        ref.watch(settingsNotifierProvider.notifier).updateSettings(
-              (e) => e..syncOnStart = value,
-            );
+        ref
+            .watch(dialogServiceProvider)
+            .showConfirmDialog(
+                'Please know this is only required if you have multiple devices.\nKeeping data synced between two devices is challenging and can cause descrepencies and potentially data loss.\n\nAre you sure you want this on?')
+            .then((res) {
+          if (!res) return;
+          ref.watch(settingsNotifierProvider.notifier).updateSettings(
+                (e) => e..syncOnStart = value,
+              );
+        });
       },
     );
   }

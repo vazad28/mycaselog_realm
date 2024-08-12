@@ -17,7 +17,13 @@ class CasesCollection extends SyncCollection<CaseModel> {
 
   /// Converts a CaseModel object to a Map<String, dynamic> representation.
   @override
-  Map<String, dynamic> modelToMap(CaseModel object) => object.toJson();
+  Map<String, dynamic> modelToMap(CaseModel object) {
+    final json = object.toJson();
+    // ignore: avoid_dynamic_calls
+    json['patientModel']['name'] =
+        null; // set name property value to null before adding to firestore
+    return json;
+  }
 
   /// Counts the number of non-removed cases in the database.
   @override
@@ -27,14 +33,6 @@ class CasesCollection extends SyncCollection<CaseModel> {
   RealmResults<CaseModel> getAllCases() {
     return realm.query<CaseModel>('removed == 0 SORT(surgeryDate DESC)');
   }
-
-  // @override
-  // CollectionReference<CaseModel> get withConverter =>
-  //     firestore.collection(path).withConverter<CaseModel>(
-  //           fromFirestore: (snapshot, _) =>
-  //               CaseModelX.fromJson(snapshot.data()!),
-  //           toFirestore: (caseModel, _) => caseModel.toJson(),
-  //         );
 
   /// Adds a new case to the database.
   ///
@@ -92,7 +90,8 @@ class CasesCollection extends SyncCollection<CaseModel> {
         diagnosis TEXT $0 OR 
         surgery TEXT $0 OR 
         comments TEXT $0 OR 
-        patientModel[*].initials TEXT $0 AND removed == 0 SORT(timestamp DESC)''',
+        patientModel.initials TEXT $0 OR 
+        patientModel.name TEXT $0 AND removed == 0 SORT(timestamp DESC)''',
       ['$searchTerm*'],
     );
   }
@@ -138,33 +137,30 @@ class CasesCollection extends SyncCollection<CaseModel> {
   /// or all cases if not provided.
   void refreshBacklinks() => refreshCasesBacklinks(realm, null);
 
-  // /// Refreshes media backlinks for a given list of CaseModel objects
-  // /// or all cases if not provided.
-  // Future<void> refreshBacklinks(List<String>? ids) async {
-  //   ignoreRealmChanges = true;
-  //   // Open a write transaction
-  //   return realm.writeAsync(() {
-  //     // Query all CaseModel objects
-  //     final caseModels = ids == null
-  //         ? realm.all<CaseModel>()
-  //         : realm.query<CaseModel>(r'caseID IN $0', [ids]);
+  Future<void> updateCasesWithPatientIDFromRealm() async {
+    try {
+      final results =
+          realm.all<CaseModel>(); // Replace PatientModel with your actual model
+      final batch = firestore.batch();
 
-  //     // Iterate through each case model
-  //     for (final caseModel in caseModels) {
-  //       // Query media and timeline notes for the current case
-  //       final mediaList =
-  //           realm.query<MediaModel>(r'caseID == $0', [caseModel.caseID]);
-  //       final timelineNotesList =
-  //           realm.query<TimelineNoteModel>(r'caseID == $0', [caseModel.caseID]);
+      for (final caseModel in results) {
+        if (caseModel.patientModel == null) continue;
+        //final patientID = caseModel.patientModel!.patientID;
+        final docRef =
+            collectionRef.doc(caseModel.caseID); // Assuming caseId exists
 
-  //       // Add missing media and notes to the case model
-  //       caseModel.medias.addAll(
-  //         mediaList.where((media) => !caseModel.medias.contains(media)),
-  //       );
-  //       caseModel.notes.addAll(
-  //         timelineNotesList.where((note) => !caseModel.notes.contains(note)),
-  //       );
-  //     }
-  //   }).whenComplete(() => ignoreRealmChanges = false);
-  // }
+        batch
+            .update(docRef, {'patientModel': caseModel.patientModel!.toJson()});
+      }
+
+      await batch.commit();
+    } catch (e) {
+      // Handle errors, e.g.,
+      print(e);
+    }
+  }
+
+  RealmResults<CaseModel> searchQuery(String query) {
+    return realm.query<CaseModel>(query);
+  }
 }

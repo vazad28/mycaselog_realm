@@ -110,7 +110,8 @@ class CaseTimelineNotifier extends _$CaseTimelineNotifier {
 
       // Add the new item to the current list of timeline items
       state = AsyncValue.data(
-          [...currentItems, newTimelineItem]); // Update the state
+        [...currentItems, newTimelineItem],
+      ); // Update the state
     });
   }
 }

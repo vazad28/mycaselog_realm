@@ -14,17 +14,18 @@ class CaseTimelinePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AsyncValueSliverWidget<List<TimelineItemModel>>(
-        value: ref.watch(caseTimelineNotifierProvider(caseID)),
-        data: (timelineItems) {
-          return SliverList.builder(
-            itemCount: timelineItems.length,
-            itemBuilder: (context, index) {
-              return CaseTimelineItemView(
-                timelineItemOriginal: timelineItems[index],
-                isFirst: index == 0,
-              );
-            },
-          );
-        });
+      value: ref.watch(caseTimelineNotifierProvider(caseID)),
+      data: (timelineItems) {
+        return SliverList.builder(
+          itemCount: timelineItems.length,
+          itemBuilder: (context, index) {
+            return CaseTimelineItemView(
+              timelineItemOriginal: timelineItems[index],
+              isFirst: index == 0,
+            );
+          },
+        );
+      },
+    );
   }
 }

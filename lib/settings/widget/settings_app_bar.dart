@@ -32,11 +32,13 @@ class SettingsAppBar extends StatelessWidget {
           },
           child: Row(
             children: [
-              Text(
-                'Settings',
-                style: theme.textTheme.headlineSmall
-                    ?.apply(color: theme.colorScheme.onPrimaryContainer),
-              )
+              Expanded(
+                child: Text(
+                  'Settings',
+                  textAlign: TextAlign.left,
+                  style: theme.textTheme.headlineMedium,
+                ),
+              ),
             ],
           ),
         ),

@@ -60,13 +60,17 @@ mixin TimelineMixin {
           timelineItemModel.noteList.isEmpty) return;
 
       await ref.watch(dbProvider).mediaCollection.changeTimelineMediaTimestamp(
-          timelineItemModel.mediaList, dateTimePicked.millisecondsSinceEpoch);
+            timelineItemModel.mediaList,
+            dateTimePicked.millisecondsSinceEpoch,
+          );
 
       await ref
           .watch(dbProvider)
           .timelineNotesCollection
-          .changeTimelineNotesTimestamp(timelineItemModel.noteList,
-              dateTimePicked.millisecondsSinceEpoch);
+          .changeTimelineNotesTimestamp(
+            timelineItemModel.noteList,
+            dateTimePicked.millisecondsSinceEpoch,
+          );
     } catch (err) {
       ref.watch(dialogServiceProvider).showSnackBar(err.toString());
     }
@@ -97,7 +101,7 @@ mixin TimelineMixin {
       );
 
       /// add image to database
-      ref.read(dbProvider).mediaCollection.addMedia(mediaModel);
+      ref.watch(dbProvider).mediaCollection.addMedia(mediaModel);
     }).catchError((dynamic err) {
       debugPrint(err.toString());
       ref.read(dialogServiceProvider).showSnackBar('Failed to add image');

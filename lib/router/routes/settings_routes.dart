@@ -207,7 +207,8 @@ class SyncRoute extends GoRouteData {
   @override
   Page buildPage(BuildContext context, GoRouterState state) =>
       SharedAxisTransitionPage(
-          key: state.pageKey,
-          child: const SyncPage(),
-          transitionType: SharedAxisTransitionType.horizontal);
+        key: state.pageKey,
+        child: const SyncPage(),
+        transitionType: SharedAxisTransitionType.horizontal,
+      );
 }

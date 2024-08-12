@@ -1,15 +1,9 @@
-import 'package:app_ui/app_ui.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_ui_auth/firebase_ui_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import '../../core/providers/auth_providers.dart';
-// import '../../main.dart' show firebaseAuthInstance;
+part of '../view/signin_page.dart';
 
 class VerifyEmailPage extends ConsumerStatefulWidget {
   const VerifyEmailPage({required this.firebaseAuthInstance, super.key});
 
-  final FirebaseAuth firebaseAuthInstance;
+  final fb_auth.FirebaseAuth firebaseAuthInstance;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>

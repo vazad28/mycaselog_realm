@@ -1,6 +1,5 @@
 import 'package:app_l10n/app_l10n.dart';
 import 'package:app_ui/app_ui.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,30 +13,7 @@ class MycaselogApp extends ConsumerWidget with LoggerMixin {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final brightness = View.of(context).platformDispatcher.platformBrightness;
-
-    // Use with Google Fonts package to use downloadable fonts
-    final textTheme = createTextTheme(context, 'Roboto', 'Bebas Neue');
-
-    final theme = MaterialTheme(textTheme);
-
-    final themeMode = ref.watch(currentThemeModeProvider);
-
-    final currentTheme = themeMode == 0
-        ? brightness == Brightness.light
-            ? theme.light()
-            : theme.dark().copyWith(
-                  cupertinoOverrideTheme: const CupertinoThemeData(
-                    textTheme: CupertinoTextThemeData(), // This is required
-                  ),
-                )
-        : themeMode == 1
-            ? theme.light()
-            : theme.dark().copyWith(
-                  cupertinoOverrideTheme: const CupertinoThemeData(
-                    textTheme: CupertinoTextThemeData(), // This is required
-                  ),
-                );
+    final currentTheme = ref.watch(currentThemeProvider(context));
 
     final materialApp = MaterialApp.router(
       routerConfig: ref.read(mycaselogRouterProvider),

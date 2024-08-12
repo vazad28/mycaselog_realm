@@ -6,8 +6,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:misc_packages/misc_packages.dart';
 import 'package:recase/recase.dart';
 
-import '../../../core/app_vars.dart';
+import '../../../core/core.dart';
 import '../../settings.dart';
+
 part 'tiles/case_navigate_to_tile.dart';
 part 'tiles/local_auth_enabled.dart';
 part 'tiles/sync_on_app_start_tile.dart';

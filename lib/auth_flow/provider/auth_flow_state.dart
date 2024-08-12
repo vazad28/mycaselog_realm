@@ -18,18 +18,10 @@ class AuthFlowState with _$AuthFlowState {
   const factory AuthFlowState.unauthenticated() = _Unauthenticated;
 
   /// Authenticated
-  const factory AuthFlowState.authenticated(AuthenticationUser user) =
-      _Authenticated;
+  const factory AuthFlowState.authenticated() = _Authenticated;
 
   /// Must have user model
-  const factory AuthFlowState.authorized(AuthenticationUser user) = _Authorized;
-
-  /// get state data
-  AuthenticationUser get authenticationUser => maybeWhen(
-        authenticated: (data) => data,
-        authorized: (data) => data,
-        orElse: () => AuthenticationUser.anonymous,
-      );
+  const factory AuthFlowState.authorized() = _Authorized;
 
   bool get isNewOrAuthenticated => this is _Authenticated || this is _Unboarded;
 }

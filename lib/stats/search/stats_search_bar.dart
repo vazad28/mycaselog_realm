@@ -75,7 +75,7 @@ class _StatsResultCount extends ConsumerWidget {
           style: textStyle,
         ),
       ),
-      failure: (f) => const Icon(Icons.error),
+      failure: (f) => const Text(' '),
       orElse: () => const Text('0'),
     );
 

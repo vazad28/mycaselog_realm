@@ -61,27 +61,24 @@ class StatsSearchPhrases {
     StatsSearchPhraseQuery(
       title: 'All joints',
       params:
-          'tka OR tha OR tsa OR ((knee OR hip OR shoulder) AND (total OR arthroplasty OR replacement OR hemi*))',
+          'tka,tha,tsa|knee,hip,shoulder|total,arthroplasty,replacement,hemi*',
     ),
     StatsSearchPhraseQuery(
       title: 'Total knee',
-      params:
-          'tka OR (knee AND (total OR arthroplasty OR replacement OR hemi*))',
+      params: 'tka|knee|total,arthroplasty,replacement,hemi*',
     ),
     StatsSearchPhraseQuery(
       title: 'Total hip',
-      params:
-          'tha OR (hip AND (total OR arthroplasty OR replacement OR bipolar OR hemi*))',
+      params: 'tha|hip|total,arthroplasty,replacement,bipolar,hemi*',
     ),
     StatsSearchPhraseQuery(
       title: 'Total Shoulder',
-      params:
-          'tsa OR (shoulder AND (total OR arthroplasty OR replacement OR reverse OR hemi*))',
+      params: 'tsa|shoulder|total,arthroplasty,replacement,reverse,hemi*',
     ),
     StatsSearchPhraseQuery(
       title: 'Ankle fracture',
       params:
-          '(malleolus OR malleolar OR fibular OR bimalleolar OR trimalleolar) AND fracture',
+          '|ankle,malleolus,malleolar,fibular,bimalleolar,trimalleolar|fracture',
     ),
     StatsSearchPhraseQuery(title: 'All fractures', params: 'fracture'),
     StatsSearchPhraseQuery(title: 'All arthroscopy', params: 'arthroscop*'),

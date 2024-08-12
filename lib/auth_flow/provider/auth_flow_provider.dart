@@ -6,6 +6,7 @@ import 'package:logger_client/logger_client.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../core/providers/providers.dart';
+import '../../router/router.dart';
 
 part 'auth_flow_state.dart';
 
@@ -48,23 +49,25 @@ class AuthFlowNotifier extends _$AuthFlowNotifier with LoggerMixin {
         ? const AuthFlowState.unboarded()
         : user.isAnonymous || !user.isEmailVerified
             ? const AuthFlowState.unauthenticated()
-            : AuthFlowState.authenticated(user);
+            : const AuthFlowState.authenticated();
   }
 
   /// to be called when we have app start up completed to refresh router and
   /// load the app for access to only authorized user  and not just logged in
   /// user and also having all async dependencies loaded like ISAR
   void onAuthorized() {
-    state = AuthFlowState.authorized(state.authenticationUser);
+    state = const AuthFlowState.authorized();
   }
 
   void onOnboardingCompleted() {
     if (state.isUnboarded) {
       _authenticationRepository.setOnboardedStatus();
 
-      state.authenticationUser == AuthenticationUser.anonymous
+      _authenticationUser = ref.read(authenticationUserProvider);
+
+      _authenticationUser == AuthenticationUser.anonymous
           ? state = const AuthFlowState.unauthenticated()
-          : state = AuthFlowState.authenticated(state.authenticationUser);
+          : state = const AuthFlowState.authenticated();
     }
   }
 
@@ -72,7 +75,8 @@ class AuthFlowNotifier extends _$AuthFlowNotifier with LoggerMixin {
     // We are disabling notifications when a user logs out because
     // the user should not receive any notifications when logged out.
     // unawaited(_notificationsRepository.toggleNotifications(enable: false));
-
     unawaited(_authenticationRepository.logOut());
+
+    ref.invalidate(mycaselogRouterProvider);
   }
 }

@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:misc_packages/misc_packages.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../auth_flow/auth_flow.dart';
 import '../../core/providers/providers.dart';
 
 part '../../generated/user_profile/widget/signout_button.g.dart';
@@ -50,7 +51,7 @@ class _SignOutButtonState extends ConsumerState<SignOutButton> {
   Future<void> _signOut() async {
     try {
       ref.watch(signOutButtonNotifierProvider.notifier).update(value: true);
-
+      ref.watch(authFlowNotifierProvider.notifier).onLogoutRequested();
       ref.watch(logoutProvider);
     } catch (err) {
       if (!mounted) return;

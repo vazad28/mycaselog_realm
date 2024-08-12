@@ -2,60 +2,71 @@ part of '../forms.dart';
 
 /// ----- Patient name field -----
 class PatientNameField extends ConsumerWidget with AppMixins {
-  const PatientNameField({required this.cryptControl, super.key});
+  const PatientNameField({
+    required this.cryptControl,
+    required this.nameControl,
+    super.key,
+  });
+
   final AbstractControl<String?>? cryptControl;
+  final AbstractControl<String?>? nameControl;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final name = PatientDataModelProps.initials.name;
+
     return ReactiveTextField<String>(
-      formControlName: name,
-      decoration: context.inputDecorOutline(
-        labelText: name,
-        suffixIcon: const Icon(ThemeConstants.suffixIcon),
-      ),
-      readOnly: true,
-      onTap: (control) async {
-        final crypt = cryptControl?.value;
+        formControlName: name,
+        decoration: context.inputDecorOutline(
+          labelText: name,
+          suffixIcon: const Icon(ThemeConstants.suffixIcon),
+        ),
+        readOnly: true,
+        onTap: (control) async {
+          try {
+            final crypt = cryptControl?.value;
 
-        DecryptedPatientModel? decryptedPatientModel;
+            DecryptedPatientModel? decryptedPatientModel;
 
-        /// if crypt string not null, create the decrypted model
-        /// using decryption service
-        if (crypt != null) {
-          final either = ref.read(decryptPatientModelProvider(crypt));
-          decryptedPatientModel =
-              either.when(failure: (l) => null, success: (r) => r);
-        }
+            /// if crypt string not null, create the decrypted model
+            /// using decryption service
+            if (crypt != null) {
+              final either = ref.read(decryptPatientModelProvider(crypt));
+              decryptedPatientModel =
+                  either.when(failure: (l) => null, success: (r) => r);
+            }
 
-        /// check local auth if not debug mode
-        if (buildMode == BuildMode.release &&
-            ref.read(settingsNotifierProvider).localAuthEnabled) {
-          final authenticated =
-              await ref.read(dialogServiceProvider).localAuth();
-          if (!authenticated) return;
-        }
+            /// check local auth if not debug mode
+            if (buildMode == BuildMode.release &&
+                ref.read(settingsNotifierProvider).localAuthEnabled) {
+              final authenticated =
+                  await ref.read(dialogServiceProvider).localAuth();
+              if (!authenticated) return;
+            }
 
-        /// get decryptedpatient data model from the add patient modal
-        final decryptedPatientModelUpdated =
-            // ignore: use_build_context_synchronously
-            await context.openModalScreen<DecryptedPatientModel?>(
-          AddPatientModal(
-            decryptedPatientModel: decryptedPatientModel,
-          ),
-        );
+            /// get decryptedpatient data model from the add patient modal
+            final decryptedPatientModelUpdated =
+                // ignore: use_build_context_synchronously
+                await context.openModalScreen<DecryptedPatientModel?>(
+              AddPatientModal(
+                decryptedPatientModel: decryptedPatientModel,
+              ),
+            );
 
-        if (decryptedPatientModelUpdated == null) return;
+            if (decryptedPatientModelUpdated == null) return;
 
-        /// create crypt string from decrypted data
-        final encrypted =
-            encryptDecryptedPatientModel(ref, decryptedPatientModelUpdated);
-        cryptControl?.value = encrypted;
+            /// create crypt string from decrypted data
+            final encrypted =
+                encryptDecryptedPatientModel(ref, decryptedPatientModelUpdated);
+            cryptControl?.value = encrypted;
+            nameControl?.value = decryptedPatientModelUpdated.name;
 
-        control.value =
-            decryptedPatientModelUpdated.name?.initials.toUpperCase();
-      },
-    );
+            control.value =
+                decryptedPatientModelUpdated.name?.initials.toUpperCase();
+          } catch (err) {
+            ref.watch(dialogServiceProvider).showSnackBar('err: $err');
+          }
+        });
   }
 }
 

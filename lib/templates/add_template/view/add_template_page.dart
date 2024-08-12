@@ -98,7 +98,7 @@ class _AddTemplatePageController extends ConsumerState<AddTemplatePage>
 
   void _seedTemplate() {
     final userID = ref.read(authenticationUserProvider).id;
-    final userModel = ref.read(dbProvider).userCollection.getSingle(userID);
+    final userModel = ref.watch(dbProvider).userCollection.getSingle(userID);
 
     if (userModel?.speciality?.isEmpty ?? true) {
       delay(500).then((_) => _needUserSpeciality());

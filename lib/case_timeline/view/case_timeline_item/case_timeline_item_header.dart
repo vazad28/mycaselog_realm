@@ -64,7 +64,7 @@ class CaseTimelineItemHeader extends ConsumerWidget
         fromTimestamp: timelineItemModel.eventTimestamp,
         extended: true,
       );
-      return '${timeAgo} ${surgeryDateTimeMidNight.difference(eventDateTime).isNegative ? 'post-op' : 'pre-op'}';
+      return '$timeAgo ${surgeryDateTimeMidNight.difference(eventDateTime).isNegative ? 'post-op' : 'pre-op'}';
     }
   }
 

@@ -19,28 +19,29 @@ class NotesView extends ConsumerWidget {
     final maxLines = noteStyle == NoteTileStyleEnum.list ? 4 : 8;
 
     return SliverLayoutBuilder(
-        builder: (BuildContext context, SliverConstraints constraints) {
-      final widgetKey = constraints.crossAxisExtent <= Breakpoints.mobile
-          ? const Key('__NotesView_list_key__')
-          : const Key('__NotesView_grid_key__');
+      builder: (BuildContext context, SliverConstraints constraints) {
+        final widgetKey = constraints.crossAxisExtent <= Breakpoints.mobile
+            ? const Key('__NotesView_list_key__')
+            : const Key('__NotesView_grid_key__');
 
-      final crossAxisCount =
-          constraints.crossAxisExtent <= Breakpoints.mobile ? 1 : 2;
+        final crossAxisCount =
+            constraints.crossAxisExtent <= Breakpoints.mobile ? 1 : 2;
 
-      return SliverMasonryGrid.count(
-        key: widgetKey,
-        crossAxisCount:
-            noteStyle == NoteTileStyleEnum.grid ? crossAxisCount : 1,
-        mainAxisSpacing: AppSpacing.sm,
-        crossAxisSpacing: AppSpacing.sm,
-        childCount: noteModels.length,
-        itemBuilder: (context, int index) {
-          return NoteItem(
-            noteModel: noteModels[index],
-            maxLines: maxLines,
-          );
-        },
-      );
-    });
+        return SliverMasonryGrid.count(
+          key: widgetKey,
+          crossAxisCount:
+              noteStyle == NoteTileStyleEnum.grid ? crossAxisCount : 1,
+          mainAxisSpacing: AppSpacing.sm,
+          crossAxisSpacing: AppSpacing.sm,
+          childCount: noteModels.length,
+          itemBuilder: (context, int index) {
+            return NoteItem(
+              noteModel: noteModels[index],
+              maxLines: maxLines,
+            );
+          },
+        );
+      },
+    );
   }
 }

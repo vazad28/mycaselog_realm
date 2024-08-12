@@ -1,3 +1,4 @@
+import 'package:app_l10n/app_l10n.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -64,6 +65,13 @@ class _MediaBody extends ConsumerWidget {
 
     return stream.when(
       data: (data) {
+        if (data.results.isEmpty) {
+          return SliverFillRemaining(
+            child: Loading(
+              text: S.of(context).noMedia,
+            ),
+          );
+        }
         return MediaView(
           mediaModels: data.results,
         );

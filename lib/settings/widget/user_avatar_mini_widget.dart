@@ -4,25 +4,23 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger_client/logger_client.dart';
 import 'package:media_manager/media_manager.dart';
 
-//import 'package:media_manager/media_manager.dart';
-
-import '../../auth_flow/auth_flow.dart';
+import '../../core/providers/providers.dart';
 
 class UserAvatarMiniWidget extends ConsumerWidget with LoggerMixin {
   const UserAvatarMiniWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(authFlowNotifierProvider);
+    final authenticationUser = ref.watch(authenticationUserProvider);
 
-    final avatarWidget = state.authenticationUser.photo == null
+    final avatarWidget = authenticationUser.photo == null
         ? const Icon(
             Icons.person,
             size: kMinInteractiveDimension,
           )
         : FadeInImageWithPlaceholder(
             image: MediaCacheManager(
-              state.authenticationUser.photo!,
+              authenticationUser.photo!,
               errorListener: (err) {
                 logger.severe(err);
               },

@@ -39,7 +39,7 @@ class AuthFlowPage extends ConsumerWidget {
           child: const OnboardingPage(),
         ),
       ],
-      authenticated: (_) => [
+      authenticated: () => [
         SharedAxisTransitionPage(
           key: const ValueKey('__AuthFlowPage_PasscodePage_route_key__'),
           child: const PasscodePage(),
@@ -51,9 +51,7 @@ class AuthFlowPage extends ConsumerWidget {
           child: const SigninPage(),
         ),
       ],
-
-      /// placeholder widget as on authorized state Router will manage redirection
-      authorized: (_) => [
+      authorized: () => [
         const NoTransitionPage(
           key: ValueKey('__AuthFlowPage_SplashPage_route_key__'),
           child: SizedBox.shrink(),

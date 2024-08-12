@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:recase/recase.dart';
+
+import 'misc.dart';
 
 /// Base class
 abstract class BaseAppAction {
@@ -113,7 +114,7 @@ extension SheetDialogFunctions on BuildContext {
             final action = actions.elementAt(index);
             return ListTile(
               leading: action.leading,
-              title: Text(action.title?.titleCase ?? 'No title'),
+              title: Text(action.title?.camelToTitleCase ?? 'No title'),
               subtitle: action.subTitle != null ? Text(action.subTitle!) : null,
               trailing: action.trailing,
               onTap: () => Navigator.of(context).pop(action),

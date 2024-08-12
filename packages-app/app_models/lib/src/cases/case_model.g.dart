@@ -87,7 +87,6 @@ Map<String, dynamic> _$PatientModelToJson(_PatientModel instance) =>
 DecryptedPatientModel _$DecryptedPatientModelFromJson(
         Map<String, dynamic> json) =>
     DecryptedPatientModel(
-      patientID: json['patientID'] as String,
       name: json['name'] as String?,
       mrn: json['mrn'] as String?,
       address: json['address'] as String?,
@@ -97,7 +96,6 @@ DecryptedPatientModel _$DecryptedPatientModelFromJson(
 Map<String, dynamic> _$DecryptedPatientModelToJson(
         DecryptedPatientModel instance) =>
     <String, dynamic>{
-      'patientID': instance.patientID,
       'address': instance.address,
       'mrn': instance.mrn,
       'name': instance.name,

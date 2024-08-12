@@ -12,24 +12,31 @@ class MycaselogAuthApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final brightness = View.of(context).platformDispatcher.platformBrightness;
+    // final providers = [EmailAuthProvider()];
+    // final brightness = View.of(context).platformDispatcher.platformBrightness;
+    // final currentThemeObject = ref.watch(currentThemeNotifierProvider);
+    // final theme = AppTheme(context, currentThemeObject);
 
-    // Use with Google Fonts package to use downloadable fonts
-    final textTheme = createTextTheme(context, 'Roboto', 'Bebas Neue');
+    // final currentTheme = switch (currentThemeObject.themeMode) {
+    //   ThemeMode.system => brightness == Brightness.light
+    //       ? theme.lightTheme()
+    //       : theme.darkTheme().copyWith(
+    //             cupertinoOverrideTheme: const CupertinoThemeData(
+    //               textTheme: CupertinoTextThemeData(), // This is required
+    //             ),
+    //           ),
+    //   ThemeMode.light => theme.lightTheme(),
+    //   ThemeMode.dark => theme.darkTheme().copyWith(
+    //         cupertinoOverrideTheme: const CupertinoThemeData(
+    //           textTheme: CupertinoTextThemeData(), // This is required
+    //         ),
+    //       )
+    // };
 
-    final theme = MaterialTheme(textTheme);
-
-    final themeMode = ref.watch(currentThemeModeProvider);
-    debugPrint('rendering MycaselogAuthApp with themeMode = $themeMode');
+    final currentTheme = ref.watch(currentThemeProvider(context));
 
     final materialApp = MaterialApp(
-      theme: themeMode == 0
-          ? brightness == Brightness.light
-              ? theme.light()
-              : theme.dark()
-          : themeMode == 1
-              ? theme.light()
-              : theme.dark(),
+      theme: currentTheme,
       localizationsDelegates: const [
         S.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -38,6 +45,37 @@ class MycaselogAuthApp extends ConsumerWidget {
       ],
       supportedLocales: S.delegate.supportedLocales,
       home: const AuthFlowPage(),
+      // initialRoute: SigninRoutes.splash,
+      // routes: {
+      //   SigninRoutes.splash: (context) {
+      //     return const SplashPage();
+      //   },
+      //   SigninRoutes.authFlow: (context) {
+      //     return const AuthFlowPage();
+      //   },
+      //   SigninRoutes.socialSignIn: (context) {
+      //     return const SocialSigninPage();
+      //   },
+      //   SigninRoutes.emailSignIn: (context) {
+      //     return EmailSigninPage(providers: providers);
+      //   },
+      //   SigninRoutes.emailSignUp: (context) {
+      //     return EmailRegisterPage(providers: providers);
+      //   },
+      //   SigninRoutes.verifyEmail: (context) {
+      //     return VerifyEmailPage(
+      //       firebaseAuthInstance: ref.read(firebaseAuthInstanceProvider),
+      //     );
+      //   },
+      //   SigninRoutes.forgotPassword: (context) {
+      //     return ForgotPasswordPage(providers: providers);
+      //   },
+      //   SigninRoutes.blankPage: (_) {
+      //     return const Material(
+      //       child: Center(child: Text('...')),
+      //     );
+      //   },
+      // },
     );
 
     return PopScope(

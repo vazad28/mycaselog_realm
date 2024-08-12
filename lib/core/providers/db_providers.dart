@@ -6,6 +6,8 @@ Future<RealmDatabase> realmDatabase(RealmDatabaseRef ref) async {
 
   final user = await userFuture;
 
+  if (user.isAnonymous) ref.invalidateSelf();
+
   final realmDb = await RealmDatabase.init(user);
 
   ref.onDispose(realmDb.dispose);
@@ -14,14 +16,9 @@ Future<RealmDatabase> realmDatabase(RealmDatabaseRef ref) async {
 }
 
 @Riverpod(keepAlive: true)
-Realm realm(RealmRef ref) {
-  return ref.watch(realmDatabaseProvider).value!.realm;
-}
-
-@Riverpod(keepAlive: true)
 Collections db(DbRef ref) {
   final realmDatabase = ref.watch(realmDatabaseProvider).requireValue;
-  if (kDebugMode) print('creatign collection provider');
+  if (kDebugMode) print('creating collections provider');
   return Collections(realmDatabase: realmDatabase);
 }
 
@@ -31,7 +28,7 @@ class Crud extends _$Crud {
 
   @override
   void build() {
-    _realm = ref.watch(realmProvider);
+    _realm = ref.watch(realmDatabaseProvider).value!.realm;
   }
 
   Future<void> crud<T extends RealmObject>(

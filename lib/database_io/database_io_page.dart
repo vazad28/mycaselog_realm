@@ -101,7 +101,7 @@ class _DatabaseIoView extends ConsumerWidget {
 }
 
 class _DatabaseIoViewWrapper extends StatelessWidget {
-  const _DatabaseIoViewWrapper({required this.child, super.key});
+  const _DatabaseIoViewWrapper({required this.child});
 
   final Widget child;
 

@@ -76,9 +76,10 @@ class CasePdfRoute extends GoRouteData {
   @override
   Page buildPage(BuildContext context, GoRouterState state) =>
       SharedAxisTransitionPage(
-          key: state.pageKey,
-          child: CasePdfPage(
-            caseID: caseID,
-          ),
-          transitionType: SharedAxisTransitionType.horizontal);
+        key: state.pageKey,
+        child: CasePdfPage(
+          caseID: caseID,
+        ),
+        transitionType: SharedAxisTransitionType.horizontal,
+      );
 }

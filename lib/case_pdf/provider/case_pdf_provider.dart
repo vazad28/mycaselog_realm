@@ -87,20 +87,22 @@ class CasePdfNotifier extends _$CasePdfNotifier with LoggerMixin {
       if (timelineItems.value == null) return;
 
       // Create a list of timelines for PDF generation
-      final timelines = await Future.wait(timelineItems.value!.map((e) async {
-        // Get data for timeline
-        final notes = e.noteList.map((noteModel) => noteModel.note).toList();
-        final medias = await mediaFiles(e.mediaList);
+      final timelines = await Future.wait(
+        timelineItems.value!.map((e) async {
+          // Get data for timeline
+          final notes = e.noteList.map((noteModel) => noteModel.note).toList();
+          final medias = await mediaFiles(e.mediaList);
 
-        // Skip if no media and no notes
-        if (notes.isEmpty && medias.isEmpty) return null;
+          // Skip if no media and no notes
+          if (notes.isEmpty && medias.isEmpty) return null;
 
-        return TimelineItemPdf(
-          mediaFiles: medias,
-          notes: notes,
-          eventDate: e.eventDate,
-        );
-      }));
+          return TimelineItemPdf(
+            mediaFiles: medias,
+            notes: notes,
+            eventDate: e.eventDate,
+          );
+        }),
+      );
 
       final dir = (await getTemporaryDirectory()).path;
       final path = '$dir/${caseModel.caseID}.pdf';

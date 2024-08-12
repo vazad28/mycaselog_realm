@@ -20,7 +20,7 @@ class TemplatesNotifier extends _$TemplatesNotifier {
     final showActiveOnly = ref.watch(showActiveTemplatesProvider);
 
     return ref
-        .read(dbProvider)
+        .watch(dbProvider)
         .templatesCollection
         .getAll()
         .changes

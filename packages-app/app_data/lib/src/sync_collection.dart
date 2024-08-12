@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:app_models/app_models.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:logger_client/logger_client.dart';
 import 'package:realm/realm.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,7 +26,14 @@ abstract class SyncCollection<T extends RealmObject>
   )   : realm = realmDatabase.realm, // Realm instance for local data storage
         userID = realmDatabase.user.id, // User ID for the current user
         sharedPrefs = realmDatabase.sharedPrefs,
-        _baseCollection = BaseCollection();
+        _baseCollection = BaseCollection() {
+    if (realmDatabase.user.isAnonymous) {
+      _baseCollection.ignoreRealmChanges = true;
+    } else {
+      _baseCollection.ignoreRealmChanges = false;
+      _syncToFirestore();
+    }
+  }
 
   final Realm realm;
   final String userID;
@@ -36,16 +43,11 @@ abstract class SyncCollection<T extends RealmObject>
   final String root = 'usersData';
   final String path = '';
 
-  bool syncFromFirestore = false;
-
   // Key used to store the last sync timestamp in SharedPreferences
   final String _lastSyncTimestampKey = '${T}_lastSyncTimestampKey';
 
   // Firestore instance for accessing the database
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-  StreamSubscription<QuerySnapshot<Map<String, dynamic>>>?
-      _syncFromFirestoreSubs;
 
   /// Function to retrieve the primary key value for a given model object.
   String getPrimaryKey(T object);
@@ -62,6 +64,10 @@ abstract class SyncCollection<T extends RealmObject>
 
   // Retrieves a single item from Realm based on its primary key
   T? getSingle(String primaryKey) => realm.find<T>(primaryKey);
+
+  // ignore: avoid_setters_without_getters
+  set ignoreRealmChanges(bool status) =>
+      _baseCollection.ignoreRealmChanges = status;
 
   // Retrieves all items from Realm, optionally sorted by a specific field
   RealmResults<T> getAll({
@@ -91,7 +97,6 @@ abstract class SyncCollection<T extends RealmObject>
   int count() => realm.all<T>().query(r'removed == $0', [0]).length;
 
   /// sync cases based on timestamp
-
   Future<List<String>> syncByTimestamp(int timestamp) async {
     logger.fine('timestamp syncByTimestamp = $timestamp');
     _baseCollection.ignoreRealmChanges = true;
@@ -118,7 +123,9 @@ abstract class SyncCollection<T extends RealmObject>
       }
     }).whenComplete(() {
       logger.fine(ids.length.toString());
-      _baseCollection.ignoreRealmChanges = false;
+      Future<void>.delayed(Durations.short1).then((_) {
+        _baseCollection.ignoreRealmChanges = false;
+      });
     });
 
     return ids;
@@ -135,25 +142,11 @@ abstract class SyncCollection<T extends RealmObject>
   }
 
   /// ////////////////////////////////////////////////////////////////////
-  /// SYNC Functionality
-  /// ////////////////////////////////////////////////////////////////////
-
-  void pauseSync() {
-    logger.fine('pauseSync called');
-    if (_syncFromFirestoreSubs != null) _syncFromFirestoreSubs?.pause();
-  }
-
-  void resumeSync() {
-    logger.fine('resumeSync called');
-    if (_syncFromFirestoreSubs == null) {
-      _syncFromFirestore();
-    } else {
-      _syncFromFirestoreSubs?.resume();
-    }
-  }
-
+  /// SYNC TO FIRESTORE
   /// Synchronizes data from Realm to Firestore.
-  /// Listens for changes in Realm and adds/modifies/deletes data in Firestore accordingly.
+  /// Listens for changes in Realm and adds/modifies/deletes data
+  /// in Firestore accordingly.
+  /// ////////////////////////////////////////////////////////////////////
   void _syncToFirestore() {
     final models = realm.all<T>();
 
@@ -178,13 +171,62 @@ abstract class SyncCollection<T extends RealmObject>
       }
 
       // Reset flag after a short delay to avoid conflicts
-      await Future<void>.delayed(const Duration(milliseconds: 300));
-      _baseCollection.ignoreFirestoreChanges = false;
+      await Future<void>.delayed(const Duration(milliseconds: 300)).then((_) {
+        _baseCollection.ignoreFirestoreChanges = false;
+      });
     });
   }
 
+  /// Adds a model object to Firestore.
+  void _addToFirestore(T model) {
+    final docId = getPrimaryKey(model);
+    final modelToFirestore = modelToMap(model);
+
+    collectionRef.doc(docId).set(modelToFirestore).then((_) {
+      debugPrint('Successfully added model to Firestore');
+    }).catchError((dynamic err) {
+      debugPrint('Error adding to Firestore: $err');
+    });
+  }
+
+  /// Deletes a model object from Firestore.
+  void _deleteFromFirestore(String docId) {
+    collectionRef.doc(docId).delete().catchError((dynamic err) {
+      debugPrint('Error deleting from Firestore: $err');
+    });
+  }
+
+  /// ////////////////////////////////////////////////////////////////////
+  /// SYNC FROM FIRESTORE
   /// Synchronizes data from Firestore to Realm.
-  /// Listens for changes in Firestore and adds/modifies/deletes data in Realm accordingly.
+  /// Listens for changes in Firestore and adds/modifies/deletes
+  /// data in Realm accordingly.
+  /// ////////////////////////////////////////////////////////////////////
+  StreamSubscription<QuerySnapshot<Map<String, dynamic>>>?
+      _syncFromFirestoreSubs;
+
+  void updateFirebaseSyncStatus({required bool status}) {
+    if (status) {
+      resumeSync();
+    } else {
+      pauseSync();
+    }
+  }
+
+  void pauseSync() {
+    logger.fine('pauseSync called');
+    if (_syncFromFirestoreSubs != null) _syncFromFirestoreSubs?.pause();
+  }
+
+  void resumeSync() {
+    logger.fine('resumeSync called');
+    if (_syncFromFirestoreSubs == null) {
+      _syncFromFirestore();
+    } else {
+      _syncFromFirestoreSubs?.resume();
+    }
+  }
+
   void _syncFromFirestore() {
     final timestamp = (getLastSyncTimestamp - 5000).clamp(0, double.infinity);
 
@@ -216,24 +258,9 @@ abstract class SyncCollection<T extends RealmObject>
       setLastSyncTimestamp();
 
       // Reset flag after processing changes
-      _baseCollection.ignoreRealmChanges = false;
-    });
-  }
-
-  /// Adds a model object to Firestore.
-  void _addToFirestore(T model) {
-    final docId = getPrimaryKey(model);
-    collectionRef.doc(docId).set(modelToMap(model)).then((_) {
-      debugPrint('Successfully added model to Firestore');
-    }).catchError((dynamic err) {
-      debugPrint('Error adding to Firestore: $err');
-    });
-  }
-
-  /// Deletes a model object from Firestore.
-  void _deleteFromFirestore(String docId) {
-    collectionRef.doc(docId).delete().catchError((dynamic err) {
-      debugPrint('Error deleting from Firestore: $err');
+      await Future<void>.delayed(const Duration(milliseconds: 300)).then((_) {
+        _baseCollection.ignoreRealmChanges = false;
+      });
     });
   }
 
@@ -247,13 +274,5 @@ abstract class SyncCollection<T extends RealmObject>
   Future<void> _deleteFromRealm(Map<String, dynamic> data) {
     final model = mapToModel(data);
     return realm.writeAsync(() => realm.delete(model));
-  }
-
-  void updateFirebaseSyncStatus({required bool status}) {
-    if (status) {
-      resumeSync();
-    } else {
-      pauseSync();
-    }
   }
 }

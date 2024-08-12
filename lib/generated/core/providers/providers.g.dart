@@ -144,21 +144,7 @@ final realmDatabaseProvider = FutureProvider<RealmDatabase>.internal(
 );
 
 typedef RealmDatabaseRef = FutureProviderRef<RealmDatabase>;
-String _$realmHash() => r'eb06b9134c0ced91329f77eaa48077671cf75dd2';
-
-/// See also [realm].
-@ProviderFor(realm)
-final realmProvider = Provider<Realm>.internal(
-  realm,
-  name: r'realmProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$realmHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef RealmRef = ProviderRef<Realm>;
-String _$dbHash() => r'609f539c59de2e895f0a70977d5df29f0ecb2eca';
+String _$dbHash() => r'1d58d4dfaa2427177716f4ecdb37987ab1bd6f5c';
 
 /// See also [db].
 @ProviderFor(db)
@@ -732,6 +718,175 @@ final appDirPathProvider = Provider<String>.internal(
 );
 
 typedef AppDirPathRef = ProviderRef<String>;
+String _$currentThemeHash() => r'b0c1a22f043854ebe8e1c616f29a511dd31afbc4';
+
+/// See also [currentTheme].
+@ProviderFor(currentTheme)
+const currentThemeProvider = CurrentThemeFamily();
+
+/// See also [currentTheme].
+class CurrentThemeFamily extends Family {
+  /// See also [currentTheme].
+  const CurrentThemeFamily();
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'currentThemeProvider';
+
+  /// See also [currentTheme].
+  CurrentThemeProvider call(
+    BuildContext context,
+  ) {
+    return CurrentThemeProvider(
+      context,
+    );
+  }
+
+  @visibleForOverriding
+  @override
+  CurrentThemeProvider getProviderOverride(
+    covariant CurrentThemeProvider provider,
+  ) {
+    return call(
+      provider.context,
+    );
+  }
+
+  /// Enables overriding the behavior of this provider, no matter the parameters.
+  Override overrideWith(ThemeData Function(CurrentThemeRef ref) create) {
+    return _$CurrentThemeFamilyOverride(this, create);
+  }
+}
+
+class _$CurrentThemeFamilyOverride implements FamilyOverride {
+  _$CurrentThemeFamilyOverride(this.overriddenFamily, this.create);
+
+  final ThemeData Function(CurrentThemeRef ref) create;
+
+  @override
+  final CurrentThemeFamily overriddenFamily;
+
+  @override
+  CurrentThemeProvider getProviderOverride(
+    covariant CurrentThemeProvider provider,
+  ) {
+    return provider._copyWith(create);
+  }
+}
+
+/// See also [currentTheme].
+class CurrentThemeProvider extends AutoDisposeProvider<ThemeData> {
+  /// See also [currentTheme].
+  CurrentThemeProvider(
+    BuildContext context,
+  ) : this._internal(
+          (ref) => currentTheme(
+            ref as CurrentThemeRef,
+            context,
+          ),
+          from: currentThemeProvider,
+          name: r'currentThemeProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$currentThemeHash,
+          dependencies: CurrentThemeFamily._dependencies,
+          allTransitiveDependencies:
+              CurrentThemeFamily._allTransitiveDependencies,
+          context: context,
+        );
+
+  CurrentThemeProvider._internal(
+    super.create, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.context,
+  }) : super.internal();
+
+  final BuildContext context;
+
+  @override
+  Override overrideWith(
+    ThemeData Function(CurrentThemeRef ref) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: CurrentThemeProvider._internal(
+        (ref) => create(ref as CurrentThemeRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        context: context,
+      ),
+    );
+  }
+
+  @override
+  (BuildContext,) get argument {
+    return (context,);
+  }
+
+  @override
+  AutoDisposeProviderElement<ThemeData> createElement() {
+    return _CurrentThemeProviderElement(this);
+  }
+
+  CurrentThemeProvider _copyWith(
+    ThemeData Function(CurrentThemeRef ref) create,
+  ) {
+    return CurrentThemeProvider._internal(
+      (ref) => create(ref as CurrentThemeRef),
+      name: name,
+      dependencies: dependencies,
+      allTransitiveDependencies: allTransitiveDependencies,
+      debugGetCreateSourceHash: debugGetCreateSourceHash,
+      from: from,
+      context: context,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is CurrentThemeProvider && other.context == context;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, context.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin CurrentThemeRef on AutoDisposeProviderRef<ThemeData> {
+  /// The parameter `context` of this provider.
+  BuildContext get context;
+}
+
+class _CurrentThemeProviderElement extends AutoDisposeProviderElement<ThemeData>
+    with CurrentThemeRef {
+  _CurrentThemeProviderElement(super.provider);
+
+  @override
+  BuildContext get context => (origin as CurrentThemeProvider).context;
+}
+
 String _$connectivityStatusHash() =>
     r'3cba16e6359dc4f71f1f438fe6d9dd0239e6bfb5';
 
@@ -763,21 +918,21 @@ final crudProvider = NotifierProvider<Crud, void>.internal(
 );
 
 typedef _$Crud = Notifier<void>;
-String _$currentThemeModeHash() => r'7e59fd4cc020fbea713ad3f8a130394c6e35f580';
+String _$themeNotifierHash() => r'9b82fba4ad77f80b68ad109c2a46f9e2ebbcb5f4';
 
-/// See also [CurrentThemeMode].
-@ProviderFor(CurrentThemeMode)
-final currentThemeModeProvider =
-    AutoDisposeNotifierProvider<CurrentThemeMode, int>.internal(
-  CurrentThemeMode.new,
-  name: r'currentThemeModeProvider',
+/// See also [ThemeNotifier].
+@ProviderFor(ThemeNotifier)
+final themeNotifierProvider =
+    AutoDisposeNotifierProvider<ThemeNotifier, CurrentTheme>.internal(
+  ThemeNotifier.new,
+  name: r'themeNotifierProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$currentThemeModeHash,
+      : _$themeNotifierHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$CurrentThemeMode = AutoDisposeNotifier<int>;
+typedef _$ThemeNotifier = AutoDisposeNotifier<CurrentTheme>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, inference_failure_on_uninitialized_variable, inference_failure_on_function_return_type, inference_failure_on_untyped_parameter, deprecated_member_use_from_same_package

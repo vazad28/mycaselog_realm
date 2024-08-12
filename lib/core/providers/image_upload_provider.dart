@@ -18,17 +18,17 @@ class ImageUploadService with LoggerMixin implements MediaUploadService {
 
   @override
   Reference getMediumRef(MediaModel mediaModel) {
-    return ref.read(dbProvider).storageCollection.getMediumRef(mediaModel);
+    return ref.watch(dbProvider).storageCollection.getMediumRef(mediaModel);
   }
 
   @override
   Reference getOriginalRef(MediaModel mediaModel) {
-    return ref.read(dbProvider).storageCollection.getOriginalRef(mediaModel);
+    return ref.watch(dbProvider).storageCollection.getOriginalRef(mediaModel);
   }
 
   @override
   Reference getThumbRef(MediaModel mediaModel) {
-    return ref.read(dbProvider).storageCollection.getThumbRef(mediaModel);
+    return ref.watch(dbProvider).storageCollection.getThumbRef(mediaModel);
   }
 
   @override
@@ -44,7 +44,7 @@ class ImageUploadService with LoggerMixin implements MediaUploadService {
     }
 
     ref
-        .read(dbProvider)
+        .watch(dbProvider)
         .mediaCollection
         .upsert(() => mediaModel..status = mediaStatus)
         .then((_) {
@@ -62,7 +62,7 @@ class ImageUploadService with LoggerMixin implements MediaUploadService {
     logger.fine('reached onUploadSucces $thumbUri');
 
     ///  update the database
-    await ref.read(dbProvider).mediaCollection.upsert(
+    await ref.watch(dbProvider).mediaCollection.upsert(
           () => mediaModel
             ..fileUri = fullUri
             ..mediumUri = mediumUri

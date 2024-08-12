@@ -1,8 +1,8 @@
 import 'dart:math' as math show ln10, log, max, min, pow;
 
+import 'package:app_data/app_data.dart';
 import 'package:app_extensions/app_extensions.dart';
 import 'package:app_models/app_models.dart';
-import 'package:app_data/app_data.dart';
 import 'package:async_result/async_result.dart';
 import 'package:realm/realm.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -36,6 +36,18 @@ class StatsRepository {
     return searchRes.map((e) => e.caseID);
   }
 
+  Iterable<String> _getSearchIdsForClause(String searchTermProcessed) {
+    final splits = searchTermProcessed.split('|');
+    if (splits.isEmpty) return [];
+
+    final standAlone = splits.first.isNotEmpty ? splits[0].split(',') : null;
+    final orList = splits.length > 1 ? splits[1].split(',') : null;
+    final andList = splits.length > 2 ? splits[2].split(',') : null;
+
+    return _searchComplexQuery(
+        standAlone: standAlone, orList: orList, andList: andList);
+  }
+
   /// Fetch statistics
   Future<Result<ChartReqModel, Exception>> getStatistics(
     ChartReqModel chartReqModel,
@@ -46,11 +58,19 @@ class StatsRepository {
     assert(toStamp > fromStamp, 'FromTime can not be less than ToTime');
 
     // if we have search term or filter term (just processed search term)
-    final searchTerm = chartReqModel.filterClause ?? chartReqModel.searchTerm;
+    //final searchTerm = chartReqModel.filterClause ?? chartReqModel.searchTerm;
     Iterable<String>? idList;
 
-    if (searchTerm != null) {
-      idList = _getSearchIds(searchTerm);
+    if (chartReqModel.searchTerm != null) {
+      //print('searching stats by searchTerm');
+      idList = _getSearchIds(chartReqModel.searchTerm!);
+      if (idList.isEmpty) {
+        return Result.failure(const AppFailure.noStatsData());
+      }
+    } else if (chartReqModel.filterClause != null) {
+      //print('searching stats by filter clause');
+      idList = _getSearchIdsForClause(chartReqModel.filterClause!);
+      print(idList);
       if (idList.isEmpty) {
         return Result.failure(const AppFailure.noStatsData());
       }
@@ -214,5 +234,45 @@ class StatsRepository {
     );
 
     return chartDataModel;
+  }
+
+  ///  Do complex search query on the stats Query  Phrases
+  Iterable<String> _searchComplexQuery({
+    List<String>? standAlone,
+    List<String>? orList,
+    List<String>? andList,
+  }) {
+    // Construct the query string
+    var query = '';
+
+    if (standAlone != null) {
+      query = standAlone
+          .map((procedure) => 'surgery CONTAINS[c] "$procedure"')
+          .join(' OR ');
+    }
+
+    if (orList != null && andList != null) {
+      final appendOrQuery = orList
+          .map((procedure) => 'surgery CONTAINS[c] "$procedure"')
+          .join(' OR ');
+
+      final appendAndQuery = andList
+          .map((procedure) => 'surgery CONTAINS[c] "$procedure"')
+          .join(' OR ');
+
+      query = query.isNotEmpty
+          ? '($query) OR (($appendOrQuery) AND ($appendAndQuery))'
+          : '($appendOrQuery) AND ($appendAndQuery)';
+    }
+
+    // Complete query string with additional conditions
+    query = '($query) AND removed == 0 SORT(timestamp DESC)';
+
+    //print(query.toString());
+
+    // Execute the query
+    final results = ref.watch(dbProvider).casesCollection.searchQuery(query);
+
+    return results.map((e) => e.caseID).toList();
   }
 }

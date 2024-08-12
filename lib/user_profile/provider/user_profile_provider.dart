@@ -88,22 +88,23 @@ mixin UserProfileStateMixin {
 /// ////////////////////////////////////////////////////////////////////
 @riverpod
 class UserProfileNotifier extends _$UserProfileNotifier with LoggerMixin {
-  String get userID => ref.watch(authenticationUserProvider).id;
+  //AuthenticationUser get user => ref.watch(authenticationUserProvider);
 
   @override
   UserModel build() {
-    final sub = ref
-        .watch(dbProvider)
-        .userCollection
-        .getSingle(userID)
-        ?.changes
-        .listen((data) {
-      state = UserModelX.fromJson(data.object.toJson());
+    final sub =
+        ref.watch(dbProvider).userCollection.getAll().changes.listen((data) {
+      if (data.results.isNotEmpty) {
+        state = data.results.last.toUnmanaged();
+      }
     });
 
-    ref.onDispose(() => sub?.cancel());
+    ref.onDispose(sub.cancel);
 
-    return UserModelX.zero(userID: userID);
+    return ref
+        .watch(dbProvider)
+        .userCollection
+        .userModelFromUser(ref.read(authenticationUserProvider));
   }
 
   /// Map events to state
@@ -131,7 +132,7 @@ class UserProfileNotifier extends _$UserProfileNotifier with LoggerMixin {
   void _updateUserModel(UserModel userModel) {
     /// we are not saving data if the user is anonymous as can happen on logout
     if (userModel.userID.isEmpty) return;
-    ref.read(dbProvider).userCollection.upsert(() => userModel);
+    ref.watch(dbProvider).userCollection.upsert(() => userModel);
   }
 
   /// Upload user avatar photo
@@ -161,4 +162,13 @@ class UserProfileNotifier extends _$UserProfileNotifier with LoggerMixin {
           .showSnackBar('Error in uploading new avatar');
     });
   }
+}
+
+@riverpod
+UserStatsModel userMiniStats(UserMiniStatsRef ref) {
+  return UserStatsModel(
+    cases: ref.watch(dbProvider).casesCollection.count(),
+    media: ref.watch(dbProvider).mediaCollection.count(),
+    notes: ref.watch(dbProvider).notesCollection.count(),
+  );
 }

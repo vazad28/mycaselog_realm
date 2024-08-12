@@ -20,8 +20,8 @@ mixin _$AuthFlowState {
   TResult when<TResult extends Object?>({
     required TResult Function() unboarded,
     required TResult Function() unauthenticated,
-    required TResult Function(AuthenticationUser user) authenticated,
-    required TResult Function(AuthenticationUser user) authorized,
+    required TResult Function() authenticated,
+    required TResult Function() authorized,
   }) =>
       throw _privateConstructorUsedError;
 
@@ -29,8 +29,8 @@ mixin _$AuthFlowState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unboarded,
     TResult Function()? unauthenticated,
-    TResult Function(AuthenticationUser user)? authenticated,
-    TResult Function(AuthenticationUser user)? authorized,
+    TResult Function()? authenticated,
+    TResult Function()? authorized,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -59,8 +59,8 @@ class _$UnboardedImpl extends _Unboarded {
   TResult when<TResult extends Object?>({
     required TResult Function() unboarded,
     required TResult Function() unauthenticated,
-    required TResult Function(AuthenticationUser user) authenticated,
-    required TResult Function(AuthenticationUser user) authorized,
+    required TResult Function() authenticated,
+    required TResult Function() authorized,
   }) {
     return unboarded();
   }
@@ -70,8 +70,8 @@ class _$UnboardedImpl extends _Unboarded {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unboarded,
     TResult Function()? unauthenticated,
-    TResult Function(AuthenticationUser user)? authenticated,
-    TResult Function(AuthenticationUser user)? authorized,
+    TResult Function()? authenticated,
+    TResult Function()? authorized,
     required TResult orElse(),
   }) {
     if (unboarded != null) {
@@ -112,8 +112,8 @@ class _$UnauthenticatedImpl extends _Unauthenticated {
   TResult when<TResult extends Object?>({
     required TResult Function() unboarded,
     required TResult Function() unauthenticated,
-    required TResult Function(AuthenticationUser user) authenticated,
-    required TResult Function(AuthenticationUser user) authorized,
+    required TResult Function() authenticated,
+    required TResult Function() authorized,
   }) {
     return unauthenticated();
   }
@@ -123,8 +123,8 @@ class _$UnauthenticatedImpl extends _Unauthenticated {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unboarded,
     TResult Function()? unauthenticated,
-    TResult Function(AuthenticationUser user)? authenticated,
-    TResult Function(AuthenticationUser user)? authorized,
+    TResult Function()? authenticated,
+    TResult Function()? authorized,
     required TResult orElse(),
   }) {
     if (unauthenticated != null) {
@@ -153,14 +153,11 @@ abstract class _Unauthenticated extends AuthFlowState {
 /// @nodoc
 
 class _$AuthenticatedImpl extends _Authenticated {
-  const _$AuthenticatedImpl(this.user) : super._();
-
-  @override
-  final AuthenticationUser user;
+  const _$AuthenticatedImpl() : super._();
 
   @override
   String toString() {
-    return 'AuthFlowState.authenticated(user: $user)';
+    return 'AuthFlowState.authenticated()';
   }
 
   @override
@@ -168,10 +165,10 @@ class _$AuthenticatedImpl extends _Authenticated {
   TResult when<TResult extends Object?>({
     required TResult Function() unboarded,
     required TResult Function() unauthenticated,
-    required TResult Function(AuthenticationUser user) authenticated,
-    required TResult Function(AuthenticationUser user) authorized,
+    required TResult Function() authenticated,
+    required TResult Function() authorized,
   }) {
-    return authenticated(user);
+    return authenticated();
   }
 
   @override
@@ -179,12 +176,12 @@ class _$AuthenticatedImpl extends _Authenticated {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unboarded,
     TResult Function()? unauthenticated,
-    TResult Function(AuthenticationUser user)? authenticated,
-    TResult Function(AuthenticationUser user)? authorized,
+    TResult Function()? authenticated,
+    TResult Function()? authorized,
     required TResult orElse(),
   }) {
     if (authenticated != null) {
-      return authenticated(user);
+      return authenticated();
     }
     return orElse();
   }
@@ -202,24 +199,18 @@ class _$AuthenticatedImpl extends _Authenticated {
 }
 
 abstract class _Authenticated extends AuthFlowState {
-  const factory _Authenticated(final AuthenticationUser user) =
-      _$AuthenticatedImpl;
+  const factory _Authenticated() = _$AuthenticatedImpl;
   const _Authenticated._() : super._();
-
-  AuthenticationUser get user;
 }
 
 /// @nodoc
 
 class _$AuthorizedImpl extends _Authorized {
-  const _$AuthorizedImpl(this.user) : super._();
-
-  @override
-  final AuthenticationUser user;
+  const _$AuthorizedImpl() : super._();
 
   @override
   String toString() {
-    return 'AuthFlowState.authorized(user: $user)';
+    return 'AuthFlowState.authorized()';
   }
 
   @override
@@ -227,10 +218,10 @@ class _$AuthorizedImpl extends _Authorized {
   TResult when<TResult extends Object?>({
     required TResult Function() unboarded,
     required TResult Function() unauthenticated,
-    required TResult Function(AuthenticationUser user) authenticated,
-    required TResult Function(AuthenticationUser user) authorized,
+    required TResult Function() authenticated,
+    required TResult Function() authorized,
   }) {
-    return authorized(user);
+    return authorized();
   }
 
   @override
@@ -238,12 +229,12 @@ class _$AuthorizedImpl extends _Authorized {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unboarded,
     TResult Function()? unauthenticated,
-    TResult Function(AuthenticationUser user)? authenticated,
-    TResult Function(AuthenticationUser user)? authorized,
+    TResult Function()? authenticated,
+    TResult Function()? authorized,
     required TResult orElse(),
   }) {
     if (authorized != null) {
-      return authorized(user);
+      return authorized();
     }
     return orElse();
   }
@@ -261,8 +252,6 @@ class _$AuthorizedImpl extends _Authorized {
 }
 
 abstract class _Authorized extends AuthFlowState {
-  const factory _Authorized(final AuthenticationUser user) = _$AuthorizedImpl;
+  const factory _Authorized() = _$AuthorizedImpl;
   const _Authorized._() : super._();
-
-  AuthenticationUser get user;
 }

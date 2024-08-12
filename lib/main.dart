@@ -80,7 +80,7 @@ class AppStartupWidget extends ConsumerWidget {
     final authUserState = ref.watch(authFlowNotifierProvider);
 
     return authUserState.maybeWhen(
-      authorized: (_) => onAuthenticated(context),
+      authorized: () => onAuthenticated(context),
       orElse: () => needsAuthentication(context),
     );
   }

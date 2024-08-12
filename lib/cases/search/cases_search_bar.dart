@@ -21,13 +21,13 @@ class CasesSearchBar extends ConsumerWidget {
       surfaceTintColor: context.colorScheme.surface,
       titleSpacing: AppSpacing.md,
       title: SearchView<CaseModel>(
-          anchorStyle: SearchBarStyle.bar,
-          onSearch: (searchTerm) {
-            print('searchTerm $searchTerm');
-            return ref
-                .watch(casesNotifierProvider.notifier)
-                .searchCases(searchTerm);
-          }),
+        anchorStyle: SearchBarStyle.bar,
+        onSearch: (searchTerm) {
+          return ref
+              .watch(casesNotifierProvider.notifier)
+              .searchCases(searchTerm);
+        },
+      ),
       actions: const [
         CaseTileStyleToggle(),
         SizedBox(width: AppSpacing.sm),

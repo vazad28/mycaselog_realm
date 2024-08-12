@@ -29,7 +29,7 @@ class NoteTileStyle extends _$NoteTileStyle {
   @override
   NoteTileStyleEnum build() {
     final localStorage = ref.watch(localStorageProvider);
-    final index = localStorage.getNoteListTileStyle();
+    final index = localStorage.noteListTileStyle;
     return NoteTileStyleEnum.values.elementAt(index);
   }
 

@@ -84,6 +84,13 @@ class _CasesView extends ConsumerWidget {
       key: key,
       value: ref.watch(casesNotifierProvider),
       data: (data) {
+        if (data.results.isEmpty) {
+          return SliverFillRemaining(
+            child: Loading(
+              text: S.of(context).noCases,
+            ),
+          );
+        }
         return CasesView(
           caseModels: data.results,
         );

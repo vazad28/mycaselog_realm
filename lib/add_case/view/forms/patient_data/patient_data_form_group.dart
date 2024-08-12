@@ -6,7 +6,6 @@ class PatientDataFormGroup extends _$PatientDataFormGroup {
   FormGroup build() {
     final caseModel = ref.watch(addCaseSeederProvider).requireValue;
 
-    //if (caseModel == null) return FormGroup({});
     return _createFormGroup(
       caseModel.patientModel ?? PatientModelX.zero(),
     );
@@ -20,6 +19,10 @@ class PatientDataFormGroup extends _$PatientDataFormGroup {
       // ----- Crypt -----
       PatientDataModelProps.crypt.name:
           FormControl<String>(value: patientModel.crypt),
+      // ---- Name ---
+      PatientDataModelProps.name.name: FormControl<String>(
+        value: patientModel.name,
+      ),
       // ----- Name initials -----
       PatientDataModelProps.initials.name: FormControl<String>(
         value: patientModel.initials,
@@ -48,11 +51,12 @@ class PatientDataFormGroup extends _$PatientDataFormGroup {
     /// reflect all the data
     if (patientModel == null) throw const NullValueFailure();
 
-    /// create crypt data using Encryption Provider
+    /// create crypt data using Encryption Provider from patientModel
+    /// returned from the Modal form
     final encryptedEither = ref.read(
       encryptPatientModelProvider(
         DecryptedPatientModel(
-          patientID: patientModel.patientID!,
+          //patientID: patientModel.patientID!,
           name: patientModel.name,
           mrn: patientModel.mrn,
           phone: patientModel.phone,

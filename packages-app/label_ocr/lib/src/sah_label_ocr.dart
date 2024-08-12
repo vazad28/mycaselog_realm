@@ -6,6 +6,7 @@ import 'package:app_models/app_models.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class SahLabelOcr<T> extends StatefulWidget {
@@ -116,24 +117,24 @@ class _SahLabelOcrState<T> extends State<SahLabelOcr>
     setState(() {});
   }
 
-  // Future<void> _pickImage() async {
-  //   final pickedFile =
-  //       await ImagePicker().pickImage(source: ImageSource.gallery);
-  //   if (pickedFile == null) return;
+  Future<void> _pickImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile == null) return;
 
-  //   final file = File(pickedFile.path);
-  //   final inputImage = InputImage.fromFile(file);
-  //   final recognizedText = await textRecognizer.processImage(inputImage);
+    final file = File(pickedFile.path);
+    final inputImage = InputImage.fromFile(file);
+    final recognizedText = await textRecognizer.processImage(inputImage);
 
-  //   if (!mounted) return;
+    if (!mounted) return;
 
-  //   if (recognizedText.text.isEmpty) {
-  //     ScaffoldMessenger.of(context)
-  //         .showSnackBar(const SnackBar(content: Text('No OCR text')));
-  //   }
+    if (recognizedText.text.isEmpty) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('No OCR text')));
+    }
 
-  //   _createReturnModel(recognizedText);
-  // }
+    _createReturnModel(recognizedText);
+  }
 
   Future<void> _scanImage() async {
     if (_cameraController == null) return;
@@ -190,10 +191,27 @@ class _SahLabelOcrState<T> extends State<SahLabelOcr>
 
     final decryptedPatientModel = DecryptedPatientModel.zero().copyWith(
       name: _extractName(textArray.first),
-      mrn: extractMrn(recognizedText.text),
+      mrn: extractMrn(recognizedText),
     );
 
     Navigator.of(context).pop(decryptedPatientModel);
+  }
+
+  void _ocrToPatientModelSah(RecognizedText recognizedText) {
+    final blocks = recognizedText.blocks;
+    if (blocks.isEmpty) return;
+
+    final nameLine = blocks.first.lines.first.text;
+    final name = _extractName(nameLine);
+
+    final patientModel = (widget.model as PatientModel)
+      ..mrn = extractMrn(recognizedText)
+      ..yob = _extractYob(recognizedText)
+      ..gender = _extractGender(recognizedText)
+      ..name = name
+      ..initials = name.initials;
+
+    Navigator.of(context).pop(patientModel);
   }
 
   String? _extractName(String paragraph) {
@@ -213,11 +231,11 @@ class _SahLabelOcrState<T> extends State<SahLabelOcr>
     return name.replaceAll(regex, '');
   }
 
-  String _extractGender(String text) {
+  String _extractGender(RecognizedText recognizedText) {
     final genderRegex = RegExp('(M|F|male|female)', caseSensitive: false);
-    final match = genderRegex.firstMatch(text);
+    final match = genderRegex.firstMatch(recognizedText.text);
 
-    if (match == null) return text.substring(text.length - 1);
+    if (match == null) return '';
 
     final gender = switch (match.group(0)!) {
       'M' || 'male' => 'Male',
@@ -228,26 +246,9 @@ class _SahLabelOcrState<T> extends State<SahLabelOcr>
     return gender;
   }
 
-  void _ocrToPatientModelSah(RecognizedText recognizedText) {
-    final blocks = recognizedText.blocks;
-    if (blocks.isEmpty) return;
-
-    final nameLine = blocks[1].lines.first.text;
-    final name = _extractName(nameLine);
-    final lastLine = blocks.last.lines.last.text;
-
-    final patientModel = (widget.model as PatientModel)
-      ..mrn = lastLine.substring(3, lastLine.indexOf(' '))
-      ..yob = _extractYob(lastLine)
-      ..gender = _extractGender(lastLine)
-      ..name = name
-      ..initials = name.initials;
-
-    Navigator.of(context).pop(patientModel);
-  }
-
   /// extract MRN from recognized text
-  String extractMrn(String str) {
+  String extractMrn(RecognizedText recognizedText) {
+    final str = recognizedText.text;
     final regex = RegExp(
       r'SA\w{8}',
     ); // Regular expression for SA followed by 8 word characters
@@ -261,15 +262,10 @@ class _SahLabelOcrState<T> extends State<SahLabelOcr>
   }
 
   /// get date
-  String _extractYob(String paragraph) {
-    final regex = RegExp(r'\d{2}/\d{2}/\d{4}'); // Pattern for 'mm/dd/yyyy'
-    final match = regex.firstMatch(paragraph);
-    if (match == null) {
-      return 'No date found in the label';
-    }
-
-    final dob = match.group(0)!; // Extract the captured group (full match)
-    return dob.split('/').last;
+  String _extractYob(RecognizedText recognizedText) {
+    final regex = RegExp(r'\d{2}/\d{2}/\d{4}');
+    final matches = regex.allMatches(recognizedText.text);
+    return matches.isEmpty ? '' : matches.last.group(0)!.split('/').last;
   }
 }
 
@@ -336,33 +332,3 @@ class _SahLabelOcrView extends StatelessWidget {
     );
   }
 }
-
-
-/// SahLabelOcr VIEW Widget
-// class _SahLabelOcrView extends StatelessWidget {
-//   const _SahLabelOcrView(_SahLabelOcrState ocrState) : _state = ocrState;
-
-//   final _SahLabelOcrState _state;
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(),
-//       body: Column(
-//         children: [
-//           Expanded(
-//             child: Container(),
-//           ),
-//           Container(
-//             padding: const EdgeInsets.only(bottom: 30),
-//             child: Center(
-//               child: ElevatedButton(
-//                 onPressed: _state._pickImage,
-//                 child: const Text('scan'),
-//               ),
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }

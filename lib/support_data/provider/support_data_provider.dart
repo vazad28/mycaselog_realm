@@ -13,8 +13,6 @@ part '../../generated/support_data/provider/support_data_provider.g.dart';
 class SupportDataNotifier extends _$SupportDataNotifier {
   @override
   SupportDataModel build() {
-    final userID = ref.watch(authenticationUserProvider).id;
-
     final sub = ref
         .watch(dbProvider)
         .supportDataCollection
@@ -26,7 +24,7 @@ class SupportDataNotifier extends _$SupportDataNotifier {
 
     ref.onDispose(sub.cancel);
 
-    return SupportDataModelX.zero(userID);
+    return SupportDataModelX.zero(ref.read(userIDProvider));
   }
 
   Future<void> _updateSupportData(SupportDataModel supportDataModel) async {

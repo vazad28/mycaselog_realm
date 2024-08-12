@@ -133,8 +133,6 @@ extension CaseModelX on CaseModel {
   static CaseModel fromJson(Map<String, dynamic> json) {
     json['fieldsData'] ??= <dynamic>[];
     json['assistant'] ??= <String>[];
-    //print(json);
-    //print("${json['caseID']} - ${json['timestamp']}");
     return _$CaseModelFromJson(json).toUnmanaged();
   }
 
@@ -182,6 +180,7 @@ class _PatientModel {
   late String? crypt;
   @Indexed(RealmIndexType.fullText)
   late String? initials;
+  @Indexed(RealmIndexType.fullText)
   late String? name;
   late String? yob;
   late double? bmi = 0;
@@ -232,7 +231,7 @@ enum DecryptedPatientDataModelProps { address, mrn, name, phone }
 class DecryptedPatientModel {
   // ignore: prefer_const_constructors_in_immutables
   DecryptedPatientModel({
-    required this.patientID,
+    //required this.patientID,
     this.name,
     this.mrn,
     this.address,
@@ -240,13 +239,13 @@ class DecryptedPatientModel {
   });
 
   factory DecryptedPatientModel.zero() {
-    return DecryptedPatientModel(patientID: ModelUtils.uniqueID);
+    return DecryptedPatientModel();
   }
 
   factory DecryptedPatientModel.fromJson(Map<String, Object?> json) =>
       _$DecryptedPatientModelFromJson(json);
 
-  final String patientID;
+  //final String patientID;
   final String? address;
   final String? mrn;
   final String? name;
@@ -255,14 +254,14 @@ class DecryptedPatientModel {
   Map<String, dynamic> toJson() => _$DecryptedPatientModelToJson(this);
 
   DecryptedPatientModel copyWith({
-    String? patientID,
+    //String? patientID,
     String? address,
     String? mrn,
     String? name,
     String? phone,
   }) {
     return DecryptedPatientModel(
-      patientID: patientID ?? this.patientID,
+      //patientID: patientID ?? this.patientID,
       address: address ?? this.address,
       mrn: mrn ?? this.mrn,
       name: name ?? this.name,
@@ -388,9 +387,6 @@ class _TimelineNoteModel {
       removed: removed,
     );
   }
-
-  // static TimelineNoteModel fromJson(Map<String, dynamic> json) =>
-  //     _$TimelineNoteModelFromJson(json).toUnmanaged();
 
   Map<String, dynamic> toJson() => _$TimelineNoteModelToJson(this);
 }

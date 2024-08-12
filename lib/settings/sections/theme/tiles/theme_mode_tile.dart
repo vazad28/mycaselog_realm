@@ -5,20 +5,17 @@ class ThemeModeSettingTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final themeMode = ref.watch(currentThemeModeProvider);
+    final themeMode = ref.watch(themeNotifierProvider).themeMode;
 
     return SettingsTile(
       title: S.of(context).switchTheme,
       leading: const Icon(Icons.language),
       trailing: DropdownButton<ThemeMode>(
-        value: ThemeMode.values[themeMode],
+        value: themeMode,
         underline: const SizedBox.shrink(),
         onChanged: (value) {
           if (value == null) return;
-          final themeModeIndex = ThemeMode.values.indexOf(value);
-          ref
-              .watch(currentThemeModeProvider.notifier)
-              .setThemeMode(themeModeIndex);
+          ref.watch(themeNotifierProvider.notifier).setThemeMode(value);
         },
         items: [
           DropdownMenuItem(

@@ -76,13 +76,13 @@ class ChartReqModel {
         chartData: chartData ?? this.chartData,
         chartType: chartType ?? this.chartType,
 
-        /// dont set  this to this.currMonth  else currMonth = null will never be set
+        /// dont set  this to this.currMonth else currMonth = null will never be set
         currMonth: currMonth,
         currYear: currYear ?? this.currYear,
-        filterClause: filterClause ?? this.filterClause,
+        filterClause: filterClause,
         fromStamp: fromStamp ?? this.fromStamp,
         groupByLabel: groupByLabel ?? this.groupByLabel,
-        searchTerm: searchTerm ?? this.searchTerm,
+        searchTerm: searchTerm,
         toStamp: toStamp ?? this.toStamp,
       );
 }

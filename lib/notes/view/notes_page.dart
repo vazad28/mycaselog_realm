@@ -62,7 +62,7 @@ class _NotesPageState extends ConsumerState<NotesPage> {
 }
 
 class _NotesView extends ConsumerWidget {
-  const _NotesView({super.key});
+  const _NotesView();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -70,6 +70,13 @@ class _NotesView extends ConsumerWidget {
       key: key,
       value: ref.watch(notesNotifierProvider),
       data: (data) {
+        if (data.results.isEmpty) {
+          return const SliverFillRemaining(
+            child: Loading(
+              text: 'No notes',
+            ),
+          );
+        }
         return NotesView(
           noteModels: data.results,
         );

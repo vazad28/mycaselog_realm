@@ -6,8 +6,23 @@ part of '../../../user_profile/provider/user_profile_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+String _$userMiniStatsHash() => r'6e9a39fdce2e15202b5089dddc6f93b3c32a0116';
+
+/// See also [userMiniStats].
+@ProviderFor(userMiniStats)
+final userMiniStatsProvider = AutoDisposeProvider<UserStatsModel>.internal(
+  userMiniStats,
+  name: r'userMiniStatsProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$userMiniStatsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef UserMiniStatsRef = AutoDisposeProviderRef<UserStatsModel>;
 String _$userProfileNotifierHash() =>
-    r'bdc07e9ec36410bdb5e70dff3a8a3996658873bb';
+    r'97d97d93687e82bb84bff3af1cdf8eebff94e1d2';
 
 /// ////////////////////////////////////////////////////////////////////
 /// Main Providers
