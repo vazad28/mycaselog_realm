@@ -110,9 +110,7 @@ class ImageUploadController extends UploadController
         mediaUploadService.getThumbRef(mediaModel).getDownloadURL(),
         mediaUploadService.getMediumRef(mediaModel).getDownloadURL(),
         if (uploadFullSize)
-          mediaUploadService.getOriginalRef(mediaModel).getDownloadURL()
-        else
-          Future.value(null),
+          mediaUploadService.getOriginalRef(mediaModel).getDownloadURL(),
       ]);
 
       await Future.wait([

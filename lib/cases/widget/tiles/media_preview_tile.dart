@@ -24,16 +24,15 @@ class MediaPreviewTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    if (caseModel.medias.isEmpty) {
-      return const SizedBox.shrink();
-    }
+    if (caseModel.medias.isEmpty) return const SizedBox.shrink();
+
+    final mediaModels = caseModel.medias.where((e) => e.removed != 1).toList();
+    if (mediaModels.isEmpty) return const SizedBox.shrink();
 
     const height = kToolbarHeight + 12;
 
     final routeObserver =
         ref.read(shellRoutesObserversProvider).casesRouteObserver;
-
-    final mediaModels = caseModel.medias.where((e) => e.removed != 1).toList();
 
     return SizedBox(
       height: height,

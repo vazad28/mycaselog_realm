@@ -1,13 +1,11 @@
 import 'package:animations/animations.dart';
 import 'package:app_extensions/app_extensions.dart';
-import 'package:app_l10n/app_l10n.dart';
 import 'package:app_models/app_models.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:misc_packages/misc_packages.dart';
 
 import '../../core/app_mixins.dart';
 import '../../core/providers/providers.dart';
@@ -29,63 +27,67 @@ class CaseTimelineItemView extends ConsumerStatefulWidget {
   final bool isFirst;
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _CaseTimelineItemViewState();
+  // ignore: library_private_types_in_public_api
+  _CaseTimelineItemViewState createState() => _CaseTimelineItemViewState();
 }
 
 class _CaseTimelineItemViewState extends ConsumerState<CaseTimelineItemView> {
   @override
   Widget build(BuildContext context) {
+    final theme = context.theme;
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
+
     return Stack(
       children: [
+        // Date Container
         Container(
           height: kMinInteractiveDimension,
           padding: const EdgeInsets.only(
             left: kToolbarHeight + (kMinInteractiveDimension * 0.5),
             bottom: 8,
           ),
-          width: double.infinity,
           child: Align(
             alignment: Alignment.bottomLeft,
             child: Text(
               widget.timelineItemOriginal.eventTimestamp.formatMDY(),
-              style: context.textTheme.labelSmall?.copyWith(
-                color: context.colorScheme.onSurface,
-              ),
+              style:
+                  textTheme.labelSmall?.copyWith(color: colorScheme.onSurface),
             ),
           ),
         ),
+        // Card Container
         Container(
           color: Colors.transparent,
           margin: const EdgeInsets.only(top: 42, left: 8, right: 8),
           child: Material(
             type: MaterialType.card,
             borderRadius: BorderRadius.circular(8),
-            shadowColor: context.colorScheme.shadow.withOpacity(0.2),
+            shadowColor: colorScheme.shadow.withOpacity(0.2),
             elevation: 2,
             child: MaterialCard.outlined(
-              borderColor: context.colorScheme.surfaceContainerHighest,
+              borderColor: colorScheme.surfaceContainerHighest,
               padding: EdgeInsets.zero,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
+                children: [
+                  // Header
                   CaseTimelineItemHeader(
                     key: Key(
-                      '__CaseTimelineHeader-${widget.timelineItemOriginal.id}',
-                    ),
+                        '__CaseTimelineHeader-${widget.timelineItemOriginal.id}',),
                     timelineItemModel: widget.timelineItemOriginal,
                   ),
+                  // Media
                   CaseTimelineItemMedia(
                     key: Key(
-                      '__CaseTimelineMedia-${widget.timelineItemOriginal.id}',
-                    ),
+                        '__CaseTimelineMedia-${widget.timelineItemOriginal.id}',),
                     timelineItemModel: widget.timelineItemOriginal,
                   ),
+                  // Notes
                   CaseTimelineItemNotes(
                     key: Key(
-                      '__CaseTimelineNotes-${widget.timelineItemOriginal.id}',
-                    ),
+                        '__CaseTimelineNotes-${widget.timelineItemOriginal.id}',),
                     timelineItemModel: widget.timelineItemOriginal,
                   ),
                 ],
@@ -93,21 +95,18 @@ class _CaseTimelineItemViewState extends ConsumerState<CaseTimelineItemView> {
             ),
           ),
         ),
+        // Target Shape Container
         Container(
           margin:
               const EdgeInsets.only(left: kMinInteractiveDimension, top: 32),
-          width: 18,
-          height: 18,
           child: const TargetShapeCircle(),
         ),
+        // Vertical Divider Container
         Container(
           padding: const EdgeInsets.only(left: kToolbarHeight),
-          width: 4,
-          height: 32,
           child: VerticalDivider(
-            color: context.colorScheme.surfaceContainerHighest,
+            color: colorScheme.surfaceContainerHighest,
             thickness: 2,
-            width: kMinInteractiveDimension * 0.5,
           ),
         ),
       ],

@@ -50,9 +50,6 @@ class CaseTimelineItemMedia extends ConsumerWidget with AppMixins {
                   ),
                   onClosed: (removedMediaModels) {
                     hideBottomNavbar(ref);
-
-                    // if (removedMediaModels == null) return;
-                    // _onRemoved(context, removedMediaModels);
                   },
                 ),
               )
@@ -60,12 +57,5 @@ class CaseTimelineItemMedia extends ConsumerWidget with AppMixins {
         ),
       ),
     );
-  }
-
-  void _onRemoved(
-    BuildContext context,
-    List<MediaModel> removedMediaModels,
-  ) {
-    context.showSnackBar(S.of(context).notImplementedYet);
   }
 }

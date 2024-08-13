@@ -192,7 +192,7 @@ class MyQuillToolbar extends StatelessWidget {
     // }
     return QuillToolbar.simple(
       configurations: QuillSimpleToolbarConfigurations(
-        controller: controller,
+        //controller: controller,
         showAlignmentButtons: true,
         // fontFamilyValues: {
         //   'Amatic': GoogleFonts.amaticSc().fontFamily!,

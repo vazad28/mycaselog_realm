@@ -2,7 +2,7 @@ import 'package:app_models/app_models.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-import 'package:flutter_quill_to_pdf/flutter_quill_to_pdf.dart' hide Rule;
+import 'package:flutter_quill_to_pdf/flutter_quill_to_pdf.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger_client/logger_client.dart';
 import 'package:printing/printing.dart';
@@ -217,7 +217,7 @@ class _AddNotePageState extends ConsumerState<AddNotePage> with LoggerMixin {
                       child: MyQuillEditor(
                         configurations: QuillEditorConfigurations(
                           sharedConfigurations: _sharedConfigurations,
-                          controller: _controller,
+                          //controller: _controller,
                         ),
                         scrollController: _editorScrollController,
                         focusNode: _editorFocusNode,

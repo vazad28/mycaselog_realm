@@ -9,6 +9,6 @@ class SyncDataTile extends StatelessWidget {
         title: 'Sync Data',
         leading: const Icon(Icons.sync),
         subTitle: 'Sync data locally from server',
-        onTap: () => const SyncRoute().push<void>(context));
+        onTap: () => const SyncRoute().push<void>(context),);
   }
 }

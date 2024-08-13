@@ -8,7 +8,7 @@ environment:
 
 dependencies:
   flutter_riverpod: ^3.0.0-dev.3
-  meta: ^1.12.0
+  meta: ^1.15.0
   stack_trace: ^1.11.1
 dev_dependencies:
   very_good_analysis: ^6.0.0

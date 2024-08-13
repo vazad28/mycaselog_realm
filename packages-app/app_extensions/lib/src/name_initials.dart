@@ -14,11 +14,11 @@ extension NameInitials on String? {
     final name = this;
     if (name == null) return '';
     //final List<String> words = name.split(RegExp(r'\,s+'));
-    final RegExp regExp = RegExp(r'[A-Z][a-z]*');
+    final regExp = RegExp('[A-Z][a-z]*');
     final Iterable<Match> matches = regExp.allMatches(name);
-    final List<String> words = matches.map((match) => match.group(0)!).toList();
+    final words = matches.map((match) => match.group(0)!).toList();
 
-    final List<String> initials = [];
+    final initials = <String>[];
 
     // Last name (first word)
     initials.add(words[0][0].toUpperCase());
@@ -34,6 +34,6 @@ extension NameInitials on String? {
     }
 
     // Limit to 3 initials
-    return initials.take(3).join('');
+    return initials.take(3).join();
   }
 }

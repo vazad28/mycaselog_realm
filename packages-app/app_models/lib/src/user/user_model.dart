@@ -71,7 +71,7 @@ extension UserModelX on UserModel {
       {required String userID,
       String? email,
       String? displayName,
-      String? photoUrl}) {
+      String? photoUrl,}) {
     final timestamp = ModelUtils.getTimestamp;
     return UserModel(
       userID,

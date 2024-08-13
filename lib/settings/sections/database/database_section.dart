@@ -26,7 +26,7 @@ class SyncSettingsSection extends StatelessWidget {
         //ReindexSearchTile(),
         DatabaseIoTile(),
         ExportCsvDataTile(),
-        UpgradeDatabaseTile()
+        UpgradeDatabaseTile(),
       ],
     );
   }

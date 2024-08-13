@@ -6,7 +6,7 @@ part 'case_model_equatable.g.dart';
 @JsonSerializable(explicitToJson: false)
 class CaseModelEquatable extends Equatable {
   const CaseModelEquatable({
-    this.caseID,
+    required this.fieldsData, this.caseID,
     this.patientModel,
     this.surgeryDate,
     this.createdAt,
@@ -22,7 +22,6 @@ class CaseModelEquatable extends Equatable {
     this.location,
     this.side,
     this.surgery,
-    required this.fieldsData,
     this.templateID,
     this.removed = 0, // Default value for removed
     this.timestamp = 0, // Default value for timestamp
