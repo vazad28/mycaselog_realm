@@ -45,7 +45,10 @@ class StatsRepository {
     final andList = splits.length > 2 ? splits[2].split(',') : null;
 
     return _searchComplexQuery(
-        standAlone: standAlone, orList: orList, andList: andList,);
+      standAlone: standAlone,
+      orList: orList,
+      andList: andList,
+    );
   }
 
   /// Fetch statistics
@@ -70,7 +73,7 @@ class StatsRepository {
     } else if (chartReqModel.filterClause != null) {
       //print('searching stats by filter clause');
       idList = _getSearchIdsForClause(chartReqModel.filterClause!);
-      print(idList);
+      //print(idList);
       if (idList.isEmpty) {
         return Result.failure(const AppFailure.noStatsData());
       }

@@ -163,22 +163,23 @@ class TextRecognizerPainter extends CustomPainter {
 
       // Add the first point to close the polygon
       cornerPoints.add(cornerPoints.first);
-      canvas.drawPoints(PointMode.polygon, cornerPoints, paint);
-
-      canvas.drawParagraph(
-        builder.build()
-          ..layout(
-            ParagraphConstraints(
-              width: (right - left).abs(),
+      canvas
+        ..drawPoints(PointMode.polygon, cornerPoints, paint)
+        ..drawParagraph(
+          builder.build()
+            ..layout(
+              ParagraphConstraints(
+                width: (right - left).abs(),
+              ),
             ),
+          Offset(
+            Platform.isAndroid &&
+                    cameraLensDirection == CameraLensDirection.front
+                ? right
+                : left,
+            top,
           ),
-        Offset(
-          Platform.isAndroid && cameraLensDirection == CameraLensDirection.front
-              ? right
-              : left,
-          top,
-        ),
-      );
+        );
     }
   }
 

@@ -22,7 +22,7 @@ Result<DecryptedPatientModel, EncryptionClientException> decryptPatientModel(
 
   return jsonDataResult.when(
     success: (jsonData) {
-      print(jsonData);
+      //print(jsonData);
       return Result.success(DecryptedPatientModel.fromJson(jsonData));
     },
     failure: Result.failure,

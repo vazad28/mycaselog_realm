@@ -121,6 +121,8 @@ abstract class SyncCollection<T extends RealmObject>
       } else if (T == CaseModel) {
         refreshCasesBacklinks(realm, ids);
       }
+    }).catchError((Object err) {
+      print(err.toString());
     }).whenComplete(() {
       logger.fine(ids.length.toString());
       Future<void>.delayed(Durations.short1).then((_) {

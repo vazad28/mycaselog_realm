@@ -43,7 +43,7 @@ class _CaseDetailsPageState extends ConsumerState<CaseDetailsPage>
   @override
   void initState() {
     /// active tab based on router or settings
-    print('active tab ${ref.read(settingsNotifierProvider).caseTileNavigate}');
+    //print('active tab ${ref.read(settingsNotifierProvider).caseTileNavigate}');
     _activeTab =
         widget.activeTab ?? ref.read(settingsNotifierProvider).caseTileNavigate;
 

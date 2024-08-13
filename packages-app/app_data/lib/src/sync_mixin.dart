@@ -35,7 +35,7 @@ mixin SyncMixin {
     // Query all TimelineNoteModel objects
     final noteModels = ids == null
         ? realm.all<TimelineNoteModel>()
-        : realm.query<TimelineNoteModel>(r'timelineNoteID IN $0', [ids]);
+        : realm.query<TimelineNoteModel>(r'noteID IN $0', [ids]);
 
     // Group notes by caseID
     final groupedNotes =

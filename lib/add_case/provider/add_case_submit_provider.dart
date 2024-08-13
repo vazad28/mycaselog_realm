@@ -69,7 +69,7 @@ class AddCaseFormSubmit extends _$AddCaseFormSubmit with LoggerMixin {
 
     final currTemplateModel = ref.read(currentCaseTemplateProvider);
 
-    print(_patientDataForm.value);
+    //print(_patientDataForm.value);
 
     final createdModel = CaseModelX.fromJson(caseModelJson)
       ..patientModel = PatientModelX.fromJson(_patientDataForm.value)
@@ -127,6 +127,19 @@ class AddCaseFormSubmit extends _$AddCaseFormSubmit with LoggerMixin {
     final originalModelEquatable =
         CaseModelEquatable.fromJson(_originalModelJson);
 
+    // for (final kv in _originalModelJson.entries) {
+    //   print('${kv.key} = ${kv.value}');
+    // }
+
+    // print('____________________________________________________');
+    // for (final kv in formToModel.toJson().entries) {
+    //   print('${kv.key} = ${kv.value}');
+    // }
+
+    // checking everything sans fields data
+    // then check for fields data separate because the template data may not be
+    // in the model if the tab wa not active in  edit - we check if this is a new or
+    // edit situation by comparing createdAt == timestamp (means new case)
     return formModelEquatable == originalModelEquatable;
   }
 }

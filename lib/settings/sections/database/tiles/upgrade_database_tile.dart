@@ -29,7 +29,7 @@ class UpgradeDatabaseTile extends ConsumerWidget {
         final result = ref.watch(decryptPatientModelProvider(e.crypt!));
 
         final patientModelDecrypted = result.getOrNull();
-        print(patientModelDecrypted?.name);
+        //print(patientModelDecrypted?.name);
         if (patientModelDecrypted == null) continue;
         e.name = patientModelDecrypted.name;
       }
@@ -59,7 +59,7 @@ class UpgradeDatabaseTile extends ConsumerWidget {
       await batch.commit();
     } catch (e) {
       // Handle errors, e.g.,
-      print(e);
+      debugPrint(e.toString());
     }
   }
 }

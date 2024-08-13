@@ -62,9 +62,6 @@ class AuthFlowNotifier extends _$AuthFlowNotifier with LoggerMixin {
   void onOnboardingCompleted() {
     if (state.isUnboarded) {
       _authenticationRepository.setOnboardedStatus();
-
-      _authenticationUser = ref.read(authenticationUserProvider);
-
       _authenticationUser == AuthenticationUser.anonymous
           ? state = const AuthFlowState.unauthenticated()
           : state = const AuthFlowState.authenticated();
