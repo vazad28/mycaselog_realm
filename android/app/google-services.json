@@ -1,54 +1,54 @@
 {
-  "project_info": {
-    "project_number": "768480572372",
-    "project_id": "mycaselog-vik",
-    "storage_bucket": "mycaselog-vik.appspot.com"
-  },
-  "client": [
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:768480572372:android:153795ac48d9eee3325c41",
-        "android_client_info": {
-          "package_name": "com.vik.mycaselog"
-        }
-      },
-      "oauth_client": [
+    "project_info": {
+        "project_number": "768480572372",
+        "project_id": "mycaselog-vik",
+        "storage_bucket": "mycaselog-vik.appspot.com"
+    },
+    "client": [
         {
-          "client_id": "768480572372-022mmmmmoim3q373sushahs2tcqerhin.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.vik.mycaselog",
-            "certificate_hash": "0ef0568409e20964433054b10cb17e63f4c313fb"
-          }
-        },
-        {
-          "client_id": "768480572372-borpvq5p7rggirh3eb9cnjjmdh8vh7a2.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyC6tEeD0k6TosKN5Skhf-iDU40eGb3o7sk"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "768480572372-borpvq5p7rggirh3eb9cnjjmdh8vh7a2.apps.googleusercontent.com",
-              "client_type": 3
+            "client_info": {
+                "mobilesdk_app_id": "1:768480572372:android:153795ac48d9eee3325c41",
+                "android_client_info": {
+                    "package_name": "com.vik.mycaselog"
+                }
             },
-            {
-              "client_id": "768480572372-1qem3gof5ovu114sur3em35hirfg9nhk.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com"
-              }
+            "oauth_client": [
+                {
+                    "client_id": "768480572372-022mmmmmoim3q373sushahs2tcqerhin.apps.googleusercontent.com",
+                    "client_type": 1,
+                    "android_info": {
+                        "package_name": "com.vik.mycaselog",
+                        "certificate_hash": "0ef0568409e20964433054b10cb17e63f4c313fb"
+                    }
+                },
+                {
+                    "client_id": "768480572372-borpvq5p7rggirh3eb9cnjjmdh8vh7a2.apps.googleusercontent.com",
+                    "client_type": 3
+                }
+            ],
+            "api_key": [
+                {
+                    "current_key": "AIzaSyC6tEeD0k6TosKN5Skhf-iDU40eGb3o7sk"
+                }
+            ],
+            "services": {
+                "appinvite_service": {
+                    "other_platform_oauth_client": [
+                        {
+                            "client_id": "768480572372-borpvq5p7rggirh3eb9cnjjmdh8vh7a2.apps.googleusercontent.com",
+                            "client_type": 3
+                        },
+                        {
+                            "client_id": "768480572372-1qem3gof5ovu114sur3em35hirfg9nhk.apps.googleusercontent.com",
+                            "client_type": 2,
+                            "ios_info": {
+                                "bundle_id": "com"
+                            }
+                        }
+                    ]
+                }
             }
-          ]
         }
-      }
-    }
-  ],
-  "configuration_version": "1"
+    ],
+    "configuration_version": "1"
 }

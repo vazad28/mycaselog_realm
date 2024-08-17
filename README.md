@@ -17,7 +17,7 @@ pod 'FirebaseFirestore', :git => 'https://github.com/invertase/firestore-ios-sdk
 
 ## flutter_native_splash
 dart run flutter_native_splash:create
-dart pub run flutter_launcher_icons
+dart run flutter_launcher_icons
 
 ## update info.plist in Runner folder to add code for google signin - LIKE
 <key>GIDClientID</key>
