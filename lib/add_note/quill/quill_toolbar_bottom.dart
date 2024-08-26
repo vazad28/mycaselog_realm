@@ -3,17 +3,23 @@ import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class QuillToolbarBottom extends ConsumerWidget {
-  const QuillToolbarBottom({required this.controller, super.key});
+  const QuillToolbarBottom({required this.quillController, super.key});
 
-  final QuillController controller;
+  final QuillController quillController;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final quillController =
-    //     ref.watch(addNoteNotifierProvider.notifier).quillController;
-
     return QuillToolbar(
-      //configurations: const QuillToolbarConfigurations(),
+      configurations: QuillToolbarConfigurations(
+        buttonOptions: QuillSimpleToolbarButtonOptions(
+          base: QuillToolbarBaseButtonOptions(
+            iconTheme: QuillIconTheme(
+                iconButtonSelectedData: const IconButtonData().copyWith(
+              highlightColor: Theme.of(context).colorScheme.primaryContainer,
+            )),
+          ),
+        ),
+      ),
       child: Builder(
         builder: (context) {
           return Container(
@@ -33,7 +39,7 @@ class QuillToolbarBottom extends ConsumerWidget {
                   hasScrollBody: false,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: childrenBuilder(context, controller),
+                    children: childrenBuilder(context, quillController),
                   ),
                 ),
               ],
@@ -49,6 +55,14 @@ class QuillToolbarBottom extends ConsumerWidget {
     QuillController controller,
   ) {
     return [
+      QuillToolbarHistoryButton(
+        isUndo: true,
+        controller: quillController,
+      ),
+      QuillToolbarHistoryButton(
+        isUndo: false,
+        controller: quillController,
+      ),
       QuillToolbarToggleStyleButton(
         controller: controller,
         attribute: Attribute.bold,
@@ -62,7 +76,6 @@ class QuillToolbarBottom extends ConsumerWidget {
         attribute: Attribute.underline,
       ),
       const VerticalDivider(),
-
       QuillToolbarToggleStyleButton(
         controller: controller,
         attribute: Attribute.strikeThrough,
@@ -71,35 +84,7 @@ class QuillToolbarBottom extends ConsumerWidget {
         controller: controller,
         attribute: Attribute.small,
       ),
-
       const VerticalDivider(),
-      // QuillToolbarImageButton(
-      //   controller: controller,
-      // ),
-      // QuillToolbarCameraButton(
-      //   controller: controller,
-      // ),
-      // QuillToolbarVideoButton(
-      //   controller: controller,
-      // ),
-      // const VerticalDivider(),
-      // QuillToolbarColorButton(
-      //   controller: controller,
-      //   isBackground: false,
-      // ),
-      // QuillToolbarColorButton(
-      //   controller: controller,
-      //   isBackground: true,
-      // ),
-      //QuillToolbarFontSizeButton(controller: controller),
-      // QuillToolbarSelectHeaderStyleButtons(
-      //     controller: controller,
-      //     options: const QuillToolbarSelectHeaderStyleButtonsOptions(
-      //         attributes: [Attribute.h2, Attribute.h3])),
-      //const VerticalDivider(),
-      // QuillToolbarToggleCheckListButton(
-      //   controller: controller,
-      // ),
       QuillToolbarToggleStyleButton(
         controller: controller,
         attribute: Attribute.ol,
@@ -108,24 +93,6 @@ class QuillToolbarBottom extends ConsumerWidget {
         controller: controller,
         attribute: Attribute.ul,
       ),
-      // QuillToolbarCustomButton(
-      //   controller: controller,
-      //   options: QuillToolbarCustomButtonOptions(
-      //     onPressed: ()=>  context.openActionsBottomSheet([
-
-      //     ]),
-      //     afterButtonPressed:  () => {}
-      //   ),
-      // ),
-      // const VerticalDivider(),
-      // QuillToolbarToggleStyleButton(
-      //   controller: controller,
-      //   attribute: Attribute.blockQuote,
-      // ),
-      // QuillToolbarSelectHeaderStyleDropdownButton(
-      //   controller: controller,
-      // ),
-
       QuillToolbarIndentButton(
         controller: controller,
         isIncrease: true,
@@ -137,6 +104,3 @@ class QuillToolbarBottom extends ConsumerWidget {
     ];
   }
 }
-
-
-//Iterable<BaseAppAction?>

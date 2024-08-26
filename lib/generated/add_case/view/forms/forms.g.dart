@@ -23,7 +23,7 @@ final basicDataFormGroupProvider = AutoDisposeProvider<FormGroup>.internal(
 
 typedef BasicDataFormGroupRef = AutoDisposeProviderRef<FormGroup>;
 String _$patientDataFormGroupHash() =>
-    r'caaab218ed67020f572db80504279e283be9f75b';
+    r'dde791d204319a58bbd91b197d5896d1d1287a2c';
 
 /// See also [PatientDataFormGroup].
 @ProviderFor(PatientDataFormGroup)

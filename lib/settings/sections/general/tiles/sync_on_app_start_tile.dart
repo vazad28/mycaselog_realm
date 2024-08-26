@@ -14,6 +14,12 @@ class SyncDataOnAppStartTile extends ConsumerWidget {
       subTitle: S.of(context).syncDataOnAppStartSubTitle,
       switchValue: syncOnStart,
       onToggle: (value) {
+        if (syncOnStart && value == false) {
+          return ref.watch(settingsNotifierProvider.notifier).updateSettings(
+                (e) => e..syncOnStart = value,
+              );
+        }
+
         ref
             .watch(dialogServiceProvider)
             .showConfirmDialog(

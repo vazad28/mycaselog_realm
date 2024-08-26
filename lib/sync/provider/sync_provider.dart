@@ -48,7 +48,7 @@ class SyncNotifier extends _$SyncNotifier {
 
     state = const StateOf<List<String>>.loading();
 
-    collection.syncByTimestamp(timestamp).then((ids) async {
+    collection.syncByTimestamp(timestamp: timestamp).then((ids) async {
       //collection.ignoreRealmChanges = true; //  important
       state = StateOf<List<String>>.success(ids);
     }).catchError((Object? err) {

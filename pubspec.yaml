@@ -9,7 +9,8 @@ version: 1.0.0+1
 environment:
   sdk: '>=3.4.0-282.3.beta <4.0.0'
 
-
+dependency_overrides:
+  analyzer: 6.7.0  
 dependencies:
   flutter:
     sdk: flutter

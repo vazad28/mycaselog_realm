@@ -48,7 +48,7 @@ mixin CaseDetailsMixin {
       await ref
           .watch(dbProvider)
           .casesCollection
-          .addCase(CaseModelX.fromJson(caseModelJson));
+          .add(CaseModelX.fromJson(caseModelJson));
 
       return newCaseID;
     } catch (err) {

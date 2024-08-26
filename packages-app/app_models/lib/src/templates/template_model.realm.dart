@@ -134,30 +134,23 @@ class TemplateModel extends _TemplateModel
 
   static EJsonValue _toEJson(TemplateModel value) => value.toEJson();
   static TemplateModel _fromEJson(EJsonValue ejson) {
+    if (ejson is! Map<String, dynamic>) return raiseInvalidEJson(ejson);
     return switch (ejson) {
       {
         'templateID': EJsonValue templateID,
-        'speciality': EJsonValue speciality,
-        'title': EJsonValue title,
-        'desc': EJsonValue desc,
-        'type': EJsonValue type,
-        'fields': EJsonValue fields,
-        'shared': EJsonValue shared,
-        'createdAt': EJsonValue createdAt,
-        'timestamp': EJsonValue timestamp,
-        'removed': EJsonValue removed,
       } =>
         TemplateModel(
           fromEJson(templateID),
-          speciality: fromEJson(speciality),
-          title: fromEJson(title),
-          desc: fromEJson(desc),
-          type: fromEJson(type),
-          fields: fromEJson(fields),
-          shared: fromEJson(shared),
-          createdAt: fromEJson(createdAt),
-          timestamp: fromEJson(timestamp),
-          removed: fromEJson(removed),
+          speciality:
+              fromEJson(ejson['speciality'], defaultValue: 'no_speciality'),
+          title: fromEJson(ejson['title']),
+          desc: fromEJson(ejson['desc']),
+          type: fromEJson(ejson['type'], defaultValue: 'surgery'),
+          fields: fromEJson(ejson['fields'], defaultValue: const []),
+          shared: fromEJson(ejson['shared'], defaultValue: false),
+          createdAt: fromEJson(ejson['createdAt'], defaultValue: 0),
+          timestamp: fromEJson(ejson['timestamp'], defaultValue: 0),
+          removed: fromEJson(ejson['removed'], defaultValue: 0),
         ),
       _ => raiseInvalidEJson(ejson),
     };
@@ -166,7 +159,7 @@ class TemplateModel extends _TemplateModel
   static final schema = () {
     RealmObjectBase.registerFactory(TemplateModel._);
     register(_toEJson, _fromEJson);
-    return SchemaObject(
+    return const SchemaObject(
         ObjectType.realmObject, TemplateModel, 'TemplateModel', [
       SchemaProperty('templateID', RealmPropertyType.string, primaryKey: true),
       SchemaProperty('speciality', RealmPropertyType.string),

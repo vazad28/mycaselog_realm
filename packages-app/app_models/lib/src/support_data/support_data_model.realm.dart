@@ -106,22 +106,21 @@ class SupportDataModel extends _SupportDataModel
 
   static EJsonValue _toEJson(SupportDataModel value) => value.toEJson();
   static SupportDataModel _fromEJson(EJsonValue ejson) {
+    if (ejson is! Map<String, dynamic>) return raiseInvalidEJson(ejson);
     return switch (ejson) {
       {
         'userID': EJsonValue userID,
-        'assistants': EJsonValue assistants,
-        'activeBasicFields': EJsonValue activeBasicFields,
-        'anesthesiaBlocks': EJsonValue anesthesiaBlocks,
-        'surgeryLocations': EJsonValue surgeryLocations,
-        'timestamp': EJsonValue timestamp,
       } =>
         SupportDataModel(
           fromEJson(userID),
-          assistants: fromEJson(assistants),
-          activeBasicFields: fromEJson(activeBasicFields),
-          anesthesiaBlocks: fromEJson(anesthesiaBlocks),
-          surgeryLocations: fromEJson(surgeryLocations),
-          timestamp: fromEJson(timestamp),
+          assistants: fromEJson(ejson['assistants'], defaultValue: const []),
+          activeBasicFields:
+              fromEJson(ejson['activeBasicFields'], defaultValue: const []),
+          anesthesiaBlocks:
+              fromEJson(ejson['anesthesiaBlocks'], defaultValue: const []),
+          surgeryLocations:
+              fromEJson(ejson['surgeryLocations'], defaultValue: const []),
+          timestamp: fromEJson(ejson['timestamp'], defaultValue: 0),
         ),
       _ => raiseInvalidEJson(ejson),
     };
@@ -130,7 +129,7 @@ class SupportDataModel extends _SupportDataModel
   static final schema = () {
     RealmObjectBase.registerFactory(SupportDataModel._);
     register(_toEJson, _fromEJson);
-    return SchemaObject(
+    return const SchemaObject(
         ObjectType.realmObject, SupportDataModel, 'SupportDataModel', [
       SchemaProperty('userID', RealmPropertyType.string, primaryKey: true),
       SchemaProperty('assistants', RealmPropertyType.object,
@@ -213,18 +212,16 @@ class AssistantModel extends _AssistantModel
 
   static EJsonValue _toEJson(AssistantModel value) => value.toEJson();
   static AssistantModel _fromEJson(EJsonValue ejson) {
+    if (ejson is! Map<String, dynamic>) return raiseInvalidEJson(ejson);
     return switch (ejson) {
       {
         'assistantID': EJsonValue assistantID,
-        'name': EJsonValue name,
-        'phone': EJsonValue phone,
-        'photoUrl': EJsonValue photoUrl,
       } =>
         AssistantModel(
           fromEJson(assistantID),
-          name: fromEJson(name),
-          phone: fromEJson(phone),
-          photoUrl: fromEJson(photoUrl),
+          name: fromEJson(ejson['name']),
+          phone: fromEJson(ejson['phone']),
+          photoUrl: fromEJson(ejson['photoUrl']),
         ),
       _ => raiseInvalidEJson(ejson),
     };
@@ -233,7 +230,7 @@ class AssistantModel extends _AssistantModel
   static final schema = () {
     RealmObjectBase.registerFactory(AssistantModel._);
     register(_toEJson, _fromEJson);
-    return SchemaObject(
+    return const SchemaObject(
         ObjectType.realmObject, AssistantModel, 'AssistantModel', [
       SchemaProperty('assistantID', RealmPropertyType.string, primaryKey: true),
       SchemaProperty('name', RealmPropertyType.string, optional: true),
@@ -309,18 +306,16 @@ class SurgeryLocationModel extends _SurgeryLocationModel
 
   static EJsonValue _toEJson(SurgeryLocationModel value) => value.toEJson();
   static SurgeryLocationModel _fromEJson(EJsonValue ejson) {
+    if (ejson is! Map<String, dynamic>) return raiseInvalidEJson(ejson);
     return switch (ejson) {
       {
         'locationID': EJsonValue locationID,
-        'name': EJsonValue name,
-        'phone': EJsonValue phone,
-        'address': EJsonValue address,
       } =>
         SurgeryLocationModel(
           fromEJson(locationID),
-          name: fromEJson(name),
-          phone: fromEJson(phone),
-          address: fromEJson(address),
+          name: fromEJson(ejson['name']),
+          phone: fromEJson(ejson['phone']),
+          address: fromEJson(ejson['address']),
         ),
       _ => raiseInvalidEJson(ejson),
     };
@@ -329,7 +324,7 @@ class SurgeryLocationModel extends _SurgeryLocationModel
   static final schema = () {
     RealmObjectBase.registerFactory(SurgeryLocationModel._);
     register(_toEJson, _fromEJson);
-    return SchemaObject(
+    return const SchemaObject(
         ObjectType.realmObject, SurgeryLocationModel, 'SurgeryLocationModel', [
       SchemaProperty('locationID', RealmPropertyType.string, primaryKey: true),
       SchemaProperty('name', RealmPropertyType.string, optional: true),

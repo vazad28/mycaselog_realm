@@ -129,7 +129,7 @@ final logoutProvider = AutoDisposeFutureProvider<void>.internal(
 );
 
 typedef LogoutRef = AutoDisposeFutureProviderRef<void>;
-String _$realmDatabaseHash() => r'30b5d0f981f5b73c9f38e0faf5fd3b4507c971fc';
+String _$realmDatabaseHash() => r'8e94b585c5984fe0bbba1ea4cece83712158e622';
 
 /// See also [realmDatabase].
 @ProviderFor(realmDatabase)
@@ -144,7 +144,7 @@ final realmDatabaseProvider = FutureProvider<RealmDatabase>.internal(
 );
 
 typedef RealmDatabaseRef = FutureProviderRef<RealmDatabase>;
-String _$dbHash() => r'1d58d4dfaa2427177716f4ecdb37987ab1bd6f5c';
+String _$dbHash() => r'35858ee36ed20c212b0d7d885066126469b45b7e';
 
 /// See also [db].
 @ProviderFor(db)
@@ -904,7 +904,7 @@ final connectivityStatusProvider =
 );
 
 typedef _$ConnectivityStatus = Notifier<bool>;
-String _$crudHash() => r'dfe47e19091047799cb47d8227e1f9ac7f405ff0';
+String _$crudHash() => r'229c5efd4c338d748143b581e2c927e6f645157f';
 
 /// See also [Crud].
 @ProviderFor(Crud)

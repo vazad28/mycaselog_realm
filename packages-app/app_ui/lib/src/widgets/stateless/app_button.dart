@@ -11,7 +11,7 @@ import '../../utils/platform_widget.dart';
 /// An enumeration of the possible button buttonTypes.
 /// {@endtemplate}
 enum ButtonType {
-  /// button buttonType that is rendered as a text without a background or border.
+  /// buttonType that is rendered as a text without a background or border.
   text,
 
   /// button buttonType that has a background.

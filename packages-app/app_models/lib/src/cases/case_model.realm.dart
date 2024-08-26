@@ -247,54 +247,34 @@ class CaseModel extends _CaseModel
 
   static EJsonValue _toEJson(CaseModel value) => value.toEJson();
   static CaseModel _fromEJson(EJsonValue ejson) {
+    if (ejson is! Map<String, dynamic>) return raiseInvalidEJson(ejson);
     return switch (ejson) {
       {
         'caseID': EJsonValue caseID,
-        'surgeryDate': EJsonValue surgeryDate,
-        'createdAt': EJsonValue createdAt,
-        'anesthesia': EJsonValue anesthesia,
-        'anesthesiaBlock': EJsonValue anesthesiaBlock,
-        'asa': EJsonValue asa,
-        'assistant': EJsonValue assistant,
-        'comments': EJsonValue comments,
-        'cpt': EJsonValue cpt,
-        'diagnosis': EJsonValue diagnosis,
-        'ebl': EJsonValue ebl,
-        'icd': EJsonValue icd,
-        'location': EJsonValue location,
-        'side': EJsonValue side,
-        'surgery': EJsonValue surgery,
-        'templateID': EJsonValue templateID,
-        'removed': EJsonValue removed,
-        'timestamp': EJsonValue timestamp,
-        'patientModel': EJsonValue patientModel,
-        'fieldsData': EJsonValue fieldsData,
-        'medias': EJsonValue medias,
-        'notes': EJsonValue notes,
       } =>
         CaseModel(
           fromEJson(caseID),
-          surgeryDate: fromEJson(surgeryDate),
-          createdAt: fromEJson(createdAt),
-          anesthesia: fromEJson(anesthesia),
-          anesthesiaBlock: fromEJson(anesthesiaBlock),
-          asa: fromEJson(asa),
-          assistant: fromEJson(assistant),
-          comments: fromEJson(comments),
-          cpt: fromEJson(cpt),
-          diagnosis: fromEJson(diagnosis),
-          ebl: fromEJson(ebl),
-          icd: fromEJson(icd),
-          location: fromEJson(location),
-          side: fromEJson(side),
-          surgery: fromEJson(surgery),
-          templateID: fromEJson(templateID),
-          removed: fromEJson(removed),
-          timestamp: fromEJson(timestamp),
-          patientModel: fromEJson(patientModel),
-          fieldsData: fromEJson(fieldsData),
-          medias: fromEJson(medias),
-          notes: fromEJson(notes),
+          surgeryDate: fromEJson(ejson['surgeryDate'], defaultValue: 0),
+          createdAt: fromEJson(ejson['createdAt'], defaultValue: 0),
+          anesthesia: fromEJson(ejson['anesthesia']),
+          anesthesiaBlock: fromEJson(ejson['anesthesiaBlock']),
+          asa: fromEJson(ejson['asa'], defaultValue: 2),
+          assistant: fromEJson(ejson['assistant'], defaultValue: const []),
+          comments: fromEJson(ejson['comments']),
+          cpt: fromEJson(ejson['cpt']),
+          diagnosis: fromEJson(ejson['diagnosis']),
+          ebl: fromEJson(ejson['ebl'], defaultValue: 0),
+          icd: fromEJson(ejson['icd']),
+          location: fromEJson(ejson['location']),
+          side: fromEJson(ejson['side']),
+          surgery: fromEJson(ejson['surgery']),
+          templateID: fromEJson(ejson['templateID']),
+          removed: fromEJson(ejson['removed'], defaultValue: 0),
+          timestamp: fromEJson(ejson['timestamp'], defaultValue: 0),
+          patientModel: fromEJson(ejson['patientModel']),
+          fieldsData: fromEJson(ejson['fieldsData'], defaultValue: const []),
+          medias: fromEJson(ejson['medias'], defaultValue: const []),
+          notes: fromEJson(ejson['notes'], defaultValue: const []),
         ),
       _ => raiseInvalidEJson(ejson),
     };
@@ -303,7 +283,7 @@ class CaseModel extends _CaseModel
   static final schema = () {
     RealmObjectBase.registerFactory(CaseModel._);
     register(_toEJson, _fromEJson);
-    return SchemaObject(ObjectType.realmObject, CaseModel, 'CaseModel', [
+    return const SchemaObject(ObjectType.realmObject, CaseModel, 'CaseModel', [
       SchemaProperty('caseID', RealmPropertyType.string, primaryKey: true),
       SchemaProperty('surgeryDate', RealmPropertyType.int),
       SchemaProperty('createdAt', RealmPropertyType.int),
@@ -463,30 +443,22 @@ class PatientModel extends _PatientModel
 
   static EJsonValue _toEJson(PatientModel value) => value.toEJson();
   static PatientModel _fromEJson(EJsonValue ejson) {
+    if (ejson is! Map<String, dynamic>) return raiseInvalidEJson(ejson);
     return switch (ejson) {
       {
         'patientID': EJsonValue patientID,
-        'crypt': EJsonValue crypt,
-        'initials': EJsonValue initials,
-        'name': EJsonValue name,
-        'yob': EJsonValue yob,
-        'bmi': EJsonValue bmi,
-        'gender': EJsonValue gender,
-        'mrn': EJsonValue mrn,
-        'phone': EJsonValue phone,
-        'address': EJsonValue address,
       } =>
         PatientModel(
-          fromEJson(patientID),
-          crypt: fromEJson(crypt),
-          initials: fromEJson(initials),
-          name: fromEJson(name),
-          yob: fromEJson(yob),
-          bmi: fromEJson(bmi),
-          gender: fromEJson(gender),
-          mrn: fromEJson(mrn),
-          phone: fromEJson(phone),
-          address: fromEJson(address),
+          fromEJson(ejson['patientID']),
+          crypt: fromEJson(ejson['crypt']),
+          initials: fromEJson(ejson['initials']),
+          name: fromEJson(ejson['name']),
+          yob: fromEJson(ejson['yob']),
+          bmi: fromEJson(ejson['bmi'], defaultValue: 0),
+          gender: fromEJson(ejson['gender']),
+          mrn: fromEJson(ejson['mrn']),
+          phone: fromEJson(ejson['phone']),
+          address: fromEJson(ejson['address']),
         ),
       _ => raiseInvalidEJson(ejson),
     };
@@ -495,7 +467,8 @@ class PatientModel extends _PatientModel
   static final schema = () {
     RealmObjectBase.registerFactory(PatientModel._);
     register(_toEJson, _fromEJson);
-    return SchemaObject(ObjectType.realmObject, PatientModel, 'PatientModel', [
+    return const SchemaObject(
+        ObjectType.realmObject, PatientModel, 'PatientModel', [
       SchemaProperty('patientID', RealmPropertyType.string,
           optional: true, primaryKey: true),
       SchemaProperty('crypt', RealmPropertyType.string, optional: true),
@@ -676,36 +649,26 @@ class MediaModel extends _MediaModel
 
   static EJsonValue _toEJson(MediaModel value) => value.toEJson();
   static MediaModel _fromEJson(EJsonValue ejson) {
+    if (ejson is! Map<String, dynamic>) return raiseInvalidEJson(ejson);
     return switch (ejson) {
       {
         'mediaID': EJsonValue mediaID,
         'authorID': EJsonValue authorID,
-        'caseID': EJsonValue caseID,
-        'fileType': EJsonValue fileType,
-        'fileName': EJsonValue fileName,
-        'fileUri': EJsonValue fileUri,
-        'mediumUri': EJsonValue mediumUri,
-        'thumbUri': EJsonValue thumbUri,
-        'status': EJsonValue _status,
-        'comment': EJsonValue comment,
-        'removed': EJsonValue removed,
-        'createdAt': EJsonValue createdAt,
-        'timestamp': EJsonValue timestamp,
       } =>
         MediaModel(
           fromEJson(mediaID),
           fromEJson(authorID),
-          caseID: fromEJson(caseID),
-          fileType: fromEJson(fileType),
-          fileName: fromEJson(fileName),
-          fileUri: fromEJson(fileUri),
-          mediumUri: fromEJson(mediumUri),
-          thumbUri: fromEJson(thumbUri),
-          status: fromEJson(_status),
-          comment: fromEJson(comment),
-          removed: fromEJson(removed),
-          createdAt: fromEJson(createdAt),
-          timestamp: fromEJson(timestamp),
+          caseID: fromEJson(ejson['caseID'], defaultValue: 'unknown'),
+          fileType: fromEJson(ejson['fileType']),
+          fileName: fromEJson(ejson['fileName']),
+          fileUri: fromEJson(ejson['fileUri']),
+          mediumUri: fromEJson(ejson['mediumUri']),
+          thumbUri: fromEJson(ejson['thumbUri']),
+          status: fromEJson(ejson['status']),
+          comment: fromEJson(ejson['comment']),
+          removed: fromEJson(ejson['removed'], defaultValue: 0),
+          createdAt: fromEJson(ejson['createdAt'], defaultValue: 0),
+          timestamp: fromEJson(ejson['timestamp'], defaultValue: 0),
         ),
       _ => raiseInvalidEJson(ejson),
     };
@@ -714,7 +677,8 @@ class MediaModel extends _MediaModel
   static final schema = () {
     RealmObjectBase.registerFactory(MediaModel._);
     register(_toEJson, _fromEJson);
-    return SchemaObject(ObjectType.realmObject, MediaModel, 'MediaModel', [
+    return const SchemaObject(
+        ObjectType.realmObject, MediaModel, 'MediaModel', [
       SchemaProperty('mediaID', RealmPropertyType.string, primaryKey: true),
       SchemaProperty('authorID', RealmPropertyType.string),
       SchemaProperty('caseID', RealmPropertyType.string),
@@ -851,24 +815,19 @@ class TimelineNoteModel extends _TimelineNoteModel
 
   static EJsonValue _toEJson(TimelineNoteModel value) => value.toEJson();
   static TimelineNoteModel _fromEJson(EJsonValue ejson) {
+    if (ejson is! Map<String, dynamic>) return raiseInvalidEJson(ejson);
     return switch (ejson) {
       {
         'noteID': EJsonValue noteID,
-        'authorID': EJsonValue authorID,
-        'caseID': EJsonValue caseID,
-        'note': EJsonValue note,
-        'createdAt': EJsonValue createdAt,
-        'timestamp': EJsonValue timestamp,
-        'removed': EJsonValue removed,
       } =>
         TimelineNoteModel(
           fromEJson(noteID),
-          authorID: fromEJson(authorID),
-          caseID: fromEJson(caseID),
-          note: fromEJson(note),
-          createdAt: fromEJson(createdAt),
-          timestamp: fromEJson(timestamp),
-          removed: fromEJson(removed),
+          authorID: fromEJson(ejson['authorID'], defaultValue: 'unknown'),
+          caseID: fromEJson(ejson['caseID'], defaultValue: 'unknown'),
+          note: fromEJson(ejson['note']),
+          createdAt: fromEJson(ejson['createdAt'], defaultValue: 0),
+          timestamp: fromEJson(ejson['timestamp'], defaultValue: 0),
+          removed: fromEJson(ejson['removed'], defaultValue: 0),
         ),
       _ => raiseInvalidEJson(ejson),
     };
@@ -877,7 +836,7 @@ class TimelineNoteModel extends _TimelineNoteModel
   static final schema = () {
     RealmObjectBase.registerFactory(TimelineNoteModel._);
     register(_toEJson, _fromEJson);
-    return SchemaObject(
+    return const SchemaObject(
         ObjectType.realmObject, TimelineNoteModel, 'TimelineNoteModel', [
       SchemaProperty('noteID', RealmPropertyType.string, primaryKey: true),
       SchemaProperty('authorID', RealmPropertyType.string),

@@ -59,30 +59,4 @@ extension SettingsModelX on SettingsModel {
 
     return settingsRealm;
   }
-
-  // static SettingsModel fromModel(SettingsModel model) {
-  //   return SettingsModel(
-  //     model.userID,
-  //     biometricEnabled: model.biometricEnabled,
-  //     caseTileNavigate: model.caseTileNavigate,
-  //     caseTileStyle: model.caseTileStyle,
-  //     showByLocation: model.showByLocation,
-  //     syncOnStart: model.syncOnStart,
-  //     localAuthEnabled: model.localAuthEnabled,
-  //     timestamp: model.timestamp,
-  //     uploadFullSizePhoto: model.uploadFullSizePhoto,
-  //     themeMode: model.themeMode,
-  //     language: model.language,
-  //     fontFamily: model.fontFamily,
-  //     seedColorHex: model.seedColorHex,
-  //   );
-  // }
 }
-
-
-/// We keep sync on start false because the settings providers loads first with
-/// .zero object. The sync provider is watching the settings provider and will trigger
-/// sync based on this value.
-/// 
-/// When the realm listener fires in the settings provider to get the correct obhect
-/// we will either start the sync if the value is on

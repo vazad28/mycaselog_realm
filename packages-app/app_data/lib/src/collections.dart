@@ -3,9 +3,10 @@ import 'dart:io';
 
 import 'package:app_annotations/app_annotations.dart';
 import 'package:app_models/app_models.dart';
-import 'package:authentication_client/src/authentication_user/authentication_user.dart';
+import 'package:authentication_client/authentication_client.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:logger_client/logger_client.dart';
 import 'package:realm/realm.dart';
 

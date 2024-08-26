@@ -6,7 +6,7 @@ part of '../../../notes/provider/notes_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$noteTileStyleHash() => r'd6025aed384d2c7ba794bfbd123acee97f370faa';
+String _$noteTileStyleHash() => r'460b4ee5141e2ec4cb817874d4c89f9ca96c36ae';
 
 /// note tile style provider
 ///

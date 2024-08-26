@@ -8,6 +8,10 @@ part of 'case_model_equatable.dart';
 
 CaseModelEquatable _$CaseModelEquatableFromJson(Map<String, dynamic> json) =>
     CaseModelEquatable(
+      fieldsData: (json['fieldsData'] as List<dynamic>)
+          .map((e) =>
+              TemplateFieldModelEquatable.fromJson(e as Map<String, dynamic>))
+          .toList(),
       caseID: json['caseID'] as String?,
       patientModel: json['patientModel'] == null
           ? null
@@ -30,10 +34,6 @@ CaseModelEquatable _$CaseModelEquatableFromJson(Map<String, dynamic> json) =>
       location: json['location'] as String?,
       side: json['side'] as String?,
       surgery: json['surgery'] as String?,
-      fieldsData: (json['fieldsData'] as List<dynamic>)
-          .map((e) =>
-              TemplateFieldModelEquatable.fromJson(e as Map<String, dynamic>))
-          .toList(),
       templateID: json['templateID'] as String?,
       removed: (json['removed'] as num?)?.toInt() ?? 0,
       timestamp: (json['timestamp'] as num?)?.toInt() ?? 0,

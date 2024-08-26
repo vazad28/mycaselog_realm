@@ -31,7 +31,7 @@ abstract class SyncCollection<T extends RealmObject>
       _baseCollection.ignoreRealmChanges = true;
     } else {
       _baseCollection.ignoreRealmChanges = false;
-      _syncToFirestore();
+      //_syncToFirestore();
     }
   }
 
@@ -83,13 +83,17 @@ abstract class SyncCollection<T extends RealmObject>
     return realm.all<T>();
   }
 
-  // Upserts data in Realm by executing the provided callback function
+  Future<void> add(T model);
+
   Future<T> upsert(T Function() upsertCallback) async {
     return realm.writeAsync<T>(() {
-      return realm.add<T>(
+      final model = realm.add<T>(
         upsertCallback.call(),
         update: true,
       );
+
+      addToFirestore(model);
+      return model;
     });
   }
 
@@ -97,11 +101,15 @@ abstract class SyncCollection<T extends RealmObject>
   int count() => realm.all<T>().query(r'removed == $0', [0]).length;
 
   /// sync cases based on timestamp
-  Future<List<String>> syncByTimestamp(int timestamp) async {
+  Future<List<String>> syncByTimestamp({int? timestamp}) async {
     logger.fine('timestamp syncByTimestamp = $timestamp');
     _baseCollection.ignoreRealmChanges = true;
 
-    final query = collectionRef.where('timestamp', isGreaterThan: timestamp);
+    final query = collectionRef.where(
+      'timestamp',
+      isGreaterThan: timestamp ?? getLastSyncTimestamp,
+    );
+
     final snapshot = await query.get();
 
     final ids = <String>[];
@@ -121,8 +129,8 @@ abstract class SyncCollection<T extends RealmObject>
       } else if (T == CaseModel) {
         refreshCasesBacklinks(realm, ids);
       }
-    }).catchError((Object err) {
-      print(err.toString());
+    }).catchError((Object? err) {
+      logger.severe(err.toString());
     }).whenComplete(() {
       logger.fine(ids.length.toString());
       Future<void>.delayed(Durations.short1).then((_) {
@@ -159,12 +167,12 @@ abstract class SyncCollection<T extends RealmObject>
 
       for (final index in changes.inserted) {
         debugPrint('Received model $T from Realm to sync (inserted)');
-        _addToFirestore(models[index]);
+        addToFirestore(models[index]);
       }
 
       for (final index in changes.modified) {
         debugPrint('Received model $T from Realm to sync (modified)');
-        _addToFirestore(models[index]);
+        addToFirestore(models[index]);
       }
 
       for (final index in changes.deleted) {
@@ -180,7 +188,7 @@ abstract class SyncCollection<T extends RealmObject>
   }
 
   /// Adds a model object to Firestore.
-  void _addToFirestore(T model) {
+  void addToFirestore(T model) {
     final docId = getPrimaryKey(model);
     final modelToFirestore = modelToMap(model);
 

@@ -11,7 +11,8 @@ class CasesCollection extends SyncCollection<CaseModel> {
   @override
   String getPrimaryKey(CaseModel object) => object.caseID;
 
-  /// Converts a Map<String, dynamic> representation of a case to a CaseModel object.
+  /// Converts a Map<String, dynamic> representation of a case to a
+  /// CaseModel object.
   @override
   CaseModel mapToModel(Map<String, dynamic> data) => CaseModelX.fromJson(data);
 
@@ -35,12 +36,13 @@ class CasesCollection extends SyncCollection<CaseModel> {
   }
 
   /// Adds a new case to the database.
-  ///
   /// Sets the timestamp of the case before adding it.
-  Future<void> addCase(CaseModel caseModel) async {
+  @override
+  Future<void> add(CaseModel caseModel) async {
     return realm.writeAsync(() {
       caseModel.timestamp = ModelUtils.getTimestamp;
       realm.add<CaseModel>(caseModel, update: true);
+      addToFirestore(caseModel);
     });
   }
 
@@ -65,10 +67,12 @@ class CasesCollection extends SyncCollection<CaseModel> {
     return resList.nonNulls.toList();
   }
 
-  /// Retrieves a RealmResults object containing cases used for autocomplete suggestions.
+  /// Retrieves a RealmResults object containing cases used for autocomplete
+  /// suggestions.
   ///
   /// Takes an optional query string and the field name as parameters.
-  /// If no query is provided, retrieves the first 50 distinct values for the field.
+  /// If no query is provided, retrieves the first 50 distinct values for the
+  /// field.
   /// Otherwise, performs a case-insensitive text search on the specified field.
   /// Returns a RealmResults object containing the matching cases.
   RealmResults<CaseModel> _getAutoCompleteList(String? query, String field) {
@@ -156,7 +160,7 @@ class CasesCollection extends SyncCollection<CaseModel> {
       await batch.commit();
     } catch (e) {
       // Handle errors, e.g.,
-      print(e);
+      debugPrint(e.toString());
     }
   }
 

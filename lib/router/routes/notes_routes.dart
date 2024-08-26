@@ -28,6 +28,19 @@ class NotesRoute extends GoRouteData {
       );
 }
 
+// class NotepadRoute extends GoRouteData {
+//   const NotepadRoute();
+//   static const name = 'notepad';
+//   static const path = '/$name';
+
+//   @override
+//   Page buildPage(BuildContext context, GoRouterState state) =>
+//       FadeTransitionPage(
+//         key: state.pageKey,
+//         child: const NotepadPage(),
+//       );
+// }
+
 class AddNoteRoute extends GoRouteData {
   AddNoteRoute({this.noteID = 'new'});
   static const name = 'add_note';

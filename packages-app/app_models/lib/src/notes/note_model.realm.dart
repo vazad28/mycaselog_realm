@@ -16,6 +16,7 @@ class NoteModel extends _NoteModel
     String? authorID,
     String? title,
     String? note,
+    String? noteText,
     int removed = 0,
     int createdAt = 0,
     int timestamp = 0,
@@ -31,6 +32,7 @@ class NoteModel extends _NoteModel
     RealmObjectBase.set(this, 'authorID', authorID);
     RealmObjectBase.set(this, 'title', title);
     RealmObjectBase.set(this, 'note', note);
+    RealmObjectBase.set(this, 'noteText', noteText);
     RealmObjectBase.set(this, 'removed', removed);
     RealmObjectBase.set(this, 'createdAt', createdAt);
     RealmObjectBase.set(this, 'timestamp', timestamp);
@@ -58,6 +60,12 @@ class NoteModel extends _NoteModel
   String? get note => RealmObjectBase.get<String>(this, 'note') as String?;
   @override
   set note(String? value) => RealmObjectBase.set(this, 'note', value);
+
+  @override
+  String? get noteText =>
+      RealmObjectBase.get<String>(this, 'noteText') as String?;
+  @override
+  set noteText(String? value) => RealmObjectBase.set(this, 'noteText', value);
 
   @override
   int get removed => RealmObjectBase.get<int>(this, 'removed') as int;
@@ -91,6 +99,7 @@ class NoteModel extends _NoteModel
       'authorID': authorID.toEJson(),
       'title': title.toEJson(),
       'note': note.toEJson(),
+      'noteText': noteText.toEJson(),
       'removed': removed.toEJson(),
       'createdAt': createdAt.toEJson(),
       'timestamp': timestamp.toEJson(),
@@ -99,24 +108,20 @@ class NoteModel extends _NoteModel
 
   static EJsonValue _toEJson(NoteModel value) => value.toEJson();
   static NoteModel _fromEJson(EJsonValue ejson) {
+    if (ejson is! Map<String, dynamic>) return raiseInvalidEJson(ejson);
     return switch (ejson) {
       {
         'noteID': EJsonValue noteID,
-        'authorID': EJsonValue authorID,
-        'title': EJsonValue title,
-        'note': EJsonValue note,
-        'removed': EJsonValue removed,
-        'createdAt': EJsonValue createdAt,
-        'timestamp': EJsonValue timestamp,
       } =>
         NoteModel(
           fromEJson(noteID),
-          authorID: fromEJson(authorID),
-          title: fromEJson(title),
-          note: fromEJson(note),
-          removed: fromEJson(removed),
-          createdAt: fromEJson(createdAt),
-          timestamp: fromEJson(timestamp),
+          authorID: fromEJson(ejson['authorID']),
+          title: fromEJson(ejson['title']),
+          note: fromEJson(ejson['note']),
+          noteText: fromEJson(ejson['noteText']),
+          removed: fromEJson(ejson['removed'], defaultValue: 0),
+          createdAt: fromEJson(ejson['createdAt'], defaultValue: 0),
+          timestamp: fromEJson(ejson['timestamp'], defaultValue: 0),
         ),
       _ => raiseInvalidEJson(ejson),
     };
@@ -125,11 +130,14 @@ class NoteModel extends _NoteModel
   static final schema = () {
     RealmObjectBase.registerFactory(NoteModel._);
     register(_toEJson, _fromEJson);
-    return SchemaObject(ObjectType.realmObject, NoteModel, 'NoteModel', [
+    return const SchemaObject(ObjectType.realmObject, NoteModel, 'NoteModel', [
       SchemaProperty('noteID', RealmPropertyType.string, primaryKey: true),
       SchemaProperty('authorID', RealmPropertyType.string, optional: true),
-      SchemaProperty('title', RealmPropertyType.string, optional: true),
+      SchemaProperty('title', RealmPropertyType.string,
+          optional: true, indexType: RealmIndexType.fullText),
       SchemaProperty('note', RealmPropertyType.string, optional: true),
+      SchemaProperty('noteText', RealmPropertyType.string,
+          optional: true, indexType: RealmIndexType.fullText),
       SchemaProperty('removed', RealmPropertyType.int),
       SchemaProperty('createdAt', RealmPropertyType.int),
       SchemaProperty('timestamp', RealmPropertyType.int),

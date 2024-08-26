@@ -141,32 +141,23 @@ class UserModel extends _UserModel
 
   static EJsonValue _toEJson(UserModel value) => value.toEJson();
   static UserModel _fromEJson(EJsonValue ejson) {
+    if (ejson is! Map<String, dynamic>) return raiseInvalidEJson(ejson);
     return switch (ejson) {
       {
         'userID': EJsonValue userID,
-        'email': EJsonValue email,
-        'displayName': EJsonValue displayName,
-        'photoUrl': EJsonValue photoUrl,
-        'speciality': EJsonValue speciality,
-        'subSpeciality': EJsonValue subSpeciality,
-        'about': EJsonValue about,
-        'creationTime': EJsonValue creationTime,
-        'lastSignInTime': EJsonValue lastSignInTime,
-        'timestamp': EJsonValue timestamp,
-        'subscriptionPlan': EJsonValue _subscriptionPlan,
       } =>
         UserModel(
           fromEJson(userID),
-          email: fromEJson(email),
-          displayName: fromEJson(displayName),
-          photoUrl: fromEJson(photoUrl),
-          speciality: fromEJson(speciality),
-          subSpeciality: fromEJson(subSpeciality),
-          about: fromEJson(about),
-          creationTime: fromEJson(creationTime),
-          lastSignInTime: fromEJson(lastSignInTime),
-          timestamp: fromEJson(timestamp),
-          subscriptionPlan: fromEJson(_subscriptionPlan),
+          email: fromEJson(ejson['email']),
+          displayName: fromEJson(ejson['displayName']),
+          photoUrl: fromEJson(ejson['photoUrl']),
+          speciality: fromEJson(ejson['speciality']),
+          subSpeciality: fromEJson(ejson['subSpeciality']),
+          about: fromEJson(ejson['about']),
+          creationTime: fromEJson(ejson['creationTime']),
+          lastSignInTime: fromEJson(ejson['lastSignInTime']),
+          timestamp: fromEJson(ejson['timestamp'], defaultValue: 0),
+          subscriptionPlan: fromEJson(ejson['subscriptionPlan']),
         ),
       _ => raiseInvalidEJson(ejson),
     };
@@ -175,7 +166,7 @@ class UserModel extends _UserModel
   static final schema = () {
     RealmObjectBase.registerFactory(UserModel._);
     register(_toEJson, _fromEJson);
-    return SchemaObject(ObjectType.realmObject, UserModel, 'UserModel', [
+    return const SchemaObject(ObjectType.realmObject, UserModel, 'UserModel', [
       SchemaProperty('userID', RealmPropertyType.string, primaryKey: true),
       SchemaProperty('email', RealmPropertyType.string, optional: true),
       SchemaProperty('displayName', RealmPropertyType.string, optional: true),

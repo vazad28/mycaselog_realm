@@ -126,7 +126,7 @@ class ImageUploadController extends UploadController
         ),
       ]);
 
-      _onSuccess(downloadUrls[0], downloadUrls[1], downloadUrls[2]);
+      _onSuccess(downloadUrls);
     } on FirebaseException catch (err) {
       _onFailure(UploadStatus.failed, err.message ?? err.code);
     } catch (err) {
@@ -203,12 +203,12 @@ class ImageUploadController extends UploadController
     _removeUploadController();
   }
 
-  void _onSuccess(String? thumbUri, String? mediumUri, String? fullUri) {
+  void _onSuccess(List<String> downloadUrls) {
     mediaUploadService.onUploadSucces(
       mediaModel,
-      thumbUri: thumbUri,
-      mediumUri: mediumUri,
-      fullUri: fullUri,
+      thumbUri: downloadUrls[0],
+      mediumUri: downloadUrls[1],
+      fullUri: downloadUrls.length > 2 ? downloadUrls[2] : null,
     );
     _uploadStatus = UploadStatus.success;
     notifyListeners();

@@ -4,7 +4,7 @@ class UserCollection extends SyncCollection<UserModel> {
   UserCollection(super.realmDatabase) {
     final userModel = getSingle(userID);
     // must load user model data from server to prevent empty write
-    if (userModel?.timestamp == 0) syncByTimestamp(0);
+    if (userModel?.timestamp == 0) syncByTimestamp(timestamp: 0);
   }
 
   /// Firestore Methods
@@ -27,5 +27,14 @@ class UserCollection extends SyncCollection<UserModel> {
       displayName: user.name,
       photoUrl: user.photo,
     );
+  }
+
+  @override
+  Future<void> add(UserModel model) {
+    return realm.writeAsync(() {
+      model.timestamp = ModelUtils.getTimestamp;
+      realm.add<UserModel>(model, update: true);
+      addToFirestore(model);
+    });
   }
 }

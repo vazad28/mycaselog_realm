@@ -61,7 +61,10 @@ class FormSubmitButtonBar extends StatelessWidget {
 
     return SizedBox(
       height: kToolbarHeight,
-      child: OverflowBar(alignment: MainAxisAlignment.center, children: buttons),
+      child: OverflowBar(
+        alignment: MainAxisAlignment.center,
+        children: buttons,
+      ),
     );
   }
 }

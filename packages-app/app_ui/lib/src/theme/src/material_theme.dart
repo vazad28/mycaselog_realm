@@ -1,28 +1,25 @@
 part of './app_theme.dart';
 
 class MaterialTheme {
-  final TextTheme textTheme;
-
   const MaterialTheme(this.textTheme);
+
+  final TextTheme textTheme;
 
   static ColorScheme lightScheme() {
     return ColorScheme.fromSeed(
-      brightness: Brightness.light,
       seedColor: const Color(0xFF034383),
     );
   }
 
   static ColorScheme lightMediumContrastScheme() {
     return ColorScheme.fromSeed(
-      brightness: Brightness.light,
       seedColor: const Color(0xFF094070),
     );
   }
 
   static ColorScheme lightHighContrastScheme() {
     return ColorScheme.fromSeed(
-      brightness: Brightness.light,
-      seedColor: Color(4278199105),
+      seedColor: const Color(0xff002341),
     );
   }
 
@@ -51,14 +48,6 @@ class MaterialTheme {
 }
 
 class ExtendedColor {
-  final Color seed, value;
-  final ColorFamily light;
-  final ColorFamily lightHighContrast;
-  final ColorFamily lightMediumContrast;
-  final ColorFamily dark;
-  final ColorFamily darkHighContrast;
-  final ColorFamily darkMediumContrast;
-
   const ExtendedColor({
     required this.seed,
     required this.value,
@@ -69,6 +58,15 @@ class ExtendedColor {
     required this.darkHighContrast,
     required this.darkMediumContrast,
   });
+
+  final Color seed;
+  final Color value;
+  final ColorFamily light;
+  final ColorFamily lightHighContrast;
+  final ColorFamily lightMediumContrast;
+  final ColorFamily dark;
+  final ColorFamily darkHighContrast;
+  final ColorFamily darkMediumContrast;
 }
 
 class ColorFamily {

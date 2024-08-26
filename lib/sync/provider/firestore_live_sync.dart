@@ -33,7 +33,7 @@ class FirestoreLiveSync extends _$FirestoreLiveSync with LoggerMixin {
     return false;
   }
 
-  void _updateFirebaseSyncStatus() {
+  Future<void> _updateFirebaseSyncStatus() async {
     logger.fine('starting firebase listeners on Firebase Sync live');
 
     try {
@@ -41,6 +41,8 @@ class FirestoreLiveSync extends _$FirestoreLiveSync with LoggerMixin {
       for (final dbCollection in collectionsMap.keys) {
         final collection = collectionsMap[dbCollection];
         if (collection == null) continue;
+
+        await collection.syncByTimestamp();
 
         /// TODO
         //collection.updateFirebaseSyncStatus(status: state);

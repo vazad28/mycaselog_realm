@@ -18,10 +18,7 @@ extension NameInitials on String? {
     final Iterable<Match> matches = regExp.allMatches(name);
     final words = matches.map((match) => match.group(0)!).toList();
 
-    final initials = <String>[];
-
-    // Last name (first word)
-    initials.add(words[0][0].toUpperCase());
+    final initials = <String>[words[0][0].toUpperCase()];
 
     // First name (second word)
     if (words.length > 1) {

@@ -259,7 +259,8 @@ class _CameraViewState extends State<CameraView> {
     final camera = _cameras[_cameraIndex];
     _controller = CameraController(
       camera,
-      // Set to ResolutionPreset.high. Do NOT set it to ResolutionPreset.max because for some phones does NOT work.
+      // Set to ResolutionPreset.high.
+      //Do NOT set it to ResolutionPreset.max for in some phones does NOT work.
       ResolutionPreset.high,
       enableAudio: false,
       imageFormatGroup: Platform.isAndroid

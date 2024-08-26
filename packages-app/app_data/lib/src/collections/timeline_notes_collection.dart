@@ -19,6 +19,22 @@ class TimelineNotesCollection extends SyncCollection<TimelineNoteModel> {
   @override
   String getPrimaryKey(TimelineNoteModel object) => object.noteID;
 
+  @override
+  Future<void> add(TimelineNoteModel model) async {
+    await _realm.writeAsync(() {
+      _realm.add<TimelineNoteModel>(model, update: true);
+
+      /// add media to cases collection if not exist
+      final caseModel = _realm.find<CaseModel>(model.caseID);
+      if (caseModel != null && !caseModel.notes.contains(model)) {
+        caseModel.notes.add(model);
+      }
+
+      /// add timeline note to firebase
+      addToFirestore(model);
+    });
+  }
+
   /// Retrieves a list of MediaModel objects based on their case IDs.
   List<TimelineNoteModel> getAllByTimelineNoteIDs(
     List<String> timelineNoteIDs,
@@ -36,51 +52,6 @@ class TimelineNotesCollection extends SyncCollection<TimelineNoteModel> {
 
   /// Refresh timeline backlinks to cases collection  as needed
   void refreshBacklinks() => refreshTimelineNotesBacklinks(realm, null);
-
-  /// Refresh media backlinks to cases collection  as needed
-  // Future<void> refreshBacklinks(List<String>? ids) async {
-  //   ignoreRealmChanges = true;
-  //   return _realm.writeAsync(() {
-  //     // Query all TimelineNoteModel objects
-  //     final noteModels = ids == null
-  //         ? _realm.all<TimelineNoteModel>()
-  //         : _realm.query<TimelineNoteModel>(r'timelineNoteID IN $0', [ids]);
-
-  //     // Group notes by caseID
-  //     final groupedNotes =
-  //         noteModels.groupFoldBy<String, List<TimelineNoteModel>>(
-  //       (e) => e.caseID,
-  //       (prev, e) => (prev ?? [])..add(e),
-  //     );
-
-  //     // Iterate through each caseID
-  //     for (final caseID in groupedNotes.keys) {
-  //       final notesList = groupedNotes[caseID]!;
-  //       final existingCase = _realm.find<CaseModel>(caseID);
-
-  //       if (existingCase != null) {
-  //         // Add missing notes to the case model
-  //         existingCase.notes.addAll(
-  //           notesList.where(
-  //             (note) => !existingCase.notes.contains(note),
-  //           ),
-  //         );
-  //       }
-  //     }
-  //   }).whenComplete(() => ignoreRealmChanges = false);
-  // }
-
-  Future<void> addTimelineNote(TimelineNoteModel timelineNoteModel) async {
-    await _realm.writeAsync(() {
-      _realm.add<TimelineNoteModel>(timelineNoteModel, update: true);
-
-      /// add media to cases collection if not exist
-      final caseModel = _realm.find<CaseModel>(timelineNoteModel.caseID);
-      if (caseModel != null && !caseModel.notes.contains(timelineNoteModel)) {
-        caseModel.notes.add(timelineNoteModel);
-      }
-    });
-  }
 
   Future<void> changeTimelineNotesTimestamp(
     List<TimelineNoteModel> noteList,

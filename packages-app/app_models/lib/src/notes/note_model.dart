@@ -19,12 +19,16 @@ enum NoteModelProps {
 class _NoteModel {
   @PrimaryKey()
   late String noteID;
-  late String? authorID;
-  late String? title;
-  late String? note;
-  late int removed = 0;
-  late int createdAt = 0;
-  late int timestamp = 0;
+  String? authorID;
+  @Indexed(RealmIndexType.fullText)
+  String? title;
+  String? note;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @Indexed(RealmIndexType.fullText)
+  String? noteText;
+  int removed = 0;
+  int createdAt = 0;
+  int timestamp = 0;
 
   NoteModel toUnmanaged() {
     return NoteModel(
@@ -32,6 +36,7 @@ class _NoteModel {
       authorID: authorID,
       title: title,
       note: note,
+      noteText: noteText,
       removed: removed,
       createdAt: createdAt,
       timestamp: timestamp,
@@ -64,7 +69,7 @@ extension NoteModelX on NoteModel {
 }
 
 extension QuillDocumentNoteExt on quill.Document {
-  String get toJsonString {
+  String toJsonString() {
     // ignore: unnecessary_this
     return json.encode(this.toDelta().toJson());
   }

@@ -52,42 +52,17 @@ class SyncView extends ConsumerWidget {
           ),
           trailing: syncStateProvider.maybeWhen(
             success: (syncedIds) => TextButton(
-              onPressed: syncStateProvider.isLoading
-                  ? null
-                  : () {
-                      context.openDraggableBottomSheet<void>(
-                        builder: (_) {
-                          /// Bottom sheet to select 'time since' for syncing data
-                          return SyncTimeSelector(
-                            onSelect: (timestamp) {
-                              if (timestamp == null) return;
-                              //print(timestamp);
-                              notifier.syncCollection(timestamp);
-                            },
-                          );
-                        },
-                      );
-                    },
+              onPressed: () {
+                if (!syncStateProvider.isLoading) _onPressed(context, notifier);
+              },
               child: Text('${syncedIds.length}'),
             ),
             loading: (_) => const CircularProgressIndicator.adaptive(),
             failure: (_) => const Text('Error'),
             orElse: () => TextButton(
-              onPressed: syncStateProvider.isLoading
-                  ? null
-                  : () {
-                      context.openDraggableBottomSheet<void>(
-                        builder: (_) {
-                          /// Bottom sheet to select 'time since' for syncing data
-                          return SyncBottomSheet(
-                            onSelect: (timestamp) {
-                              if (timestamp == null) return;
-                              notifier.syncCollection(timestamp);
-                            },
-                          );
-                        },
-                      );
-                    },
+              onPressed: () {
+                if (!syncStateProvider.isLoading) _onPressed(context, notifier);
+              },
               child: const Text('sync'),
             ),
           ),
@@ -98,6 +73,21 @@ class SyncView extends ConsumerWidget {
           height: 0.5,
           indent: 16,
           endIndent: 16,
+        );
+      },
+    );
+  }
+
+  void _onPressed(BuildContext context, SyncNotifier notifier) {
+    context.openDraggableBottomSheet<void>(
+      builder: (_) {
+        /// Bottom sheet to select 'time since' for syncing data
+        return SyncBottomSheet(
+          onSelect: (timestamp) {
+            if (timestamp == null) return;
+            //print(timestamp);
+            notifier.syncCollection(timestamp);
+          },
         );
       },
     );

@@ -65,16 +65,19 @@ class TemplatesCollection extends SyncCollection<TemplateModel> {
   }
 
   Future<SharedTemplateModel?> getSharedTemplate(
-      String templateID, String speciality) async {
+    String templateID,
+    String speciality,
+  ) async {
     final sharedTemplatePath =
         'sharedTemplates/$speciality/templates/$templateID';
 
     final converter = firestore
         .collection(sharedTemplatePath)
         .withConverter<SharedTemplateModel>(
-            fromFirestore: (snapshot, _) =>
-                SharedTemplateModelX.fromJson(snapshot.data()!),
-            toFirestore: (model, _) => model.toJson());
+          fromFirestore: (snapshot, _) =>
+              SharedTemplateModelX.fromJson(snapshot.data()!),
+          toFirestore: (model, _) => model.toJson(),
+        );
 
     return (await converter.doc(templateID).get()).data();
   }
@@ -86,10 +89,14 @@ class TemplatesCollection extends SyncCollection<TemplateModel> {
   @override
   Map<String, dynamic> modelToMap(TemplateModel object) => object.toJson();
 
-  Future<void> addTemplate(TemplateModel object) {
+  @override
+  Future<void> add(TemplateModel model) {
     return realm.writeAsync(() {
-      object.timestamp = ModelUtils.getTimestamp;
-      realm.add<TemplateModel>(object, update: true);
+      model.timestamp = ModelUtils.getTimestamp;
+      realm.add<TemplateModel>(model, update: true);
+
+      /// add to firestore
+      addToFirestore(model);
     });
   }
 }

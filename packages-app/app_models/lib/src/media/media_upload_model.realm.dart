@@ -101,24 +101,19 @@ class MediaUploadModel extends _MediaUploadModel
 
   static EJsonValue _toEJson(MediaUploadModel value) => value.toEJson();
   static MediaUploadModel _fromEJson(EJsonValue ejson) {
+    if (ejson is! Map<String, dynamic>) return raiseInvalidEJson(ejson);
     return switch (ejson) {
       {
         'mediaID': EJsonValue mediaID,
-        'caseID': EJsonValue caseID,
-        'fileUri': EJsonValue fileUri,
-        'medium': EJsonValue medium,
-        'thumb': EJsonValue thumb,
-        'uploadProgress': EJsonValue uploadProgress,
-        'status': EJsonValue _status,
       } =>
         MediaUploadModel(
           fromEJson(mediaID),
-          caseID: fromEJson(caseID),
-          fileUri: fromEJson(fileUri),
-          medium: fromEJson(medium),
-          thumb: fromEJson(thumb),
-          uploadProgress: fromEJson(uploadProgress),
-          status: fromEJson(_status),
+          caseID: fromEJson(ejson['caseID']),
+          fileUri: fromEJson(ejson['fileUri'], defaultValue: ''),
+          medium: fromEJson(ejson['medium']),
+          thumb: fromEJson(ejson['thumb']),
+          uploadProgress: fromEJson(ejson['uploadProgress'], defaultValue: 0),
+          status: fromEJson(ejson['status']),
         ),
       _ => raiseInvalidEJson(ejson),
     };
@@ -127,7 +122,7 @@ class MediaUploadModel extends _MediaUploadModel
   static final schema = () {
     RealmObjectBase.registerFactory(MediaUploadModel._);
     register(_toEJson, _fromEJson);
-    return SchemaObject(
+    return const SchemaObject(
         ObjectType.realmObject, MediaUploadModel, 'MediaUploadModel', [
       SchemaProperty('mediaID', RealmPropertyType.string, primaryKey: true),
       SchemaProperty('caseID', RealmPropertyType.string, optional: true),

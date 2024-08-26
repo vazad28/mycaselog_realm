@@ -5,23 +5,15 @@ import 'material_card.dart';
 // ignore: public_member_api_docs
 class DismissibleListTile extends StatelessWidget {
   const DismissibleListTile({
-    // required this.title,
     required this.child,
     required this.onDismissed,
-    // required this.onTap,
     super.key,
-    //this.subTitle,
     this.wrapInCard = false,
-    //this.trailing,
   });
 
   final VoidCallback onDismissed;
-  //final VoidCallback onTap;
-  //final String? subTitle;
-  //final String title;
   final bool wrapInCard;
   final Widget child;
-  //final Widget? trailing;
 
   /// important to call this in same file
   Future<bool?> _confirmDelete(
@@ -68,26 +60,8 @@ class DismissibleListTile extends StatelessWidget {
       ),
       direction: DismissDirection.endToStart,
       confirmDismiss: (DismissDirection direction) =>
-          Future<bool?>.sync(() => true),
-      // _confirmDelete(context, direction),
-      //     showAdaptiveDialog<bool>(
-      //   context: context,
-      //   builder: (_) {
-      //     return AlertDialog.adaptive(
-      //       content: const Text('Are you sure?'),
-      //       actions: <Widget>[
-      //         TextButton(
-      //           onPressed: () => false,
-      //           child: const Text('Cancel'),
-      //         ),
-      //         TextButton(
-      //           onPressed: () => true,
-      //           child: const Text('OK'),
-      //         ),
-      //       ],
-      //     );
-      //   },
-      // ),
+          //Future<bool?>.sync(() => true),
+          _confirmDelete(context, direction),
       onDismissed: (direction) => onDismissed.call(),
       child: child,
     );

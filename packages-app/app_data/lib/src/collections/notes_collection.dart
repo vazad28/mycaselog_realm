@@ -16,6 +16,15 @@ class NotesCollection extends SyncCollection<NoteModel> {
   @override
   Map<String, dynamic> modelToMap(NoteModel object) => object.toJson();
 
+  @override
+  Future<void> add(NoteModel model) {
+    return realm.writeAsync(() {
+      model.timestamp = ModelUtils.getTimestamp;
+      realm.add<NoteModel>(model, update: true);
+      addToFirestore(model);
+    });
+  }
+
   // Retrieves all cases from Realm
   RealmResults<NoteModel> getAllNotes() {
     return realm.query<NoteModel>('removed == 0 SORT(timestamp DESC)');
@@ -27,7 +36,7 @@ class NotesCollection extends SyncCollection<NoteModel> {
 
   RealmResults<NoteModel> search(String searchTerm) {
     return realm.query<NoteModel>(
-      r'title TEXT $0 OR note TEXT $0',
+      r'title TEXT $0 OR noteText TEXT $0',
       ['$searchTerm*'],
     );
   }

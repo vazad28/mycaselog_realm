@@ -143,32 +143,23 @@ class TemplateFieldModel extends $TemplateFieldModel
 
   static EJsonValue _toEJson(TemplateFieldModel value) => value.toEJson();
   static TemplateFieldModel _fromEJson(EJsonValue ejson) {
+    if (ejson is! Map<String, dynamic>) return raiseInvalidEJson(ejson);
     return switch (ejson) {
       {
         'fieldID': EJsonValue fieldID,
-        'title': EJsonValue title,
-        'idx': EJsonValue idx,
-        'isRequired': EJsonValue isRequired,
-        'options': EJsonValue options,
-        'defaultValue': EJsonValue defaultValue,
-        'value': EJsonValue value,
-        'inputMask': EJsonValue inputMask,
-        'suffixText': EJsonValue suffixText,
-        'fieldType': EJsonValue _fieldType,
-        'fieldDataType': EJsonValue _fieldDataType,
       } =>
         TemplateFieldModel(
           fromEJson(fieldID),
-          title: fromEJson(title),
-          idx: fromEJson(idx),
-          isRequired: fromEJson(isRequired),
-          options: fromEJson(options),
-          defaultValue: fromEJson(defaultValue),
-          value: fromEJson(value),
-          inputMask: fromEJson(inputMask),
-          suffixText: fromEJson(suffixText),
-          fieldType: fromEJson(_fieldType),
-          fieldDataType: fromEJson(_fieldDataType),
+          title: fromEJson(ejson['title']),
+          idx: fromEJson(ejson['idx'], defaultValue: 0),
+          isRequired: fromEJson(ejson['isRequired'], defaultValue: false),
+          options: fromEJson(ejson['options'], defaultValue: const []),
+          defaultValue: fromEJson(ejson['defaultValue']),
+          value: fromEJson(ejson['value']),
+          inputMask: fromEJson(ejson['inputMask']),
+          suffixText: fromEJson(ejson['suffixText']),
+          fieldType: fromEJson(ejson['fieldType']),
+          fieldDataType: fromEJson(ejson['fieldDataType']),
         ),
       _ => raiseInvalidEJson(ejson),
     };
@@ -177,7 +168,7 @@ class TemplateFieldModel extends $TemplateFieldModel
   static final schema = () {
     RealmObjectBase.registerFactory(TemplateFieldModel._);
     register(_toEJson, _fromEJson);
-    return SchemaObject(
+    return const SchemaObject(
         ObjectType.realmObject, TemplateFieldModel, 'TemplateFieldModel', [
       SchemaProperty('fieldID', RealmPropertyType.string),
       SchemaProperty('title', RealmPropertyType.string, optional: true),

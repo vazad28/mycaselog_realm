@@ -40,17 +40,20 @@ class MediaCollection extends SyncCollection<MediaModel> with LoggerMixin {
   void refreshBacklinks() => refreshMediaBacklinks(realm, null);
 
   /// Adds a media item to Realm and updates the linked case object.
-  Future<void> addMedia(MediaModel model) async {
+  @override
+  Future<void> add(MediaModel mediaModel) async {
     logger.fine('Adding media');
     await realm.writeAsync(() {
-      realm.add<MediaModel>(model, update: true);
+      realm.add<MediaModel>(mediaModel, update: true);
 
       /// Update case object if needed
-      final caseModel = realm.find<CaseModel>(model.caseID);
-      if (caseModel != null && !caseModel.medias.contains(model)) {
+      final caseModel = realm.find<CaseModel>(mediaModel.caseID);
+      if (caseModel != null && !caseModel.medias.contains(mediaModel)) {
         logger.fine('Media model added to caseModel in AddMedia');
-        caseModel.medias.add(model);
+        caseModel.medias.add(mediaModel);
       }
+
+      addToFirestore(mediaModel);
     });
   }
 

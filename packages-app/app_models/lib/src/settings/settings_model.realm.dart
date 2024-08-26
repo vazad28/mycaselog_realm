@@ -173,36 +173,30 @@ class SettingsModel extends _SettingsModel
 
   static EJsonValue _toEJson(SettingsModel value) => value.toEJson();
   static SettingsModel _fromEJson(EJsonValue ejson) {
+    if (ejson is! Map<String, dynamic>) return raiseInvalidEJson(ejson);
     return switch (ejson) {
       {
         'userID': EJsonValue userID,
-        'biometricEnabled': EJsonValue biometricEnabled,
-        'caseTileNavigate': EJsonValue caseTileNavigate,
-        'caseTileStyle': EJsonValue caseTileStyle,
-        'showByLocation': EJsonValue showByLocation,
-        'syncOnStart': EJsonValue syncOnStart,
-        'localAuthEnabled': EJsonValue localAuthEnabled,
-        'timestamp': EJsonValue timestamp,
-        'uploadFullSizePhoto': EJsonValue uploadFullSizePhoto,
-        'themeMode': EJsonValue themeMode,
-        'language': EJsonValue language,
-        'fontFamily': EJsonValue fontFamily,
-        'seedColorHex': EJsonValue seedColorHex,
       } =>
         SettingsModel(
           fromEJson(userID),
-          biometricEnabled: fromEJson(biometricEnabled),
-          caseTileNavigate: fromEJson(caseTileNavigate),
-          caseTileStyle: fromEJson(caseTileStyle),
-          showByLocation: fromEJson(showByLocation),
-          syncOnStart: fromEJson(syncOnStart),
-          localAuthEnabled: fromEJson(localAuthEnabled),
-          timestamp: fromEJson(timestamp),
-          uploadFullSizePhoto: fromEJson(uploadFullSizePhoto),
-          themeMode: fromEJson(themeMode),
-          language: fromEJson(language),
-          fontFamily: fromEJson(fontFamily),
-          seedColorHex: fromEJson(seedColorHex),
+          biometricEnabled:
+              fromEJson(ejson['biometricEnabled'], defaultValue: false),
+          caseTileNavigate:
+              fromEJson(ejson['caseTileNavigate'], defaultValue: 0),
+          caseTileStyle: fromEJson(ejson['caseTileStyle'], defaultValue: 0),
+          showByLocation: fromEJson(ejson['showByLocation']),
+          syncOnStart: fromEJson(ejson['syncOnStart'], defaultValue: false),
+          localAuthEnabled:
+              fromEJson(ejson['localAuthEnabled'], defaultValue: true),
+          timestamp: fromEJson(ejson['timestamp'], defaultValue: 0),
+          uploadFullSizePhoto:
+              fromEJson(ejson['uploadFullSizePhoto'], defaultValue: false),
+          themeMode: fromEJson(ejson['themeMode'], defaultValue: 0),
+          language: fromEJson(ejson['language'], defaultValue: 'en'),
+          fontFamily: fromEJson(ejson['fontFamily']),
+          seedColorHex:
+              fromEJson(ejson['seedColorHex'], defaultValue: '0xfff44336'),
         ),
       _ => raiseInvalidEJson(ejson),
     };
@@ -211,7 +205,7 @@ class SettingsModel extends _SettingsModel
   static final schema = () {
     RealmObjectBase.registerFactory(SettingsModel._);
     register(_toEJson, _fromEJson);
-    return SchemaObject(
+    return const SchemaObject(
         ObjectType.realmObject, SettingsModel, 'SettingsModel', [
       SchemaProperty('userID', RealmPropertyType.string, primaryKey: true),
       SchemaProperty('biometricEnabled', RealmPropertyType.bool),

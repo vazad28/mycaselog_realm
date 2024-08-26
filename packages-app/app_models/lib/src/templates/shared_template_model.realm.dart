@@ -162,36 +162,26 @@ class SharedTemplateModel extends _SharedTemplateModel
 
   static EJsonValue _toEJson(SharedTemplateModel value) => value.toEJson();
   static SharedTemplateModel _fromEJson(EJsonValue ejson) {
+    if (ejson is! Map<String, dynamic>) return raiseInvalidEJson(ejson);
     return switch (ejson) {
       {
         'templateID': EJsonValue templateID,
-        'speciality': EJsonValue speciality,
-        'userID': EJsonValue userID,
-        'title': EJsonValue title,
-        'desc': EJsonValue desc,
-        'type': EJsonValue type,
-        'fields': EJsonValue fields,
-        'shared': EJsonValue shared,
-        'displayName': EJsonValue displayName,
-        'useCount': EJsonValue useCount,
-        'createdAt': EJsonValue createdAt,
-        'timestamp': EJsonValue timestamp,
-        'removed': EJsonValue removed,
       } =>
         SharedTemplateModel(
           fromEJson(templateID),
-          speciality: fromEJson(speciality),
-          userID: fromEJson(userID),
-          title: fromEJson(title),
-          desc: fromEJson(desc),
-          type: fromEJson(type),
-          fields: fromEJson(fields),
-          shared: fromEJson(shared),
-          displayName: fromEJson(displayName),
-          useCount: fromEJson(useCount),
-          createdAt: fromEJson(createdAt),
-          timestamp: fromEJson(timestamp),
-          removed: fromEJson(removed),
+          speciality:
+              fromEJson(ejson['speciality'], defaultValue: 'no_speciality'),
+          userID: fromEJson(ejson['userID']),
+          title: fromEJson(ejson['title']),
+          desc: fromEJson(ejson['desc']),
+          type: fromEJson(ejson['type'], defaultValue: 'surgery'),
+          fields: fromEJson(ejson['fields'], defaultValue: const []),
+          shared: fromEJson(ejson['shared'], defaultValue: true),
+          displayName: fromEJson(ejson['displayName']),
+          useCount: fromEJson(ejson['useCount'], defaultValue: 0),
+          createdAt: fromEJson(ejson['createdAt'], defaultValue: 0),
+          timestamp: fromEJson(ejson['timestamp'], defaultValue: 0),
+          removed: fromEJson(ejson['removed'], defaultValue: 0),
         ),
       _ => raiseInvalidEJson(ejson),
     };
@@ -200,7 +190,7 @@ class SharedTemplateModel extends _SharedTemplateModel
   static final schema = () {
     RealmObjectBase.registerFactory(SharedTemplateModel._);
     register(_toEJson, _fromEJson);
-    return SchemaObject(
+    return const SchemaObject(
         ObjectType.realmObject, SharedTemplateModel, 'SharedTemplateModel', [
       SchemaProperty('templateID', RealmPropertyType.string, primaryKey: true),
       SchemaProperty('speciality', RealmPropertyType.string),

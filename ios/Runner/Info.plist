@@ -90,8 +90,6 @@
 		<string>Why is my app authenticating using face id?</string>
 		<key>UIUserInterfaceStyle</key>
 		<string>Light</string>
-		<key>FLTEnableImpeller</key>
-		<false/>
 		<key>UIStatusBarHidden</key>
 		<false/>
 		<key>LSApplicationQueriesSchemes</key>
@@ -102,3 +100,5 @@
 		<true/>
 	</dict>
 </plist>
+<!-- <key>FLTEnableImpeller</key>
+		<false/> -->

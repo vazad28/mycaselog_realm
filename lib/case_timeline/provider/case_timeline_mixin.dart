@@ -101,7 +101,7 @@ mixin TimelineMixin {
       );
 
       /// add image to database
-      ref.watch(dbProvider).mediaCollection.addMedia(mediaModel);
+      ref.watch(dbProvider).mediaCollection.add(mediaModel);
     }).catchError((dynamic err) {
       debugPrint(err.toString());
       ref.read(dialogServiceProvider).showSnackBar('Failed to add image');

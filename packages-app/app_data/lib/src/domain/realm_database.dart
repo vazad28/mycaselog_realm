@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app_models/app_models.dart';
 import 'package:authentication_client/authentication_client.dart';
+import 'package:flutter/foundation.dart';
 import 'package:realm/realm.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -24,10 +25,17 @@ class RealmDatabase extends Disposable {
     return RealmDatabase._(realm, user, sharedPrefs);
   }
 
+  // ignore: unused_element
   static void _migrationCallback(Migration migration, int oldSchemaVersion) {
-    if (oldSchemaVersion < 3) {
-      // Add a full-text index to the 'name' field in  PatientModel
-      /// No specific code required for adding index
+    // Check if the migration is needed
+    if (oldSchemaVersion < 2) {
+      // Add the new property
+      // migration.newRealm.(
+      //   NoteModel.className,
+      //   'noteText',
+      //   RealmPropertyType.string, // or RealmPropertyType.stringNullable
+      //   nullable: true, // to make it nullable
+      // );
     }
   }
 
@@ -55,7 +63,7 @@ class RealmDatabase extends Disposable {
         UserModel.schema,
       ],
       //shouldDeleteIfMigrationNeeded: kDebugMode,
-      // schemaVersion: 3,
+      schemaVersion: 2, // added NoteText property in version 2
       //migrationCallback: _migrationCallback,
     );
 

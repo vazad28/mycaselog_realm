@@ -9,12 +9,15 @@ class DotWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        width: width,
-        child: Container(
-          width: radius,
-          height: radius,
-          decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.onSurface, shape: BoxShape.circle,),
-        ),);
+      width: width,
+      child: Container(
+        width: radius,
+        height: radius,
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.onSurface,
+          shape: BoxShape.circle,
+        ),
+      ),
+    );
   }
 }

@@ -3,13 +3,12 @@ import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 
 class SyncBottomSheet extends StatefulWidget {
-  final void Function(int?) onSelect;
-
-  // ignore: sort_constructors_first
   const SyncBottomSheet({required this.onSelect, super.key});
 
+  final void Function(int?) onSelect;
+
   @override
-  _SyncBottomSheetState createState() => _SyncBottomSheetState();
+  State<SyncBottomSheet> createState() => _SyncBottomSheetState();
 }
 
 class _SyncBottomSheetState extends State<SyncBottomSheet> {

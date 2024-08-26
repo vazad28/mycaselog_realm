@@ -53,7 +53,7 @@ class _CaseTimelineNoteModalState extends ConsumerState<CaseTimelineNoteModal> {
 
     ///else add to database
     try {
-      ref.watch(dbProvider).timelineNotesCollection.addTimelineNote(
+      ref.watch(dbProvider).timelineNotesCollection.add(
             timelineNoteModel..note = _controller.text.trim(),
           );
       Navigator.of(context).pop();

@@ -76,7 +76,8 @@ class ChartReqModel {
         chartData: chartData ?? this.chartData,
         chartType: chartType ?? this.chartType,
 
-        /// dont set  this to this.currMonth else currMonth = null will never be set
+        /// dont set this.currMonth or this.searchTerm else
+        /// these will never be set to null
         currMonth: currMonth,
         currYear: currYear ?? this.currYear,
         filterClause: filterClause,

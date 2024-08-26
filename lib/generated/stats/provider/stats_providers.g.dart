@@ -57,7 +57,7 @@ final statsDataProvider =
 );
 
 typedef _$StatsData = AutoDisposeNotifier<StateOf<ChartDataModel>>;
-String _$statsNotifierHash() => r'7710c14184a1ff0c5cbd42caad2f650a07ead956';
+String _$statsNotifierHash() => r'f9447bb601e52eb3c11916a67fd63e775bb60353';
 
 /// See also [StatsNotifier].
 @ProviderFor(StatsNotifier)

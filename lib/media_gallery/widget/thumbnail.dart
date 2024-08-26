@@ -82,6 +82,7 @@ class Thumbnail extends ConsumerWidget with AppMixins {
         return AsyncValueWidget(
           value: mediaModelAsync,
           data: (model) => Stack(
+            alignment: AlignmentDirectional.center,
             children: [
               _Thumbnail(
                 mediaModel: model,

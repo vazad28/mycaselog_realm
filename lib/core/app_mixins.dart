@@ -89,7 +89,7 @@ mixin AppMixins {
 
   void retryMediaUpload(WidgetRef ref, MediaModel mediaModel) {
     mediaCollection(ref)
-        .addMedia(mediaModel.toUnmanaged()..status = MediaStatus.queued);
+        .add(mediaModel.toUnmanaged()..status = MediaStatus.queued);
   }
 
   /// ////////////////////////////////////////////////////////////////////
