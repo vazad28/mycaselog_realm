@@ -10,7 +10,7 @@ import '../../core/app_mixins.dart';
 import '../../core/providers/providers.dart';
 import '../../core/widgets/widgets.dart';
 
-enum ThumbnailActionsEnum { deleteMedia, shareMedia, retry }
+enum ThumbnailActionsEnum { deleteMedia, shareMedia, changeDate, retry }
 
 class ThumbnailAction extends BaseAppAction {
   ThumbnailAction({
@@ -35,6 +35,11 @@ final thumbnailActions = [
     action: ThumbnailActionsEnum.retry,
     title: ThumbnailActionsEnum.retry.enumToTitleCase,
     leading: const Icon(Icons.upload),
+  ),
+  ThumbnailAction(
+    action: ThumbnailActionsEnum.changeDate,
+    title: ThumbnailActionsEnum.retry.enumToTitleCase,
+    leading: const Icon(Icons.calendar_month),
   ),
 ];
 
@@ -157,6 +162,8 @@ class _Thumbnail extends ConsumerWidget with AppMixins {
                 return shareMedia(ref, mediaModels: [mediaModel]);
               case ThumbnailActionsEnum.retry:
                 return retryMediaUpload(ref, mediaModel);
+              case ThumbnailActionsEnum.changeDate:
+                return changeMediaDate(ref, mediaModel);
               default:
                 break;
             }

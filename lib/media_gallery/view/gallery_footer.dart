@@ -52,6 +52,8 @@ class _GalleryFooterState extends ConsumerState<GalleryFooter> {
     return Container(
       color: Colors.transparent,
       padding: const EdgeInsets.all(AppSpacing.sm),
+      height: MediaQuery.of(AppVars.rootContext).viewPadding.bottom +
+          kToolbarHeight,
       child: Focus(
         child: Row(
           children: [

@@ -92,7 +92,7 @@ class CaseTimelineNotifier extends _$CaseTimelineNotifier {
       addGroupItem(date, note);
     }
 
-    return groupedData.values.toList();
+    return groupedData.values.sortBy((e) => e.eventTimestamp).toList();
   }
 
   // Method to create and add a new empty TimelineItemModel

@@ -46,7 +46,11 @@ class NoteTileStyle extends _$NoteTileStyle {
 class NotesNotifier extends _$NotesNotifier {
   @override
   Stream<RealmResultsChanges<NoteModel>> build() {
-    return ref.watch(dbProvider).notesCollection.getAllNotes().changes;
+    return ref
+        .watch(dbProvider)
+        .notesCollection
+        .getAllNotes(sortByProperty: 'createdAt')
+        .changes;
   }
 
   /// Full text search notes

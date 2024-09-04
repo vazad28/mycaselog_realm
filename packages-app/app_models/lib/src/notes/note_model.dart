@@ -9,10 +9,7 @@ import '../../app_models.dart';
 part 'note_model.realm.dart';
 part 'note_model.g.dart';
 
-enum NoteModelProps {
-  title,
-  note,
-}
+enum NoteModelProps { title, note }
 
 @RealmModel()
 @JsonSerializable(explicitToJson: true)

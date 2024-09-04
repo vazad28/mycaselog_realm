@@ -26,8 +26,8 @@ class NotesCollection extends SyncCollection<NoteModel> {
   }
 
   // Retrieves all cases from Realm
-  RealmResults<NoteModel> getAllNotes() {
-    return realm.query<NoteModel>('removed == 0 SORT(timestamp DESC)');
+  RealmResults<NoteModel> getAllNotes({String sortByProperty = 'timestamp'}) {
+    return realm.query<NoteModel>('removed == 0 SORT($sortByProperty DESC)');
   }
 
   Future<void> deleteNote(NoteModel noteModel) {

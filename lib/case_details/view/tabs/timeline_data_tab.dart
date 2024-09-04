@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../case_timeline/case_timeline.dart';
+import '../../../core/app_vars.dart';
 import '../../provider/case_details_provider.dart';
 
 class CaseDetailsTimelineTab extends ConsumerWidget {
@@ -13,7 +14,10 @@ class CaseDetailsTimelineTab extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final caseDetails = ref.watch(caseDetailsNotifierProvider);
 
-    const kChatInputBoxHeight = kToolbarHeight + kToolbarHeight * 0.5;
+    final kChatInputBoxHeight =
+        kToolbarHeight + MediaQuery.of(AppVars.rootContext).viewPadding.bottom;
+
+    //kToolbarHeight * 0.5;
 
     return caseDetails.maybeWhen(
       orElse: () => const Loading(),
@@ -39,7 +43,7 @@ class CaseDetailsTimelineTab extends ConsumerWidget {
                   key: Key('CaseTimelineScreen-${caseModel.caseID}'),
                   caseID: caseModel.caseID,
                 ),
-                const SliverToBoxAdapter(
+                SliverToBoxAdapter(
                   child: SizedBox(height: kChatInputBoxHeight),
                 ),
               ],

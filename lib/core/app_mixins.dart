@@ -92,6 +92,21 @@ mixin AppMixins {
         .add(mediaModel.toUnmanaged()..status = MediaStatus.queued);
   }
 
+  Future<void> changeMediaDate(WidgetRef ref, MediaModel mediaModel) async {
+    final dateTimePicked = await ref.read(dialogServiceProvider).openDatePicker(
+          initialDate:
+              DateTime.fromMillisecondsSinceEpoch(mediaModel.createdAt),
+        );
+
+    /// of no date time selected - nothing doing
+    if (dateTimePicked == null) return;
+
+    return mediaCollection(ref).changeTimelineMediaTimestamp(
+      [mediaModel],
+      dateTimePicked.millisecondsSinceEpoch,
+    );
+  }
+
   /// ////////////////////////////////////////////////////////////////////
   /// Support data Mixins
   /// ////////////////////////////////////////////////////////////////////

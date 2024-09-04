@@ -14,27 +14,43 @@ class MediaGalleryHeader extends ConsumerWidget implements PreferredSizeWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final caseProvider = ref.watch(currCaseModelProvider);
 
-    return AppBar(
-      //leading: const BackButton(color: Colors.white),
-      backgroundColor: Colors.transparent,
-      title: caseProvider.maybeWhen(
-        data: (caseModel) => caseModel == null
-            ? Loading(child: Text(S.of(context).dataIsNull))
-            : ListTile(
-                onTap: () => onPush?.call(caseModel),
-                title: Text(
-                  caseModel.surgery?.titleCase ?? 'No Surgery',
-                ),
-                subtitle: Text(
-                  caseModel.diagnosis?.sentenceCase ?? 'No Diagnosis',
-                ),
-                trailing: _CaseDataAvatar(caseModel),
-                contentPadding: const EdgeInsets.symmetric(vertical: 16),
-              ),
-        loading: () => const SizedBox.shrink(),
-        orElse: () => Text(S.current.noData),
-      ),
-    );
+    return Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Colors.black38,
+              Colors.transparent,
+            ],
+          ),
+        ),
+        child: AppBar(
+          toolbarHeight: kToolbarHeight +
+              MediaQuery.of(AppVars.rootContext).viewPadding.top,
+          backgroundColor: Colors.transparent,
+          title: caseProvider.maybeWhen(
+            data: (caseModel) => caseModel == null
+                ? Loading(child: Text(S.of(context).dataIsNull))
+                : ListTile(
+                    onTap: () => onPush?.call(caseModel),
+                    title: Text(
+                      caseModel.surgery?.titleCase ?? 'No Surgery',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    subtitle: Text(
+                      caseModel.diagnosis?.sentenceCase ?? 'No Diagnosis',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    trailing: _CaseDataAvatar(caseModel),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 16),
+                  ),
+            loading: () => const SizedBox.shrink(),
+            orElse: () => Text(S.current.noData),
+          ),
+        ));
   }
 
   @override
