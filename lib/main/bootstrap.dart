@@ -1,6 +1,6 @@
 import 'dart:io' as io;
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+//import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,7 +19,7 @@ Future<ProviderContainer> bootstrap(
   FirebaseAuth firebaseAuthInstance,
 ) async {
   /// Register error handlers. For more info, see:
-  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
+  // await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
   registerErrorHandlers();
 
   /// Find the system locale and set it as the default for internationalization operations
@@ -58,7 +58,7 @@ void registerErrorHandlers() {
   FlutterError.onError = (FlutterErrorDetails details) {
     FlutterError.presentError(details);
     debugPrint(details.toString());
-    FirebaseCrashlytics.instance.recordFlutterFatalError(details);
+    //FirebaseCrashlytics.instance.recordFlutterFatalError(details);
   };
   // * Handle errors from the underlying platform/OS
   PlatformDispatcher.instance.onError = (Object error, StackTrace stack) {
@@ -92,21 +92,22 @@ class CustomError extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-        child: Center(
-      child: Card(
-        color: Colors.red,
-        margin: EdgeInsets.zero,
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: Text(
-            "Something is not right here.\nStack trace: ${errorDetails.stack?.toString() ?? '(no stack trace stored in error)'}",
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
+      child: Center(
+        child: Card(
+          color: Colors.red,
+          margin: EdgeInsets.zero,
+          child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: Text(
+              "Something is not right here.\nStack trace: ${errorDetails.stack?.toString() ?? '(no stack trace stored in error)'}",
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ),
       ),
-    ),);
+    );
   }
 }

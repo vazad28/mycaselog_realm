@@ -24,14 +24,14 @@ dependencies:
   logger_client: 
     path: ../../packages/logger_client
   connectivity_plus: ^6.0.5
-  cloud_firestore: ^5.2.1
+  cloud_firestore: ^5.4.1
   collection: ^1.18.0
-  firebase_storage: 12.1.3
-  flutter_cache_manager: ^3.4.0
+  firebase_storage: ^12.3.0
+  flutter_cache_manager: ^3.4.1
   path_provider: ^2.1.4
   path: ^1.9.0
-  realm: ^3.4.1
-  shared_preferences: ^2.3.1
+  realm: ^20.0.0
+  shared_preferences: ^2.3.2
   
 
 dev_dependencies:

@@ -22,7 +22,7 @@ dependencies:
   recase: ^4.1.0
   animations: ^2.0.11
   freezed_annotation: ^2.4.4
-  fl_chart: ^0.68.0
+  fl_chart: ^0.69.0
   reactive_forms: ^17.0.1
 
 
