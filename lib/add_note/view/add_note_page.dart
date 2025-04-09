@@ -86,7 +86,7 @@ class _AddNotePageState extends ConsumerState<AddNotePage> with LoggerMixin {
         height: _editorHasFocus ? kMinInteractiveDimension : 0,
         duration: Durations.medium4,
         child: QuillToolbarBottom(
-          quillController: _controller,
+          controller: _controller,
         ),
       ),
       body: !_documentLoaded
@@ -114,7 +114,7 @@ class _AddNotePageState extends ConsumerState<AddNotePage> with LoggerMixin {
                     return Expanded(
                       child: NoteQuillEditor(
                         quillController: _controller,
-                        configurations: const QuillEditorConfigurations(),
+                        configurations: const QuillEditorConfig(),
                         scrollController: _editorScrollController,
                         focusNode: _editorFocusNode,
                       ),

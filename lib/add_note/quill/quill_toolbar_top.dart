@@ -8,21 +8,22 @@ class QuillToolbarTop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return QuillToolbar(
-      child: Builder(builder: (context) {
-        return Row(
-          children: [
-            QuillToolbarHistoryButton(
-              isUndo: true,
-              controller: quillController,
-            ),
-            QuillToolbarHistoryButton(
-              isUndo: false,
-              controller: quillController,
-            ),
-          ],
-        );
-      }),
+    return QuillSimpleToolbar(
+      controller: quillController,
+      config: const QuillSimpleToolbarConfig(
+        toolbarIconAlignment: WrapAlignment.start,
+        multiRowsDisplay: false,
+        buttonOptions: QuillSimpleToolbarButtonOptions(
+          undoHistory: QuillToolbarHistoryButtonOptions(
+            iconData: Icons.undo,
+            tooltip: 'Undo',
+          ),
+          redoHistory: QuillToolbarHistoryButtonOptions(
+            iconData: Icons.redo,
+            tooltip: 'Redo',
+          ),
+        ),
+      ),
     );
   }
 }

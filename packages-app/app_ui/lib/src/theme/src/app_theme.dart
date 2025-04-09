@@ -50,8 +50,8 @@ class AppTheme {
         visualDensity: VisualDensity.standard,
 
         //
-        splashColor: colorScheme.secondary.withOpacity(.1),
-        highlightColor: colorScheme.secondary.withOpacity(.1),
+        splashColor: colorScheme.secondary.withValues(alpha: 30),
+        highlightColor: colorScheme.secondary.withValues(alpha: 30),
 
         //
         iconTheme: IconThemeData(
@@ -59,9 +59,9 @@ class AppTheme {
           size: 20,
         ),
         dividerTheme: DividerThemeData(
-          color: colorScheme.onSurface.withOpacity(.2),
+          color: colorScheme.onSurface.withValues(alpha: 70),
         ),
-        cardTheme: CardTheme(
+        cardTheme: CardThemeData(
           elevation: 0.5,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(16)),
@@ -69,7 +69,7 @@ class AppTheme {
           color: colorScheme.surface,
           margin: EdgeInsets.zero,
         ),
-        dialogTheme: const DialogTheme(
+        dialogTheme: const DialogThemeData(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(16)),
           ),

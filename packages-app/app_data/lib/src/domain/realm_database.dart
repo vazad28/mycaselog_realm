@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:app_models/app_models.dart';
 import 'package:authentication_client/authentication_client.dart';
-import 'package:flutter/foundation.dart';
 import 'package:realm/realm.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
